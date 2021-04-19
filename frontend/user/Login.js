@@ -16,7 +16,13 @@ export default function Login() {
     <Container>
       {/* <Header /> */}
       <View style={styles.logo}>
-        <Text>Green Fingers</Text>
+        <View style={styles.halftop}>
+          <Text style={styles.logotext}>Green</Text>
+        </View>
+        <View style={styles.halfbottom}>
+          <Text style={styles.logotext}>Fingers</Text>
+          <Text style={styles.signup}>회원가입</Text>
+        </View>
       </View>
       <View style={styles.form}>
         <View style={styles.pairitem}>
@@ -51,6 +57,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     paddingHorizontal: 40,
+  },
+  halftop: {
+    flex: 3,
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+  },
+  halfbottom: {
+    flex: 2,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
+  logotext: {
+    fontSize: 30,
   },
   form: {
     flex: 2,

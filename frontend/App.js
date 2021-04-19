@@ -1,6 +1,7 @@
 import React from "react";
 // import { StyleSheet } from "react-native";
 import Login from "./user/Login";
+import Signup from "./user/Signup";
 
 // export default function App() {
 //   return (
@@ -13,7 +14,7 @@ import Login from "./user/Login";
 
 export default class extends React.Component {
   render() {
-    return <Login />;
+    return <Signup />;
   }
 }
 
