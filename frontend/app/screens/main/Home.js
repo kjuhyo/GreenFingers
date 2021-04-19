@@ -83,6 +83,7 @@ export function HomeScreen({ navigation }) {
             style={styles.roomname}
             onPress={() => {
               console.log("click room name");
+              navigation.navigate("Room");
             }}
           >
             거실
@@ -92,6 +93,7 @@ export function HomeScreen({ navigation }) {
               style={styles.plantcard}
               onPress={() => {
                 console.log("click left");
+                navigation.navigate("Room");
               }}
             >
               <Image
@@ -116,6 +118,7 @@ export function HomeScreen({ navigation }) {
               style={styles.plantcard}
               onPress={() => {
                 console.log("click right");
+                navigation.navigate("Room");
               }}
             >
               <Image
@@ -143,6 +146,7 @@ export function HomeScreen({ navigation }) {
             style={styles.roomname}
             onPress={() => {
               console.log("click room name");
+              navigation.navigate("Room");
             }}
           >
             거실
@@ -152,6 +156,7 @@ export function HomeScreen({ navigation }) {
               style={styles.plantcard}
               onPress={() => {
                 console.log("click left");
+                navigation.navigate("Room");
               }}
             >
               <Image
@@ -176,6 +181,7 @@ export function HomeScreen({ navigation }) {
               style={styles.plantcard}
               onPress={() => {
                 console.log("click right");
+                navigation.navigate("Room");
               }}
             >
               <Image
