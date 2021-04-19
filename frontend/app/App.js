@@ -1,15 +1,24 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
+// react native
 import React from "react";
+import { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import "react-native-gesture-handler";
+
+// react navigation
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+// screen
 import { HomeScreen } from "./screens/main/Home";
 import { LoginScreen } from "./screens/auth/Login";
-import { useState } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { DiaryScreen } from "./screens/diary/Diary";
 import { RecommendationScreen } from "./screens/recommendation/Recommendation";
+
+// theme
+import theme from "./assets/theme/index";
+import { ThemeProvider } from "styled-components";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,16 +37,18 @@ export default function App() {
   const [isLogin, setIsLogin] = useState(false);
 
   return (
-    <NavigationContainer>
-      {isLogin == true ? (
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ title: "Login" }}
-        />
-      ) : (
-        <Tabs />
-      )}
-    </NavigationContainer>
+    <ThemeProvider theme={theme}>
+      <NavigationContainer>
+        {isLogin == true ? (
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ title: "Login" }}
+          />
+        ) : (
+          <Tabs />
+        )}
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }

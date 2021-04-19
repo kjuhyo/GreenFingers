@@ -5,7 +5,7 @@ import "react-native-gesture-handler";
 
 export function DiaryScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View>
       <Text>Diary Screen</Text>
     </View>
   );

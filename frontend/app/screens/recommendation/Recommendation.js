@@ -4,7 +4,7 @@ import "react-native-gesture-handler";
 
 export function RecommendationScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View>
       <Text>Recommendation Screen</Text>
       {/* <Button
         title="Go to Details"

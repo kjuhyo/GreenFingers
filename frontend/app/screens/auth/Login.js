@@ -5,7 +5,7 @@ import { HomeScreen } from "../main/Home";
 
 export function LoginScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View>
       <Text>로그인</Text>
     </View>
   );
