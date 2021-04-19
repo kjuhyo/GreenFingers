@@ -138,6 +138,66 @@ export function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.rooms}>
+          <Text
+            style={styles.roomname}
+            onPress={() => {
+              console.log("click room name");
+            }}
+          >
+            거실
+          </Text>
+          <View style={styles.abovecard}>
+            <TouchableOpacity
+              style={styles.plantcard}
+              onPress={() => {
+                console.log("click left");
+              }}
+            >
+              <Image
+                source={require("../../assets/images/plant.jpg")}
+                style={styles.plantimg}
+              />
+              <View style={styles.plantinfo}>
+                <Text style={styles.plantname}>산세베리아</Text>
+                <View style={styles.rightinfo}>
+                  <View style={styles.water}>
+                    <Text style={styles.watertext}>물 준 날짜</Text>
+                    <Text style={styles.waterdate}>2021/02/11</Text>
+                  </View>
+                  <Image
+                    source={require("../../assets/images/plant1.png")}
+                    style={styles.planticon}
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.plantcard}
+              onPress={() => {
+                console.log("click right");
+              }}
+            >
+              <Image
+                source={require("../../assets/images/plant.jpg")}
+                style={styles.plantimg}
+              />
+              <View style={styles.plantinfo}>
+                <Text style={styles.plantname}>산세베리아가</Text>
+                <View style={styles.rightinfo}>
+                  <View style={styles.water}>
+                    <Text style={styles.watertext}>물 준 날짜</Text>
+                    <Text style={styles.waterdate}>2021/02/11</Text>
+                  </View>
+                  <Image
+                    source={require("../../assets/images/plant1.png")}
+                    style={styles.planticon}
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -164,7 +224,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   mainicons: {
-    flex: 0.2,
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingHorizontal: 30,
