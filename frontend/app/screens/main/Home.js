@@ -6,10 +6,13 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  ScrollView,
+  Dimensions,
 } from "react-native";
 import { Container, Icon, Button, Content } from "native-base";
 
 // import PropTypes from "prop-types";
+const win = Dimensions.get("window");
 
 export function HomeScreen({ navigation }) {
   // state = {
@@ -17,23 +20,32 @@ export function HomeScreen({ navigation }) {
   // };
   // updateState = () => this.setState({ mainName: "update" });
   return (
-    <Container style={styles.container}>
-      <ImageBackground
-        source={require("../../assets/images/mainroom.jpg")}
-        style={styles.image}
-      >
-        <View style={styles.mainicons}>
-          <Icon
-            type="Ionicons"
-            name="notifications-outline"
-            style={styles.bell}
-          ></Icon>
-          <Icon
-            type="Ionicons"
-            name="options-outline"
-            style={styles.option}
-          ></Icon>
-        </View>
+    <View style={{ flex: 1, backgroundColor: "transparent" }}>
+      <View style={{ flex: 0.1 }}>
+        <Image
+          style={{
+            height: win.height,
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+          source={require("../../assets/images/mainroom.jpg")}
+        />
+      </View>
+
+      <View style={styles.mainicons}>
+        <Icon
+          type="Ionicons"
+          name="notifications-outline"
+          style={styles.bell}
+        ></Icon>
+        <Icon
+          type="Ionicons"
+          name="options-outline"
+          style={styles.option}
+        ></Icon>
+      </View>
+      <ScrollView style={styles.scrollview}>
         <View style={styles.mainname}>
           <Text style={styles.nametext}>Dasol House</Text>
           <Icon
@@ -65,6 +77,7 @@ export function HomeScreen({ navigation }) {
             }}
           ></Icon>
         </View>
+
         <View style={styles.rooms}>
           <Text
             style={styles.roomname}
@@ -125,18 +138,21 @@ export function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      </ImageBackground>
-    </Container>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "orange",
-    flex: 1,
+    backgroundColor: "rgba(0,0,0,0)",
+    // ImageBackground:''
+    flex: 0,
   },
   image: {
     flex: 1,
+
+    // position: "absolute",
     resizeMode: "cover",
     justifyContent: "center",
   },
@@ -148,19 +164,23 @@ const styles = StyleSheet.create({
     color: "white",
   },
   mainicons: {
-    flex: 1,
+    flex: 0.2,
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingHorizontal: 30,
-    paddingTop: 80,
+    // backgroundColor: "yellow",
+    marginTop: 70,
+    marginBottom: 20,
   },
   mainname: {
-    flex: 0.7,
+    // backgroundColor: "yellow",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 20,
-    marginBottom: 20,
+    marginTop: 35,
+    marginBottom: 30,
+    fontFamily: "Cochin",
   },
   nametext: {
     fontSize: 30,
@@ -176,18 +196,20 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   now: {
-    flex: 0.9,
+    flex: 0.5,
+    // backgroundColor: "yellow",
     alignItems: "center",
+    marginBottom: 10,
   },
   middlebox: {
     flexDirection: "row",
     backgroundColor: "rgba(0,0,0,0.1)",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 6,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    paddingLeft: 15,
+    paddingLeft: 20,
   },
   rooms: {
     flex: 5,
@@ -195,22 +217,24 @@ const styles = StyleSheet.create({
   info: {
     paddingHorizontal: 15,
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "300",
   },
   add: {
     alignItems: "center",
+    marginTop: 10,
   },
   addicon: {
-    color: "rgba(255,255,255,0.6)",
+    color: "rgba(255,255,255,0.8)",
     fontWeight: "bold",
     fontSize: 50,
   },
   roomname: {
     color: "white",
-    fontSize: 23,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: "700",
     paddingLeft: 30,
     paddingTop: 20,
+    paddingBottom: 10,
     flex: 0.4,
   },
   abovecard: {
@@ -222,7 +246,7 @@ const styles = StyleSheet.create({
   plantcard: {
     flex: 5,
     margin: 3,
-    maxHeight: "40%",
+    height: win.height * 0.2,
     backgroundColor: "rgba(255,255,255,0.5)",
     borderRadius: 10,
     paddingHorizontal: 10,
@@ -254,7 +278,7 @@ const styles = StyleSheet.create({
   },
   rightinfo: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
     // backgroundColor: "yellow",
   },
   watertext: {
