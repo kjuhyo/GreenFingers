@@ -2,6 +2,7 @@ import React from "react";
 // import { StyleSheet } from "react-native";
 import Login from "./user/Login";
 import Signup from "./user/Signup";
+import SurveyIntro from "./survey/SurveyIntro";
 
 // export default function App() {
 //   return (
@@ -14,15 +15,6 @@ import Signup from "./user/Signup";
 
 export default class extends React.Component {
   render() {
-    return <Signup />;
+    return <SurveyIntro />;
   }
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
