@@ -10,6 +10,8 @@ import {
   Dimensions,
 } from "react-native";
 import { Container, Icon, Button, Content } from "native-base";
+// import { MakingRoomModal } from "./MakingRoomModal";
+// import Modal from "react-native-modal";
 
 // import PropTypes from "prop-types";
 const win = Dimensions.get("window");
@@ -76,6 +78,7 @@ export function HomeScreen({ navigation }) {
               console.log("click add icon");
             }}
           ></Icon>
+          {/* <MakingRoomModal /> */}
         </View>
 
         <View style={styles.rooms}>

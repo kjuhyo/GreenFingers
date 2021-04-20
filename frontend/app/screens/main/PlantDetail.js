@@ -11,8 +11,10 @@ import {
 } from "react-native";
 import { Container, Icon, Button, Content } from "native-base";
 import { Cardback, Plantchip } from "../../assets/theme/roomstyle";
+import { LinearGradient } from "expo-linear-gradient";
 
 const win = Dimensions.get("window");
+
 export function PlantDetail({ navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: "transparent" }}>
@@ -39,7 +41,11 @@ export function PlantDetail({ navigation }) {
           <TouchableOpacity>
             <Icon type="Ionicons" name="ellipsis-vertical-outline"></Icon>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Room");
+            }}
+          >
             <Icon type="Ionicons" name="close-circle-outline"></Icon>
           </TouchableOpacity>
         </View>
@@ -55,9 +61,19 @@ export function PlantDetail({ navigation }) {
           }}
         >
           <View style={styles.leftside}>
-            <Plantchip>
+            <Plantchip style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  color: "#29582C",
+                  fontWeight: "bold",
+                  marginRight: 5,
+                  fontSize: 25,
+                }}
+              >
+                |
+              </Text>
               <Text style={{ color: "#29582C", fontWeight: "bold" }}>
-                Lemon
+                Lemon Tree
               </Text>
             </Plantchip>
             <View style={styles.leftdown}>
@@ -77,37 +93,39 @@ export function PlantDetail({ navigation }) {
               flex: 1,
             }}
           >
-            <TouchableOpacity
-              style={{
-                flexDirection: "column",
-                alignItems: "center",
-                marginTop: 12,
-                borderRadius: 50,
-                padding: 10,
-                backgroundColor: "#29582C",
-              }}
-            >
-              <Icon
-                type="Ionicons"
-                name="book-outline"
+            <TouchableOpacity>
+              <LinearGradient
+                colors={["rgba(218,219,153,0.7)", "rgba(176,218,185,0.7)"]}
                 style={{
-                  color: "white",
-                  fontSize: 28,
-                  padding: 0,
-                }}
-              ></Icon>
-              <Text
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  marginTop: 0,
-                  fontSize: 10,
-                  textAlign: "center",
-                  // backgroundColor: "yellow",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginTop: 12,
+                  borderRadius: 20,
+                  padding: 10,
                 }}
               >
-                DIARY
-              </Text>
+                <Icon
+                  type="Ionicons"
+                  name="book-outline"
+                  style={{
+                    color: "white",
+                    fontSize: 28,
+                    padding: 0,
+                  }}
+                ></Icon>
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    marginTop: 0,
+                    fontSize: 10,
+                    textAlign: "center",
+                    // backgroundColor: "yellow",
+                  }}
+                >
+                  DIARY
+                </Text>
+              </LinearGradient>
             </TouchableOpacity>
             <View style={styles.rightinfo}>
               <View style={styles.water}>
