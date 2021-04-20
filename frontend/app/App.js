@@ -15,6 +15,7 @@ import { HomeScreen } from "./screens/main/Home";
 import { LoginScreen } from "./screens/auth/Login";
 import { SignupScreen } from "./screens/auth/Signup";
 import { DiaryScreen } from "./screens/diary/Diary";
+import { DiaryWriteScreen } from "./screens/diary/DiaryWrite";
 import { RecommendationScreen } from "./screens/recommendation/Recommendation";
 import { SurveyintroScreen } from "./screens/recommendation/SurveyIntro";
 import { RoomScreen } from "./screens/main/Room";
@@ -45,11 +46,28 @@ function HomeStacks() {
   );
 }
 
+function DiaryStacks() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Diary"
+        component={DiaryScreen}
+        options={{ header: () => null }}
+      />
+      <Stack.Screen
+        name="DiaryWrite"
+        component={DiaryWriteScreen}
+        options={{ header: () => null }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function Tabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeStacks} />
-      <Tab.Screen name="Diary" component={DiaryScreen} />
+      <Tab.Screen name="Diary" component={DiaryStacks} />
       <Tab.Screen name="Recommendation" component={RecommendationScreen} />
     </Tab.Navigator>
   );

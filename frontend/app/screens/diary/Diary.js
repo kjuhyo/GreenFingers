@@ -16,7 +16,7 @@ import {
 } from "native-base";
 
 // components
-import { CalendarView } from "../../components/diary/calendar";
+import { CalendarView } from "../../components/diary/Calendar";
 import styled from "styled-components";
 
 // import PlantTab from "../../components/diary/Tab";
@@ -25,7 +25,7 @@ const PlusButton = styled.TouchableOpacity`
   width: 50;
   height: 50;
   border-radius: 30;
-  background-color: #29582c;
+  background-color: ${({ theme }) => theme.colors.darkGreen};
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -107,7 +107,12 @@ export function DiaryScreen({ navigation }) {
         </Tab>
         {/* <PlantTab /> */}
       </Tabs>
-      <PlusButton title="">
+      <PlusButton
+        title=""
+        onPress={() => {
+          navigation.navigate("DiaryWrite");
+        }}
+      >
         <Icon name="md-add" style={{ color: "white" }} />
       </PlusButton>
     </Container>
