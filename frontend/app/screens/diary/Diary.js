@@ -1,6 +1,7 @@
 // react
 import React from "react";
 import "react-native-gesture-handler";
+import { StyleSheet } from "react-native";
 
 // native-base
 import {
@@ -11,7 +12,10 @@ import {
   ScrollableTab,
   Thumbnail,
   TabHeading,
-  Icon,
+  Right,
+  Body,
+  Title,
+  View,
 } from "native-base";
 
 // components
@@ -22,12 +26,21 @@ import { CalendarView } from "../../components/diary/calendar";
 export function DiaryScreen({ navigation }) {
   return (
     <Container>
-      <Header hasTabs />
+      <Header hasTabs>
+        <Body>
+          <Title>Diary</Title>
+        </Body>
+      </Header>
       <Tabs
         renderTabBar={() => (
           <ScrollableTab
             tabsContainerStyle={{ justifyContent: "flex-start" }}
-            style={{ height: 60, backgroundColor: "#F9F9F9", borderWidth: 0 }}
+            style={{
+              height: 80,
+              backgroundColor: "#F9F9F9",
+              borderWidth: 0,
+              marginBottom: 50,
+            }}
           />
         )}
         tabBarUnderlineStyle={{ height: 2, backgroundColor: "#8AD169" }}
@@ -40,10 +53,9 @@ export function DiaryScreen({ navigation }) {
               }}
             >
               <Thumbnail
-                small
                 source={{
                   uri:
-                    "https://mblogthumb-phinf.pstatic.net/MjAxODA2MzBfNTkg/MDAxNTMwMzI2NjQwOTIx.V2Vi9fi-77A0y4gFgpDi150YjEGnd2xk9H4y0MCUAmMg.tiU5xMaA44sUGo_XaQGii4mcqKGJExz2Q7lIzNyjEx8g.JPEG.flowervine/DSC00041.JPG?type=w800",
+                    "https://e7.pngegg.com/pngimages/194/987/png-clipart-leaf-flowerpot-houseplant-grasses-plant-stem-leaf-leaf-plant-stem.png",
                 }}
               />
             </TabHeading>
@@ -59,15 +71,16 @@ export function DiaryScreen({ navigation }) {
               }}
             >
               <Thumbnail
-                small
                 source={{
                   uri:
-                    "https://mblogthumb-phinf.pstatic.net/MjAxODA2MzBfNTkg/MDAxNTMwMzI2NjQwOTIx.V2Vi9fi-77A0y4gFgpDi150YjEGnd2xk9H4y0MCUAmMg.tiU5xMaA44sUGo_XaQGii4mcqKGJExz2Q7lIzNyjEx8g.JPEG.flowervine/DSC00041.JPG?type=w800",
+                    "https://e7.pngegg.com/pngimages/194/987/png-clipart-leaf-flowerpot-houseplant-grasses-plant-stem-leaf-leaf-plant-stem.png",
                 }}
               />
             </TabHeading>
           }
-        ></Tab>
+        >
+          <CalendarView />
+        </Tab>
         <Tab
           heading={
             <TabHeading
@@ -76,17 +89,24 @@ export function DiaryScreen({ navigation }) {
               }}
             >
               <Thumbnail
-                small
                 source={{
                   uri:
-                    "https://mblogthumb-phinf.pstatic.net/MjAxODA2MzBfNTkg/MDAxNTMwMzI2NjQwOTIx.V2Vi9fi-77A0y4gFgpDi150YjEGnd2xk9H4y0MCUAmMg.tiU5xMaA44sUGo_XaQGii4mcqKGJExz2Q7lIzNyjEx8g.JPEG.flowervine/DSC00041.JPG?type=w800",
+                    "https://e7.pngegg.com/pngimages/194/987/png-clipart-leaf-flowerpot-houseplant-grasses-plant-stem-leaf-leaf-plant-stem.png",
                 }}
               />
             </TabHeading>
           }
-        ></Tab>
+        >
+          <CalendarView />
+        </Tab>
         {/* <PlantTab /> */}
       </Tabs>
     </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "black",
+  },
+});

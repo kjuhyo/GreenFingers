@@ -49,7 +49,19 @@ function Tabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeStacks} />
-      <Tab.Screen name="Diary" component={DiaryScreen} />
+      <Tab.Screen
+        name="Diary"
+        component={DiaryScreen}
+        options={{
+          title: "Home Title",
+          headerTitleStyle: {
+            color: "#fff",
+          },
+          headerStyle: {
+            backgroundColor: "#833471",
+          },
+        }}
+      />
       <Tab.Screen name="Recommendation" component={RecommendationScreen} />
     </Tab.Navigator>
   );

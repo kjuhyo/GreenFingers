@@ -9,6 +9,23 @@ import { Calendar } from "react-native-calendars";
 export function CalendarView() {
   return (
     <Calendar
+      theme={{
+        "stylesheet.day.basic": {
+          base: {
+            width: 32,
+            height: 60,
+            justifyContent: "center",
+            alignItems: "center",
+          },
+        },
+        "stylesheet.dot": {
+          dot: {
+            width: 7,
+            height: 7,
+            borderRadius: 5,
+          },
+        },
+      }}
       // Initially visible month. Default = Date()
       current={"2021-04-20"}
       // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
@@ -51,7 +68,7 @@ export function CalendarView() {
       hideExtraDays={false}
       // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
       // day from another month that is visible in calendar page. Default = false
-      disableMonthChange={true}
+      disableMonthChange={false}
       // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
       firstDay={7}
       // Hide day names. Default = false
