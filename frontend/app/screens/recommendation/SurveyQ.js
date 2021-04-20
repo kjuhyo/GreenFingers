@@ -99,7 +99,7 @@ export function SurveyquestionScreen({ navigation }) {
       </View>
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
-          <SurveyButton>
+          <SurveyButton onPress={() => navigation.navigate("Surveyresult")}>
             <SurveyButtonText>계속</SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>

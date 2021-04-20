@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 const ProgressBar = ({ completed }) => {
   const containerStyles = {
-    height: 10,
+    height: 5,
     width: "80%",
     backgroundColor: "#e0e0de",
     borderRadius: 50,

@@ -18,6 +18,7 @@ import { DiaryScreen } from "./screens/diary/Diary";
 import { RecommendationScreen } from "./screens/recommendation/Recommendation";
 import { SurveyintroScreen } from "./screens/recommendation/SurveyIntro";
 import { SurveyquestionScreen } from "./screens/recommendation/SurveyQ";
+import { SurveyresultScreen } from "./screens/recommendation/SurveyResult";
 
 import { RoomScreen } from "./screens/main/Room";
 
@@ -58,6 +59,11 @@ function RecommendationStacks() {
       <RecommendationStack.Screen
         name="Surveyquestion"
         component={SurveyquestionScreen}
+        options={{ title: "맞춤 식물 찾기" }}
+      />
+      <RecommendationStack.Screen
+        name="Surveyresult"
+        component={SurveyresultScreen}
         options={{ title: "맞춤 식물 찾기" }}
       />
     </RecommendationStack.Navigator>
