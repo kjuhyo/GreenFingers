@@ -18,7 +18,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function SurveyIntro() {
+export default function SurveyintroScreen() {
   return (
     <Container>
       <View style={styles.titlecontainer}>

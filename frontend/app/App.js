@@ -68,11 +68,11 @@ function Mystack() {
         component={SignupScreen}
         options={{ title: "Signup" }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="SurveyIntro"
         component={SurveyintroScreen}
         options={{ title: "SurveyIntro" }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }
@@ -83,7 +83,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <Mystack />
+        {isLogin !== false ? <Mystack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );
