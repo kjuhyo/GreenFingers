@@ -53,7 +53,9 @@ export function SignupScreen({ navigation }) {
           <Input placeholder="비밀번호 확인" />
         </Item>
         <Button style={styles.submitbutton} full>
-          <Text>회원가입</Text>
+          <Text title="Home" onPress={() => navigation.replace("main")}>
+            회원가입
+          </Text>
         </Button>
       </View>
     </Container>
