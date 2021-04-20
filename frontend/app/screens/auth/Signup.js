@@ -11,7 +11,7 @@ import {
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 
-export default function Login() {
+export function SignupScreen({ navigation }) {
   return (
     <Container>
       <View style={styles.logo}>

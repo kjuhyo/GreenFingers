@@ -16,7 +16,6 @@ import { LoginScreen } from "./screens/auth/Login";
 import { SignupScreen } from "./screens/auth/Signup";
 import { DiaryScreen } from "./screens/diary/Diary";
 import { RecommendationScreen } from "./screens/recommendation/Recommendation";
-import { SurveyintroScreen } from "./screens/recommendation/SurveyIntro";
 
 // theme
 import theme from "./assets/theme/index";
@@ -35,35 +34,23 @@ function Tabs() {
   );
 }
 
-function Mystack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ title: "Login" }}
-      />
-      <Stack.Screen
-        name="Signup"
-        component={SignupScreen}
-        options={{ title: "Signup" }}
-      />
-      <Stack.Screen
-        name="SurveyIntro"
-        component={SurveyintroScreen}
-        options={{ title: "SurveyIntro" }}
-      />
-    </Stack.Navigator>
-  );
-}
-
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <Mystack />
+        {isLogin !== true ? (
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ title: "Login" }}
+            />
+          </Stack.Navigator>
+        ) : (
+          <Tabs />
+        )}
       </NavigationContainer>
     </ThemeProvider>
   );
