@@ -67,7 +67,12 @@ export function RoomScreen({ navigation }) {
         </View>
       </View>
       <View style={styles.plantlist}>
-        <TouchableOpacity style={styles.plantcard}>
+        <TouchableOpacity
+          style={styles.plantcard}
+          onPress={() => {
+            navigation.navigate("PlantDetail");
+          }}
+        >
           <Image
             source={require("../../assets/images/plant.jpg")}
             style={styles.plantimg}
@@ -86,7 +91,12 @@ export function RoomScreen({ navigation }) {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.plantcard}>
+        <TouchableOpacity
+          style={styles.plantcard}
+          onPress={() => {
+            navigation.navigate("PlantDetail");
+          }}
+        >
           <Image
             source={require("../../assets/images/plant.jpg")}
             style={styles.plantimg}
