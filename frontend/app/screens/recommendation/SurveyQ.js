@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -25,6 +25,7 @@ import {
   SurveyQText,
 } from "../../assets/theme/styles";
 import RadioButtonRN from "radio-buttons-react-native";
+import ProgressBar from "../../components/progressbar";
 
 export function SurveyquestionScreen({ navigation }) {
   const data1 = [
@@ -51,10 +52,12 @@ export function SurveyquestionScreen({ navigation }) {
     },
   ];
 
+  const ProgressData = { completed: 50 };
+
   return (
     <Container style={styles.container}>
       <View style={styles.titlecontainer}>
-        <Text style={styles.titletext}>-----------------------</Text>
+        <ProgressBar completed={ProgressData.completed} />
       </View>
       <View style={styles.contentcontainer}>
         <SurveyQText style={styles.contentques} multiline={true}>
