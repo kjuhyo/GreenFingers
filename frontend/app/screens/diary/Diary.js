@@ -1,3 +1,8 @@
+// react
+import React from "react";
+import "react-native-gesture-handler";
+
+// native-base
 import {
   Container,
   Header,
@@ -6,9 +11,12 @@ import {
   ScrollableTab,
   Thumbnail,
   TabHeading,
+  Icon,
 } from "native-base";
-import React from "react";
-import "react-native-gesture-handler";
+
+// components
+import { CalendarView } from "../../components/diary/calendar";
+
 // import PlantTab from "../../components/diary/Tab";
 
 export function DiaryScreen({ navigation }) {
@@ -40,7 +48,9 @@ export function DiaryScreen({ navigation }) {
               />
             </TabHeading>
           }
-        ></Tab>
+        >
+          <CalendarView />
+        </Tab>
         <Tab
           heading={
             <TabHeading
