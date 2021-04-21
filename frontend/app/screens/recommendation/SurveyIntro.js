@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   PickerIOSComponent,
+  Button,
 } from "react-native";
 import {
   Container,
@@ -12,15 +13,17 @@ import {
   Content,
   Input,
   Item,
-  Button,
   StyleProvider,
 } from "native-base";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { ThemeProvider } from "styled-components";
+import theme from "../../assets/theme/index";
+import { SurveyButton, SurveyButtonText } from "../../assets/theme/styles";
 
-export default function SurveyIntro() {
+export function SurveyintroScreen({ navigation }) {
   return (
-    <Container>
+    <Container style={styles.container}>
       <View style={styles.titlecontainer}>
         <Text style={styles.titletext}>
           간단한 설문을 통해 맞춤 식물을 추천해 드립니다.
@@ -41,11 +44,7 @@ export default function SurveyIntro() {
         </Text>
         <View style={styles.contentinfo}>
           <View style={styles.infoleft}>
-            <FontAwesome
-              size={25}
-              // style={styles.textpadding}
-              name="pencil"
-            ></FontAwesome>
+            <FontAwesome size={25} name="pencil"></FontAwesome>
             <Text> 전체 몇문항</Text>
           </View>
           <View style={styles.inforight}>
@@ -59,18 +58,24 @@ export default function SurveyIntro() {
         </View>
       </View>
       <View style={styles.buttoncontainer}>
-        <Button style={styles.submitbutton} large>
-          <Text>시작</Text>
-        </Button>
+        <ThemeProvider theme={theme}>
+          <SurveyButton onPress={() => navigation.navigate("Surveyquestion")}>
+            <SurveyButtonText>시작</SurveyButtonText>
+          </SurveyButton>
+        </ThemeProvider>
       </View>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#F9F9F9",
+  },
   titlecontainer: {
     flex: 2,
     justifyContent: "flex-end",
+    paddingBottom: 25,
     alignItems: "center",
   },
 
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   buttoncontainer: {
-    flex: 2,
+    flex: 1,
     justifyContent: "flex-start",
     alignSelf: "flex-end",
     marginTop: 20,
@@ -113,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "grey",
+    backgroundColor: "white",
     marginRight: 10,
     borderRadius: 10,
   },
@@ -121,11 +126,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "grey",
+    backgroundColor: "white",
     marginLeft: 10,
     borderRadius: 10,
-  },
-  submitbutton: {
-    paddingHorizontal: 35,
   },
 });

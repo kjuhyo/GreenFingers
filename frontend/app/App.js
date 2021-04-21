@@ -17,6 +17,9 @@ import { SignupScreen } from "./screens/auth/Signup";
 import { DiaryScreen } from "./screens/diary/Diary";
 import { RecommendationScreen } from "./screens/recommendation/Recommendation";
 import { SurveyintroScreen } from "./screens/recommendation/SurveyIntro";
+import { SurveyquestionScreen } from "./screens/recommendation/SurveyQ";
+import { SurveyresultScreen } from "./screens/recommendation/SurveyResult";
+
 import { RoomScreen } from "./screens/main/Room";
 import { PlantDetail } from "./screens/main/PlantDetail";
 
@@ -27,6 +30,7 @@ import { ThemeProvider } from "styled-components";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const RecommendationStack = createStackNavigator();
 
 function HomeStacks() {
   return (
@@ -50,12 +54,34 @@ function HomeStacks() {
   );
 }
 
+function RecommendationStacks() {
+  return (
+    <RecommendationStack.Navigator>
+      <RecommendationStack.Screen
+        name="Surveyintro"
+        component={SurveyintroScreen}
+        options={{ header: () => null }}
+      />
+      <RecommendationStack.Screen
+        name="Surveyquestion"
+        component={SurveyquestionScreen}
+        options={{ title: "맞춤 식물 찾기" }}
+      />
+      <RecommendationStack.Screen
+        name="Surveyresult"
+        component={SurveyresultScreen}
+        options={{ title: "맞춤 식물 찾기" }}
+      />
+    </RecommendationStack.Navigator>
+  );
+}
+
 function Tabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeStacks} />
       <Tab.Screen name="Diary" component={DiaryScreen} />
-      <Tab.Screen name="Recommendation" component={RecommendationScreen} />
+      <Tab.Screen name="Recommendation" component={RecommendationStacks} />
     </Tab.Navigator>
   );
 }
@@ -66,24 +92,19 @@ function Mystack() {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ title: "Login" }}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name="Signup"
         component={SignupScreen}
-        options={{ title: "Signup" }}
+        options={{ header: () => null }}
       />
-      {/* <Stack.Screen
-        name="SurveyIntro"
-        component={SurveyintroScreen}
-        options={{ title: "SurveyIntro" }}
-      /> */}
     </Stack.Navigator>
   );
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
     <ThemeProvider theme={theme}>
