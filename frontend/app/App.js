@@ -21,6 +21,7 @@ import { SurveyquestionScreen } from "./screens/recommendation/SurveyQ";
 import { SurveyresultScreen } from "./screens/recommendation/SurveyResult";
 
 import { RoomScreen } from "./screens/main/Room";
+import { PlantDetail } from "./screens/main/PlantDetail";
 
 // theme
 import theme from "./assets/theme/index";
@@ -42,6 +43,11 @@ function HomeStacks() {
       <HomeStack.Screen
         name="Room"
         component={RoomScreen}
+        options={{ header: () => null }}
+      />
+      <HomeStack.Screen
+        name="PlantDetail"
+        component={PlantDetail}
         options={{ header: () => null }}
       />
     </HomeStack.Navigator>
@@ -103,7 +109,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        {isLogin !== true ? <Mystack /> : <Tabs />}
+        {isLogin !== false ? <Mystack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );
