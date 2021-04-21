@@ -109,7 +109,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        {isLogin !== false ? <Mystack /> : <Tabs />}
+        {isLogin !== true ? <Mystack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );

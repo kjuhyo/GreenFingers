@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   plantname: {
     fontWeight: "bold",
-    fontSize: 13,
+    fontSize: 11,
   },
   plantimg: {
     height: 100,
@@ -181,15 +181,15 @@ const styles = StyleSheet.create({
   },
   rightinfo: {
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
     // backgroundColor: "yellow",
   },
   watertext: {
-    fontSize: 12,
+    fontSize: 9,
     fontWeight: "bold",
   },
   waterdate: {
-    fontSize: 11,
+    fontSize: 9,
   },
   pencil: {
     fontSize: 20,
