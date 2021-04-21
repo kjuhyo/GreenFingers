@@ -1,6 +1,7 @@
 // react
 import React from "react";
 import "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 
 // styled-component
 import styled from "styled-components";
@@ -16,8 +17,11 @@ import {
   Icon,
 } from "native-base";
 
-// components
+// library
 import { CalendarView } from "../../components/diary/Calendar";
+
+// components
+import Feed from "../../components/diary/Feed";
 
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
@@ -45,7 +49,6 @@ export function DiaryScreen({ navigation }) {
               height: 80,
               backgroundColor: "#F9F9F9",
               borderWidth: 0,
-              marginBottom: 50,
             }}
           />
         )}
@@ -67,7 +70,10 @@ export function DiaryScreen({ navigation }) {
             </TabHeading>
           }
         >
-          <CalendarView />
+          <ScrollView style={{ backgroundColor: "#F9F9F9" }}>
+            <CalendarView />
+            <Feed />
+          </ScrollView>
         </Tab>
         <Tab
           heading={

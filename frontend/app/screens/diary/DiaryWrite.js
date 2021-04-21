@@ -75,7 +75,7 @@ const TextInputBox = styled.View`
 `;
 
 // 완료 버튼 영역
-const CompleteButton = styled.View`
+const CompleteButton = styled.TouchableOpacity`
   flex: 0.8;
   background-color: ${({ theme }) => theme.colors.lightGreenButton};
   justify-content: center;
