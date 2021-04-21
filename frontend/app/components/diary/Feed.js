@@ -39,13 +39,13 @@ const FeedContents = styled.View`
 `;
 
 // 피드 수정/삭제 모달 전체 컨테이너
-const FeedSettingsModalContainer = styled.View`
+const ModalContainer = styled.View`
   flex: 1;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
 // 피드 수정/삭제 모달 박스
-const FeedSettingsModalBox = styled.View`
+const ModalBox = styled.View`
   flex: 1;
   margin-left: 100px;
   margin-right: 100px;
@@ -57,7 +57,7 @@ const FeedSettingsModalBox = styled.View`
 `;
 
 // 피드 수정/삭제 모달 헤더
-const FeedSettingsModalHeader = styled.View`
+const ModalHeader = styled.View`
   flex: 0.8;
   flex-direction: row;
   justify-content: space-between;
@@ -65,8 +65,8 @@ const FeedSettingsModalHeader = styled.View`
   margin-bottom: 10px;
 `;
 
-// 피드 수정/삭제 모달 수정버튼
-const FeedSettingsModalModify = styled.TouchableOpacity`
+// 모달 회색버튼
+const ModalButton1 = styled.TouchableOpacity`
   flex: 1;
   background-color: #ededed;
   justify-content: center;
@@ -75,8 +75,8 @@ const FeedSettingsModalModify = styled.TouchableOpacity`
   margin: 2px;
 `;
 
-// 피드 수정/삭제 모달 삭제 버튼
-const FeedSettingsModalDelete = styled.TouchableOpacity`
+// 모달 빨간색 버튼
+const ModalButton2 = styled.TouchableOpacity`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.deleteRed};
   justify-content: center;
@@ -116,27 +116,27 @@ export default function Feed() {
           setModalVisible(!modalVisible);
         }}
       >
-        <FeedSettingsModalContainer>
-          <FeedSettingsModalBox>
-            <FeedSettingsModalHeader>
+        <ModalContainer>
+          <ModalBox>
+            <ModalHeader>
               <Text>Settings</Text>
               <Pressable onPress={() => setModalVisible(!modalVisible)}>
                 <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
               </Pressable>
-            </FeedSettingsModalHeader>
-            <FeedSettingsModalModify style={{ marginBottom: 1 }}>
+            </ModalHeader>
+            <ModalButton1 style={{ marginBottom: 1 }}>
               <Text>피드 수정</Text>
-            </FeedSettingsModalModify>
-            <FeedSettingsModalDelete
+            </ModalButton1>
+            <ModalButton2
               onPress={() => {
                 setDeleteModalVisible(!deleteModalVisible);
                 setModalVisible(!modalVisible);
               }}
             >
               <Text style={{ color: "white" }}>피드 삭제</Text>
-            </FeedSettingsModalDelete>
-          </FeedSettingsModalBox>
-        </FeedSettingsModalContainer>
+            </ModalButton2>
+          </ModalBox>
+        </ModalContainer>
       </Modal>
       {/* 삭제 확인 모달창 */}
       <Modal
@@ -147,28 +147,28 @@ export default function Feed() {
           setModalVisible(!deleteModalVisible);
         }}
       >
-        <FeedSettingsModalContainer>
+        <ModalContainer>
           <DeleteCheckModalBox>
-            <FeedSettingsModalHeader>
+            <ModalHeader>
               <Text>정말 삭제하시겠어요?</Text>
               {/* <Pressable onPress={() => setModalVisible(!modalVisible)}>
                 <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
               </Pressable> */}
-            </FeedSettingsModalHeader>
+            </ModalHeader>
             <View style={{ flex: 0.4, flexDirection: "row" }}>
-              <FeedSettingsModalDelete>
+              <ModalButton2>
                 <Text style={{ color: "white" }}>삭제</Text>
-              </FeedSettingsModalDelete>
-              <FeedSettingsModalModify
+              </ModalButton2>
+              <ModalButton1
                 onPress={() => {
                   setDeleteModalVisible(!deleteModalVisible);
                 }}
               >
                 <Text>취소</Text>
-              </FeedSettingsModalModify>
+              </ModalButton1>
             </View>
           </DeleteCheckModalBox>
-        </FeedSettingsModalContainer>
+        </ModalContainer>
       </Modal>
 
       <FeedBoxHeader onPress={() => setModalVisible(!modalVisible)}>

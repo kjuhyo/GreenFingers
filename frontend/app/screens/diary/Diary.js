@@ -1,7 +1,7 @@
 // react
-import React from "react";
+import React, { useState } from "react";
 import "react-native-gesture-handler";
-import { ScrollView } from "react-native";
+import { Modal, Pressable, ScrollView, Text } from "react-native";
 
 // styled-component
 import styled from "styled-components";
@@ -39,6 +39,8 @@ const PlusButton = styled.TouchableOpacity`
 `;
 
 export function DiaryScreen({ navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <Container>
       <Tabs
@@ -113,12 +115,7 @@ export function DiaryScreen({ navigation }) {
         </Tab>
         {/* <PlantTab /> */}
       </Tabs>
-      <PlusButton
-        title=""
-        onPress={() => {
-          navigation.navigate("DiaryWrite");
-        }}
-      >
+      <PlusButton title="" onPress={() => setModalVisible(!modalVisible)}>
         <Icon name="md-add" style={{ color: "white" }} />
       </PlusButton>
     </Container>
