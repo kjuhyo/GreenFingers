@@ -4,6 +4,7 @@ const colors = {
   lightGreen: "#8AD169",
   roomName: "white",
   cardback: "rgba(255,255,255,0.5)",
+  transparentGreen: "rgba(52,176,80,0.2)",
 };
 
 const theme = {
