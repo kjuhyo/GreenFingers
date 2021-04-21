@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, TextInput } from "react-native";
 import {
   Container,
   Header,
@@ -10,10 +10,20 @@ import {
   StyleProvider,
 } from "native-base";
 import "react-native-gesture-handler";
+import { useState } from "react";
+import {
+  AuthButton,
+  AuthButtonText,
+  SocialButton,
+  SocialButtonText,
+} from "../../assets/theme/authstyles";
 
 export function LoginScreen({ navigation }) {
+  const [isIDFocused, setIsIDFocused] = useState(false);
+  const [isPWFocused, setIsPWFocused] = useState(false);
+
   return (
-    <Container>
+    <Container style={styles.container}>
       <View style={styles.logo}>
         <View style={styles.halftop}>
           <Text style={styles.logotext}>Green</Text>
@@ -24,20 +34,40 @@ export function LoginScreen({ navigation }) {
       </View>
       <View style={styles.form}>
         <View style={styles.pairitem}>
-          <Item style={styles.singleitem} regular>
-            <Input placeholder="ID" />
+          <Item
+            style={[
+              styles.singleitem,
+              isIDFocused ? styles.focused : styles.blurred,
+            ]}
+            regular
+          >
+            <Input
+              placeholder="ID"
+              onBlur={() => setIsIDFocused(false)}
+              onFocus={() => setIsIDFocused(true)}
+            />
           </Item>
-          <Item style={styles.singleitem} regular>
-            <Input placeholder="PASSWORD" />
+          <Item
+            style={[
+              styles.singleitem,
+              isPWFocused ? styles.focused : styles.blurred,
+            ]}
+            regular
+          >
+            <Input
+              placeholder="PASSWORD"
+              onBlur={() => setIsPWFocused(false)}
+              onFocus={() => setIsPWFocused(true)}
+            />
           </Item>
         </View>
         <View style={styles.pairitem}>
-          <Button style={styles.singleitem} full>
-            <Text>로그인</Text>
-          </Button>
-          <Button style={styles.singleitem} full>
-            <Text>Sign in with Google</Text>
-          </Button>
+          <AuthButton full>
+            <AuthButtonText>로그인</AuthButtonText>
+          </AuthButton>
+          <SocialButton full>
+            <SocialButtonText>Sign in with Google</SocialButtonText>
+          </SocialButton>
         </View>
         <View style={styles.textlinkwrap}>
           <Text
@@ -56,11 +86,14 @@ export function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#F9F9F9",
+  },
   logo: {
     flex: 1,
     justifyContent: "center",
     alignItems: "flex-start",
-    paddingHorizontal: 40,
+    paddingHorizontal: 60,
   },
   halftop: {
     flex: 3,
@@ -73,20 +106,20 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   logotext: {
-    fontSize: 30,
+    fontSize: 35,
+    fontWeight: "700",
+    color: "#29582C",
   },
   form: {
     flex: 2,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    paddingHorizontal: 40,
+    paddingHorizontal: 60,
   },
   pairitem: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
     alignSelf: "stretch",
-    paddingBottom: 0,
+    marginBottom: 0,
   },
   textlinkwrap: {
     flex: 1,
@@ -107,8 +140,18 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   singleitem: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginVertical: 8,
+    marginVertical: 4,
+    borderRadius: 12,
+    backgroundColor: "white",
+  },
+  focused: {
+    borderColor: "#8AD169",
+    borderTopWidth: 1.1,
+    borderBottomWidth: 1.1,
+    borderLeftWidth: 1.1,
+    borderRightWidth: 1.1,
+  },
+  blurred: {
+    borderColor: "#ECECE2",
   },
 });
