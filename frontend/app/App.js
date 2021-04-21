@@ -18,6 +18,7 @@ import { DiaryScreen } from "./screens/diary/Diary";
 import { RecommendationScreen } from "./screens/recommendation/Recommendation";
 import { SurveyintroScreen } from "./screens/recommendation/SurveyIntro";
 import { RoomScreen } from "./screens/main/Room";
+import { PlantDetail } from "./screens/main/PlantDetail";
 
 // theme
 import theme from "./assets/theme/index";
@@ -25,7 +26,6 @@ import { ThemeProvider } from "styled-components";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 const HomeStack = createStackNavigator();
 
 function HomeStacks() {
@@ -39,6 +39,11 @@ function HomeStacks() {
       <HomeStack.Screen
         name="Room"
         component={RoomScreen}
+        options={{ header: () => null }}
+      />
+      <HomeStack.Screen
+        name="PlantDetail"
+        component={PlantDetail}
         options={{ header: () => null }}
       />
     </HomeStack.Navigator>
@@ -68,11 +73,11 @@ function Mystack() {
         component={SignupScreen}
         options={{ title: "Signup" }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="SurveyIntro"
         component={SurveyintroScreen}
         options={{ title: "SurveyIntro" }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }
@@ -83,7 +88,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <Mystack />
+        {isLogin !== false ? <Mystack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );
