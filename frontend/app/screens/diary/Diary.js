@@ -1,7 +1,9 @@
 // react
 import React from "react";
 import "react-native-gesture-handler";
-// import { Button, ScrollView, StyleSheet } from "react-native";
+
+// styled-component
+import styled from "styled-components";
 
 // native-base
 import {
@@ -16,8 +18,8 @@ import {
 
 // components
 import { CalendarView } from "../../components/diary/Calendar";
-import styled from "styled-components";
 
+// 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
 
 const PlusButton = styled.TouchableOpacity`
