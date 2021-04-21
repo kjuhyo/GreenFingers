@@ -117,39 +117,28 @@ export function PlantDetail({ navigation }) {
               flex: 1,
             }}
           >
-            <TouchableOpacity>
-              <LinearGradient
-                colors={["rgba(218,219,153,0.7)", "rgba(176,218,185,0.7)"]}
+            <TouchableOpacity style={styles.diarybtn}>
+              <Text
                 style={{
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginTop: 12,
-                  borderRadius: 20,
-                  padding: 10,
+                  color: "white",
+                  fontWeight: "bold",
+                  marginTop: 0,
+                  fontSize: 10,
+                  textAlign: "center",
+                  // backgroundColor: "yellow",
                 }}
               >
-                <Icon
-                  type="Ionicons"
-                  name="book-outline"
-                  style={{
-                    color: "white",
-                    fontSize: 28,
-                    padding: 0,
-                  }}
-                ></Icon>
-                <Text
-                  style={{
-                    color: "white",
-                    fontWeight: "bold",
-                    marginTop: 0,
-                    fontSize: 10,
-                    textAlign: "center",
-                    // backgroundColor: "yellow",
-                  }}
-                >
-                  DIARY
-                </Text>
-              </LinearGradient>
+                DIARY
+              </Text>
+              <Icon
+                type="Ionicons"
+                name="book-outline"
+                style={{
+                  color: "white",
+                  fontSize: 20,
+                  padding: 0,
+                }}
+              ></Icon>
             </TouchableOpacity>
             <View style={styles.rightinfo}>
               <View style={styles.water}>
@@ -205,7 +194,7 @@ const styles = StyleSheet.create({
   },
   rightinfo: {
     flexDirection: "row",
-    marginTop: 50,
+    marginTop: 70,
     alignItems: "flex-end",
     justifyContent: "flex-end",
     // backgroundColor: "green",
@@ -219,5 +208,16 @@ const styles = StyleSheet.create({
   },
   plantmodal: {
     marginTop: 40,
+  },
+  diarybtn: {
+    flexDirection: "row",
+    backgroundColor: "#29582C",
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: win.width * 0.25,
+    borderRadius: 10,
+    marginTop: 16,
   },
 });

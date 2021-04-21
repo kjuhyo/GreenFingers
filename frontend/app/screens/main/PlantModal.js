@@ -35,7 +35,7 @@ const PlantModal = (props) => {
             <Icon
               type="Ionicons"
               name="close-outline"
-              style={{ color: "#29582C", fontSize: 40 }}
+              style={{ color: "green", fontSize: 40 }}
             ></Icon>
           </TouchableOpacity>
         </View>
