@@ -6,7 +6,6 @@ import "react-native-gesture-handler";
 // native-base
 import {
   Container,
-  Header,
   Tab,
   Tabs,
   ScrollableTab,
@@ -26,14 +25,7 @@ import styled from "styled-components";
 export function DiaryWriteScreen({ navigation }) {
   return (
     <Container>
-      <Header>
-        <Left>
-          <Button transparent onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" />
-          </Button>
-        </Left>
-        <Body />
-      </Header>
+
     </Container>
   );
 }

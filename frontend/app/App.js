@@ -23,6 +23,7 @@ import { RoomScreen } from "./screens/main/Room";
 // theme
 import theme from "./assets/theme/index";
 import { ThemeProvider } from "styled-components";
+import { Icon } from "native-base";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,12 +53,25 @@ function DiaryStacks() {
       <Stack.Screen
         name="Diary"
         component={DiaryScreen}
-        options={{ header: () => null }}
+        options={{
+          headerStyle: {
+            backgroundColor: "#F9F9F9",
+          },
+          headerTintColor: "#29582C",
+          headerTitleStyle: { fontWeight: "bold" },
+        }}
       />
       <Stack.Screen
         name="DiaryWrite"
         component={DiaryWriteScreen}
-        options={{ header: () => null }}
+        options={{
+          title: "",
+          headerStyle: {
+            backgroundColor: "#F9F9F9",
+          },
+          headerTintColor: "#29582C",
+          headerTitleStyle: { fontWeight: "bold" },
+        }}
       />
     </Stack.Navigator>
   );

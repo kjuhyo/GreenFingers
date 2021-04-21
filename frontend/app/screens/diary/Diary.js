@@ -6,7 +6,6 @@ import "react-native-gesture-handler";
 // native-base
 import {
   Container,
-  Header,
   Tab,
   Tabs,
   ScrollableTab,
@@ -36,7 +35,6 @@ const PlusButton = styled.TouchableOpacity`
 export function DiaryScreen({ navigation }) {
   return (
     <Container>
-      <Header hasTabs />
       <Tabs
         renderTabBar={() => (
           <ScrollableTab
@@ -61,7 +59,7 @@ export function DiaryScreen({ navigation }) {
               <Thumbnail
                 source={{
                   uri:
-                    "https://e7.pngegg.com/pngimages/194/987/png-clipart-leaf-flowerpot-houseplant-grasses-plant-stem-leaf-leaf-plant-stem.png",
+                    "http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg",
                 }}
               />
             </TabHeading>
@@ -79,7 +77,7 @@ export function DiaryScreen({ navigation }) {
               <Thumbnail
                 source={{
                   uri:
-                    "https://e7.pngegg.com/pngimages/194/987/png-clipart-leaf-flowerpot-houseplant-grasses-plant-stem-leaf-leaf-plant-stem.png",
+                    "http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg",
                 }}
               />
             </TabHeading>
@@ -97,7 +95,7 @@ export function DiaryScreen({ navigation }) {
               <Thumbnail
                 source={{
                   uri:
-                    "https://e7.pngegg.com/pngimages/194/987/png-clipart-leaf-flowerpot-houseplant-grasses-plant-stem-leaf-leaf-plant-stem.png",
+                    "http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg",
                 }}
               />
             </TabHeading>
