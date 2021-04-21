@@ -71,7 +71,6 @@ export function SurveyresultScreen({ navigation }) {
               alignSelf: "flex-end",
               marginTop: 7,
               color: "#808285",
-              opacity: "0.5",
             }}
           >
             <Text>각 식물을 눌러 상세 설명을 확인해 보세요.</Text>
