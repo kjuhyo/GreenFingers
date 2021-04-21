@@ -20,7 +20,7 @@ export function SignupScreen({ navigation }) {
   const [isPWCFocused, setIsPWCFocused] = useState(false);
 
   return (
-    <Container style={styles.container}>
+    <Container>
       <View style={styles.logo}>
         <View style={styles.halftop}>
           <Text style={styles.logotext}>Green</Text>
@@ -31,19 +31,8 @@ export function SignupScreen({ navigation }) {
         </View>
       </View>
       <View style={styles.form}>
-        <Item
-          style={[
-            styles.singleitem,
-            isIDFocused ? styles.focused : styles.blurred,
-          ]}
-          regular
-        >
-          <Input
-            onBlur={() => setIsIDFocused(false)}
-            onFocus={() => setIsIDFocused(true)}
-            style={{ paddingLeft: 15 }}
-            placeholder="이름"
-          />
+        <Item style={styles.singleitem} regular>
+          <Input style={styles.inputfocus} placeholder="이름" />
           <Button style={styles.idcheckbtn}>
             <Text style={styles.textpadding}>중복확인</Text>
             <AntDesign
@@ -53,19 +42,8 @@ export function SignupScreen({ navigation }) {
             ></AntDesign>
           </Button>
         </Item>
-        <Item
-          style={[
-            styles.singleitem,
-            isNNFocused ? styles.focused : styles.blurred,
-          ]}
-          regular
-        >
-          <Input
-            onBlur={() => setIsNNFocused(false)}
-            onFocus={() => setIsNNFocused(true)}
-            style={{ paddingLeft: 15 }}
-            placeholder="닉네임"
-          />
+        <Item style={styles.singleitem} regular>
+          <Input placeholder="닉네임" />
           <Button style={styles.idcheckbtn}>
             <Text style={styles.textpadding}>중복확인</Text>
             <AntDesign
@@ -75,35 +53,13 @@ export function SignupScreen({ navigation }) {
             ></AntDesign>
           </Button>
         </Item>
-        <Item
-          style={[
-            styles.singleitem,
-            isPWFocused ? styles.focused : styles.blurred,
-          ]}
-          regular
-        >
-          <Input
-            onBlur={() => setIsPWFocused(false)}
-            onFocus={() => setIsPWFocused(true)}
-            placeholder="비밀번호"
-            style={{ paddingLeft: 15 }}
-          />
+        <Item style={styles.singleitem} regular>
+          <Input placeholder="비밀번호" />
         </Item>
-        <Item
-          style={[
-            styles.singleitem,
-            isPWCFocused ? styles.focused : styles.blurred,
-          ]}
-          regular
-        >
-          <Input
-            onBlur={() => setIsPWCFocused(false)}
-            onFocus={() => setIsPWCFocused(true)}
-            placeholder="비밀번호 확인"
-            style={{ paddingLeft: 15 }}
-          />
+        <Item style={styles.singleitem} regular>
+          <Input placeholder="비밀번호 확인" />
         </Item>
-        <AuthButton full style={{ marginTop: 20 }}>
+        <AuthButton full>
           <AuthButtonText
             title="Home"
             onPress={() => navigation.replace("main")}
@@ -117,9 +73,6 @@ export function SignupScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#F9F9F9",
-  },
   logo: {
     flex: 1,
     alignItems: "flex-start",
@@ -154,27 +107,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: "white",
   },
   idcheckbtn: {
     backgroundColor: "transparent",
     paddingRight: 5,
     justifyContent: "center",
     alignSelf: "center",
-    elevation: 0, //테두리 그림자 없애는거
   },
   textpadding: {
     paddingHorizontal: 3,
   },
-  focused: {
-    borderColor: "#8AD169",
-    borderTopWidth: 1.1,
-    borderBottomWidth: 1.1,
-    borderLeftWidth: 1.1,
-    borderRightWidth: 1.1,
-  },
-  blurred: {
-    borderColor: "#ECECE2",
+  inputfocus: {
+    borderColor: "green",
+    color: "green",
   },
 });
