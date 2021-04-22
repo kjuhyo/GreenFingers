@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,16 +8,21 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Modal,
 } from "react-native";
 import { Container, Icon, Button, Content } from "native-base";
-
+import { PlusModal } from "../../components/main/PlusModal";
 const win = Dimensions.get("window");
 
 export function RoomScreen({ navigation }) {
-  // state = {
-  //   mainName: "Dasol House",
-  // };
-  // updateState = () => this.setState({ mainName: "update" });
+  const [isModalVisible, setisModalVisible] = useState(false);
+  const [ChooseData, setChooseData] = useState();
+  const changeModalVisible = (bool) => {
+    setisModalVisible(bool);
+  };
+  const setData = (data) => {
+    setChooseData(data);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "transparent" }}>
       <View style={{ flex: 0.1 }}>
@@ -115,6 +120,26 @@ export function RoomScreen({ navigation }) {
             </View>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.pluscard}>
+          <TouchableOpacity onPress={() => changeModalVisible(true)}>
+            <Icon
+              type="Ionicons"
+              name="add-circle-outline"
+              style={styles.addicon}
+            ></Icon>
+          </TouchableOpacity>
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={isModalVisible}
+            nRequestClose={() => changeModalVisible(false)}
+          >
+            <PlusModal
+              changeModalVisible={changeModalVisible}
+              setData={setData}
+            ></PlusModal>
+          </Modal>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -155,6 +180,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     // alignItems: "center",
+  },
+  pluscard: {
+    margin: 3,
+    height: win.height * 0.2,
+    backgroundColor: "rgba(255,255,255,0.5)",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   plantname: {
     fontWeight: "bold",
@@ -198,5 +233,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.05)",
     marginLeft: 10,
     padding: 2,
+  },
+  addicon: {
+    fontSize: 50,
+    color: "rgba(255,255,255,0.7)",
   },
 });
