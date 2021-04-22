@@ -23,4 +23,17 @@ export const Plantchip = styled.View`
   padding: 5%;
 `;
 
+export const Littlechip = styled.View`
+  border-radius: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 1px;
+  padding-left: 1px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(52, 176, 80, 0.1);
+  width: 80px;
+  margin-left: 18px;
+`;
+
 export const Imageback = styled.View``;
