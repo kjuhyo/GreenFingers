@@ -22,9 +22,9 @@ import { CalendarView } from "../../components/diary/Calendar";
 
 // components
 import Feed from "../../components/diary/Feed";
-import DiarySelectModal from "../../components/diary/DiarySelectModal";
-import SelectDateModal from "../../components/diary/SelectDateModal";
-import CompleteModal from "../../components/diary/CompleteModal";
+import DiarySelectModal from "../../components/diary/modal/DiarySelectModal";
+import SelectDateModal from "../../components/diary/modal/SelectDateModal";
+import CompleteModal from "../../components/diary/modal/CompleteModal";
 
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
@@ -78,8 +78,8 @@ export function DiaryScreen({ navigation }) {
           }
         >
           <ScrollView style={{ backgroundColor: "#F9F9F9" }}>
-            <CalendarView />
-            <Feed />
+            <CalendarView navigation={navigation} />
+            <Feed navigation={navigation} />
           </ScrollView>
         </Tab>
         <Tab
@@ -98,7 +98,7 @@ export function DiaryScreen({ navigation }) {
             </TabHeading>
           }
         >
-          <CalendarView />
+          <CalendarView navigation={navigation} />
         </Tab>
         <Tab
           heading={
@@ -122,9 +122,9 @@ export function DiaryScreen({ navigation }) {
       </Tabs>
 
       {/* 화면 오른쪽 하단 플러스 버튼 */}
-      <PlusButton title="" onPress={() => setModalVisible(!modalVisible)}>
+      {/* <PlusButton title="" onPress={() => setModalVisible(!modalVisible)}>
         <Icon name="md-add" style={{ color: "white" }} />
-      </PlusButton>
+      </PlusButton> */}
 
       {/* 물주기/피드작성 선택 모달창 */}
       <Modal

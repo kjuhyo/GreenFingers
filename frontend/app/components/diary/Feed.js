@@ -3,8 +3,8 @@ import { Text, Image, Modal } from "react-native";
 
 import { Icon } from "native-base";
 import styled from "styled-components";
-import DeleteModal from "./DeleteModal";
-import FeedSelectModal from "./FeedSelectModal";
+import DeleteModal from "./modal/DeleteModal";
+import FeedSelectModal from "./modal/FeedSelectModal";
 
 const FeedBox = styled.View`
   flex: 1;
@@ -16,7 +16,6 @@ const FeedBox = styled.View`
   /* align-items: center; */
   /* justify-content: center; */
 `;
-
 const FeedBoxHeader = styled.TouchableOpacity`
   flex: 0.9;
   justify-content: center;
@@ -44,7 +43,7 @@ const FeedContents = styled.View`
 // 텍스트 넘칠 경우 처리 해줄 예정
 const FeedContentsText = styled.Text``;
 
-export default function Feed() {
+export default function Feed(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
@@ -62,6 +61,7 @@ export default function Feed() {
         <FeedSelectModal
           setModalVisible={setModalVisible}
           setDeleteModalVisible={setDeleteModalVisible}
+          navigation={props.navigation}
         />
       </Modal>
 

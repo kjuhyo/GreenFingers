@@ -5,16 +5,19 @@ import styled from "styled-components";
 // 피드 수정/삭제 모달 전체 컨테이너
 export const ModalContainer = styled.View`
   flex: 1;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
 // 피드 수정/삭제 모달 박스
 export const ModalBox = styled.View`
-  flex: 1;
-  margin-left: 100px;
+  flex: ${(props) => props.flexHeight || 0.3};
+  width: 250px;
+  /* margin-left: 100px;
   margin-right: 100px;
   margin-top: 300px;
-  margin-bottom: 300px;
+  margin-bottom: 300px; */
   background-color: white;
   padding: 16px;
   border-radius: 10px;
@@ -22,21 +25,55 @@ export const ModalBox = styled.View`
 
 // 피드 수정/삭제 모달 헤더
 export const ModalHeader = styled.View`
-  flex: 0.8;
+  flex: 0.5;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 10px;
   margin-left: 4px;
 `;
 
+// 모달 버튼 박스
+export const ModalButtonBox = styled.View`
+  flex: 3;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.background};
+  /* background-color: yellow; */
+`;
+
 // 모달 회색버튼
 export const ModalButton1 = styled.TouchableOpacity`
   flex: 1;
+  flex-direction: row;
   /* background-color: #ededed; */
-  background-color: ${({ theme }) => theme.colors.background};
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  /* border-radius: 10px; */
+  /* margin: 2px; */
+  padding-left: 16px;
+  padding-right: 16px;
+  /* border-bottom-color: black;
+  border-bottom-width: 0.5px; */
+  /* font-size: 20px; */
+`;
+
+// 모달 버튼
+export const ModalButton = styled.TouchableOpacity`
+  flex: ${(props) => props.flexHeight || 1};
+  flex-direction: row;
+  background-color: ${(props) => props.backgroundColor || "#F9F9F9"};
+  justify-content: ${(props) => props.justifyContent || "center"};
   align-items: center;
   border-radius: 10px;
   margin: 2px;
+  padding-left: 16px;
+  padding-right: 16px;
+  /* border-bottom-color: black;
+  border-bottom-width: 0.5px; */
+  /* font-size: 20px; */
+`;
+
+export const Line = styled.View`
+  height: 0.3px;
+  background-color: black;
 `;
