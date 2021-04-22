@@ -104,12 +104,7 @@ export function SignupScreen({ navigation }) {
           />
         </Item>
         <AuthButton full style={{ marginTop: 20 }}>
-          <AuthButtonText
-            title="Home"
-            onPress={() => navigation.replace("main")}
-          >
-            회원가입
-          </AuthButtonText>
+          <AuthButtonText title="Home">회원가입</AuthButtonText>
         </AuthButton>
       </View>
     </Container>
