@@ -19,7 +19,10 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemeProvider } from "styled-components";
 import theme from "../../assets/theme/index";
-import { SurveyButton, SurveyButtonText } from "../../assets/theme/styles";
+import {
+  SurveyButton,
+  SurveyButtonText,
+} from "../../assets/theme/surveystyles";
 
 export function SurveyintroScreen({ navigation }) {
   return (

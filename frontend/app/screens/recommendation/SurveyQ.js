@@ -23,7 +23,7 @@ import {
   SurveyButton,
   SurveyButtonText,
   SurveyQText,
-} from "../../assets/theme/styles";
+} from "../../assets/theme/surveystyles";
 import RadioButtonRN from "radio-buttons-react-native";
 import ProgressBar from "../../components/progressbar";
 
@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
   optionlong: {
     marginHorizontal: 10,
     flex: 1,
-    paddingBottom: 30,
     borderRadius: 10,
   },
   optiontext: {

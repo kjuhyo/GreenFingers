@@ -23,7 +23,7 @@ import {
   SurveyButton,
   SurveyButtonText,
   SurveyQText,
-} from "../../assets/theme/styles";
+} from "../../assets/theme/surveystyles";
 import RadioButtonRN from "radio-buttons-react-native";
 import ProgressBar from "../../components/progressbar";
 
