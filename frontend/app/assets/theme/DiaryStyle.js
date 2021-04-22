@@ -1,3 +1,5 @@
+// diary의 모달들에 사용되는 스타일
+
 import styled from "styled-components";
 
 // 피드 수정/삭제 모달 전체 컨테이너
