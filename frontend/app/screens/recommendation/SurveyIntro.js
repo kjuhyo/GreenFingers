@@ -24,7 +24,11 @@ import {
   SurveyButtonText,
 } from "../../assets/theme/surveystyles";
 
+<<<<<<< HEAD
 export function SurveyintroScreen({ navigation }) {
+=======
+export default function SurveyintroScreen() {
+>>>>>>> frontend/diary
   return (
     <Container style={styles.container}>
       <View style={styles.titlecontainer}>

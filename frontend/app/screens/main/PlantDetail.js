@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,14 +8,24 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Modal,
 } from "react-native";
 import { Container, Icon, Button, Content } from "native-base";
 import { Cardback, Plantchip } from "../../assets/theme/roomstyle";
 import { LinearGradient } from "expo-linear-gradient";
+import { PlantModal } from "./PlantModal";
 
 const win = Dimensions.get("window");
 
 export function PlantDetail({ navigation }) {
+  const [isModalVisible, setisModalVisible] = useState(false);
+  const [ChooseData, setChooseData] = useState();
+  const changeModalVisible = (bool) => {
+    setisModalVisible(bool);
+  };
+  const setData = (data) => {
+    setChooseData(data);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "transparent" }}>
       <View style={{ flex: 0.7 }}>
@@ -38,9 +48,23 @@ export function PlantDetail({ navigation }) {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity>
+          {/* <Text>{ChooseData}</Text> */}
+          <TouchableOpacity onPress={() => changeModalVisible(true)}>
             <Icon type="Ionicons" name="ellipsis-vertical-outline"></Icon>
           </TouchableOpacity>
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={isModalVisible}
+            nRequestClose={() => changeModalVisible(false)}
+            style={styles.plantmodal}
+          >
+            <PlantModal
+              changeModalVisible={changeModalVisible}
+              setData={setData}
+            />
+          </Modal>
+
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Room");
@@ -67,7 +91,7 @@ export function PlantDetail({ navigation }) {
                   color: "#29582C",
                   fontWeight: "bold",
                   marginRight: 5,
-                  fontSize: 25,
+                  fontSize: 20,
                 }}
               >
                 |
@@ -93,39 +117,28 @@ export function PlantDetail({ navigation }) {
               flex: 1,
             }}
           >
-            <TouchableOpacity>
-              <LinearGradient
-                colors={["rgba(218,219,153,0.7)", "rgba(176,218,185,0.7)"]}
+            <TouchableOpacity style={styles.diarybtn}>
+              <Text
                 style={{
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginTop: 12,
-                  borderRadius: 20,
-                  padding: 10,
+                  color: "white",
+                  fontWeight: "bold",
+                  marginTop: 0,
+                  fontSize: 10,
+                  textAlign: "center",
+                  // backgroundColor: "yellow",
                 }}
               >
-                <Icon
-                  type="Ionicons"
-                  name="book-outline"
-                  style={{
-                    color: "white",
-                    fontSize: 28,
-                    padding: 0,
-                  }}
-                ></Icon>
-                <Text
-                  style={{
-                    color: "white",
-                    fontWeight: "bold",
-                    marginTop: 0,
-                    fontSize: 10,
-                    textAlign: "center",
-                    // backgroundColor: "yellow",
-                  }}
-                >
-                  DIARY
-                </Text>
-              </LinearGradient>
+                DIARY
+              </Text>
+              <Icon
+                type="Ionicons"
+                name="book-outline"
+                style={{
+                  color: "white",
+                  fontSize: 20,
+                  padding: 0,
+                }}
+              ></Icon>
             </TouchableOpacity>
             <View style={styles.rightinfo}>
               <View style={styles.water}>
@@ -165,23 +178,23 @@ const styles = StyleSheet.create({
   },
   plantname: {
     fontWeight: "bold",
-    fontSize: 20,
-    marginBottom: 5,
+    fontSize: 17,
+    marginBottom: 1,
   },
   startdate: {
     color: "rgba(0,0,0,0.5)",
     fontSize: 12,
   },
   plantdesc: {
-    marginTop: 20,
-    fontSize: 16,
+    marginTop: 10,
+    fontSize: 12,
     width: 160,
     fontWeight: "200",
     // backgroundColor: "yellow",
   },
   rightinfo: {
     flexDirection: "row",
-    marginTop: 50,
+    marginTop: 70,
     alignItems: "flex-end",
     justifyContent: "flex-end",
     // backgroundColor: "green",
@@ -192,5 +205,19 @@ const styles = StyleSheet.create({
   },
   waterdate: {
     fontSize: 11,
+  },
+  plantmodal: {
+    marginTop: 40,
+  },
+  diarybtn: {
+    flexDirection: "row",
+    backgroundColor: "#29582C",
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: win.width * 0.25,
+    borderRadius: 10,
+    marginTop: 16,
   },
 });

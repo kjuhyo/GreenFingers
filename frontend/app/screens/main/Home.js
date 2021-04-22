@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,9 +8,10 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Modal,
 } from "react-native";
 import { Container, Icon, Button, Content } from "native-base";
-// import { MakingRoomModal } from "./MakingRoomModal";
+import { PlantModal } from "./PlantModal";
 // import Modal from "react-native-modal";
 
 // import PropTypes from "prop-types";
@@ -70,14 +71,13 @@ export function HomeScreen({ navigation }) {
           </View>
         </View>
         <View style={styles.add}>
-          <Icon
-            type="Ionicons"
-            name="add-circle-outline"
-            style={styles.addicon}
-            onPress={() => {
-              console.log("click add icon");
-            }}
-          ></Icon>
+          <TouchableOpacity>
+            <Icon
+              type="Ionicons"
+              name="add-circle-outline"
+              style={styles.addicon}
+            ></Icon>
+          </TouchableOpacity>
           {/* <MakingRoomModal /> */}
         </View>
 
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   },
   roomname: {
     color: "white",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
     paddingLeft: 30,
     paddingTop: 20,
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
   },
   plantname: {
     fontWeight: "bold",
-    fontSize: 13,
+    fontSize: 11,
   },
   plantimg: {
     height: 100,
@@ -346,14 +346,14 @@ const styles = StyleSheet.create({
   },
   rightinfo: {
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
     // backgroundColor: "yellow",
   },
   watertext: {
-    fontSize: 12,
+    fontSize: 9,
     fontWeight: "bold",
   },
   waterdate: {
-    fontSize: 11,
+    fontSize: 9,
   },
 });
