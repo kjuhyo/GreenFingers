@@ -22,6 +22,7 @@ import { CalendarView } from "../../components/diary/Calendar";
 
 // components
 import Feed from "../../components/diary/Feed";
+import DiarySelectModal from "../../components/diary/DiarySelectModal";
 
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
@@ -79,7 +80,7 @@ export function DiaryScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [DateModalVisible, setDateModalVisible] = useState(false);
   const [CompleteModalVisible, setCompleteModalVisible] = useState(false);
-
+  // const { navigation } = navigation;
   return (
     <Container>
       <Tabs
@@ -169,40 +170,16 @@ export function DiaryScreen({ navigation }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <ModalContainer>
-          <ModalBox>
-            <ModalHeader complete>
-              <Text style={{ fontWeight: "bold" }}>선택</Text>
-              <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
-              </Pressable>
-            </ModalHeader>
-            {/* 물주기 버튼 */}
-            <ModalButton1
-              style={{ marginBottom: 1 }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                setDateModalVisible(!DateModalVisible);
-              }}
-            >
-              <Text>물주기</Text>
-            </ModalButton1>
-            {/* 피드 작성 버튼 */}
-            <ModalButton1
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                navigation.navigate("DiaryWrite");
-              }}
-            >
-              <Text>피드 작성</Text>
-            </ModalButton1>
-          </ModalBox>
-        </ModalContainer>
+        <DiarySelectModal
+          setModalVisible={setModalVisible}
+          setDateModalVisible={setDateModalVisible}
+          navigation={navigation}
+        />
       </Modal>
 
       {/* 물주기 날짜 선택 창 */}
       <Modal
-        animationType="none"
+        animationType="fade"
         transparent={true}
         visible={DateModalVisible}
         onRequestClose={() => {

@@ -144,7 +144,7 @@ export default function Feed() {
 
       {/* 삭제 확인 모달창 */}
       <Modal
-        animationType="fade"
+        animationType="none"
         transparent={true}
         visible={deleteModalVisible}
         onRequestClose={() => {
