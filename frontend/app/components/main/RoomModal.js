@@ -2,11 +2,38 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
+  TextInput,
   View,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { Icon } from "native-base";
+import { Button, Icon } from "native-base";
+import styled from "styled-components";
+
+// 글 작성 textInput 박스
+const TextInputBox = styled.View`
+  background-color: white;
+  height: 50px;
+  margin: 20px 20px 10px 20px;
+  padding: 10px;
+  border: 0.4px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+`;
+const AddButton = styled.TouchableOpacity`
+  height: 40px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
+const ButtonText = styled.Text`
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 10px;
+`;
+
 const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
 const HEIGHT_MODAL = 300;
@@ -26,7 +53,7 @@ const RoomModal = (props) => {
               marginLeft: 10,
             }}
           >
-            SETTINGS
+            방 만들기
           </Text>
           <TouchableOpacity
             onPress={() => closeModal(false, "Cancel")}
@@ -39,9 +66,17 @@ const RoomModal = (props) => {
             ></Icon>
           </TouchableOpacity>
         </View>
-        <View style={styles.btnlist}>
-          <TouchableOpacity style={styles.btn}></TouchableOpacity>
-        </View>
+        <TextInputBox>
+          <TextInput placeholder="방 이름" />
+        </TextInputBox>
+        <AddButton onPress={() => closeModal(false, "Cancel")}>
+          <ButtonText>저장</ButtonText>
+          <Icon
+            type="Ionicons"
+            name="checkmark-circle-outline"
+            style={{ fontSize: 27 }}
+          ></Icon>
+        </AddButton>
       </View>
     </TouchableOpacity>
   );
@@ -60,7 +95,6 @@ const styles = StyleSheet.create({
     width: WIDTH - 120,
     backgroundColor: "white",
     borderRadius: 10,
-    flex: 0.31,
   },
   modaltop: {
     flexDirection: "row",
@@ -70,52 +104,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     // backgroundColor: "rgba(52,176,80,0.1)",
     width: WIDTH - 120,
-  },
-  btnlist: {
-    marginTop: 5,
-    backgroundColor: "#F9F9F9",
-    margin: 15,
-    borderRadius: 10,
-  },
-  btn: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottomColor: "rgba(0,0,0,0.5)",
-    borderBottomWidth: 0.3,
-  },
-  btn3: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  btntext: {
-    marginHorizontal: 30,
-    marginVertical: 15,
-    fontWeight: "bold",
-    color: "rgba(0,0,0,0.8)",
-    fontSize: 13,
-  },
-  btnicon: {
-    marginHorizontal: 30,
-    marginVertical: 15,
-    fontWeight: "bold",
-    color: "rgba(0,0,0,0.8)",
-    fontSize: 17,
-  },
-  btntext3: {
-    marginHorizontal: 30,
-    marginVertical: 15,
-    fontWeight: "bold",
-    color: "#BA2F2F",
-    fontSize: 13,
-  },
-  btnicon3: {
-    marginHorizontal: 30,
-    marginVertical: 15,
-    fontWeight: "bold",
-    color: "#BA2F2F",
-    fontSize: 17,
   },
 });
 export { RoomModal };
