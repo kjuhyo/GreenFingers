@@ -1,7 +1,7 @@
 // react
 import React, { useState } from "react";
 import "react-native-gesture-handler";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { Modal, ScrollView } from "react-native";
 
 // styled-component
 import styled from "styled-components";
@@ -24,6 +24,7 @@ import { CalendarView } from "../../components/diary/Calendar";
 import Feed from "../../components/diary/Feed";
 import DiarySelectModal from "../../components/diary/DiarySelectModal";
 import SelectDateModal from "../../components/diary/SelectDateModal";
+import CompleteModal from "../../components/diary/CompleteModal";
 
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
@@ -39,44 +40,7 @@ const PlusButton = styled.TouchableOpacity`
   bottom: 20px;
   right: 20px;
 `;
-// 피드 수정/삭제 모달 전체 컨테이너
-const ModalContainer = styled.View`
-  flex: 1;
-  background-color: rgba(0, 0, 0, 0.5);
-`;
 
-// 피드 수정/삭제 모달 박스
-const ModalBox = styled.View`
-  flex: 1;
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-top: 300px;
-  margin-bottom: 300px;
-  background-color: white;
-  padding: 16px;
-  border-radius: 10px;
-`;
-
-// 피드 수정/삭제 모달 헤더
-const ModalHeader = styled.View`
-  flex: 0.8;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-left: 4px;
-`;
-
-// 모달 회색버튼
-const ModalButton1 = styled.TouchableOpacity`
-  flex: 1;
-  /* background-color: #ededed; */
-  background-color: ${({ theme }) => theme.colors.lightGreenButton};
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  margin: 2px;
-`;
 export function DiaryScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [DateModalVisible, setDateModalVisible] = useState(false);
@@ -202,28 +166,7 @@ export function DiaryScreen({ navigation }) {
           setCompleteModalVisible(!CompleteModalVisible);
         }}
       >
-        <ModalContainer>
-          <ModalBox>
-            <ModalHeader>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                }}
-              >
-                물주기 완료
-              </Text>
-            </ModalHeader>
-            {/* 날짜 선택 View(추후 Date Picker 구현할 예정) */}
-            <View style={{ flex: 1 }}></View>
-            <ModalButton1
-              onPress={() => {
-                setCompleteModalVisible(!CompleteModalVisible);
-              }}
-            >
-              <Text>확인</Text>
-            </ModalButton1>
-          </ModalBox>
-        </ModalContainer>
+        <CompleteModal setCompleteModalVisible={setCompleteModalVisible} />
       </Modal>
     </Container>
   );
