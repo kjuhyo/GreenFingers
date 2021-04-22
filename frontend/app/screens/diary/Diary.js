@@ -23,6 +23,7 @@ import { CalendarView } from "../../components/diary/Calendar";
 // components
 import Feed from "../../components/diary/Feed";
 import DiarySelectModal from "../../components/diary/DiarySelectModal";
+import SelectDateModal from "../../components/diary/SelectDateModal";
 
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
@@ -80,7 +81,7 @@ export function DiaryScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [DateModalVisible, setDateModalVisible] = useState(false);
   const [CompleteModalVisible, setCompleteModalVisible] = useState(false);
-  // const { navigation } = navigation;
+
   return (
     <Container>
       <Tabs
@@ -186,26 +187,10 @@ export function DiaryScreen({ navigation }) {
           setModalVisible(!DateModalVisible);
         }}
       >
-        <ModalContainer>
-          <ModalBox>
-            <ModalHeader>
-              <Text style={{ fontWeight: "bold" }}>언제 물을 주었나요?</Text>
-              <Pressable onPress={() => setDateModalVisible(!DateModalVisible)}>
-                <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
-              </Pressable>
-            </ModalHeader>
-            {/* 날짜 선택 View(추후 Date Picker 구현할 예정) */}
-            <View style={{ flex: 1 }}></View>
-            <ModalButton1
-              onPress={() => {
-                setDateModalVisible(!DateModalVisible);
-                setCompleteModalVisible(!CompleteModalVisible);
-              }}
-            >
-              <Text>선택 완료</Text>
-            </ModalButton1>
-          </ModalBox>
-        </ModalContainer>
+        <SelectDateModal
+          setDateModalVisible={setDateModalVisible}
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
       </Modal>
 
       {/* 물주기 완료 모달 */}
