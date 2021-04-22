@@ -3,6 +3,7 @@ import { View, Text, Image, Modal, Pressable } from "react-native";
 
 import { Icon } from "native-base";
 import styled from "styled-components";
+import DeleteModal from "./DeleteModal";
 
 const FeedBox = styled.View`
   flex: 1;
@@ -150,28 +151,7 @@ export default function Feed() {
           setModalVisible(!deleteModalVisible);
         }}
       >
-        <ModalContainer>
-          <DeleteCheckModalBox>
-            <ModalHeader>
-              <Text style={{ fontWeight: "bold" }}>정말 삭제하시겠어요?</Text>
-              {/* <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
-              </Pressable> */}
-            </ModalHeader>
-            <View style={{ flex: 0.4, flexDirection: "row" }}>
-              <ModalButton2>
-                <Text style={{ color: "white" }}>삭제</Text>
-              </ModalButton2>
-              <ModalButton1
-                onPress={() => {
-                  setDeleteModalVisible(!deleteModalVisible);
-                }}
-              >
-                <Text>취소</Text>
-              </ModalButton1>
-            </View>
-          </DeleteCheckModalBox>
-        </ModalContainer>
+        <DeleteModal setDeleteModalVisible={setDeleteModalVisible} />
       </Modal>
 
       <FeedBoxHeader onPress={() => setModalVisible(!modalVisible)}>
@@ -187,7 +167,7 @@ export default function Feed() {
         />
       </FeedImage>
       <FeedDate>
-        <Text>2021.04.06   16:15</Text>
+        <Text>2021.04.06 16:15</Text>
       </FeedDate>
       <FeedContents>
         <FeedContentsText>

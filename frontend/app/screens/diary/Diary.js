@@ -27,15 +27,15 @@ import Feed from "../../components/diary/Feed";
 // import PlantTab from "../../components/diary/Tab";
 
 const PlusButton = styled.TouchableOpacity`
-  width: 50;
-  height: 50;
-  border-radius: 30;
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
   background-color: ${({ theme }) => theme.colors.darkGreen};
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 20;
-  right: 20;
+  bottom: 20px;
+  right: 20px;
 `;
 // 피드 수정/삭제 모달 전체 컨테이너
 const ModalContainer = styled.View`
