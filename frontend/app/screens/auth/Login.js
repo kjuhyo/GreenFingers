@@ -151,7 +151,11 @@ export function LoginScreen({ navigation }) {
           </SocialButton>
         </View>
         <View style={styles.textlinkwrap}>
-          <Text style={styles.textleft} title="Signup">
+          <Text
+            style={styles.textleft}
+            title="Signup"
+            onPress={() => navigation.navigate("Signup")}
+          >
             회원가입
           </Text>
           <Text style={styles.textmiddle}>|</Text>

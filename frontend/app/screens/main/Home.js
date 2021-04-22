@@ -11,17 +11,21 @@ import {
   Modal,
 } from "react-native";
 import { Container, Icon, Button, Content } from "native-base";
-import { PlantModal } from "./PlantModal";
+import { RoomModal } from "../../components/main/RoomModal";
 // import Modal from "react-native-modal";
 
 // import PropTypes from "prop-types";
 const win = Dimensions.get("window");
 
 export function HomeScreen({ navigation }) {
-  // state = {
-  //   mainName: "Dasol House",
-  // };
-  // updateState = () => this.setState({ mainName: "update" });
+  const [isModalVisible, setisModalVisible] = useState(false);
+  const [ChooseData, setChooseData] = useState();
+  const changeModalVisible = (bool) => {
+    setisModalVisible(bool);
+  };
+  const setData = (data) => {
+    setChooseData(data);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "transparent" }}>
       <View style={{ flex: 0.1 }}>
@@ -71,14 +75,25 @@ export function HomeScreen({ navigation }) {
           </View>
         </View>
         <View style={styles.add}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => changeModalVisible(true)}>
             <Icon
               type="Ionicons"
               name="add-circle-outline"
               style={styles.addicon}
             ></Icon>
           </TouchableOpacity>
-          {/* <MakingRoomModal /> */}
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={isModalVisible}
+            nRequestClose={() => changeModalVisible(false)}
+            style={styles.plantmodal}
+          >
+            <RoomModal
+              changeModalVisible={changeModalVisible}
+              setData={setData}
+            />
+          </Modal>
         </View>
 
         <View style={styles.rooms}>
