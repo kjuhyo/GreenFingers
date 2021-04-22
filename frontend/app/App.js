@@ -65,7 +65,7 @@ function DiaryStacks() {
         name="DiaryWrite"
         component={DiaryWriteScreen}
         options={{
-          title: "다이어리 등록",
+          title: "피드 작성",
           headerStyle: {
             backgroundColor: "#F9F9F9",
           },

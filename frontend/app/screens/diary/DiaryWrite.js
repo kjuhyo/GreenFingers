@@ -22,18 +22,16 @@ const DateSelect = styled.View`
 
 // 소제목 태그
 const SubHeading = styled.View`
-  background-color: ${({ theme }) => theme.colors.lightGreen2};
-  width: 80px;
+  /* background-color: white; */
+  width: auto;
   border-radius: 10px;
-  padding: 8px;
+  align-items: flex-start;
   margin-left: 10px;
-
-  justify-content: center;
-  align-items: center;
 `;
 
 // 소제목 글씨
 const SubHeadingText = styled.Text`
+  /* flex: 1; */
   font-weight: bold;
 `;
 
@@ -76,11 +74,12 @@ const TextInputBox = styled.View`
 
 // 완료 버튼 영역
 const CompleteButton = styled.TouchableOpacity`
-  flex: 0.8;
+  flex: 0.7;
   background-color: ${({ theme }) => theme.colors.lightGreenButton};
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  margin: 10px;
 `;
 
 // 완료 버튼 글씨

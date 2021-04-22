@@ -19,6 +19,7 @@ const FeedBoxHeader = styled.TouchableOpacity`
   flex: 0.9;
   justify-content: center;
   align-items: flex-end;
+  margin-right: 5px;
 `;
 const FeedImage = styled.View`
   flex: 5;
@@ -63,12 +64,13 @@ const ModalHeader = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  margin-left: 4px;
 `;
 
 // 모달 회색버튼
 const ModalButton1 = styled.TouchableOpacity`
   flex: 1;
-  background-color: #ededed;
+  background-color: ${({ theme }) => theme.colors.background};
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -119,7 +121,7 @@ export default function Feed() {
         <ModalContainer>
           <ModalBox>
             <ModalHeader>
-              <Text>Settings</Text>
+              <Text style={{ fontWeight: "bold" }}>Settings</Text>
               <Pressable onPress={() => setModalVisible(!modalVisible)}>
                 <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
               </Pressable>
@@ -138,6 +140,7 @@ export default function Feed() {
           </ModalBox>
         </ModalContainer>
       </Modal>
+
       {/* 삭제 확인 모달창 */}
       <Modal
         animationType="fade"
@@ -150,7 +153,7 @@ export default function Feed() {
         <ModalContainer>
           <DeleteCheckModalBox>
             <ModalHeader>
-              <Text>정말 삭제하시겠어요?</Text>
+              <Text style={{ fontWeight: "bold" }}>정말 삭제하시겠어요?</Text>
               {/* <Pressable onPress={() => setModalVisible(!modalVisible)}>
                 <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
               </Pressable> */}
@@ -184,7 +187,7 @@ export default function Feed() {
         />
       </FeedImage>
       <FeedDate>
-        <Text>2021.04.06 16:15</Text>
+        <Text>2021.04.06   16:15</Text>
       </FeedDate>
       <FeedContents>
         <FeedContentsText>
