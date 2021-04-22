@@ -74,7 +74,9 @@ function RecommendationStacks() {
         component={SurveyresultScreen}
         options={{ title: "맞춤 식물 찾기" }}
       />
-    </RecommendationStack.Navigator>)}
+    </RecommendationStack.Navigator>
+  );
+}
 function DiaryStacks() {
   return (
     <Stack.Navigator>
@@ -110,7 +112,7 @@ function Tabs() {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeStacks} />
       <Tab.Screen name="Diary" component={DiaryStacks} />
-      <Tab.Screen name="Recommendation" component={RecommendationScreen} />
+      <Tab.Screen name="Recommendation" component={RecommendationStacks} />
     </Tab.Navigator>
   );
 }
