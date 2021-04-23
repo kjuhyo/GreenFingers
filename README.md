@@ -46,7 +46,7 @@ Planfit 또한 비슷한 서비스이다. 반려식물 목록을 한눈에 정�
 - 백엔드 부분은 학습한 기술을 모두 접목해 서비스로서 완성도와 안정성을 갖춘 서비스를 제공하고, 프론트엔드는 처음 접하는 앱과 프레임워크를 성실히 공부해 기획과 명세서가 요구하는 기능을 안정적으로 제공하는 프론트엔드를 완성한다. 백엔드, 프론트엔드 모두 사용하는 기술 스택을 깊이 있게 이해하고 개발자로서의 한층 성장하는 계기가 된다.
 - 팀원 모두가 같은 수준의 기획 이해도를 바탕으로 프로젝트를 진행하고, Git, Jira, Webex, Mattermost 등 협업 툴을 적극적으로 사용하고 소통해 효과적으로 업무를 배분하고 시간을 관리해 개발 역량 향상과 취업을 모두 이룬다.
 
-![1](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\1.png)
+![1](image\1.png)
 
 
 
@@ -63,13 +63,13 @@ https://drive.google.com/file/d/1vfVPLA8iOjxyvffCQR532VBHs4qW8OgG/view?usp=shari
 
 ### 프로젝트 아키텍쳐
 
-![2](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\2.png)
+![2](image\2.png)
 
-![3](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\3.png)
+![3](image\3.png)
 
 ### 유스케이스 다이어그램
 
-![4](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\4.png)
+![4](image\4.png)
 
 ## ✅프로젝트 상세 기능
 
@@ -81,23 +81,23 @@ https://drive.google.com/file/d/1vfVPLA8iOjxyvffCQR532VBHs4qW8OgG/view?usp=shari
 
 #### 1. 로그인 페이지
 
-![5](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\5.png)
+![5](image\5.png)
 
 #### 2. 메인페이지
 
-![6](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\6.png)
+![6](image\6.png)
 
 #### 3. 다이어리 페이지
 
-![7](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\7.png)
+![7](image\7.png)
 
 #### 4. 식물 분류 페이지
 
-![8](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\8.png)
+![8](image\8.png)
 
 #### 5. 식물 추천 페이지
 
-![9](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\9.png)
+![9](image\9.png)
 
 ### Backend
 
@@ -108,17 +108,17 @@ https://drive.google.com/file/d/1vfVPLA8iOjxyvffCQR532VBHs4qW8OgG/view?usp=shari
 
 #### 1. API 설계
 
-![10](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\10.png)
+![10](image\10.png)
 
-![11](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\11.png)
+![11](image\11.png)
 
 #### 2. 인공지능 개발
 
-![12](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\12.png)
+![12](image\12.png)
 
 1) Dataset
 
-![13](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\13.png)
+![13](image\13.png)
 
 - 학명, 이름, 카테고리, 관리 난이도, 향 유무, 습도, 온도, 물 주기 등의 정보를 제공합니다.
 
@@ -126,7 +126,7 @@ https://drive.google.com/file/d/1vfVPLA8iOjxyvffCQR532VBHs4qW8OgG/view?usp=shari
 
 - 전이 학습
 
-  ![14](C:\Users\multicampus\Desktop\greenfingers\s04p31c103\image\14.png)
+  ![14](image\14.png)
 
 - PyTorch 라이브러리 활용
 - 데이터 셋 호출
