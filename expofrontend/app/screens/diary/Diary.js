@@ -1,7 +1,7 @@
 // react
 import React, { useState } from "react";
 import "react-native-gesture-handler";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { Modal, ScrollView } from "react-native";
 
 // styled-component
 import styled from "styled-components";
@@ -22,63 +22,29 @@ import { CalendarView } from "../../components/diary/Calendar";
 
 // components
 import Feed from "../../components/diary/Feed";
+import DiarySelectModal from "../../components/diary/modal/DiarySelectModal";
+import CheckDateModal from "../../components/diary/modal/CheckDateModal";
+import CompleteModal from "../../components/diary/modal/CompleteModal";
 
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
 
 const PlusButton = styled.TouchableOpacity`
-  width: 50;
-  height: 50;
-  border-radius: 30;
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
   background-color: ${({ theme }) => theme.colors.darkGreen};
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 20;
-  right: 20;
-`;
-// 피드 수정/삭제 모달 전체 컨테이너
-const ModalContainer = styled.View`
-  flex: 1;
-  background-color: rgba(0, 0, 0, 0.5);
+  bottom: 20px;
+  right: 20px;
 `;
 
-// 피드 수정/삭제 모달 박스
-const ModalBox = styled.View`
-  flex: 1;
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-top: 300px;
-  margin-bottom: 300px;
-  background-color: white;
-  padding: 16px;
-  border-radius: 10px;
-`;
-
-// 피드 수정/삭제 모달 헤더
-const ModalHeader = styled.View`
-  flex: 0.8;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-left: 4px;
-`;
-
-// 모달 회색버튼
-const ModalButton1 = styled.TouchableOpacity`
-  flex: 1;
-  /* background-color: #ededed; */
-  background-color: ${({ theme }) => theme.colors.lightGreenButton};
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  margin: 2px;
-`;
 export function DiaryScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [DateModalVisible, setDateModalVisible] = useState(false);
-  const [CompleteModalVisible, setCompleteModalVisible] = useState(false);
+  const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
   return (
     <Container>
@@ -112,8 +78,8 @@ export function DiaryScreen({ navigation }) {
           }
         >
           <ScrollView style={{ backgroundColor: "#F9F9F9" }}>
-            <CalendarView />
-            <Feed />
+            <CalendarView navigation={navigation} />
+            <Feed navigation={navigation} />
           </ScrollView>
         </Tab>
         <Tab
@@ -132,7 +98,7 @@ export function DiaryScreen({ navigation }) {
             </TabHeading>
           }
         >
-          <CalendarView />
+          <CalendarView navigation={navigation} />
         </Tab>
         <Tab
           heading={
@@ -155,11 +121,6 @@ export function DiaryScreen({ navigation }) {
         {/* <PlantTab /> */}
       </Tabs>
 
-      {/* 화면 오른쪽 하단 플러스 버튼 */}
-      <PlusButton title="" onPress={() => setModalVisible(!modalVisible)}>
-        <Icon name="md-add" style={{ color: "white" }} />
-      </PlusButton>
-
       {/* 물주기/피드작성 선택 모달창 */}
       <Modal
         animationType="fade"
@@ -169,99 +130,38 @@ export function DiaryScreen({ navigation }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <ModalContainer>
-          <ModalBox>
-            <ModalHeader complete>
-              <Text style={{ fontWeight: "bold" }}>선택</Text>
-              <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
-              </Pressable>
-            </ModalHeader>
-            {/* 물주기 버튼 */}
-            <ModalButton1
-              style={{ marginBottom: 1 }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                setDateModalVisible(!DateModalVisible);
-              }}
-            >
-              <Text>물주기</Text>
-            </ModalButton1>
-            {/* 피드 작성 버튼 */}
-            <ModalButton1
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                navigation.navigate("DiaryWrite");
-              }}
-            >
-              <Text>피드 작성</Text>
-            </ModalButton1>
-          </ModalBox>
-        </ModalContainer>
+        <DiarySelectModal
+          setModalVisible={setModalVisible}
+          setDateCheckModalVisible={setDateCheckModalVisible}
+          navigation={navigation}
+        />
       </Modal>
 
-      {/* 물주기 날짜 선택 창 */}
+      {/* 물주기 날짜 확인 창 */}
       <Modal
-        animationType="none"
+        animationType="fade"
         transparent={true}
-        visible={DateModalVisible}
+        visible={dateCheckModalVisible}
         onRequestClose={() => {
-          setModalVisible(!DateModalVisible);
+          setDateCheckModalVisible(!dateCheckModalVisible);
         }}
       >
-        <ModalContainer>
-          <ModalBox>
-            <ModalHeader>
-              <Text style={{ fontWeight: "bold" }}>언제 물을 주었나요?</Text>
-              <Pressable onPress={() => setDateModalVisible(!DateModalVisible)}>
-                <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
-              </Pressable>
-            </ModalHeader>
-            {/* 날짜 선택 View(추후 Date Picker 구현할 예정) */}
-            <View style={{ flex: 1 }}></View>
-            <ModalButton1
-              onPress={() => {
-                setDateModalVisible(!DateModalVisible);
-                setCompleteModalVisible(!CompleteModalVisible);
-              }}
-            >
-              <Text>선택 완료</Text>
-            </ModalButton1>
-          </ModalBox>
-        </ModalContainer>
+        <CheckDateModal
+          setDateCheckModalVisible={setDateCheckModalVisible}
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
       </Modal>
 
       {/* 물주기 완료 모달 */}
       <Modal
         animationType="none"
         transparent={true}
-        visible={CompleteModalVisible}
+        visible={completeModalVisible}
         onRequestClose={() => {
-          setCompleteModalVisible(!CompleteModalVisible);
+          setCompleteModalVisible(!completeModalVisible);
         }}
       >
-        <ModalContainer>
-          <ModalBox>
-            <ModalHeader>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                }}
-              >
-                물주기 완료
-              </Text>
-            </ModalHeader>
-            {/* 날짜 선택 View(추후 Date Picker 구현할 예정) */}
-            <View style={{ flex: 1 }}></View>
-            <ModalButton1
-              onPress={() => {
-                setCompleteModalVisible(!CompleteModalVisible);
-              }}
-            >
-              <Text>확인</Text>
-            </ModalButton1>
-          </ModalBox>
-        </ModalContainer>
+        <CompleteModal setCompleteModalVisible={setCompleteModalVisible} />
       </Modal>
     </Container>
   );

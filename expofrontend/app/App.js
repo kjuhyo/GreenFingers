@@ -16,6 +16,7 @@ import { LoginScreen } from "./screens/auth/Login";
 import { SignupScreen } from "./screens/auth/Signup";
 import { DiaryScreen } from "./screens/diary/Diary";
 import { DiaryWriteScreen } from "./screens/diary/DiaryWrite";
+import { DiaryUpdateScreen } from "./screens/diary/DiaryUpdate";
 import { RecommendationScreen } from "./screens/recommendation/Recommendation";
 import { SurveyintroScreen } from "./screens/recommendation/SurveyIntro";
 import { SurveyquestionScreen } from "./screens/recommendation/SurveyQ";
@@ -103,6 +104,18 @@ function DiaryStacks() {
           headerTitleStyle: { fontWeight: "bold" },
         }}
       />
+      <Stack.Screen
+        name="DiaryUpdate"
+        component={DiaryUpdateScreen}
+        options={{
+          title: "피드 수정",
+          headerStyle: {
+            backgroundColor: "#F9F9F9",
+          },
+          headerTintColor: "#29582C",
+          headerTitleStyle: { fontWeight: "bold" },
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -130,17 +143,12 @@ function Mystack() {
         component={SignupScreen}
         options={{ header: () => null }}
       />
-      <HomeStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ header: () => null }}
-      />
     </Stack.Navigator>
   );
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
     <ThemeProvider theme={theme}>

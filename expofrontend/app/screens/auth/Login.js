@@ -17,12 +17,92 @@ import {
   SocialButton,
   SocialButtonText,
 } from "../../assets/theme/authstyles";
-import GoogleLogin from "../../components/auth/GoogleLogin";
+
+//google login
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes,
+// } from "react-native-google-signin";
+// import * as Google from "expo-google-app-auth";
+import {
+  GoogleClientId,
+  apiKey,
+  messagingSenderId,
+  appId,
+  authDomain,
+  databaseURL,
+  projectId,
+  storageBucket,
+} from "@env";
+import * as firebase from "firebase";
+
+const firebaseConfig = {
+  apiKey: apiKey,
+  authDomain: authDomain,
+  databaseURL: databaseURL,
+  projectId: projectId,
+  storageBucket: storageBucket,
+  messagingSenderId: messagingSenderId,
+  appId: appId,
+  // measurementId: 'G-2NQFW6NDY4',
+};
 
 export function LoginScreen({ navigation }) {
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
 
+  // google login
+  const [loggedIn, setloggedIn] = useState(false);
+  const [userInfo, setuserInfo] = useState([]);
+
+  // _signIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const { accessToken, idToken } = await GoogleSignin.signIn();
+  //     setloggedIn(true);
+  //     console.log("hi");
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       // user cancelled the login flow
+  //       alert("Cancel");
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       alert("Signin in progress");
+  //       // operation (f.e. sign in) is in progress already
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       alert("PLAY_SERVICES_NOT_AVAILABLE");
+  //       // play services not available or outdated
+  //     } else {
+  //       // some other error happened
+  //     }
+  //   }
+  // };
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     scopes: ["email"], // what API you want to access on behalf of the user, default is email and profile
+  //     webClientId: GoogleClientId, // client ID of type WEB for your server (needed to verify user ID and offline access)
+  //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  //   });
+  // }, []);
+
+  // async function signInWithGoogleAsync() {
+  //   try {
+  //     const result = await Google.logInAsync({
+  //       behavior: "web",
+  //       iosClientId: IOS_CLIENT_ID,
+  //       //androidClientId: AND_CLIENT_ID,
+  //       scopes: ["profile", "email"],
+  //     });
+
+  //     if (result.type === "success") {
+  //       return result.accessToken;
+  //     } else {
+  //       return { cancelled: true };
+  //     }
+  //   } catch (e) {
+  //     return { error: true };
+  //   }
+  // }
   return (
     <Container style={styles.container}>
       <View style={styles.logo}>
@@ -69,13 +149,12 @@ export function LoginScreen({ navigation }) {
           <SocialButton full>
             <SocialButtonText>Sign in with Google</SocialButtonText>
           </SocialButton>
-          <GoogleLogin> gogogogogo</GoogleLogin>
         </View>
         <View style={styles.textlinkwrap}>
           <Text
             style={styles.textleft}
-            onPress={() => navigation.navigate("Signup")}
             title="Signup"
+            onPress={() => navigation.navigate("Signup")}
           >
             회원가입
           </Text>
