@@ -130,12 +130,17 @@ function Mystack() {
         component={SignupScreen}
         options={{ header: () => null }}
       />
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ header: () => null }}
+      />
     </Stack.Navigator>
   );
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
