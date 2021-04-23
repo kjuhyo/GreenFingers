@@ -110,7 +110,7 @@ https://drive.google.com/file/d/1vfVPLA8iOjxyvffCQR532VBHs4qW8OgG/view?usp=shari
 
 ![10](./image/10.png)
 
-![11](./image/11.pngg)
+![11](./image/11.png)
 
 #### 2. 인공지능 개발
 
