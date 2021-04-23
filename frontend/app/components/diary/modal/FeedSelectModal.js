@@ -13,16 +13,6 @@ import {
   Line,
 } from "../../../assets/theme/DiaryStyle";
 
-// 모달 빨간색 버튼
-const ModalButton2 = styled.TouchableOpacity`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.deleteRed};
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  margin: 2px;
-`;
-
 export default function FeedSelectModal(props) {
   const closeModal = (visible) => {
     props.setModalVisible(visible);
@@ -34,12 +24,10 @@ export default function FeedSelectModal(props) {
     <ModalContainer>
       <ModalBox flexHeight="0.22">
         <ModalHeader complete>
-          {/* <Text style={{ fontWeight: "bold" }}>선택</Text> */}
           <Pressable onPress={() => closeModal(false)}>
             <Icon type="AntDesign" name="close" style={{ fontSize: 20 }} />
           </Pressable>
         </ModalHeader>
-        {/* 물주기 버튼 */}
         <ModalButtonBox>
           <ModalButton
             justifyContent="space-between"
@@ -49,7 +37,7 @@ export default function FeedSelectModal(props) {
               props.navigation.navigate("DiaryUpdate");
             }}
           >
-            <Text>피드 수정</Text>
+            <Text>다이어리 수정</Text>
             <Icon
               type="FontAwesome"
               name="pencil-square-o"
@@ -57,7 +45,6 @@ export default function FeedSelectModal(props) {
             />
           </ModalButton>
           <Line />
-          {/* 피드 작성 버튼 */}
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
@@ -65,14 +52,13 @@ export default function FeedSelectModal(props) {
               openDeleteModal(true);
             }}
           >
-            <Text style={{ color: "#F44336" }}>피드 삭제</Text>
+            <Text style={{ color: "#F44336" }}>다이어리 삭제</Text>
             <Icon
               type="FontAwesome"
               name="trash-o"
               style={{ fontSize: 20, color: "#F44336" }}
             />
           </ModalButton>
-          {/* <Line /> */}
         </ModalButtonBox>
       </ModalBox>
     </ModalContainer>

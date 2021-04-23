@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 
 import {
   ModalContainer,
@@ -14,19 +14,12 @@ export default function CompleteModal(props) {
   };
   return (
     <ModalContainer>
-      <ModalBox>
-        <ModalHeader>
-          <Text
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            {props.content}
-          </Text>
+      <ModalBox flexHeight="0.2">
+        <ModalHeader justifyContent="center" flexHeight="0.7">
+          <Text>{props.content}</Text>
         </ModalHeader>
-        {/* 날짜 선택 View(추후 Date Picker 구현할 예정) */}
-        <View style={{ flex: 1 }}></View>
         <ModalButton
+          flexHeight="0.4"
           onPress={() => {
             closeModal(false);
           }}

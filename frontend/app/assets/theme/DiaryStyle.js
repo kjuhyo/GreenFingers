@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-// 피드 수정/삭제 모달 전체 컨테이너
+// 모달 전체 컨테이너
 export const ModalContainer = styled.View`
   flex: 1;
   justify-content: center;
@@ -10,7 +10,7 @@ export const ModalContainer = styled.View`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-// 피드 수정/삭제 모달 박스
+// 모달 박스
 export const ModalBox = styled.View`
   flex: ${(props) => props.flexHeight || 0.3};
   width: 250px;
@@ -23,11 +23,11 @@ export const ModalBox = styled.View`
   border-radius: 10px;
 `;
 
-// 피드 수정/삭제 모달 헤더
+// 모달 헤더
 export const ModalHeader = styled.View`
-  flex: 0.5;
+  flex: ${(props) => props.flexHeight || 0.5};
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: ${(props) => props.justifyContent || "flex-end"};
   align-items: center;
   margin-bottom: 10px;
   margin-left: 4px;
@@ -75,5 +75,5 @@ export const ModalButton = styled.TouchableOpacity`
 
 export const Line = styled.View`
   height: 0.3px;
-  background-color: black;
+  background-color: #C4C4C4;
 `;

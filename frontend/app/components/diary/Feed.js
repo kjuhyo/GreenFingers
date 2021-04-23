@@ -5,6 +5,7 @@ import { Icon } from "native-base";
 import styled from "styled-components";
 import DeleteModal from "./modal/DeleteModal";
 import FeedSelectModal from "./modal/FeedSelectModal";
+import CompleteModal from "./modal/CompleteModal";
 
 const FeedBox = styled.View`
   flex: 1;
@@ -46,10 +47,10 @@ const FeedContentsText = styled.Text``;
 export default function Feed(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-
+  const [CompleteModalVisible, setCompleteModalVisible] = useState(false);
   return (
     <FeedBox>
-      {/* 피드 수정,삭제 모달 */}
+      {/* 다이어리 수정,삭제 선택 모달 */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -67,17 +68,35 @@ export default function Feed(props) {
 
       {/* 삭제 확인 모달창 */}
       <Modal
-        animationType="none"
+        animationType="fade"
         transparent={true}
         visible={deleteModalVisible}
         onRequestClose={() => {
           setModalVisible(!deleteModalVisible);
         }}
       >
-        <DeleteModal setDeleteModalVisible={setDeleteModalVisible} />
+        <DeleteModal
+          setDeleteModalVisible={setDeleteModalVisible}
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
       </Modal>
 
-      {/* 피드 */}
+      {/* 삭제 완료 모달창 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={CompleteModalVisible}
+        onRequestClose={() => {
+          setCompleteModalVisible(!CompleteModalVisible);
+        }}
+      >
+        <CompleteModal
+          content="삭제 되었습니다."
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
+      </Modal>
+
+      {/* 다이어리 */}
       <FeedBoxHeader onPress={() => setModalVisible(!modalVisible)}>
         <Icon type="MaterialCommunityIcons" name="dots-vertical" />
       </FeedBoxHeader>

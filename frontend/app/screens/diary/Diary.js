@@ -23,7 +23,7 @@ import { CalendarView } from "../../components/diary/Calendar";
 // components
 import Feed from "../../components/diary/Feed";
 import DiarySelectModal from "../../components/diary/modal/DiarySelectModal";
-import SelectDateModal from "../../components/diary/modal/SelectDateModal";
+import CheckDateModal from "../../components/diary/modal/CheckDateModal";
 import CompleteModal from "../../components/diary/modal/CompleteModal";
 
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
@@ -43,8 +43,8 @@ const PlusButton = styled.TouchableOpacity`
 
 export function DiaryScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [DateModalVisible, setDateModalVisible] = useState(false);
-  const [CompleteModalVisible, setCompleteModalVisible] = useState(false);
+  const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
   return (
     <Container>
@@ -121,11 +121,6 @@ export function DiaryScreen({ navigation }) {
         {/* <PlantTab /> */}
       </Tabs>
 
-      {/* 화면 오른쪽 하단 플러스 버튼 */}
-      {/* <PlusButton title="" onPress={() => setModalVisible(!modalVisible)}>
-        <Icon name="md-add" style={{ color: "white" }} />
-      </PlusButton> */}
-
       {/* 물주기/피드작성 선택 모달창 */}
       <Modal
         animationType="fade"
@@ -137,22 +132,22 @@ export function DiaryScreen({ navigation }) {
       >
         <DiarySelectModal
           setModalVisible={setModalVisible}
-          setDateModalVisible={setDateModalVisible}
+          setDateCheckModalVisible={setDateCheckModalVisible}
           navigation={navigation}
         />
       </Modal>
 
-      {/* 물주기 날짜 선택 창 */}
+      {/* 물주기 날짜 확인 창 */}
       <Modal
         animationType="fade"
         transparent={true}
-        visible={DateModalVisible}
+        visible={dateCheckModalVisible}
         onRequestClose={() => {
-          setModalVisible(!DateModalVisible);
+          setDateCheckModalVisible(!dateCheckModalVisible);
         }}
       >
-        <SelectDateModal
-          setDateModalVisible={setDateModalVisible}
+        <CheckDateModal
+          setDateCheckModalVisible={setDateCheckModalVisible}
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
@@ -161,9 +156,9 @@ export function DiaryScreen({ navigation }) {
       <Modal
         animationType="none"
         transparent={true}
-        visible={CompleteModalVisible}
+        visible={completeModalVisible}
         onRequestClose={() => {
-          setCompleteModalVisible(!CompleteModalVisible);
+          setCompleteModalVisible(!completeModalVisible);
         }}
       >
         <CompleteModal setCompleteModalVisible={setCompleteModalVisible} />
