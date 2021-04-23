@@ -1,41 +1,31 @@
 {
-  "main": "index.js",
+  "name": "frontend",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/masked-view": "^0.1.10",
-    "@react-navigation/bottom-tabs": "^5.11.10",
-    "@react-navigation/native": "^5.9.4",
-    "@react-navigation/stack": "^5.14.4",
-    "expo": "~41.0.0",
-    "expo-linear-gradient": "^9.1.0",
-    "expo-status-bar": "~1.0.4",
-    "firebase": "8.2.3",
-    "native-base": "^2.15.2",
-    "radio-buttons-react-native": "^1.0.4",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
-    "react-native-dotenv": "^2.5.5",
-    "react-native-calendars": "^1.1255.0",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-google-signin": "^2.1.1",
-    "react-native-modal": "^11.10.0",
-    "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
-    "react-native-reanimated": "^2.1.0",
-    "react-native-safe-area-context": "^3.2.0",
-    "react-native-screens": "^3.1.1",
-    "react-native-vector-icons": "^8.1.0",
-    "react-native-web": "~0.13.12",
-    "styled-components": "^5.2.3"
+    "@react-navigation/native": "5.9.4",
+    "native-base": "2.15.2",
+    "react": "17.0.1",
+    "react-native": "0.64.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "7.13.16",
+    "@babel/runtime": "7.13.17",
+    "@react-native-community/eslint-config": "2.0.0",
+    "babel-jest": "26.6.3",
+    "eslint": "7.24.0",
+    "jest": "26.6.3",
+    "metro-react-native-babel-preset": "0.66.0",
+    "react-test-renderer": "17.0.1"
   },
-  "private": true
+  "jest": {
+    "preset": "react-native"
+  }
 }
