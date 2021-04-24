@@ -9,8 +9,9 @@ import {
   Button,
   StyleProvider,
 } from 'native-base';
-import {AntDesign} from '@expo/vector-icons';
-import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
+// import {AntDesign} from '@expo/vector-icons';
+// import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
+// import {AuthButton, AuthButtonText} from '../../assets/theme/'
 import {useState} from 'react';
 
 export function SignupScreen({navigation}) {

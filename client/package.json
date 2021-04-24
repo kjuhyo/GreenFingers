@@ -16,13 +16,10 @@
     "native-base": "2.15.2",
     "react": "17.0.1",
     "react-native": "0.64.0",
-<<<<<<< HEAD
-    "react-native-firebase": "5.6.0"
-=======
+    "react-native-firebase": "5.6.0",
     "react-native-calendars": "1.1258.0",
     "react-native-gesture-handler": "1.10.3",
     "styled-components": "5.2.3"
->>>>>>> c058651b5cbba1d58439358d96de316d9db30d2b
   },
   "devDependencies": {
     "@babel/core": "7.13.16",
