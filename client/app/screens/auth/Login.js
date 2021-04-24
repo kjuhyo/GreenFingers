@@ -18,35 +18,12 @@ import {
   SocialButtonText,
 } from '../../assets/theme/authstyles';
 
-//google login
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from "react-native-google-signin";
-// import * as Google from "expo-google-app-auth";
+// google login
 import {
-  GoogleClientId,
-  apiKey,
-  messagingSenderId,
-  appId,
-  authDomain,
-  databaseURL,
-  projectId,
-  storageBucket,
-} from '@env';
-import * as firebase from 'firebase';
-
-const firebaseConfig = {
-  apiKey: apiKey,
-  authDomain: authDomain,
-  databaseURL: databaseURL,
-  projectId: projectId,
-  storageBucket: storageBucket,
-  messagingSenderId: messagingSenderId,
-  appId: appId,
-  // measurementId: 'G-2NQFW6NDY4',
-};
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from 'react-native-google-signin';
 
 export function LoginScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);

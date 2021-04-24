@@ -15,7 +15,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import {PlantDetail} from './app/screens/main/PlantDetail';
 
 import {LoginScreen} from './app/screens/auth/Login';
-import {SignupScreen} from './app/screens/auth/Signup';
+// import {SignupScreen} from './app/screens/auth/Signup';
 
 // import {DiaryScreen} from './app/screens/diary/Diary';
 // import {DiaryWriteScreen} from './app/screens/diary/DiaryWrite';
@@ -149,7 +149,7 @@ function Mystack() {
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
