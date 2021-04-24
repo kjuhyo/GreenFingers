@@ -19,7 +19,7 @@ import {SignupScreen} from './app/screens/auth/Signup';
 
 import {DiaryScreen} from './app/screens/diary/Diary';
 import {DiaryWriteScreen} from './app/screens/diary/DiaryWrite';
-import { DiaryUpdateScreen } from "./screens/diary/DiaryUpdate";
+import {DiaryUpdateScreen} from './app/screens/diary/DiaryUpdate';
 
 import {RecommendationScreen} from './app/screens/recommendation/Recommendation';
 import {SurveyintroScreen} from './app/screens/recommendation/SurveyIntro';

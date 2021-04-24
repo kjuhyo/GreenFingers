@@ -9,7 +9,7 @@ import {
   Button,
   StyleProvider,
 } from 'native-base';
-import {AntDesign} from '@expo/vector-icons';
+// import {AntDesign} from '@expo/vector-icons';
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {useState} from 'react';
 
@@ -45,10 +45,10 @@ export function SignupScreen({navigation}) {
           />
           <Button style={styles.idcheckbtn}>
             <Text style={styles.textpadding}>중복확인</Text>
-            <AntDesign
+            {/* <AntDesign
               size={10}
               style={styles.textpadding}
-              name="checkcircle"></AntDesign>
+              name="checkcircle"></AntDesign> */}
           </Button>
         </Item>
         <Item

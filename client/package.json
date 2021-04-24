@@ -10,19 +10,21 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "5.11.10",
     "@react-navigation/native": "5.9.4",
     "@react-navigation/stack": "5.14.4",
     "native-base": "2.15.2",
+    "radio-buttons-react-native": "1.0.4",
     "react": "17.0.1",
     "react-native": "0.64.0",
-<<<<<<< HEAD
-    "react-native-firebase": "5.6.0"
-=======
     "react-native-calendars": "1.1258.0",
+    "react-native-firebase": "5.6.0",
     "react-native-gesture-handler": "1.10.3",
+    "react-native-reanimated": "2.1.0",
+    "react-native-safe-area-context": "3.2.0",
+    "react-native-screens": "3.1.1",
     "styled-components": "5.2.3"
->>>>>>> c058651b5cbba1d58439358d96de316d9db30d2b
   },
   "devDependencies": {
     "@babel/core": "7.13.16",
