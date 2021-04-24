@@ -12,7 +12,7 @@ import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
-import ImagePickerExample from './PhotoUpload';
+
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
 
