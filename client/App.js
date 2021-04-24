@@ -1,6 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
 // import { StatusBar } from "expo-status-bar";
+import {StatusBar} from 'react-native';
+
 import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';
 
@@ -149,10 +151,16 @@ function Mystack() {
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <NavigationContainer>
         {isLogin !== true ? <Mystack /> : <Tabs />}
       </NavigationContainer>
