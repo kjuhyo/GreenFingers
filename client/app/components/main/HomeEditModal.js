@@ -66,7 +66,7 @@ const ImageBox = styled.TouchableOpacity`
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
-const PlusModal = props => {
+const HomeEditModal = props => {
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -98,49 +98,13 @@ const PlusModal = props => {
         </View>
         {/* 내용 */}
         <View style={styles.content}>
-          {/* 방 옮기기 */}
-          <View style={styles.changeroom}>
-            <Littlechip>
-              <Text style={styles.chiptext}>방 옮기기</Text>
-            </Littlechip>
-            <View style={styles.buttons}>
-              <Image
-                source={{
-                  uri:
-                    'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
-                }}
-                style={{flex: 1}}></Image>
-              <RadioButtonRN
-                data={data}
-                activeColor={'#B7CDBC'}
-                boxDeactiveBgColor={'transparent'}
-                boxActiveBgColor={'#EFEFEF'}
-                boxStyle={styles.optionlong}
-                textStyle={styles.optiontext}
-                circleSize={14}
-                icon={
-                  <Icon
-                    type="Ionicons"
-                    name="checkmark-circle-outline"
-                    style={{
-                      fontSize: 20,
-                      color: '#B7CDBC',
-                    }}></Icon>
-                }
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}></RadioButtonRN>
-            </View>
-          </View>
-          {/* 식물이름입력 */}
+          {/* 홈이름입력 */}
           <View style={styles.input}>
             <Littlechip>
-              <Text style={styles.chiptext}>식물 이름</Text>
+              <Text style={styles.chiptext}>홈 이름 변경</Text>
             </Littlechip>
             <TextInputBox style={{marginBottom: 30}}>
-              <TextInput placeholder="식물 이름" />
+              <TextInput placeholder="홈 이름" />
             </TextInputBox>
           </View>
           {/* 사진등록 */}
@@ -246,4 +210,4 @@ const styles = StyleSheet.create({
     flex: 3,
   },
 });
-export {PlusModal};
+export {HomeEditModal};
