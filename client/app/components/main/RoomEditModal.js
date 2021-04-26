@@ -12,8 +12,6 @@ import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
-import DatePicker from 'react-native-date-picker';
-import {useState} from 'react';
 
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
@@ -68,8 +66,7 @@ const ImageBox = styled.TouchableOpacity`
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
-const PlusModal = props => {
-  const [date, setDate] = useState(new Date());
+const RoomEditModal = props => {
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -104,28 +101,16 @@ const PlusModal = props => {
           {/* 식물이름입력 */}
           <View style={styles.input}>
             <Littlechip>
-              <Text style={styles.chiptext}>식물 이름</Text>
+              <Text style={styles.chiptext}>방 이름 변경</Text>
             </Littlechip>
-            <TextInputBox style={{marginBottom: 30}}>
-              <TextInput placeholder="식물 이름" />
+            <TextInputBox style={{marginBottom: 10}}>
+              <TextInput placeholder="방 이름" />
             </TextInputBox>
-          </View>
-          {/* 데려온 날 */}
-          <View style={{marginBottom: 10}}>
-            <Littlechip style={{marginBottom: 10}}>
-              <Text style={styles.chiptext}>데려온 날</Text>
-            </Littlechip>
-            <DatePicker
-              style={{marginBottom: 10}}
-              date={date}
-              mode="date"
-              onDateChange={setDate}
-            />
           </View>
           {/* 사진등록 */}
           <View style={styles.photo}>
             <Littlechip>
-              <Text style={styles.chiptext}>사진 등록</Text>
+              <Text style={styles.chiptext}>배경 등록</Text>
             </Littlechip>
             <ImageArea>
               <ImageBox onPress={openImagePickerAsync}>
@@ -170,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   modal: {
-    height: HEIGHT - 50,
+    height: HEIGHT - 200,
     paddingTop: 10,
     width: WIDTH - 60,
     backgroundColor: '#F9F9F9',
@@ -225,4 +210,4 @@ const styles = StyleSheet.create({
     flex: 3,
   },
 });
-export {PlusModal};
+export {RoomEditModal};

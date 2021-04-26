@@ -12,8 +12,6 @@ import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
-import DatePicker from 'react-native-date-picker';
-import {useState} from 'react';
 
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
@@ -68,8 +66,7 @@ const ImageBox = styled.TouchableOpacity`
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
-const PlusModal = props => {
-  const [date, setDate] = useState(new Date());
+const EditPlantModal = props => {
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -101,6 +98,42 @@ const PlusModal = props => {
         </View>
         {/* 내용 */}
         <View style={styles.content}>
+          {/* 방 옮기기 */}
+          <View style={styles.changeroom}>
+            <Littlechip>
+              <Text style={styles.chiptext}>방 옮기기</Text>
+            </Littlechip>
+            <View style={styles.buttons}>
+              <Image
+                source={{
+                  uri:
+                    'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
+                }}
+                style={{flex: 1}}></Image>
+              <RadioButtonRN
+                data={data}
+                activeColor={'#B7CDBC'}
+                boxDeactiveBgColor={'transparent'}
+                boxActiveBgColor={'#EFEFEF'}
+                boxStyle={styles.optionlong}
+                textStyle={styles.optiontext}
+                circleSize={14}
+                icon={
+                  <Icon
+                    type="Ionicons"
+                    name="checkmark-circle-outline"
+                    style={{
+                      fontSize: 20,
+                      color: '#B7CDBC',
+                    }}></Icon>
+                }
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}></RadioButtonRN>
+            </View>
+          </View>
           {/* 식물이름입력 */}
           <View style={styles.input}>
             <Littlechip>
@@ -109,18 +142,6 @@ const PlusModal = props => {
             <TextInputBox style={{marginBottom: 30}}>
               <TextInput placeholder="식물 이름" />
             </TextInputBox>
-          </View>
-          {/* 데려온 날 */}
-          <View style={{marginBottom: 10}}>
-            <Littlechip style={{marginBottom: 10}}>
-              <Text style={styles.chiptext}>데려온 날</Text>
-            </Littlechip>
-            <DatePicker
-              style={{marginBottom: 10}}
-              date={date}
-              mode="date"
-              onDateChange={setDate}
-            />
           </View>
           {/* 사진등록 */}
           <View style={styles.photo}>
@@ -170,7 +191,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   modal: {
-    height: HEIGHT - 50,
+    height: HEIGHT - 200,
     paddingTop: 10,
     width: WIDTH - 60,
     backgroundColor: '#F9F9F9',
@@ -225,4 +246,4 @@ const styles = StyleSheet.create({
     flex: 3,
   },
 });
-export {PlusModal};
+export {EditPlantModal};
