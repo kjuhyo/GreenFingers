@@ -77,8 +77,6 @@ class GoogleLogin extends React.Component {
   async signInWithGoogle() {
     try {
       const result = await Google.logInAsync({
-        androidClientId:
-          '590303722729-i4eddv3patp2lu67r00mtj808jg0rd74.apps.googleusercontent.com',
         iosClientId: IOS_CLIENT_ID,
         redirectUrl: 'com.parkdasol.frontend:/oauth2redirect/google',
         // behavior: "web",

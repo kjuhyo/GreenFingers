@@ -10,7 +10,7 @@ import {
   StyleProvider,
 } from 'native-base';
 import 'react-native-gesture-handler';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {
   AuthButton,
   AuthButtonText,
@@ -21,9 +21,18 @@ import {
 // google login
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
-} from 'react-native-google-signin';
+  GoogleSigninButton,
+} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import firebase from '@react-native-firebase/app';
+// import {WEB_CLIENT_ID} from '@env';
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app(); // if already initialized, use that one
+}
 
 export function LoginScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -33,53 +42,53 @@ export function LoginScreen({navigation}) {
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
 
-  // _signIn = async () => {
-  //   try {
-  //     await GoogleSignin.hasPlayServices();
-  //     const { accessToken, idToken } = await GoogleSignin.signIn();
-  //     setloggedIn(true);
-  //     console.log("hi");
-  //   } catch (error) {
-  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //       // user cancelled the login flow
-  //       alert("Cancel");
-  //     } else if (error.code === statusCodes.IN_PROGRESS) {
-  //       alert("Signin in progress");
-  //       // operation (f.e. sign in) is in progress already
-  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-  //       alert("PLAY_SERVICES_NOT_AVAILABLE");
-  //       // play services not available or outdated
-  //     } else {
-  //       // some other error happened
-  //     }
-  //   }
-  // };
-  // useEffect(() => {
-  //   GoogleSignin.configure({
-  //     scopes: ["email"], // what API you want to access on behalf of the user, default is email and profile
-  //     webClientId: GoogleClientId, // client ID of type WEB for your server (needed to verify user ID and offline access)
-  //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  //   });
-  // }, []);
+  const _signIn = async () => {
+    try {
+      // console.log(WEB_CLIENT_ID);
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      setloggedIn(true);
+      console.log('bye');
+      const credential = auth.GoogleAuthProvider.credential(
+        userInfo.idToken,
+        userInfo.accessToken,
+      );
+      console.log(credential);
+      await auth().signInWithCredential(credential);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        alert('Cancel');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signin in progress');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('PLAY_SERVICES_NOT_AVAILABLE');
+      } else {
+        alert('some other happend');
+        console.log(error);
+      }
+    }
+  };
 
-  // async function signInWithGoogleAsync() {
-  //   try {
-  //     const result = await Google.logInAsync({
-  //       behavior: "web",
-  //       iosClientId: IOS_CLIENT_ID,
-  //       //androidClientId: AND_CLIENT_ID,
-  //       scopes: ["profile", "email"],
-  //     });
+  const signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      setloggedIn(false);
+      setuserInfo([]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  //     if (result.type === "success") {
-  //       return result.accessToken;
-  //     } else {
-  //       return { cancelled: true };
-  //     }
-  //   } catch (e) {
-  //     return { error: true };
-  //   }
-  // }
+  useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ['email', 'profile'],
+
+      offlineAccess: true,
+    });
+  }, []);
+
   return (
     <Container style={styles.container}>
       <View style={styles.logo}>
@@ -122,10 +131,15 @@ export function LoginScreen({navigation}) {
             <AuthButtonText>로그인</AuthButtonText>
           </AuthButton>
           <SocialButton full>
-            <SocialButtonText>Sign in with Google</SocialButtonText>
+            <SocialButtonText onPress={_signIn}>
+              Sign in with Google
+            </SocialButtonText>
+          </SocialButton>
+          <SocialButton full>
+            <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
           </SocialButton>
         </View>
-        <View style={styles.textlinkwrap}>
+        {/* <View style={styles.textlinkwrap}>
           <Text
             style={styles.textleft}
             title="Signup"
@@ -134,7 +148,7 @@ export function LoginScreen({navigation}) {
           </Text>
           <Text style={styles.textmiddle}>|</Text>
           <Text style={styles.textright}>비회원 입장</Text>
-        </View>
+        </View> */}
       </View>
     </Container>
   );

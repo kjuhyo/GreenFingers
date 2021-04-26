@@ -2,6 +2,16 @@
 #
 .DS_Store
 
+# env
+.env
+.env.example
+.env.local
+.env.staging
+
+# google login
+
+google-services.json
+
 # Xcode
 #
 build/
