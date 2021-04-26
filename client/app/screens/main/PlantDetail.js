@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {Container, Icon, Button, Content} from 'native-base';
 import {Cardback, Plantchip} from '../../assets/theme/roomstyle';
-import {PlantModal} from './PlantModal';
+import {PlantModal} from '../../components/main/PlantModal';
 
 const win = Dimensions.get('window');
 

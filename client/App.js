@@ -162,7 +162,7 @@ export default function App() {
         translucent={true}
       />
       <NavigationContainer>
-        {isLogin !== true ? <Mystack /> : <Tabs />}
+        {isLogin !== true ? <Tabs /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );

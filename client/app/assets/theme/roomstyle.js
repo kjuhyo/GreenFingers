@@ -35,3 +35,34 @@ export const Littlechip = styled.View`
   width: 80px;
   margin-left: 18px;
 `;
+
+// 모달 버튼 박스
+export const ModalButtonBox = styled.View`
+  flex: 3;
+  flex-direction: row;
+  border-radius: 10px;
+  background-color: ${({theme}) => theme.colors.background};
+`;
+
+// 모달 왼쪽 버튼
+export const ModalButton = styled.TouchableOpacity`
+  flex: 1;
+  border-radius: 10px;
+  align-items: center;
+  background-color: #f44336;
+  margin: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
+
+// 모달 오른쪽 버튼
+export const ModalButton1 = styled.TouchableOpacity`
+  flex: 1;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #f9f8f3;
+`;
