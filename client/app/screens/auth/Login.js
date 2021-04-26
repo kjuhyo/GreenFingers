@@ -155,11 +155,11 @@ export function LoginScreen({navigation}) {
               Sign in with Google
             </SocialButtonText>
           </SocialButton>
-          <SocialButton full>
+          {/* <SocialButton full>
             <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
-          </SocialButton>
+          </SocialButton> */}
         </View>
-        {/* <View style={styles.textlinkwrap}>
+        <View style={styles.textlinkwrap}>
           <Text
             style={styles.textleft}
             title="Signup"
@@ -168,7 +168,7 @@ export function LoginScreen({navigation}) {
           </Text>
           <Text style={styles.textmiddle}>|</Text>
           <Text style={styles.textright}>비회원 입장</Text>
-        </View> */}
+        </View>
       </View>
     </Container>
   );

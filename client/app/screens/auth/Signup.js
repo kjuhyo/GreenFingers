@@ -8,10 +8,9 @@ import {
   Item,
   Button,
   StyleProvider,
+  Icon,
 } from 'native-base';
-// import {AntDesign} from '@expo/vector-icons';
-// import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
-// import {AuthButton, AuthButtonText} from '../../assets/theme/'
+import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {useState} from 'react';
 
 export function SignupScreen({navigation}) {
@@ -46,10 +45,11 @@ export function SignupScreen({navigation}) {
           />
           <Button style={styles.idcheckbtn}>
             <Text style={styles.textpadding}>중복확인</Text>
-            <AntDesign
-              size={10}
+            <Icon
+              type="AntDesign"
+              name="checkcircle"
               style={styles.textpadding}
-              name="checkcircle"></AntDesign>
+            />
           </Button>
         </Item>
         <Item
@@ -66,10 +66,11 @@ export function SignupScreen({navigation}) {
           />
           <Button style={styles.idcheckbtn}>
             <Text style={styles.textpadding}>중복확인</Text>
-            <AntDesign
-              size={10}
+            <Icon
+              type="AntDesign"
+              name="checkcircle"
               style={styles.textpadding}
-              name="checkcircle"></AntDesign>
+            />
           </Button>
         </Item>
         <Item
@@ -99,7 +100,16 @@ export function SignupScreen({navigation}) {
           />
         </Item>
         <AuthButton full style={{marginTop: 20}}>
-          <AuthButtonText title="Home">회원가입</AuthButtonText>
+          <AuthButtonText
+            title="Home"
+            onPress={() =>
+              // navigation.navigate('RecommendationStacks', {
+              //   screen: 'Surveyintro',
+              // })
+              navigation.navigate('Surveyintro')
+            }>
+            회원가입
+          </AuthButtonText>
         </AuthButton>
       </View>
     </Container>
@@ -149,13 +159,16 @@ const styles = StyleSheet.create({
   },
   idcheckbtn: {
     backgroundColor: 'transparent',
-    paddingRight: 5,
+    paddingRight: 2,
     justifyContent: 'center',
     alignSelf: 'center',
     elevation: 0, //테두리 그림자 없애는거
   },
   textpadding: {
-    paddingHorizontal: 3,
+    paddingRight: 1,
+    color: 'grey',
+    fontSize: 12,
+    marginHorizontal: 0,
   },
   focused: {
     borderColor: '#8AD169',
