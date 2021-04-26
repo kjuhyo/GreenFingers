@@ -1,5 +1,5 @@
 import {Icon} from 'native-base';
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, Pressable} from 'react-native';
 
 import {
@@ -62,6 +62,7 @@ export default function DiarySelectModal(props) {
             onPress={() => {
               closeModal(false);
               // openCheckModal(true);
+              setDateCheckModalVisible(true);
             }}>
             <Text style={{color: '#6BABE7'}}>물주기</Text>
             <Icon
