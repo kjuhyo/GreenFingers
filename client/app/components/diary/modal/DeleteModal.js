@@ -5,6 +5,7 @@ import {
   ModalContainer,
   ModalHeader,
   ModalButton,
+  ModalButtonBox,
   ModalBox,
 } from '../../../assets/theme/DiaryStyle';
 
@@ -21,7 +22,7 @@ export default function DeleteModal(props) {
         <ModalHeader justifyContent="center" flexHeight="0.7">
           <Text>정말 삭제하시겠어요?</Text>
         </ModalHeader>
-        <View style={{flex: 0.4, flexDirection: 'row'}}>
+        <ModalButtonBox flexDirection="row" flexHeight="0.4">
           <ModalButton
             backgroundColor="#F44336"
             onPress={() => {
@@ -33,7 +34,7 @@ export default function DeleteModal(props) {
           <ModalButton onPress={() => closeModal(false)}>
             <Text>취소</Text>
           </ModalButton>
-        </View>
+        </ModalButtonBox>
       </ModalBox>
     </ModalContainer>
   );

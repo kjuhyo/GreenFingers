@@ -6,6 +6,7 @@ import {
   ModalContainer,
   ModalBox,
   ModalHeader,
+  ModalButtonBox,
   ModalButton,
 } from '../../../assets/theme/DiaryStyle';
 
@@ -26,14 +27,23 @@ export default function CheckDateModal(props) {
             물을 주었나요?
           </Text>
         </ModalHeader>
-        <ModalButton
-          flexHeight="0.4"
-          onPress={() => {
-            closeModal(false);
-            openCompleteModal(true);
-          }}>
-          <Text>선택 완료</Text>
-        </ModalButton>
+        <ModalButtonBox flexDirection="row" flexHeight="0.4">
+          <ModalButton
+            onPress={() => {
+              closeModal(false);
+              // openCompleteModal(true);
+            }}>
+            <Text>취소</Text>
+          </ModalButton>
+          <ModalButton
+            backgroundColor="#EEF9E8"
+            onPress={() => {
+              closeModal(false);
+              openCompleteModal(true);
+            }}>
+            <Text style={{color: '#29582c'}}>네</Text>
+          </ModalButton>
+        </ModalButtonBox>
       </ModalBox>
     </ModalContainer>
   );

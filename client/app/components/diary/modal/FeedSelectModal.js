@@ -29,7 +29,7 @@ export default function FeedSelectModal(props) {
           </Pressable>
         </ModalHeader>
 
-        <ModalButtonBox>
+        <ModalButtonBox borderRadius="10px" backgroundColor="#F9F9F9">
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
