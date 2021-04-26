@@ -19,7 +19,7 @@ import {
   SurveyQText,
 } from '../../assets/theme/surveystyles';
 import RadioButtonRN from 'radio-buttons-react-native';
-import ProgressBar from '../../components/progressbar';
+import ProgressBar from '../../components/recommendation/progressbar';
 
 export function SurveyquestionScreen({navigation}) {
   const data1 = [

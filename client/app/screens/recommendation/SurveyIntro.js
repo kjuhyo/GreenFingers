@@ -14,9 +14,9 @@ import {
   Input,
   Item,
   StyleProvider,
+  Icon,
 } from 'native-base';
-import {FontAwesome} from '@expo/vector-icons';
-import {Ionicons} from '@expo/vector-icons';
+
 import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
 import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
@@ -44,14 +44,11 @@ export function SurveyintroScreen({navigation}) {
         </Text>
         <View style={styles.contentinfo}>
           <View style={styles.infoleft}>
-            <FontAwesome size={25} name="pencil"></FontAwesome>
+            <Icon type="FontAwesome" name="pencil" />
             <Text> 전체 몇문항</Text>
           </View>
           <View style={styles.inforight}>
-            <Ionicons
-              size={25}
-              // style={styles.textpadding}
-              name="alarm-outline"></Ionicons>
+            <Icon type="Ionicons" name="alarm-outline" />
             <Text> 약 몇분 소요</Text>
           </View>
         </View>
