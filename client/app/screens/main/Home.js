@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,34 +9,39 @@ import {
   ScrollView,
   Dimensions,
   Modal,
-} from "react-native";
-import { Container, Icon, Button, Content } from "native-base";
-import { RoomModal } from "../../components/main/RoomModal";
+} from 'react-native';
+import {Container, Icon, Button, Content} from 'native-base';
+import {RoomModal} from '../../components/main/RoomModal';
+import {HomeEditModal} from '../../components/main/HomeEditModal';
 // import Modal from "react-native-modal";
 
 // import PropTypes from "prop-types";
-const win = Dimensions.get("window");
+const win = Dimensions.get('window');
 
-export function HomeScreen({ navigation }) {
+export function HomeScreen({navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
+  const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
-  const changeModalVisible = (bool) => {
+  const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
-  const setData = (data) => {
+  const changeModalVisible2 = bool => {
+    setisModalVisible2(bool);
+  };
+  const setData = data => {
     setChooseData(data);
   };
   return (
-    <View style={{ flex: 1, backgroundColor: "transparent" }}>
-      <View style={{ flex: 0.1 }}>
+    <View style={{flex: 1, backgroundColor: 'transparent'}}>
+      <View style={{flex: 0.1}}>
         <Image
           style={{
             height: win.height,
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
           }}
-          source={require("../../assets/images/mainroom.jpg")}
+          source={require('../../assets/images/mainroom.jpg')}
         />
       </View>
 
@@ -44,13 +49,24 @@ export function HomeScreen({ navigation }) {
         <Icon
           type="Ionicons"
           name="notifications-outline"
-          style={styles.bell}
-        ></Icon>
-        <Icon
-          type="Ionicons"
-          name="options-outline"
-          style={styles.option}
-        ></Icon>
+          style={styles.bell}></Icon>
+        <TouchableOpacity onPress={() => changeModalVisible2(true)}>
+          <Icon
+            type="Ionicons"
+            name="options-outline"
+            style={styles.option}></Icon>
+        </TouchableOpacity>
+        <Modal
+          transparent={true}
+          animationType="fade"
+          visible={isModalVisible2}
+          nRequestClose={() => changeModalVisible2(false)}
+          style={styles.plantmodal}>
+          <HomeEditModal
+            changeModalVisible={changeModalVisible2}
+            setData={setData}
+          />
+        </Modal>
       </View>
       <ScrollView style={styles.scrollview}>
         <View style={styles.mainname}>
@@ -60,9 +76,8 @@ export function HomeScreen({ navigation }) {
             name="pencil-outline"
             style={styles.pencil}
             onPress={() => {
-              console.log("click pencil");
-            }}
-          ></Icon>
+              console.log('click pencil');
+            }}></Icon>
         </View>
         <View style={styles.now}>
           <View style={styles.middlebox}>
@@ -79,16 +94,14 @@ export function HomeScreen({ navigation }) {
             <Icon
               type="Ionicons"
               name="add-circle-outline"
-              style={styles.addicon}
-            ></Icon>
+              style={styles.addicon}></Icon>
           </TouchableOpacity>
           <Modal
             transparent={true}
             animationType="fade"
             visible={isModalVisible}
             nRequestClose={() => changeModalVisible(false)}
-            style={styles.plantmodal}
-          >
+            style={styles.plantmodal}>
             <RoomModal
               changeModalVisible={changeModalVisible}
               setData={setData}
@@ -100,22 +113,20 @@ export function HomeScreen({ navigation }) {
           <Text
             style={styles.roomname}
             onPress={() => {
-              console.log("click room name");
-              navigation.navigate("Room");
-            }}
-          >
+              console.log('click room name');
+              navigation.navigate('Room');
+            }}>
             거실
           </Text>
           <View style={styles.abovecard}>
             <TouchableOpacity
               style={styles.plantcard}
               onPress={() => {
-                console.log("click left");
-                navigation.navigate("Room");
-              }}
-            >
+                console.log('click left');
+                navigation.navigate('Room');
+              }}>
               <Image
-                source={require("../../assets/images/plant.jpg")}
+                source={require('../../assets/images/plant.jpg')}
                 style={styles.plantimg}
               />
               <View style={styles.plantinfo}>
@@ -126,7 +137,7 @@ export function HomeScreen({ navigation }) {
                     <Text style={styles.waterdate}>2021/02/11</Text>
                   </View>
                   <Image
-                    source={require("../../assets/images/plant1.png")}
+                    source={require('../../assets/images/plant1.png')}
                     style={styles.planticon}
                   />
                 </View>
@@ -135,12 +146,11 @@ export function HomeScreen({ navigation }) {
             <TouchableOpacity
               style={styles.plantcard}
               onPress={() => {
-                console.log("click right");
-                navigation.navigate("Room");
-              }}
-            >
+                console.log('click right');
+                navigation.navigate('Room');
+              }}>
               <Image
-                source={require("../../assets/images/plant.jpg")}
+                source={require('../../assets/images/plant.jpg')}
                 style={styles.plantimg}
               />
               <View style={styles.plantinfo}>
@@ -151,7 +161,7 @@ export function HomeScreen({ navigation }) {
                     <Text style={styles.waterdate}>2021/02/11</Text>
                   </View>
                   <Image
-                    source={require("../../assets/images/plant1.png")}
+                    source={require('../../assets/images/plant1.png')}
                     style={styles.planticon}
                   />
                 </View>
@@ -163,22 +173,20 @@ export function HomeScreen({ navigation }) {
           <Text
             style={styles.roomname}
             onPress={() => {
-              console.log("click room name");
-              navigation.navigate("Room");
-            }}
-          >
+              console.log('click room name');
+              navigation.navigate('Room');
+            }}>
             거실
           </Text>
           <View style={styles.abovecard}>
             <TouchableOpacity
               style={styles.plantcard}
               onPress={() => {
-                console.log("click left");
-                navigation.navigate("Room");
-              }}
-            >
+                console.log('click left');
+                navigation.navigate('Room');
+              }}>
               <Image
-                source={require("../../assets/images/plant.jpg")}
+                source={require('../../assets/images/plant.jpg')}
                 style={styles.plantimg}
               />
               <View style={styles.plantinfo}>
@@ -189,7 +197,7 @@ export function HomeScreen({ navigation }) {
                     <Text style={styles.waterdate}>2021/02/11</Text>
                   </View>
                   <Image
-                    source={require("../../assets/images/plant1.png")}
+                    source={require('../../assets/images/plant1.png')}
                     style={styles.planticon}
                   />
                 </View>
@@ -198,12 +206,11 @@ export function HomeScreen({ navigation }) {
             <TouchableOpacity
               style={styles.plantcard}
               onPress={() => {
-                console.log("click right");
-                navigation.navigate("Room");
-              }}
-            >
+                console.log('click right');
+                navigation.navigate('Room');
+              }}>
               <Image
-                source={require("../../assets/images/plant.jpg")}
+                source={require('../../assets/images/plant.jpg')}
                 style={styles.plantimg}
               />
               <View style={styles.plantinfo}>
@@ -214,7 +221,7 @@ export function HomeScreen({ navigation }) {
                     <Text style={styles.waterdate}>2021/02/11</Text>
                   </View>
                   <Image
-                    source={require("../../assets/images/plant1.png")}
+                    source={require('../../assets/images/plant1.png')}
                     style={styles.planticon}
                   />
                 </View>
@@ -229,7 +236,7 @@ export function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(0,0,0,0)",
+    backgroundColor: 'rgba(0,0,0,0)',
     // ImageBackground:''
     flex: 0,
   },
@@ -237,19 +244,19 @@ const styles = StyleSheet.create({
     flex: 1,
 
     // position: "absolute",
-    resizeMode: "cover",
-    justifyContent: "center",
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
   option: {
     paddingLeft: 10,
-    color: "white",
+    color: 'white',
   },
   bell: {
-    color: "white",
+    color: 'white',
   },
   mainicons: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     paddingHorizontal: 30,
     // backgroundColor: "yellow",
     marginTop: 70,
@@ -257,41 +264,41 @@ const styles = StyleSheet.create({
   },
   mainname: {
     // backgroundColor: "yellow",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginLeft: 20,
     marginTop: 35,
     marginBottom: 30,
-    fontFamily: "Cochin",
+    fontFamily: 'Cochin',
   },
   nametext: {
     fontSize: 30,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
   pencil: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "rgba(255,255,255,0.8)",
-    backgroundColor: "rgba(0,0,0,0.05)",
+    fontWeight: 'bold',
+    color: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.05)',
     marginLeft: 10,
     padding: 2,
   },
   now: {
     flex: 0.5,
     // backgroundColor: "yellow",
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 10,
   },
   middlebox: {
-    flexDirection: "row",
-    backgroundColor: "rgba(0,0,0,0.1)",
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0,0,0,0.1)',
     paddingHorizontal: 15,
     paddingVertical: 6,
     borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingLeft: 20,
   },
   rooms: {
@@ -299,22 +306,22 @@ const styles = StyleSheet.create({
   },
   info: {
     paddingHorizontal: 15,
-    color: "white",
-    fontWeight: "300",
+    color: 'white',
+    fontWeight: '300',
   },
   add: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 10,
   },
   addicon: {
-    color: "rgba(255,255,255,0.8)",
-    fontWeight: "bold",
+    color: 'rgba(255,255,255,0.8)',
+    fontWeight: 'bold',
     fontSize: 50,
   },
   roomname: {
-    color: "white",
+    color: 'white',
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     paddingLeft: 30,
     paddingTop: 20,
     paddingBottom: 10,
@@ -322,7 +329,7 @@ const styles = StyleSheet.create({
   },
   abovecard: {
     flex: 4,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 20,
     // padding: 20,
   },
@@ -330,14 +337,14 @@ const styles = StyleSheet.create({
     flex: 5,
     margin: 3,
     height: win.height * 0.2,
-    backgroundColor: "rgba(255,255,255,0.5)",
+    backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
     // alignItems: "center",
   },
   plantname: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 11,
   },
   plantimg: {
@@ -349,10 +356,10 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   plantinfo: {
-    flexDirection: "row",
+    flexDirection: 'row',
     // backgroundColor: "red",
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: 5,
   },
   planticon: {
@@ -360,13 +367,13 @@ const styles = StyleSheet.create({
     width: 30,
   },
   rightinfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     // backgroundColor: "yellow",
   },
   watertext: {
     fontSize: 9,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   waterdate: {
     fontSize: 9,

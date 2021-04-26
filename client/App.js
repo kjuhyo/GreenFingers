@@ -161,7 +161,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <StatusBar
         barStyle="dark-content"
-        hidden={false}
+        hidden={true}
         backgroundColor="transparent"
         translucent={true}
       />
