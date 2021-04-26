@@ -41,20 +41,6 @@ import {
 
 // firebase.initializeApp(firebaseConfig);
 
-var firebaseConfig = {
-  apiKey: 'AIzaSyBMqMN9MhlZArwaAHzEYU1DZ7tpRzL2tyA',
-  authDomain: 'theta-camera-311515.firebaseapp.com',
-  databaseURL: 'https://theta-camera-311515-default-rtdb.firebaseio.com',
-  projectId: 'theta-camera-311515',
-  storageBucket: 'theta-camera-311515.appspot.com',
-  messagingSenderId: '590303722729',
-  appId: '1:590303722729:web:e609456268d22126a30478',
-  measurementId: 'G-80C5FB2GQR',
-};
-
-// firebase.initializeApp(firebaseConfig);
-// firebase.analytics();
-
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 } else {
@@ -91,8 +77,6 @@ class GoogleLogin extends React.Component {
   async signInWithGoogle() {
     try {
       const result = await Google.logInAsync({
-        androidClientId:
-          '590303722729-i4eddv3patp2lu67r00mtj808jg0rd74.apps.googleusercontent.com',
         iosClientId: IOS_CLIENT_ID,
         redirectUrl: 'com.parkdasol.frontend:/oauth2redirect/google',
         // behavior: "web",
