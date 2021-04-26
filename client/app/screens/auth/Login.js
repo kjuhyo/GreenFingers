@@ -26,7 +26,28 @@ import {
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
-// import {WEB_CLIENT_ID} from '@env';
+import {
+  WEB_CLIENT_ID,
+  API_KEY,
+  AUTH_DOMAIN,
+  DATABASE_URL,
+  PROEJCT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID,
+  APP_ID,
+  MEASUREMENT_ID,
+} from '@env';
+
+var firebaseConfig = {
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  databaseURL: DATABASE_URL,
+  projectId: PROEJCT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  appId: APP_ID,
+  measurementId: MEASUREMENT_ID,
+};
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -44,7 +65,6 @@ export function LoginScreen({navigation}) {
 
   const _signIn = async () => {
     try {
-      // console.log(WEB_CLIENT_ID);
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
@@ -84,7 +104,7 @@ export function LoginScreen({navigation}) {
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ['email', 'profile'],
-
+      webClientId: WEB_CLIENT_ID,
       offlineAccess: true,
     });
   }, []);
