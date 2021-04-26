@@ -36,49 +36,49 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const RecommendationStack = createStackNavigator();
 
-// function HomeStacks() {
-//   return (
-//     <HomeStack.Navigator>
-//       <HomeStack.Screen
-//         name="Home"
-//         component={HomeScreen}
-//         options={{header: () => null}}
-//       />
-//       <HomeStack.Screen
-//         name="Room"
-//         component={RoomScreen}
-//         options={{header: () => null}}
-//       />
-//       <HomeStack.Screen
-//         name="PlantDetail"
-//         component={PlantDetail}
-//         options={{header: () => null}}
-//       />
-//     </HomeStack.Navigator>
-//   );
-// }
+function HomeStacks() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{header: () => null}}
+      />
+      <HomeStack.Screen
+        name="Room"
+        component={RoomScreen}
+        options={{header: () => null}}
+      />
+      <HomeStack.Screen
+        name="PlantDetail"
+        component={PlantDetail}
+        options={{header: () => null}}
+      />
+    </HomeStack.Navigator>
+  );
+}
 
-// function RecommendationStacks() {
-//   return (
-//     <RecommendationStack.Navigator>
-//       <RecommendationStack.Screen
-//         name="Surveyintro"
-//         component={SurveyintroScreen}
-//         options={{header: () => null}}
-//       />
-//       <RecommendationStack.Screen
-//         name="Surveyquestion"
-//         component={SurveyquestionScreen}
-//         options={{title: '맞춤 식물 찾기'}}
-//       />
-//       <RecommendationStack.Screen
-//         name="Surveyresult"
-//         component={SurveyresultScreen}
-//         options={{title: '맞춤 식물 찾기'}}
-//       />
-//     </RecommendationStack.Navigator>
-//   );
-// }
+function RecommendationStacks() {
+  return (
+    <RecommendationStack.Navigator>
+      <RecommendationStack.Screen
+        name="Surveyintro"
+        component={SurveyintroScreen}
+        options={{header: () => null}}
+      />
+      <RecommendationStack.Screen
+        name="Surveyquestion"
+        component={SurveyquestionScreen}
+        options={{title: '맞춤 식물 찾기'}}
+      />
+      <RecommendationStack.Screen
+        name="Surveyresult"
+        component={SurveyresultScreen}
+        options={{title: '맞춤 식물 찾기'}}
+      />
+    </RecommendationStack.Navigator>
+  );
+}
 function DiaryStacks() {
   return (
     <Stack.Navigator>
@@ -124,29 +124,29 @@ function DiaryStacks() {
 function Tabs() {
   return (
     <Tab.Navigator>
-      {/* <Tab.Screen name="Home" component={HomeStacks} /> */}
+      <Tab.Screen name="Home" component={HomeStacks} />
       <Tab.Screen name="Diary" component={DiaryStacks} />
-      {/* <Tab.Screen name="Recommendation" component={RecommendationStacks} /> */}
+      <Tab.Screen name="Recommendation" component={RecommendationStacks} />
     </Tab.Navigator>
   );
 }
 
-// function Mystack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen
-//         name="Login"
-//         component={LoginScreen}
-//         options={{header: () => null}}
-//       />
-//       <Stack.Screen
-//         name="Signup"
-//         component={SignupScreen}
-//         options={{header: () => null}}
-//       />
-//     </Stack.Navigator>
-//   );
-// }
+function Mystack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{header: () => null}}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{header: () => null}}
+      />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(true);
@@ -154,8 +154,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        {/* {isLogin !== true ? <Mystack /> : <Tabs />} */}
-        <Tabs />
+        {isLogin !== true ? <Mystack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );

@@ -47,8 +47,8 @@ const renderTabBar = props => {
     justifyContent: 'flex-start',
     // borderWidth: 0,
     backgroundColor: '#F9F9F9',
-    borderBottomWidth: 0,
-    elevation: 0,
+    // borderBottomWidth: 0,
+    // elevation: 0,
     // backgroundColor: 'yellow',
     // height: 10,
   });
@@ -62,7 +62,7 @@ const renderTabBar = props => {
 };
 export function DiaryScreen({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
+  // const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
   return (
