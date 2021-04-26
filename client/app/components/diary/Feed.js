@@ -47,7 +47,7 @@ const FeedContentsText = styled.Text``;
 export default function Feed(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [CompleteModalVisible, setCompleteModalVisible] = useState(false);
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
   return (
     <FeedBox>
       {/* 다이어리 수정,삭제 선택 모달 */}
@@ -71,7 +71,7 @@ export default function Feed(props) {
         transparent={true}
         visible={deleteModalVisible}
         onRequestClose={() => {
-          setModalVisible(!deleteModalVisible);
+          setDeleteModalVisible(!deleteModalVisible);
         }}>
         <DeleteModal
           setDeleteModalVisible={setDeleteModalVisible}
@@ -83,9 +83,9 @@ export default function Feed(props) {
       <Modal
         animationType="fade"
         transparent={true}
-        visible={CompleteModalVisible}
+        visible={completeModalVisible}
         onRequestClose={() => {
-          setCompleteModalVisible(!CompleteModalVisible);
+          setCompleteModalVisible(!completeModalVisible);
         }}>
         <CompleteModal
           content="삭제 되었습니다."

@@ -6,30 +6,34 @@ import {
   ModalContainer,
   ModalBox,
   ModalHeader,
-  ModalButton1,
+  ModalButton,
 } from '../../../assets/theme/DiaryStyle';
 
 export default function CheckDateModal(props) {
-  // const closeDateModal = (visible) => {
-  //   props.setDateCheckModalVisible(visible);
-  // };
-  // const closeCompoleteModal = (visible) => {
-  //   props.setCompleteModalVisible(visible);
-  // };
+  // console.log(props);
+  const closeModal = visible => {
+    props.setDateCheckModalVisible(visible);
+  };
+  const openCompleteModal = visible => {
+    props.setCompleteModalVisible(visible);
+  };
   return (
     <ModalContainer>
-      <ModalBox>
-        <ModalHeader>
-          <Text style={{fontWeight: 'bold'}}>언제 물을 주었나요?</Text>
-          <Pressable>
-            <Icon type="AntDesign" name="close" style={{fontSize: 20}} />
-          </Pressable>
+      <ModalBox flexHeight="0.2">
+        <ModalHeader justifyContent="center" flexHeight="0.7">
+          <Text>
+            {props.selectYear}년 {props.selectMonth}월 {props.selectDay}일에
+            물을 주었나요?
+          </Text>
         </ModalHeader>
-        {/* 날짜 선택 View(추후 Date Picker 구현할 예정) */}
-        <View style={{flex: 1}}></View>
-        <ModalButton1>
+        <ModalButton
+          flexHeight="0.4"
+          onPress={() => {
+            closeModal(false);
+            openCompleteModal(true);
+          }}>
           <Text>선택 완료</Text>
-        </ModalButton1>
+        </ModalButton>
       </ModalBox>
     </ModalContainer>
   );

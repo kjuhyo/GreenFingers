@@ -28,12 +28,12 @@ export default function FeedSelectModal(props) {
             <Icon type="AntDesign" name="close" style={{fontSize: 20}} />
           </Pressable>
         </ModalHeader>
+
         <ModalButtonBox>
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              // ChangeDateModal(true);
               props.navigation.navigate('DiaryUpdate');
             }}>
             <Text>다이어리 수정</Text>

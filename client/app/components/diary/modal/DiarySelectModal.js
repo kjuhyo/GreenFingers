@@ -12,6 +12,7 @@ import {
 } from '../../../assets/theme/DiaryStyle';
 
 export default function DiarySelectModal(props) {
+  // console.log(props);
   const closeModal = visible => {
     props.setModalVisible(visible);
   };
@@ -37,7 +38,6 @@ export default function DiarySelectModal(props) {
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              // ChangeDateModal(true);
             }}>
             <Text>다이어리 보기</Text>
             <Icon type="Octicons" name="book" style={{fontSize: 20}} />
@@ -61,8 +61,8 @@ export default function DiarySelectModal(props) {
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              // openCheckModal(true);
-              setDateCheckModalVisible(true);
+              openCheckModal(true);
+              // console.log(props);
             }}>
             <Text style={{color: '#6BABE7'}}>물주기</Text>
             <Icon

@@ -29,17 +29,17 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 // 나중에 Tab을 분리해서 컴포넌트화 할 예정
 // import PlantTab from "../../components/diary/Tab";
 
-const PlusButton = styled.TouchableOpacity`
-  width: 50px;
-  height: 50px;
-  border-radius: 30px;
-  background-color: ${({theme}) => theme.colors.darkGreen};
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-`;
+// const PlusButton = styled.TouchableOpacity`
+//   width: 50px;
+//   height: 50px;
+//   border-radius: 30px;
+//   background-color: ${({theme}) => theme.colors.darkGreen};
+//   justify-content: center;
+//   align-items: center;
+//   position: absolute;
+//   bottom: 20px;
+//   right: 20px;
+// `;
 
 const renderTabBar = props => {
   props.tabStyle = Object.create(props.tabStyle);
@@ -61,9 +61,9 @@ const renderTabBar = props => {
   return <ScrollableTab />;
 };
 export function DiaryScreen({navigation}) {
-  const [modalVisible, setModalVisible] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
   // const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
-  const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  // const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
   return (
     <Container>
@@ -114,7 +114,11 @@ export function DiaryScreen({navigation}) {
               />
             </TabHeading>
           }>
-          <CalendarView navigation={navigation} />
+          <CalendarView
+            navigation={navigation}
+            // setModalVisible={setModalVisible}
+            // setDateCheckModalVisible={setDateCheckModalVisible}
+          />
         </Tab>
         <Tab
           heading={
@@ -137,7 +141,7 @@ export function DiaryScreen({navigation}) {
       </Tabs>
 
       {/* 물주기/피드작성 선택 모달창 */}
-      <Modal
+      {/* <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
@@ -149,10 +153,10 @@ export function DiaryScreen({navigation}) {
           setDateCheckModalVisible={setDateCheckModalVisible}
           navigation={navigation}
         />
-      </Modal>
+      </Modal> */}
 
       {/* 물주기 날짜 확인 창 */}
-      <Modal
+      {/* <Modal
         animationType="fade"
         transparent={true}
         visible={dateCheckModalVisible}
@@ -163,18 +167,21 @@ export function DiaryScreen({navigation}) {
           setDateCheckModalVisible={setDateCheckModalVisible}
           setCompleteModalVisible={setCompleteModalVisible}
         />
-      </Modal>
+      </Modal> */}
 
       {/* 물주기 완료 모달 */}
-      <Modal
+      {/* <Modal
         animationType="none"
         transparent={true}
         visible={completeModalVisible}
         onRequestClose={() => {
           setCompleteModalVisible(!completeModalVisible);
         }}>
-        <CompleteModal setCompleteModalVisible={setCompleteModalVisible} />
-      </Modal>
+        <CompleteModal
+          content="물주기 완료!"
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
+      </Modal> */}
     </Container>
   );
 }

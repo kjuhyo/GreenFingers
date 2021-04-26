@@ -7,9 +7,17 @@ import {Icon} from 'native-base';
 import {Calendar} from 'react-native-calendars';
 import {Modal, View} from 'react-native';
 import DiarySelectModal from './modal/DiarySelectModal';
+import CheckDateModal from './modal/CheckDateModal';
+import CompleteModal from './modal/CompleteModal';
 
 export function CalendarView(props) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
+
+  const [selectDay, setSelectDay] = useState('');
+  const [selectMonth, setSelectMonth] = useState('');
+  const [selectYear, setSelectYear] = useState('');
 
   return (
     <View>
@@ -39,8 +47,13 @@ export function CalendarView(props) {
         maxDate={'2021-12-31'}
         // Handler which gets executed on day press. Default = undefined
         onDayPress={day => {
-          console.log('selected day', day);
+          // console.log('selected day', day);
           setModalVisible(!modalVisible);
+          // setSelectDate(day.dateString);
+          setSelectDay(day.day);
+          setSelectMonth(day.month);
+          setSelectYear(day.year);
+          // console.log(day);
         }}
         // Handler which gets executed on day long press. Default = undefined
         onDayLongPress={day => {
@@ -111,10 +124,45 @@ export function CalendarView(props) {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
+          setDateCheckModalVisible(false);
         }}>
         <DiarySelectModal
           setModalVisible={setModalVisible}
+          setDateCheckModalVisible={setDateCheckModalVisible}
           navigation={props.navigation}
+        />
+      </Modal>
+
+      {/* 날짜 확인 모달 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={dateCheckModalVisible}
+        onRequestClose={() => {
+          setDateCheckModalVisible(!dateCheckModalVisible);
+        }}>
+        <CheckDateModal
+          setDateCheckModalVisible={setDateCheckModalVisible}
+          setCompleteModalVisible={setCompleteModalVisible}
+          // selectDate={selectDate}
+          selectDay={selectDay}
+          selectMonth={selectMonth}
+          selectYear={selectYear}
+        />
+      </Modal>
+
+      {/* 물주기 완료 모달 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={completeModalVisible}
+        onRequestClose={() => {
+          setCompleteModalVisible(!completeModalVisible);
+        }}>
+        <CompleteModal
+          content="물주기 완료💧"
+          setDateCheckModalVisible={setDateCheckModalVisible}
+          setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
     </View>
