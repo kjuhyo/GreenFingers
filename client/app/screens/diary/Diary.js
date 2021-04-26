@@ -41,6 +41,25 @@ const PlusButton = styled.TouchableOpacity`
   right: 20px;
 `;
 
+const renderTabBar = props => {
+  props.tabStyle = Object.create(props.tabStyle);
+  props.tabsContainerStyle = Object.create({
+    justifyContent: 'flex-start',
+    // borderWidth: 0,
+    backgroundColor: '#F9F9F9',
+    borderBottomWidth: 0,
+    elevation: 0,
+    // backgroundColor: 'yellow',
+    // height: 10,
+  });
+  // props.style = Object.create({
+  //   height: 80,
+  //   backgroundColor: '#F9F9F9',
+  //   borderWidth: 0,
+  // });
+  props.underlineStyle = Object.create({height: 2, backgroundColor: '#8AD169'});
+  return <ScrollableTab />;
+};
 export function DiaryScreen({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
@@ -49,17 +68,17 @@ export function DiaryScreen({navigation}) {
   return (
     <Container>
       <Tabs
-        renderTabBar={() => (
-          <ScrollableTab
-            tabsContainerStyle={{justifyContent: 'flex-start'}}
-            style={{
-              height: 80,
-              backgroundColor: '#F9F9F9',
-              borderWidth: 0,
-            }}
-          />
-        )}
-        tabBarUnderlineStyle={{height: 2, backgroundColor: '#8AD169'}}>
+        renderTabBar={renderTabBar}
+        // <ScrollableTab
+        // />
+        // tabsContainerStyle={{justifyContent: 'flex-start'}}
+        // style={{
+        //   height: 80,
+        //   backgroundColor: '#F9F9F9',
+        //   borderWidth: 0,
+        // }}
+        // tabBarUnderlineStyle={{height: 2, backgroundColor: '#8AD169'}}
+      >
         <Tab
           heading={
             <TabHeading
@@ -67,6 +86,7 @@ export function DiaryScreen({navigation}) {
                 backgroundColor: '#F9F9F9',
               }}>
               <Thumbnail
+                small
                 source={{
                   uri:
                     'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
@@ -86,6 +106,7 @@ export function DiaryScreen({navigation}) {
                 backgroundColor: '#F9F9F9',
               }}>
               <Thumbnail
+                small
                 source={{
                   uri:
                     'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
@@ -102,6 +123,7 @@ export function DiaryScreen({navigation}) {
                 backgroundColor: '#F9F9F9',
               }}>
               <Thumbnail
+                small
                 source={{
                   uri:
                     'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
