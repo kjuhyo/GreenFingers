@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,77 +9,89 @@ import {
   ScrollView,
   Dimensions,
   Modal,
-} from "react-native";
-import { Container, Icon, Button, Content } from "native-base";
-import { PlusModal } from "../../components/main/PlusModal";
-const win = Dimensions.get("window");
+} from 'react-native';
+import {Container, Icon, Button, Content} from 'native-base';
+import {PlusModal} from '../../components/main/PlusModal';
+import {RoomEditModal} from '../../components/main/RoomEditModal';
+const win = Dimensions.get('window');
 
-export function RoomScreen({ navigation }) {
+export function RoomScreen({navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
+  const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
-  const changeModalVisible = (bool) => {
+  const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
-  const setData = (data) => {
+  const changeModalVisible2 = bool => {
+    setisModalVisible2(bool);
+  };
+  const setData = data => {
     setChooseData(data);
   };
   return (
-    <View style={{ flex: 1, backgroundColor: "transparent" }}>
-      <View style={{ flex: 0.1 }}>
+    <View style={{flex: 1, backgroundColor: 'transparent'}}>
+      <View style={{flex: 0.1}}>
         <Image
           style={{
             height: win.height,
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
           }}
-          source={require("../../assets/images/mainroom.jpg")}
+          source={require('../../assets/images/mainroom.jpg')}
         />
       </View>
-      <View style={{ flexDirection: "row", marginTop: 40 }}>
+      <View style={{flexDirection: 'row', marginTop: 40}}>
         <TouchableOpacity
           style={styles.roomname}
           onPress={() => {
-            navigation.navigate("Home");
-          }}
-        >
+            navigation.navigate('Home');
+          }}>
           <Icon
             type="Ionicons"
             name="chevron-back-outline"
-            style={{ color: "white", fontSize: 20, paddingRight: 8 }}
-          ></Icon>
+            style={{color: 'white', fontSize: 20, paddingRight: 8}}></Icon>
           <Text style={styles.roomtext}>거실</Text>
           <Icon
             type="Ionicons"
             name="pencil-outline"
             style={styles.pencil}
             onPress={() => {
-              console.log("click pencil");
-            }}
-          ></Icon>
+              console.log('click pencil');
+            }}></Icon>
         </TouchableOpacity>
         <View style={styles.setting}>
           <Icon
             type="Ionicons"
             name="trash-outline"
-            style={{ color: "white", fontSize: 25, paddingRight: 15 }}
-          ></Icon>
-          <Icon
-            type="Ionicons"
-            name="options-outline"
-            style={{ color: "white", fontSize: 25, paddingRight: 8 }}
-          ></Icon>
+            style={{color: 'white', fontSize: 25, paddingRight: 15}}></Icon>
+          <TouchableOpacity onPress={() => changeModalVisible2(true)}>
+            <Icon
+              type="Ionicons"
+              name="options-outline"
+              style={{color: 'white', fontSize: 25, paddingRight: 15}}></Icon>
+          </TouchableOpacity>
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={isModalVisible2}
+            nRequestClose={() => changeModalVisible2(false)}
+            style={styles.plantmodal}>
+            <RoomEditModal
+              changeModalVisible={changeModalVisible2}
+              setData={setData}
+            />
+          </Modal>
         </View>
       </View>
       <View style={styles.plantlist}>
         <TouchableOpacity
           style={styles.plantcard}
           onPress={() => {
-            navigation.navigate("PlantDetail");
-          }}
-        >
+            navigation.navigate('PlantDetail');
+          }}>
           <Image
-            source={require("../../assets/images/plant.jpg")}
+            source={require('../../assets/images/plant.jpg')}
             style={styles.plantimg}
           />
           <View style={styles.plantinfo}>
@@ -90,7 +102,7 @@ export function RoomScreen({ navigation }) {
                 <Text style={styles.waterdate}>2021/02/11</Text>
               </View>
               <Image
-                source={require("../../assets/images/plant1.png")}
+                source={require('../../assets/images/plant1.png')}
                 style={styles.planticon}
               />
             </View>
@@ -99,11 +111,10 @@ export function RoomScreen({ navigation }) {
         <TouchableOpacity
           style={styles.plantcard}
           onPress={() => {
-            navigation.navigate("PlantDetail");
-          }}
-        >
+            navigation.navigate('PlantDetail');
+          }}>
           <Image
-            source={require("../../assets/images/plant.jpg")}
+            source={require('../../assets/images/plant.jpg')}
             style={styles.plantimg}
           />
           <View style={styles.plantinfo}>
@@ -114,7 +125,7 @@ export function RoomScreen({ navigation }) {
                 <Text style={styles.waterdate}>2021/02/11</Text>
               </View>
               <Image
-                source={require("../../assets/images/plant1.png")}
+                source={require('../../assets/images/plant1.png')}
                 style={styles.planticon}
               />
             </View>
@@ -125,19 +136,16 @@ export function RoomScreen({ navigation }) {
             <Icon
               type="Ionicons"
               name="add-circle-outline"
-              style={styles.addicon}
-            ></Icon>
+              style={styles.addicon}></Icon>
           </TouchableOpacity>
           <Modal
             transparent={true}
             animationType="fade"
             visible={isModalVisible}
-            nRequestClose={() => changeModalVisible(false)}
-          >
+            nRequestClose={() => changeModalVisible(false)}>
             <PlusModal
               changeModalVisible={changeModalVisible}
-              setData={setData}
-            ></PlusModal>
+              setData={setData}></PlusModal>
           </Modal>
         </TouchableOpacity>
       </View>
@@ -146,19 +154,19 @@ export function RoomScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   roomname: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 15,
     marginTop: 25,
     marginBottom: 20,
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
   },
   setting: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 25,
     marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     paddingRight: 20,
     flex: 1,
     // backgroundColor: "yellow",
@@ -168,14 +176,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   roomtext: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 30,
   },
   plantcard: {
     margin: 3,
     height: win.height * 0.2,
-    backgroundColor: "rgba(255,255,255,0.5)",
+    backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -184,15 +192,15 @@ const styles = StyleSheet.create({
   pluscard: {
     margin: 3,
     height: win.height * 0.2,
-    backgroundColor: "rgba(255,255,255,0.5)",
+    backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   plantname: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 11,
   },
   plantimg: {
@@ -204,10 +212,10 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   plantinfo: {
-    flexDirection: "row",
+    flexDirection: 'row',
     // backgroundColor: "red",
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: 5,
   },
   planticon: {
@@ -215,27 +223,27 @@ const styles = StyleSheet.create({
     width: 30,
   },
   rightinfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     // backgroundColor: "yellow",
   },
   watertext: {
     fontSize: 9,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   waterdate: {
     fontSize: 9,
   },
   pencil: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "rgba(255,255,255,0.8)",
-    backgroundColor: "rgba(0,0,0,0.05)",
+    fontWeight: 'bold',
+    color: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.05)',
     marginLeft: 10,
     padding: 2,
   },
   addicon: {
     fontSize: 50,
-    color: "rgba(255,255,255,0.7)",
+    color: 'rgba(255,255,255,0.7)',
   },
 });
