@@ -1,6 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
 // import { StatusBar } from "expo-status-bar";
+import {StatusBar} from 'react-native';
+
 import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';
 
@@ -21,7 +23,6 @@ import {DiaryScreen} from './app/screens/diary/Diary';
 import {DiaryWriteScreen} from './app/screens/diary/DiaryWrite';
 import {DiaryUpdateScreen} from './app/screens/diary/DiaryUpdate';
 
-import {RecommendationScreen} from './app/screens/recommendation/Recommendation';
 import {SurveyintroScreen} from './app/screens/recommendation/SurveyIntro';
 import {SurveyquestionScreen} from './app/screens/recommendation/SurveyQ';
 import {SurveyresultScreen} from './app/screens/recommendation/SurveyResult';
@@ -60,23 +61,23 @@ function HomeStacks() {
 
 function RecommendationStacks() {
   return (
-    <RecommendationStack.Navigator>
+    <Stack.Navigator initialRouteName="Surveyintro">
       <RecommendationStack.Screen
         name="Surveyintro"
         component={SurveyintroScreen}
         options={{header: () => null}}
       />
-      <RecommendationStack.Screen
+      <Stack.Screen
         name="Surveyquestion"
         component={SurveyquestionScreen}
         options={{title: '맞춤 식물 찾기'}}
       />
-      <RecommendationStack.Screen
+      <Stack.Screen
         name="Surveyresult"
         component={SurveyresultScreen}
         options={{title: '맞춤 식물 찾기'}}
       />
-    </RecommendationStack.Navigator>
+    </Stack.Navigator>
   );
 }
 function DiaryStacks() {
@@ -131,7 +132,7 @@ function Tabs() {
   );
 }
 
-function Mystack() {
+function AuthStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -144,17 +145,28 @@ function Mystack() {
         component={SignupScreen}
         options={{header: () => null}}
       />
+      <RecommendationStack.Screen
+        name="Surveyintro"
+        component={SurveyintroScreen}
+        options={{header: () => null}}
+      />
     </Stack.Navigator>
   );
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={true}
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <NavigationContainer>
-        {isLogin !== true ? <Mystack /> : <Tabs />}
+        {isLogin !== true ? <AuthStack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );
