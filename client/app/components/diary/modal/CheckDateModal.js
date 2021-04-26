@@ -1,6 +1,5 @@
-import {Icon} from 'native-base';
 import React from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {Text} from 'react-native';
 
 import {
   ModalContainer,
@@ -11,7 +10,6 @@ import {
 } from '../../../assets/theme/DiaryStyle';
 
 export default function CheckDateModal(props) {
-  // console.log(props);
   const closeModal = visible => {
     props.setDateCheckModalVisible(visible);
   };
@@ -31,7 +29,6 @@ export default function CheckDateModal(props) {
           <ModalButton
             onPress={() => {
               closeModal(false);
-              // openCompleteModal(true);
             }}>
             <Text>취소</Text>
           </ModalButton>

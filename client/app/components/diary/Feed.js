@@ -14,8 +14,6 @@ const FeedBox = styled.View`
   border-radius: 10px;
   margin: 10px;
   background-color: white;
-  /* align-items: center; */
-  /* justify-content: center; */
 `;
 const FeedBoxHeader = styled.TouchableOpacity`
   flex: 0.9;
@@ -25,20 +23,17 @@ const FeedBoxHeader = styled.TouchableOpacity`
 `;
 const FeedImage = styled.View`
   flex: 5;
-  /* background-color: yellow; */
 `;
 const FeedDate = styled.View`
   flex: 0.8;
   padding-top: 16px;
   padding-left: 16px;
-  /* background-color: green; */
 `;
 const FeedContents = styled.View`
   flex: 1.5;
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  /* background-color: grey; */
 `;
 
 // 텍스트 넘칠 경우 처리 해줄 예정
@@ -50,6 +45,7 @@ export default function Feed(props) {
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   return (
     <FeedBox>
+      
       {/* 다이어리 수정,삭제 선택 모달 */}
       <Modal
         animationType="fade"

@@ -1,5 +1,5 @@
 import {Icon} from 'native-base';
-import React, {useState} from 'react';
+import React from 'react';
 import {Text, Pressable} from 'react-native';
 
 import {
@@ -12,16 +12,12 @@ import {
 } from '../../../assets/theme/DiaryStyle';
 
 export default function DiarySelectModal(props) {
-  // console.log(props);
   const closeModal = visible => {
     props.setModalVisible(visible);
   };
   const openCheckModal = visible => {
     props.setDateCheckModalVisible(visible);
   };
-  // const openCheckModal = (visible) => {
-  //   props.setDateCheckModalVisible(visible);
-  // };
 
   return (
     <ModalContainer>
@@ -62,7 +58,6 @@ export default function DiarySelectModal(props) {
             onPress={() => {
               closeModal(false);
               openCheckModal(true);
-              // console.log(props);
             }}>
             <Text style={{color: '#6BABE7'}}>물주기</Text>
             <Icon

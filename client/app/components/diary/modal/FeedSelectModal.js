@@ -2,8 +2,6 @@ import {Icon} from 'native-base';
 import React from 'react';
 import {Pressable, Text} from 'react-native';
 
-import styled from 'styled-components';
-
 import {
   ModalContainer,
   ModalBox,

@@ -14,10 +14,6 @@ export const ModalContainer = styled.View`
 export const ModalBox = styled.View`
   flex: ${props => props.flexHeight || 0.3};
   width: 250px;
-  /* margin-left: 100px;
-  margin-right: 100px;
-  margin-top: 300px;
-  margin-bottom: 300px; */
   background-color: white;
   padding: 16px;
   border-radius: 10px;
@@ -39,7 +35,6 @@ export const ModalButtonBox = styled.View`
   border-radius: ${props => props.borderRadius || 0};
   background-color: ${props => props.backgroundColor || 'white'};
   flex-direction: ${props => props.flexDirection || 'column'};
-  /* background-color: yellow; */
 `;
 
 // 모달 버튼
@@ -53,9 +48,6 @@ export const ModalButton = styled.TouchableOpacity`
   margin: 2px;
   padding-left: 16px;
   padding-right: 16px;
-  /* border-bottom-color: black;
-  border-bottom-width: 0.5px; */
-  /* font-size: 20px; */
 `;
 
 export const Line = styled.View`

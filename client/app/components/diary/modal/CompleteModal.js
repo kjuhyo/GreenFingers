@@ -20,6 +20,7 @@ export default function CompleteModal(props) {
         </ModalHeader>
         <ModalButton
           flexHeight="0.4"
+          backgroundColor="#EEF9E8"
           onPress={() => {
             closeModal(false);
           }}>

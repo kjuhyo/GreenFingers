@@ -57,13 +57,13 @@ export function CalendarView(props) {
         }}
         // Handler which gets executed on day long press. Default = undefined
         onDayLongPress={day => {
-          console.log('selected day', day);
+          // console.log('selected day', day);
         }}
         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
         monthFormat={'yyyy . MM'}
         // Handler which gets executed when visible month changes in calendar. Default = undefined
         onMonthChange={month => {
-          console.log('month changed', month);
+          // console.log('month changed', month);
         }}
         // Hide month navigation arrows. Default = false
         hideArrows={false}
@@ -144,7 +144,7 @@ export function CalendarView(props) {
         <CheckDateModal
           setDateCheckModalVisible={setDateCheckModalVisible}
           setCompleteModalVisible={setCompleteModalVisible}
-          // selectDate={selectDate}
+          // 선택한 일, 월, 년 데이터 넘기기
           selectDay={selectDay}
           selectMonth={selectMonth}
           selectYear={selectYear}
