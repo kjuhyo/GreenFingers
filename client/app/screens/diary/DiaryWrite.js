@@ -1,6 +1,13 @@
 // react
 import React from 'react';
-import {ScrollView, Text, TextInput, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+  _ScrollView,
+} from 'react-native';
 import 'react-native-gesture-handler';
 
 // style
@@ -12,12 +19,6 @@ const DiaryWriteConatiner = styled.View`
   flex: 1;
   background-color: ${({theme}) => theme.colors.background};
   padding: 20px;
-`;
-
-// 날짜 선택 영역
-const DateSelect = styled.View`
-  flex: 1.5;
-  /* background-color: red; */
 `;
 
 // 소제목 태그
@@ -67,14 +68,15 @@ const TextBox = styled.View`
 // 글 작성 textInput 박스
 const TextInputBox = styled.View`
   background-color: white;
-  height: 150px;
+  /* height: 150px; */
+  flex: 0.8;
   margin: 10px;
   padding-left: 10px;
 `;
 
 // 완료 버튼 영역
 const CompleteButton = styled.TouchableOpacity`
-  flex: 0.7;
+  flex: 0.5;
   background-color: ${({theme}) => theme.colors.lightGreenButton};
   justify-content: center;
   align-items: center;
@@ -91,13 +93,14 @@ const CompoleteButtonText = styled.Text`
 
 export function DiaryWriteScreen({navigation}) {
   return (
+    // <KeyboardAvoidingView>
     <DiaryWriteConatiner>
-      <DateSelect>
+      {/* <DateSelect>
         <SubHeading>
           <SubHeadingText>날짜 선택</SubHeadingText>
         </SubHeading>
         <View></View>
-      </DateSelect>
+      </DateSelect> */}
       <ImageSelect>
         <SubHeading>
           <SubHeadingText>사진 선택</SubHeadingText>
