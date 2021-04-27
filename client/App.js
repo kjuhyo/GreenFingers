@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 // import { StatusBar } from "expo-status-bar";
-import {StatusBar} from 'react-native';
+import {Dimensions, StatusBar} from 'react-native';
 
 import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';
@@ -15,6 +15,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeScreen} from './app/screens/main/Home';
 import {RoomScreen} from './app/screens/main/Room';
 import {PlantDetail} from './app/screens/main/PlantDetail';
+import {Alarm} from './app/components/main/Alarm';
 
 import {LoginScreen} from './app/screens/auth/Login';
 import {SignupScreen} from './app/screens/auth/Signup';
@@ -43,6 +44,7 @@ function HomeStacks() {
       <HomeStack.Screen
         name="Home"
         component={HomeScreen}
+        r
         options={{header: () => null}}
       />
       <HomeStack.Screen
@@ -127,7 +129,7 @@ function Tabs() {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeStacks} />
       <Tab.Screen name="Diary" component={DiaryStacks} />
-      <Tab.Screen name="Recommendation" component={RecommendationStacks} />
+      {/* <Tab.Screen name="Recommendation" component={RecommendationStacks} /> */}
     </Tab.Navigator>
   );
 }
@@ -155,7 +157,7 @@ function AuthStack() {
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
@@ -166,7 +168,7 @@ export default function App() {
         translucent={true}
       />
       <NavigationContainer>
-        {isLogin !== false ? <AuthStack /> : <Tabs />}
+        {isLogin !== false ? <Tabs /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );
