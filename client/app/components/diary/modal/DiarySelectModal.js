@@ -1,5 +1,5 @@
 import {Icon} from 'native-base';
-import React, {useState} from 'react';
+import React from 'react';
 import {Text, Pressable} from 'react-native';
 
 import {
@@ -18,9 +18,6 @@ export default function DiarySelectModal(props) {
   const openCheckModal = visible => {
     props.setDateCheckModalVisible(visible);
   };
-  // const openCheckModal = (visible) => {
-  //   props.setDateCheckModalVisible(visible);
-  // };
 
   return (
     <ModalContainer>
@@ -32,12 +29,11 @@ export default function DiarySelectModal(props) {
         </ModalHeader>
 
         {/* 다이어리 보기 버튼 */}
-        <ModalButtonBox>
+        <ModalButtonBox borderRadius="10px" backgroundColor="#F9F9F9">
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              // ChangeDateModal(true);
             }}>
             <Text>다이어리 보기</Text>
             <Icon type="Octicons" name="book" style={{fontSize: 20}} />
@@ -61,8 +57,7 @@ export default function DiarySelectModal(props) {
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              // openCheckModal(true);
-              setDateCheckModalVisible(true);
+              openCheckModal(true);
             }}>
             <Text style={{color: '#6BABE7'}}>물주기</Text>
             <Icon
