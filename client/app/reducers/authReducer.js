@@ -1,19 +1,24 @@
 let initialState = {
   isLoading: true,
   isSignedUp: false,
-  isLoggedIn: true,
+  isLoggedIn: false,
   userToken: null,
-  haveName: true,
+  haveName: false,
   // isLoggedOut: false,
   // noAccount: false,
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case 'TO_SIGNUP':
+    case 'TO_LOGIN':
       return {
         ...state,
         isLoading: false,
+      };
+    case 'TO_SIGNUP':
+      return {
+        ...state,
+        isLoggedIn: true,
         isSignedUp: false,
         noAccount: true,
       };
@@ -27,39 +32,9 @@ export default function (state = initialState, action) {
     case 'TO_HOME':
       return {
         ...state,
-        isLoading: false,
-        isLoggedIn: false,
-        noAccount: false,
+        isLoggedIn: true,
       };
     default:
-      // need this for default case
       return {...state};
-    // case 'RESTORE_TOKEN':
-    //   return {
-    //     ...prevState,
-    //     userToken: action.token,
-    //     isLoading: false,
-    //   };
-    // case 'SIGNED_UP':
-    //   return {
-    //     ...prevState,
-    //     isLoggedIn: true,
-    //     isSignedUp: true,
-    //     isLoading: false,
-    //     userToken: action.token,
-    //   };
-    // case 'SIGN_IN':
-    //   return {
-    //     ...prevState,
-    //     isLoggedOut: false,
-    //     isLoggedIn: true,
-    //     isSignedUp: true,
-    //     userToken: action.token,
-    //   };
-    // case 'SIGN_OUT':
-    //   return {
-    //     ...prevState,
-    //     isLoggedOut: true,
-    //   };
   }
 }

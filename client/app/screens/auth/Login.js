@@ -18,7 +18,7 @@ import {
   SocialButtonText,
 } from '../../assets/theme/authstyles';
 
-// google login
+// google login, firebase
 import {
   GoogleSignin,
   statusCodes,
@@ -55,9 +55,29 @@ if (!firebase.apps.length) {
   firebase.app(); // if already initialized, use that one
 }
 
+//redux
+// import allReducer from '../../reducers/index.js';
+import allReducer from '../../reducers/index';
+import allActions from '../../actions/index';
+import {createStore} from 'redux';
+import {
+  Provider as StoreProvider,
+  useDispatch,
+  connect,
+  useSelector,
+} from 'react-redux';
+// import allActions from '../../actions';
+const store = createStore(allReducer);
+
 export function LoginScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
+  // console.log(allActions.authAction);
+  const state = useSelector(state => state);
+
+  const dispatch = useDispatch();
+  console.log(allActions.authAction);
+  // allActions.authAction.to_home();
 
   // google login
   const [loggedIn, setloggedIn] = useState(false);
@@ -107,6 +127,7 @@ export function LoginScreen({navigation}) {
       webClientId: WEB_CLIENT_ID,
       offlineAccess: true,
     });
+    // dispatch(allActions.authAction.to_home());
   }, []);
 
   return (
@@ -148,7 +169,10 @@ export function LoginScreen({navigation}) {
         </View>
         <View style={styles.pairitem}>
           <AuthButton full>
-            <AuthButtonText>로그인</AuthButtonText>
+            <AuthButtonText
+              onClick={() => dispatch(allActions.authAction.to_home())}>
+              로그인
+            </AuthButtonText>
           </AuthButton>
           <SocialButton full>
             <SocialButtonText onPress={_signIn}>

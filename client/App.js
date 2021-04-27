@@ -34,15 +34,19 @@ import {Icon} from 'native-base';
 
 // redux
 
-import allReducer from './app/reducers/reducer.js';
+import allReducer from './app/reducers/index.js';
 import {createStore} from 'redux';
-import {Provider as StoreProvider, useSelector} from 'react-redux';
-const store = createStore(allReducer);
+import {Provider as StoreProvider, useDispatch} from 'react-redux';
+const store = createStore(
+  allReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const RecommendationStack = createStackNavigator();
+const state = store.getState();
 
 function HomeStacks() {
   return (
@@ -158,9 +162,7 @@ function AuthStack() {
 
 export default function App() {
   // const [isLogin, setIsLogin] = useState(true);
-
-  const state = store.getState();
-
+  console.log(state.authReducer);
   return (
     <ThemeProvider theme={theme}>
       <StoreProvider store={store}>
