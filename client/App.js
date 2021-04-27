@@ -34,10 +34,10 @@ import {Icon} from 'native-base';
 
 // redux
 
-import allReducers from './reducers/index.js';
+import allReducer from './app/reducers/reducer.js';
 import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-const store = createStore(allReducers);
+import {Provider as StoreProvider, useSelector} from 'react-redux';
+const store = createStore(allReducer);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -157,19 +157,23 @@ function AuthStack() {
 }
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  // const [isLogin, setIsLogin] = useState(true);
+
+  const state = store.getState();
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar
-        barStyle="dark-content"
-        hidden={true}
-        backgroundColor="transparent"
-        translucent={true}
-      />
-      <NavigationContainer>
-        {isLogin !== true ? <AuthStack /> : <Tabs />}
-      </NavigationContainer>
+      <StoreProvider store={store}>
+        <StatusBar
+          barStyle="dark-content"
+          hidden={true}
+          backgroundColor="transparent"
+          translucent={true}
+        />
+        <NavigationContainer>
+          {state.authReducer.isLoggedIn !== true ? <AuthStack /> : <Tabs />}
+        </NavigationContainer>
+      </StoreProvider>
     </ThemeProvider>
   );
 }

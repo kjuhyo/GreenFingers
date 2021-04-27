@@ -1,7 +1,7 @@
 let initialState = {
   isLoading: true,
   isSignedUp: false,
-  isLoggedIn: false,
+  isLoggedIn: true,
   userToken: null,
   haveName: true,
   // isLoggedOut: false,
@@ -31,6 +31,9 @@ export default function (state = initialState, action) {
         isLoggedIn: false,
         noAccount: false,
       };
+    default:
+      // need this for default case
+      return {...state};
     // case 'RESTORE_TOKEN':
     //   return {
     //     ...prevState,
