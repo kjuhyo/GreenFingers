@@ -13,6 +13,7 @@ import {
 import {Container, Icon, Button, Content} from 'native-base';
 import {RoomModal} from '../../components/main/RoomModal';
 import {HomeEditModal} from '../../components/main/HomeEditModal';
+
 // import Modal from "react-native-modal";
 
 // import PropTypes from "prop-types";
@@ -46,10 +47,12 @@ export function HomeScreen({navigation}) {
       </View>
 
       <View style={styles.mainicons}>
-        <Icon
-          type="Ionicons"
-          name="notifications-outline"
-          style={styles.bell}></Icon>
+        <TouchableOpacity>
+          <Icon
+            type="Ionicons"
+            name="notifications-outline"
+            style={styles.bell}></Icon>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => changeModalVisible2(true)}>
           <Icon
             type="Ionicons"

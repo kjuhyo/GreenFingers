@@ -13,17 +13,22 @@ import {
 import {Container, Icon, Button, Content} from 'native-base';
 import {PlusModal} from '../../components/main/PlusModal';
 import {RoomEditModal} from '../../components/main/RoomEditModal';
+import {DeleteRoomModal} from '../../components/main/DeleteRoomModal';
 const win = Dimensions.get('window');
 
 export function RoomScreen({navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
+  const [isModalVisible3, setisModalVisible3] = useState(false);
   const [ChooseData, setChooseData] = useState();
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
   const changeModalVisible2 = bool => {
     setisModalVisible2(bool);
+  };
+  const changeModalVisible3 = bool => {
+    setisModalVisible3(bool);
   };
   const setData = data => {
     setChooseData(data);
@@ -61,10 +66,23 @@ export function RoomScreen({navigation}) {
             }}></Icon>
         </TouchableOpacity>
         <View style={styles.setting}>
-          <Icon
-            type="Ionicons"
-            name="trash-outline"
-            style={{color: 'white', fontSize: 25, paddingRight: 15}}></Icon>
+          <TouchableOpacity onPress={() => changeModalVisible3(true)}>
+            <Icon
+              type="Ionicons"
+              name="trash-outline"
+              style={{color: 'white', fontSize: 25, paddingRight: 15}}></Icon>
+          </TouchableOpacity>
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={isModalVisible3}
+            nRequestClose={() => changeModalVisible3(false)}
+            style={styles.plantmodal}>
+            <DeleteRoomModal
+              changeModalVisible={changeModalVisible3}
+              setData={setData}
+            />
+          </Modal>
           <TouchableOpacity onPress={() => changeModalVisible2(true)}>
             <Icon
               type="Ionicons"
