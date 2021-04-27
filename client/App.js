@@ -32,6 +32,13 @@ import theme from './app/assets/theme/index';
 import {ThemeProvider} from 'styled-components';
 import {Icon} from 'native-base';
 
+// redux
+
+import allReducers from './reducers/index.js';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+const store = createStore(allReducers);
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
