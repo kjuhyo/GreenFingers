@@ -198,6 +198,9 @@ export function LoginScreen({navigation}) {
     </Container>
   );
 }
+const mapStateToProps = (state, props) => {
+  return {authReducer: state.authReducer};
+};
 
 // const mapDispatchToProps = dispatch => {
 //   // dispatching plain actions
@@ -205,7 +208,7 @@ export function LoginScreen({navigation}) {
 //   return bindActionCreators({to_home: to_home}, dispatch);
 // };
 
-export default connect()(LoginScreen);
+export default connect(mapStateToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
