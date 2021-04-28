@@ -30,11 +30,13 @@ export default function (state = initialState, action) {
         noAccount: false,
       };
     case 'TO_HOME':
+      console.log(state);
       return {
         ...state,
         isLoggedIn: true,
       };
     default:
-      return {...state};
+      console.log(state);
+      return state;
   }
 }

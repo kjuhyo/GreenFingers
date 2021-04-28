@@ -41,6 +41,7 @@ const store = createStore(
   allReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
+import {connect} from 'react-redux';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -162,10 +163,10 @@ function AuthStack() {
 
 export default function App() {
   // const [isLogin, setIsLogin] = useState(true);
-  console.log(state.authReducer);
+  // console.log(store.dispatch());
   return (
-    <ThemeProvider theme={theme}>
-      <StoreProvider store={store}>
+    <StoreProvider store={store}>
+      <ThemeProvider theme={theme}>
         <StatusBar
           barStyle="dark-content"
           hidden={true}
@@ -173,9 +174,18 @@ export default function App() {
           translucent={true}
         />
         <NavigationContainer>
-          {state.authReducer.isLoggedIn !== true ? <AuthStack /> : <Tabs />}
+          {state.authReducer.isLoggedIn ? <Tabs /> : <AuthStack />}
+          {/* { !== true ? <AuthStack /> : <Tabs />} */}
         </NavigationContainer>
-      </StoreProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </StoreProvider>
   );
 }
+
+// function mapStateToProps(state, ownProps) {
+//   return {
+//     isLoggedIn: state.authReducer.isLoggedIn,
+//   };
+// }
+
+// export default connect(mapStateToProps)(App);

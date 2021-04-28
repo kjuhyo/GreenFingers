@@ -58,7 +58,7 @@ if (!firebase.apps.length) {
 //redux
 // import allReducer from '../../reducers/index.js';
 import allReducer from '../../reducers/index';
-import allActions from '../../actions/index';
+import to_home from '../../actions/authAction';
 import {createStore} from 'redux';
 import {
   Provider as StoreProvider,
@@ -66,17 +66,19 @@ import {
   connect,
   useSelector,
 } from 'react-redux';
-// import allActions from '../../actions';
+// import authReducer from '../../reducers/authReducer';
+import {bindActionCreators} from 'redux';
+
 const store = createStore(allReducer);
 
 export function LoginScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
-  // console.log(allActions.authAction);
-  const state = useSelector(state => state);
+  // console.log(store.dispatch);
+  // const state = useSelector(state => state);
 
-  const dispatch = useDispatch();
-  console.log(allActions.authAction);
+  // const dispatch = useDispatch();
+  // console.log(allActions.authAction);
   // allActions.authAction.to_home();
 
   // google login
@@ -169,8 +171,7 @@ export function LoginScreen({navigation}) {
         </View>
         <View style={styles.pairitem}>
           <AuthButton full>
-            <AuthButtonText
-              onClick={() => dispatch(allActions.authAction.to_home())}>
+            <AuthButtonText onPress={() => store.dispatch({type: 'TO_HOME'})}>
               로그인
             </AuthButtonText>
           </AuthButton>
@@ -197,6 +198,14 @@ export function LoginScreen({navigation}) {
     </Container>
   );
 }
+
+// const mapDispatchToProps = dispatch => {
+//   // dispatching plain actions
+//   // tohome: () => dispatch({type: 'TO_HOME'}),
+//   return bindActionCreators({to_home: to_home}, dispatch);
+// };
+
+export default connect()(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
