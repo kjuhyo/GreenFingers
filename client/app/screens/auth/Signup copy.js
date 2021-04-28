@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Form} from 'react-native';
 import {
   Container,
   Header,
@@ -13,7 +13,7 @@ import {
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
-// import {useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 
 export function SignupScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -23,6 +23,9 @@ export function SignupScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const {register, handleSubmit} = useForm();
+  const onSubmit = data => console.log(data);
 
   return (
     <ScrollView>
@@ -37,65 +40,38 @@ export function SignupScreen({navigation}) {
               <Text style={styles.signup}>회원가입</Text>
             </View>
           </View>
-          <View style={styles.form}>
-            <Item
-              style={[
-                styles.singleitem,
-                isIDFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                value={email}
-                onBlur={() => setIsIDFocused(false)}
-                onFocus={() => setIsIDFocused(true)}
-                style={{paddingLeft: 15}}
-                placeholder="Email"
-                onChangeText={userEmail => setEmail(userEmail)}
-                autoCapitalize="none"
-                keyboardType="email-address"
-              />
-              <Button style={styles.idcheckbtn}>
-                <Text style={styles.textpadding}>중복확인</Text>
-                <Icon
-                  type="AntDesign"
-                  name="checkcircle"
-                  style={styles.textpadding}
-                />
-              </Button>
-            </Item>
-            <Item
-              style={[
-                styles.singleitem,
-                isPWFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                value={password}
-                onBlur={() => setIsPWFocused(false)}
-                onFocus={() => setIsPWFocused(true)}
-                placeholder="비밀번호"
-                style={{paddingLeft: 15}}
-                onChangeText={userPassword => setPassword(userPassword)}
-                secureTextEntry={true}
-              />
-            </Item>
-            <Item
-              style={[
-                styles.singleitem,
-                isPWCFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                value={passwordConfirm}
-                onBlur={() => setIsPWCFocused(false)}
-                onFocus={() => setIsPWCFocused(true)}
-                placeholder="비밀번호 확인"
-                style={{paddingLeft: 15}}
-                onChangeText={userPassword => setPassword(userPassword)}
-                secureTextEntry={true}
-              />
-            </Item>
-            <AuthButton full style={{marginTop: 20}}>
+          <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
+            <input
+              type="text"
+              {...register('Email', {
+                required: true,
+                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              })}
+            />
+            <input
+              {...register('password', {required: 'Password is required!'})}
+            />
+            {errors.password && (
+              <p style={{color: 'white'}}>{errors.password.message}</p>
+            )}
+            <input
+              {...register('passwordConfirmation', {
+                required: 'Please confirm password!',
+                validate: {
+                  matchesPreviousPassword: value => {
+                    const {password} = getValues();
+                    return password === value || 'Passwords should match!';
+                  },
+                },
+              })}
+            />
+            {errors.passwordConfirmation && (
+              <p style={{color: 'white'}}>
+                {errors.passwordConfirmation.message}
+              </p>
+            )}
+
+            {/* <AuthButton full style={{marginTop: 20}}>
               <AuthButtonText
                 title="Home"
                 onPress={() =>
@@ -106,8 +82,8 @@ export function SignupScreen({navigation}) {
                 }>
                 회원가입
               </AuthButtonText>
-            </AuthButton>
-          </View>
+            </AuthButton>  */}
+          </form>
         </Container>
       </KeyboardAwareScrollView>
     </ScrollView>

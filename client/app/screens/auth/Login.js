@@ -24,7 +24,7 @@ import {
   SocialButton,
   SocialButtonText,
 } from '../../assets/theme/authstyles';
-// import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 // google login, firebase
 import {
   GoogleSignin,
@@ -63,22 +63,21 @@ if (!firebase.apps.length) {
 }
 
 //redux
-
-import allReducer from '../../reducers/index';
-import to_home from '../../actions/authAction';
-import {createStore} from 'redux';
 import {
   Provider as StoreProvider,
   useDispatch,
   connect,
   useSelector,
 } from 'react-redux';
-// import authReducer from '../../reducers/authReducer';
-import {bindActionCreators} from 'redux';
-
-const store = createStore(allReducer);
+import {toHome} from '../../reducers/authReducer';
 
 export function LoginScreen({navigation}) {
+  // redux
+  const dispatch = useDispatch();
+  const moveHome = () => dispatch(toHome());
+  // console.log(dispatch(toHome()));
+
+  // input focus
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
 
@@ -86,18 +85,17 @@ export function LoginScreen({navigation}) {
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
 
-  const _signIn = async () => {
+  const google_signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      setloggedIn(true);
-      console.log('bye');
-      const credential = auth.GoogleAuthProvider.credential(
+      // console.log(userInfo);
+      const credential = await auth.GoogleAuthProvider.credential(
         userInfo.idToken,
         userInfo.accessToken,
       );
-      console.log(credential);
+      // console.log(credential);
+      dispatch(toHome());
       await auth().signInWithCredential(credential);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -130,90 +128,76 @@ export function LoginScreen({navigation}) {
       webClientId: WEB_CLIENT_ID,
       offlineAccess: true,
     });
-    // dispatch(allActions.authAction.to_home());
   }, []);
 
   return (
     <ScrollView>
-      {/* <KeyboardAwareScrollView> */}
-      <Container style={styles.container}>
-        <View style={styles.logo}>
-          <View style={styles.halftop}>
-            <Text style={styles.logotext}>Green</Text>
+      <KeyboardAwareScrollView>
+        <Container style={styles.container}>
+          <View style={styles.logo}>
+            <View style={styles.halftop}>
+              <Text style={styles.logotext}>Green</Text>
+            </View>
+            <View style={styles.halfbottom}>
+              <Text style={styles.logotext}>Fingers</Text>
+            </View>
           </View>
-          <View style={styles.halfbottom}>
-            <Text style={styles.logotext}>Fingers</Text>
+          <View style={styles.form}>
+            <View style={styles.pairitem}>
+              <Item
+                style={[
+                  styles.singleitem,
+                  isIDFocused ? styles.focused : styles.blurred,
+                ]}
+                regular>
+                <Input
+                  placeholder="ID"
+                  onBlur={() => setIsIDFocused(false)}
+                  onFocus={() => setIsIDFocused(true)}
+                />
+              </Item>
+              <Item
+                style={[
+                  styles.singleitem,
+                  isPWFocused ? styles.focused : styles.blurred,
+                ]}
+                regular>
+                <Input
+                  placeholder="PASSWORD"
+                  onBlur={() => setIsPWFocused(false)}
+                  onFocus={() => setIsPWFocused(true)}
+                />
+              </Item>
+            </View>
+            <View style={styles.pairitem}>
+              <AuthButton full>
+                <AuthButtonText onPress={moveHome}>로그인</AuthButtonText>
+              </AuthButton>
+              <SocialButton full>
+                <SocialButtonText onPress={google_signIn}>
+                  Sign in with Google
+                </SocialButtonText>
+              </SocialButton>
+              {/* <SocialButton full>
+                <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
+              </SocialButton> */}
+            </View>
+            <View style={styles.textlinkwrap}>
+              <Text
+                style={styles.textleft}
+                title="Signup"
+                onPress={() => navigation.navigate('Signup')}>
+                회원가입
+              </Text>
+              <Text style={styles.textmiddle}>|</Text>
+              <Text style={styles.textright}>비회원 입장</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.form}>
-          <View style={styles.pairitem}>
-            <Item
-              style={[
-                styles.singleitem,
-                isIDFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                placeholder="ID"
-                onBlur={() => setIsIDFocused(false)}
-                onFocus={() => setIsIDFocused(true)}
-              />
-            </Item>
-            <Item
-              style={[
-                styles.singleitem,
-                isPWFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                placeholder="PASSWORD"
-                onBlur={() => setIsPWFocused(false)}
-                onFocus={() => setIsPWFocused(true)}
-              />
-            </Item>
-          </View>
-          <View style={styles.pairitem}>
-            <AuthButton full>
-              <AuthButtonText onPress={() => store.dispatch({type: 'TO_HOME'})}>
-                로그인
-              </AuthButtonText>
-            </AuthButton>
-            <SocialButton full>
-              <SocialButtonText onPress={_signIn}>
-                Sign in with Google
-              </SocialButtonText>
-            </SocialButton>
-            {/* <SocialButton full>
-            <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
-          </SocialButton> */}
-          </View>
-          <View style={styles.textlinkwrap}>
-            <Text
-              style={styles.textleft}
-              title="Signup"
-              onPress={() => navigation.navigate('Signup')}>
-              회원가입
-            </Text>
-            <Text style={styles.textmiddle}>|</Text>
-            <Text style={styles.textright}>비회원 입장</Text>
-          </View>
-        </View>
-      </Container>
-      {/* </KeyboardAwareScrollView> */}
+        </Container>
+      </KeyboardAwareScrollView>
     </ScrollView>
   );
 }
-const mapStateToProps = (state, props) => {
-  return {authReducer: state.authReducer};
-};
-
-// const mapDispatchToProps = dispatch => {
-//   // dispatching plain actions
-//   // tohome: () => dispatch({type: 'TO_HOME'}),
-//   return bindActionCreators({to_home: to_home}, dispatch);
-// };
-
-export default connect(mapStateToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {

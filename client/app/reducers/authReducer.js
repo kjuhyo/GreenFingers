@@ -1,3 +1,13 @@
+const TO_LOGIN = 'auth/TO_LOGIN';
+const TO_SIGNUP = 'auth/TO_SIGNUP';
+const TO_ADD_INFO = 'auth/TO_ADD_INFO';
+const TO_HOME = 'TO_HOME';
+
+export const toLogin = () => ({type: TO_LOGIN});
+export const toSignup = () => ({type: TO_SIGNUP});
+export const toAddInfo = () => ({type: TO_ADD_INFO});
+export const toHome = () => ({type: TO_HOME});
+
 let initialState = {
   isLoading: true,
   isSignedUp: false,
@@ -8,7 +18,7 @@ let initialState = {
   // noAccount: false,
 };
 
-export default function (state = initialState, action) {
+export default function auth(state = initialState, action) {
   switch (action.type) {
     case 'TO_LOGIN':
       return {

@@ -13,16 +13,12 @@ import {
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
-// import {useForm} from 'react-hook-form';
 
-export function SignupScreen({navigation}) {
+export function AddinfoScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
-  // const [isNNFocused, setIsNNFocused] = useState(false);
+  const [isNNFocused, setIsNNFocused] = useState(false);
   const [isPWCFocused, setIsPWCFocused] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   return (
     <ScrollView>
@@ -34,25 +30,21 @@ export function SignupScreen({navigation}) {
             </View>
             <View style={styles.halfbottom}>
               <Text style={styles.logotext}>Fingers</Text>
-              <Text style={styles.signup}>회원가입</Text>
+              <Text style={styles.signup}>닉네임 등록</Text>
             </View>
           </View>
           <View style={styles.form}>
             <Item
               style={[
                 styles.singleitem,
-                isIDFocused ? styles.focused : styles.blurred,
+                isNNFocused ? styles.focused : styles.blurred,
               ]}
               regular>
               <Input
-                value={email}
-                onBlur={() => setIsIDFocused(false)}
-                onFocus={() => setIsIDFocused(true)}
+                onBlur={() => setIsNNFocused(false)}
+                onFocus={() => setIsNNFocused(true)}
                 style={{paddingLeft: 15}}
-                placeholder="Email"
-                onChangeText={userEmail => setEmail(userEmail)}
-                autoCapitalize="none"
-                keyboardType="email-address"
+                placeholder="닉네임"
               />
               <Button style={styles.idcheckbtn}>
                 <Text style={styles.textpadding}>중복확인</Text>
@@ -63,38 +55,6 @@ export function SignupScreen({navigation}) {
                 />
               </Button>
             </Item>
-            <Item
-              style={[
-                styles.singleitem,
-                isPWFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                value={password}
-                onBlur={() => setIsPWFocused(false)}
-                onFocus={() => setIsPWFocused(true)}
-                placeholder="비밀번호"
-                style={{paddingLeft: 15}}
-                onChangeText={userPassword => setPassword(userPassword)}
-                secureTextEntry={true}
-              />
-            </Item>
-            <Item
-              style={[
-                styles.singleitem,
-                isPWCFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                value={passwordConfirm}
-                onBlur={() => setIsPWCFocused(false)}
-                onFocus={() => setIsPWCFocused(true)}
-                placeholder="비밀번호 확인"
-                style={{paddingLeft: 15}}
-                onChangeText={userPassword => setPassword(userPassword)}
-                secureTextEntry={true}
-              />
-            </Item>
             <AuthButton full style={{marginTop: 20}}>
               <AuthButtonText
                 title="Home"
@@ -102,7 +62,7 @@ export function SignupScreen({navigation}) {
                   // navigation.navigate('RecommendationStacks', {
                   //   screen: 'Surveyintro',
                   // })
-                  navigation.navigate('Addinfo')
+                  navigation.navigate('Surveyintro')
                 }>
                 회원가입
               </AuthButtonText>
@@ -151,7 +111,7 @@ const styles = StyleSheet.create({
   singleitem: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginVertical: 8,
+    marginTop: 80,
     borderRadius: 12,
     backgroundColor: 'white',
   },

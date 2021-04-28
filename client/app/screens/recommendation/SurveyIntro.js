@@ -19,7 +19,7 @@ import {
 
 import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
-// import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
+import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
 
 export function SurveyintroScreen({navigation}) {
   return (

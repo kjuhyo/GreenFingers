@@ -21,6 +21,7 @@
     "native-base": "2.15.2",
     "radio-buttons-react-native": "1.0.4",
     "react": "17.0.1",
+    "react-hook-form": "7.3.5",
     "react-native": "0.64.0",
     "react-native-calendars": "1.1258.0",
     "react-native-date-picker": "^3.2.10",
