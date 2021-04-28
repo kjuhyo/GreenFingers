@@ -112,7 +112,7 @@ function DiaryStacks() {
         name="DiaryUpdate"
         component={DiaryUpdateScreen}
         options={{
-          title: '피드 수정',
+          title: '다이어리 수정',
           headerStyle: {
             backgroundColor: '#F9F9F9',
           },
