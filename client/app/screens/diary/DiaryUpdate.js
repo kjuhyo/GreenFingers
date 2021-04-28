@@ -1,141 +1,241 @@
 // react
-import React from 'react';
-import {ScrollView, Text, TextInput, View} from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView, StyleSheet, Text} from 'react-native';
 import 'react-native-gesture-handler';
 
 // style
 import styled from 'styled-components';
-import {Icon} from 'native-base';
+import {Icon, Toast, Root} from 'native-base';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-// 다이어리 페이지 컨테이너
-const DiaryWriteConatiner = styled.View`
-  flex: 1;
-  background-color: ${({theme}) => theme.colors.background};
-  padding: 20px;
-`;
+// responsive-screen
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-// 날짜 선택 영역
-const DateSelect = styled.View`
-  flex: 1.5;
-  /* background-color: red; */
-`;
+// image-picker
+import ImagePicker from 'react-native-image-crop-picker';
 
-// 소제목 태그
-const SubHeading = styled.View`
-  /* background-color: white; */
-  width: auto;
-  border-radius: 10px;
-  align-items: flex-start;
-  margin-left: 10px;
-`;
-
-// 소제목 글씨
-const SubHeadingText = styled.Text`
-  /* flex: 1; */
-  font-weight: bold;
-`;
-
-// 사진 영역
-const ImageSelect = styled.View`
-  flex: 3;
-  /* background-color: green; */
-`;
-
-// 사진 선택 영역 컨테이너
-const Image = styled.View`
-  flex: 1;
+// 소제목('글작성', '사진선택')
+const SubHeadingText = styled.View`
+  flex: 0.8;
   flex-direction: row;
-  margin-bottom: 50px;
-`;
-
-// 사진 선택 영역 박스
-const ImageBox = styled.View`
-  flex: 1;
-  background-color: white;
-  margin: 10px;
-  border-radius: 10px;
-  justify-content: center;
   align-items: center;
 `;
 
 // 글 작성 영역
-const TextBox = styled.View`
-  flex: 3;
-  /* background-color: grey; */
-`;
-
-// 글 작성 textInput 박스
-const TextInputBox = styled.View`
+const TextInputBox = styled.TextInput`
   background-color: white;
-  height: 150px;
-  margin: 10px;
-  padding-left: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
 `;
 
-// 완료 버튼 영역
-const CompleteButton = styled.TouchableOpacity`
-  flex: 0.7;
+// 사진 선택 영역
+const ImgSelectBox = styled.View`
+  flex: 1.8;
+  flex-direction: row;
+  margin-bottom: 20px;
+`;
+
+// 사진 촬영/선택 버튼
+const ImgSelectBtn = styled.TouchableOpacity`
+  flex: 1;
+  background-color: white;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+
+// 선택한 사진 영역
+const SelectedImgBox = styled.View`
+  flex: 1.7;
+  flex-direction: row;
+`;
+
+// 선택한 사진
+const SelectedImg = styled.Image`
+  border-radius: 10px;
+  width: 60px;
+  height: 60px;
+  margin-right: 8px;
+`;
+
+// 완료 버튼
+const CompleteBtn = styled.TouchableOpacity`
+  flex: 1;
   background-color: ${({theme}) => theme.colors.lightGreenButton};
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  margin: 10px;
+  margin-top: 10px;
 `;
 
-// 완료 버튼 글씨
-const CompoleteButtonText = styled.Text`
+// 완료 버튼 텍스트
+const CompleteBtnText = styled.Text`
+  color: ${({theme}) => theme.colors.darkGreen};
   font-weight: bold;
   font-size: 16px;
-  color: ${({theme}) => theme.colors.darkGreen};
 `;
 
 export function DiaryUpdateScreen({navigation}) {
+  const [imgState, setImgState] = useState([]);
+  const maxImgCnt = 10; // 사진 선택 최대 개수
+
+  // 여러개의 사진 선택
+  const PickMultiple = () => {
+    ImagePicker.openPicker({
+      multiple: true,
+      waitAnimationEnd: false,
+      sortOrder: 'desc',
+      includeExif: true,
+      forceJpg: true,
+    })
+      .then(images => {
+        const tmpImg = images.map(i => {
+          return {
+            uri: i.path,
+            width: i.width,
+            height: i.height,
+            mime: i.mime,
+          };
+        });
+        // 최대 사진 개수가 넘어갈 경우 Toast 띄움
+        if (imgState.length + tmpImg.length > maxImgCnt) {
+          Toast.show({
+            text: '사진은 최대 10장까지 선택할 수 있어요.',
+            buttonText: '확인',
+            duration: 3000,
+          });
+        }
+        // 최대 사진 개수 이하일 경우 imgState에 새로 선택한 사진 추가
+        else {
+          const img = imgState;
+          setImgState(img.concat(tmpImg));
+        }
+      })
+      .catch(e => console.log(e));
+  };
+
+  // 사진 촬영
+  const PickSingleWithCamera = () => {
+    ImagePicker.openCamera({
+      includeExif: true,
+    })
+      .then(image => {
+        // 최대 사진 개수가 넘어갈 경우 Toast 띄움
+        if (imgState.length + 1 > maxImgCnt) {
+          Toast.show({
+            text: '사진은 최대 10장까지 선택할 수 있어요.',
+            buttonText: '확인',
+            duration: 3000,
+          });
+        }
+        // 최대 사진 개수 이하일 경우 imgState에 새로 선택한 사진 추가
+        else {
+          setImgState([
+            ...imgState,
+            {
+              uri: image.path,
+              width: image.width,
+              height: image.height,
+              mime: image.mime,
+            },
+          ]);
+        }
+      })
+      .catch(e => console.log(e));
+  };
+
+  // 촬영하거나 선택한 사진들 보여주는 함수
+  const imgRendering = () => {
+    console.log('imgRendering', imgState.length);
+    const result = [];
+
+    // 최대 사진 개수를 넘어가지 않는 경우 현재 선택된 사진 개수만큼 for문 돌림
+    if (imgState != undefined && imgState.length <= maxImgCnt) {
+      for (let i = 0; i < imgState.length; i++) {
+        result.push(<SelectedImg key={i} source={{uri: imgState[i].uri}} />);
+      }
+    }
+    // 최대 사진 개수를 넘어갈 경우 최대 개수만큼 for문 돌림
+    else {
+      for (let i = 0; i < maxImgCnt; i++) {
+        result.push(<SelectedImg key={i} source={{uri: imgState[i].uri}} />);
+      }
+    }
+    return result;
+  };
+
   return (
-    <DiaryWriteConatiner>
-      <DateSelect>
-        <SubHeading>
-          <SubHeadingText>날짜 선택</SubHeadingText>
-        </SubHeading>
-        <View></View>
-      </DateSelect>
-      <ImageSelect>
-        <SubHeading>
-          <SubHeadingText>사진 선택</SubHeadingText>
-        </SubHeading>
-        <Image>
-          <ImageBox>
-            <Icon
-              type="MaterialCommunityIcons"
-              name="image-multiple"
-              style={{fontSize: 50}}
-            />
-            <Text>사진 선택</Text>
-          </ImageBox>
-          <ImageBox>
-            <Icon
-              type="MaterialCommunityIcons"
-              name="camera"
-              style={{fontSize: 50}}
-            />
-            <Text>사진 촬영</Text>
-          </ImageBox>
-        </Image>
-      </ImageSelect>
-      <TextBox>
-        <SubHeading>
-          <SubHeadingText>글 작성</SubHeadingText>
-        </SubHeading>
-        <TextInputBox>
-          <TextInput
+    <Root>
+      <ScrollView>
+        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+          {/* 사진 선택 영역 */}
+          <SubHeadingText>
+            <Text style={{fontWeight: 'bold'}}>사진선택</Text>
+          </SubHeadingText>
+          <ImgSelectBox>
+            <ImgSelectBtn
+              style={{marginRight: 10}}
+              onPress={() => {
+                PickMultiple();
+              }}>
+              <Icon
+                type="MaterialCommunityIcons"
+                name="image-multiple"
+                style={{fontSize: 50}}
+              />
+              <Text>사진 선택</Text>
+            </ImgSelectBtn>
+            <ImgSelectBtn
+              style={{marginLeft: 10}}
+              onPress={() => {
+                PickSingleWithCamera();
+              }}>
+              <Icon
+                type="MaterialCommunityIcons"
+                name="camera"
+                style={{fontSize: 50}}
+              />
+              <Text>사진 촬영</Text>
+            </ImgSelectBtn>
+          </ImgSelectBox>
+
+          {/* 선택한 사진 보여주는 영역 */}
+          <SubHeadingText>
+            <Text style={{fontWeight: 'bold'}}>선택한 사진</Text>
+            <Text style={{color: 'grey', marginLeft: 7}}>
+              {imgState ? imgState.length : 0}/10
+            </Text>
+          </SubHeadingText>
+          <SelectedImgBox>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {imgState && imgRendering()}
+            </ScrollView>
+          </SelectedImgBox>
+
+          {/* 글 작성 하는 영역 */}
+          <SubHeadingText>
+            <Text style={{fontWeight: 'bold'}}>글 작성</Text>
+          </SubHeadingText>
+          <TextInputBox placeholder="제목" />
+          <TextInputBox
             multiline
-            numberOfLines={5}
+            numberOfLines={10}
             placeholder="식물과 있었던 일을 기록해주세요 :)"
           />
-        </TextInputBox>
-      </TextBox>
-      <CompleteButton>
-        <CompoleteButtonText>수정 완료</CompoleteButtonText>
-      </CompleteButton>
-    </DiaryWriteConatiner>
+
+          {/* 완료 버튼 */}
+          <CompleteBtn>
+            <CompleteBtnText>완료</CompleteBtnText>
+          </CompleteBtn>
+        </KeyboardAwareScrollView>
+      </ScrollView>
+    </Root>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {height: hp('85%'), paddingHorizontal: 30, paddingVertical: 10},
+});

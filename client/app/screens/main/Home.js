@@ -13,12 +13,37 @@ import {
 import {Container, Icon, Button, Content} from 'native-base';
 import {RoomModal} from '../../components/main/RoomModal';
 import {HomeEditModal} from '../../components/main/HomeEditModal';
+
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+
 // import Modal from "react-native-modal";
 
 // import PropTypes from "prop-types";
 const win = Dimensions.get('window');
 
-export function HomeScreen({navigation}) {
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <Text>알람목록</Text>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="물을 더 주세요"
+        onPress={() => props.navigation.closeDrawer()}
+      />
+      <DrawerItem
+        label="햇빛을 보고 싶어요"
+        onPress={() => props.navigation.toggleDrawer()}
+      />
+    </DrawerContentScrollView>
+  );
+}
+
+function Home({navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
@@ -46,10 +71,12 @@ export function HomeScreen({navigation}) {
       </View>
 
       <View style={styles.mainicons}>
-        <Icon
-          type="Ionicons"
-          name="notifications-outline"
-          style={styles.bell}></Icon>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Icon
+            type="Ionicons"
+            name="notifications-outline"
+            style={styles.bell}></Icon>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => changeModalVisible2(true)}>
           <Icon
             type="Ionicons"
@@ -231,6 +258,15 @@ export function HomeScreen({navigation}) {
         </View>
       </ScrollView>
     </View>
+  );
+}
+const Drawer = createDrawerNavigator();
+export function HomeScreen() {
+  return (
+    <Drawer.Navigator
+      drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Feed" component={Home} />
+    </Drawer.Navigator>
   );
 }
 

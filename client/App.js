@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 // import { StatusBar } from "expo-status-bar";
-import {StatusBar} from 'react-native';
+import {Dimensions, StatusBar} from 'react-native';
 
 import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';

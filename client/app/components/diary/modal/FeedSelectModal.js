@@ -2,8 +2,6 @@ import {Icon} from 'native-base';
 import React from 'react';
 import {Pressable, Text} from 'react-native';
 
-import styled from 'styled-components';
-
 import {
   ModalContainer,
   ModalBox,
@@ -28,12 +26,12 @@ export default function FeedSelectModal(props) {
             <Icon type="AntDesign" name="close" style={{fontSize: 20}} />
           </Pressable>
         </ModalHeader>
-        <ModalButtonBox>
+
+        <ModalButtonBox borderRadius="10px" backgroundColor="#F9F9F9">
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              // ChangeDateModal(true);
               props.navigation.navigate('DiaryUpdate');
             }}>
             <Text>다이어리 수정</Text>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
@@ -67,21 +68,51 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const RoomEditModal = props => {
-  let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  // take photo, choose photo
+  const [image, setImage] = useState(
+    'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
+  );
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        console.log(image);
+        setImage(image.path);
+        this.bs.current.snapTo(1);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
+  };
 
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!');
-      return;
-    }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        console.log(image);
+        setImage(image.path);
+        this.bs.current.snapTo(1);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
   };
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+  const setData = data => {
+    setChooseData(data);
+  };
+  bs = React.createRef();
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -110,28 +141,37 @@ const RoomEditModal = props => {
           {/* 사진등록 */}
           <View style={styles.photo}>
             <Littlechip>
-              <Text style={styles.chiptext}>배경 등록</Text>
+              <Text style={styles.chiptext}>사진 변경</Text>
             </Littlechip>
             <ImageArea>
-              <ImageBox onPress={openImagePickerAsync}>
+              <ImageBox onPress={choosePhotoFromLibrary}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="image-multiple"
-                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
                 />
-                <Text style={{fontSize: 13, marginTop: 8}}>사진 선택</Text>
+                <Text style={{fontSize: 12, marginTop: 1}}>사진 선택</Text>
               </ImageBox>
-              <ImageBox>
+              <ImageBox onPress={takePhotoFromCamera}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="camera"
-                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
                 />
-                <Text style={{fontSize: 13, marginTop: 8}}>사진 촬영</Text>
+                <Text style={{fontSize: 11, marginTop: 1}}>사진 촬영</Text>
               </ImageBox>
             </ImageArea>
           </View>
         </View>
+        <Littlechip style={{marginTop: 10}}>
+          <Text style={styles.chiptext}>Preview</Text>
+        </Littlechip>
+        <Image
+          source={{
+            uri: image,
+          }}
+          style={{height: 60, width: 60, marginLeft: 20, marginTop: 10}}
+          imageStyle={{borderRadius: 15}}></Image>
         {/* 버튼 */}
         <View style={styles.button}>
           <AddButton onPress={() => closeModal(false, 'Cancel')}>
