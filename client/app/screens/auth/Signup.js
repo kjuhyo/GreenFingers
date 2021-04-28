@@ -9,6 +9,7 @@ import {
   Button,
   StyleProvider,
   Icon,
+  Label,
 } from 'native-base';
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -23,6 +24,51 @@ export function SignupScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const onSubmit = () => {
+    // console.log('data', data);
+    console.log(email, password, passwordConfirm);
+  };
+
+  const validateEmail = userEmail => {
+    console.log(userEmail);
+    //e메일 형식
+    let regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (regEmail.test(userEmail) === false) {
+      console.log('이메일 형식이 맞지 않습니다');
+      setEmail(userEmail);
+      return false;
+    } else {
+      setEmail(userEmail);
+      console.log('Email is Correct');
+    }
+  };
+
+  const validatePassword = userPW => {
+    console.log(userPW);
+    // 대문자 최소 1개, 소문자 1개 이상, 숫자 1개이상, 특수문자 1개 이상, 8자리이상
+    let regPW = /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
+    if (regPW.test(userPW) === false) {
+      console.log('비밀번호 형식이 맞지 않습니다');
+      setPassword(userPW);
+      return false;
+    } else {
+      setPassword(userPW);
+      console.log('PW is Correct');
+    }
+  };
+
+  const validatePWC = userPWC => {
+    console.log(userPWC);
+    if (userPWC === password) {
+      console.log('비밀번호가 일치하지 않습니다');
+      setPasswordConfirm(userPWC);
+      return false;
+    } else {
+      setPasswordConfirm(userPWC);
+      console.log('PWC is Correct');
+    }
+  };
 
   return (
     <ScrollView>
@@ -63,6 +109,7 @@ export function SignupScreen({navigation}) {
                 />
               </Button>
             </Item>
+
             <Item
               style={[
                 styles.singleitem,

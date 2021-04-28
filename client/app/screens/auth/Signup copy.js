@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Form} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
 import {
   Container,
   Header,
@@ -13,7 +13,6 @@ import {
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
-import {useForm} from 'react-hook-form';
 
 export function SignupScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -24,8 +23,50 @@ export function SignupScreen({navigation}) {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  const {register, handleSubmit} = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = () => {
+    // console.log('data', data);
+    console.log(email, password, passwordConfirm);
+  };
+
+  const validateEmail = userEmail => {
+    console.log(userEmail);
+    //e메일 형식
+    let regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (regEmail.test(userEmail) === false) {
+      console.log('이메일 형식이 맞지 않습니다');
+      setEmail(userEmail);
+      return false;
+    } else {
+      setEmail(userEmail);
+      console.log('Email is Correct');
+    }
+  };
+
+  const validatePassword = userPW => {
+    console.log(userPW);
+    // 대문자 최소 1개, 소문자 1개 이상, 숫자 1개이상, 특수문자 1개 이상, 8자리이상
+    let regPW = /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
+    if (regPW.test(userPW) === false) {
+      console.log('비밀번호 형식이 맞지 않습니다');
+      setPassword(userPW);
+      return false;
+    } else {
+      setPassword(userPW);
+      console.log('PW is Correct');
+    }
+  };
+
+  const validatePWC = userPWC => {
+    console.log(userPWC);
+    if (userPWC === password) {
+      console.log('비밀번호가 일치하지 않습니다');
+      setPasswordConfirm(userPWC);
+      return false;
+    } else {
+      setPasswordConfirm(userPWC);
+      console.log('PWC is Correct');
+    }
+  };
 
   return (
     <ScrollView>
@@ -40,50 +81,48 @@ export function SignupScreen({navigation}) {
               <Text style={styles.signup}>회원가입</Text>
             </View>
           </View>
-          <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
-            <input
-              type="text"
-              {...register('Email', {
-                required: true,
-                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              })}
+          <View style={styles.form}>
+            <TextInput
+              style={[
+                styles.input,
+                {marginTop: 30},
+                isIDFocused ? styles.focused : styles.blurred,
+              ]}
+              onBlur={() => setIsIDFocused(false)}
+              onFocus={() => setIsIDFocused(true)}
+              placeholder="Email"
+              onChangeText={userEmail => setEmail(userEmail)}
+              autoCapitalize="none"
             />
-            <input
-              {...register('password', {required: 'Password is required!'})}
+            <TextInput
+              style={[
+                styles.input,
+                isPWFocused ? styles.focused : styles.blurred,
+              ]}
+              onBlur={() => setIsPWFocused(false)}
+              onFocus={() => setIsPWFocused(true)}
+              placeholder="비밀번호"
+              onChangeText={userEmail => setPassword(userEmail)}
+              secureTextEntry={true}
             />
-            {errors.password && (
-              <p style={{color: 'white'}}>{errors.password.message}</p>
-            )}
-            <input
-              {...register('passwordConfirmation', {
-                required: 'Please confirm password!',
-                validate: {
-                  matchesPreviousPassword: value => {
-                    const {password} = getValues();
-                    return password === value || 'Passwords should match!';
-                  },
-                },
-              })}
+            <TextInput
+              style={[
+                styles.input,
+                isPWCFocused ? styles.focused : styles.blurred,
+              ]}
+              onBlur={() => setIsPWCFocused(false)}
+              onFocus={() => setIsPWCFocused(true)}
+              placeholder="비밀번호 확인"
+              onChangeText={userEmail => setPasswordConfirm(userEmail)}
+              secureTextEntry={true}
             />
-            {errors.passwordConfirmation && (
-              <p style={{color: 'white'}}>
-                {errors.passwordConfirmation.message}
-              </p>
-            )}
 
-            {/* <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText
-                title="Home"
-                onPress={() =>
-                  // navigation.navigate('RecommendationStacks', {
-                  //   screen: 'Surveyintro',
-                  // })
-                  navigation.navigate('Addinfo')
-                }>
+            <AuthButton full style={{marginTop: 20}}>
+              <AuthButtonText title="Home" onPress={onSubmit}>
                 회원가입
               </AuthButtonText>
-            </AuthButton>  */}
-          </form>
+            </AuthButton>
+          </View>
         </Container>
       </KeyboardAwareScrollView>
     </ScrollView>
@@ -124,13 +163,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 60,
   },
-  singleitem: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: 'white',
-  },
   idcheckbtn: {
     backgroundColor: 'transparent',
     paddingRight: 2,
@@ -154,4 +186,19 @@ const styles = StyleSheet.create({
   blurred: {
     borderColor: '#ECECE2',
   },
+  input: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 8,
+    borderRadius: 12,
+    backgroundColor: 'white',
+    width: '100%',
+    paddingLeft: 15,
+  },
 });
+
+// 밸리데이션
+//https://stackoverflow.com/questions/54204827/react-native-form-validation
+// reg
+// https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+// https://stackoverflow.com/questions/62727346/how-to-validate-using-useeffect
