@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  ImageBackground,
+  Modal,
 } from 'react-native';
 import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
@@ -14,9 +16,8 @@ import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import DatePicker from 'react-native-date-picker';
 import {useState} from 'react';
-
-// import * as ImagePicker from "expo-image-picker";
-// 리액트 네이티브의 image picker 필요
+import ImagePicker from 'react-native-image-crop-picker';
+import {PhotoChoice} from './PhotoChoice';
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -27,7 +28,7 @@ const img_data = [
 const TextInputBox = styled.View`
   background-color: white;
   height: 50px;
-  margin: 20px 25px 20px 25px;
+  margin: 10px 25px 20px 25px;
   padding-left: 10px;
   border: 0.4px solid rgba(0, 0, 0, 0.3);
   border-radius: 10px;
@@ -69,6 +70,43 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const PlusModal = props => {
+  // take photo, choose photo
+  const [image, setImage] = useState(
+    'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
+  );
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        console.log(image);
+        setImage(image.path);
+        this.bs.current.snapTo(1);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
+  };
+
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        console.log(image);
+        setImage(image.path);
+        this.bs.current.snapTo(1);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
+  };
   const [date, setDate] = useState(new Date());
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -85,6 +123,15 @@ const PlusModal = props => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+  const [isModalVisible, setisModalVisible] = useState(false);
+  const [ChooseData, setChooseData] = useState();
+  const changeModalVisible = bool => {
+    setisModalVisible(bool);
+  };
+  const setData = data => {
+    setChooseData(data);
+  };
+  bs = React.createRef();
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -96,7 +143,7 @@ const PlusModal = props => {
             <Icon
               type="Ionicons"
               name="close-outline"
-              style={{color: 'green', fontSize: 40}}></Icon>
+              style={{color: 'green', fontSize: 30}}></Icon>
           </TouchableOpacity>
         </View>
         {/* 내용 */}
@@ -106,12 +153,12 @@ const PlusModal = props => {
             <Littlechip>
               <Text style={styles.chiptext}>식물 이름</Text>
             </Littlechip>
-            <TextInputBox style={{marginBottom: 30}}>
+            <TextInputBox style={{marginBottom: 10}}>
               <TextInput placeholder="식물 이름" />
             </TextInputBox>
           </View>
           {/* 데려온 날 */}
-          <View style={{marginBottom: 10}}>
+          <View style={{marginBottom: 10, marginTop: 70}}>
             <Littlechip style={{marginBottom: 10}}>
               <Text style={styles.chiptext}>데려온 날</Text>
             </Littlechip>
@@ -128,25 +175,35 @@ const PlusModal = props => {
               <Text style={styles.chiptext}>사진 등록</Text>
             </Littlechip>
             <ImageArea>
-              <ImageBox onPress={openImagePickerAsync}>
+              <ImageBox onPress={choosePhotoFromLibrary}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="image-multiple"
-                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
                 />
-                <Text style={{fontSize: 13, marginTop: 8}}>사진 선택</Text>
+                <Text style={{fontSize: 12, marginTop: 1}}>사진 선택</Text>
               </ImageBox>
-              <ImageBox>
+              <ImageBox onPress={takePhotoFromCamera}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="camera"
-                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
                 />
-                <Text style={{fontSize: 13, marginTop: 8}}>사진 촬영</Text>
+                <Text style={{fontSize: 11, marginTop: 1}}>사진 촬영</Text>
               </ImageBox>
             </ImageArea>
           </View>
         </View>
+        <Littlechip style={{marginTop: 10}}>
+          <Text style={styles.chiptext}>Preview</Text>
+        </Littlechip>
+        <Image
+          source={{
+            uri: image,
+          }}
+          style={{height: 60, width: 60, marginLeft: 20, marginTop: 10}}
+          imageStyle={{borderRadius: 15}}></Image>
+
         {/* 버튼 */}
         <View style={styles.button}>
           <AddButton onPress={() => closeModal(false, 'Cancel')}>
@@ -219,10 +276,10 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   input: {
-    flex: 2,
+    flex: 1,
   },
   photo: {
-    flex: 3,
+    flex: 5,
   },
 });
 export {PlusModal};
