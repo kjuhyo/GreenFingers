@@ -129,7 +129,7 @@ function Tabs() {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeStacks} />
       <Tab.Screen name="Diary" component={DiaryStacks} />
-      <Tab.Screen name="Recommendation" component={RecommendationStacks} />
+      {/* <Tab.Screen name="Recommendation" component={RecommendationStacks} /> */}
     </Tab.Navigator>
   );
 }
