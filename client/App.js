@@ -163,7 +163,7 @@ export default function App() {
         translucent={true}
       />
       <NavigationContainer>
-        {isLogin !== true ? <AuthStack /> : <Tabs />}
+        {isLogin !== false ? <AuthStack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );
