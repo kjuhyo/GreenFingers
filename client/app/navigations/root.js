@@ -158,12 +158,8 @@ function AuthStack() {
   );
 }
 
-// export function Root(state) {
 const Root = props => {
-  // const [isLogin, setIsLogin] = useState(true);
-  // console.log(store.dispatch());
   console.log(props);
-  // console.log(store.state);
 
   return (
     <ThemeProvider theme={theme}>
@@ -175,17 +171,12 @@ const Root = props => {
       />
       <NavigationContainer>
         {props.isLoggedIn ? <Tabs /> : <AuthStack />}
-        {/* { !== true ? <AuthStack /> : <Tabs />} */}
       </NavigationContainer>
     </ThemeProvider>
   );
 };
 
-// const mapStateToProps = state => ({
-//   return {isLoggedIn: state.authReducer.isLoggedIn}
-// });
-
 const mapStateToProps = (state, props) => {
-  return {authReducer: state.authReducer};
+  return {authReducer: props.authReducer};
 };
 export default connect(mapStateToProps)(Root);
