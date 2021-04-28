@@ -100,7 +100,7 @@ function DiaryStacks() {
         name="DiaryWrite"
         component={DiaryWriteScreen}
         options={{
-          title: '피드 작성',
+          title: '다이어리 작성',
           headerStyle: {
             backgroundColor: '#F9F9F9',
           },
@@ -163,7 +163,7 @@ export default function App() {
         translucent={true}
       />
       <NavigationContainer>
-        {isLogin !== false ? <AuthStack /> : <Tabs />}
+        {isLogin !== true ? <AuthStack /> : <Tabs />}
       </NavigationContainer>
     </ThemeProvider>
   );
