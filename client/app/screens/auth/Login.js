@@ -63,27 +63,24 @@ if (!firebase.apps.length) {
 }
 
 //redux
-
-import allReducer from '../../reducers/index';
-// import to_home from '../../actions/authAction';
-import {createStore} from 'redux';
 import {
   Provider as StoreProvider,
   useDispatch,
   connect,
   useSelector,
 } from 'react-redux';
-// import authReducer from '../../reducers/authReducer';
-import {bindActionCreators} from 'redux';
 import {toHome} from '../../reducers/authReducer';
-const store = createStore(allReducer);
 
 export function LoginScreen({navigation}) {
-  const [isIDFocused, setIsIDFocused] = useState(false);
-  const [isPWFocused, setIsPWFocused] = useState(false);
+  // redux
   const dispatch = useDispatch();
   const moveHome = () => dispatch(toHome());
   // console.log(dispatch(toHome()));
+
+  // input focus
+  const [isIDFocused, setIsIDFocused] = useState(false);
+  const [isPWFocused, setIsPWFocused] = useState(false);
+
   // google login
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
@@ -92,14 +89,13 @@ export function LoginScreen({navigation}) {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      setloggedIn(true);
-      console.log('bye');
+      // console.log(userInfo);
       const credential = auth.GoogleAuthProvider.credential(
         userInfo.idToken,
         userInfo.accessToken,
       );
-      console.log(credential);
+      // console.log(credential);
+      dispatch(toHome());
       await auth().signInWithCredential(credential);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -132,7 +128,6 @@ export function LoginScreen({navigation}) {
       webClientId: WEB_CLIENT_ID,
       offlineAccess: true,
     });
-    // dispatch(allActions.authAction.to_home());
   }, []);
 
   return (
@@ -184,8 +179,8 @@ export function LoginScreen({navigation}) {
                 </SocialButtonText>
               </SocialButton>
               {/* <SocialButton full>
-            <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
-          </SocialButton> */}
+                <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
+              </SocialButton> */}
             </View>
             <View style={styles.textlinkwrap}>
               <Text
