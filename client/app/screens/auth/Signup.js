@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
 import {
   Container,
   Header,
@@ -14,7 +14,6 @@ import {
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
-// import {useForm} from 'react-hook-form';
 
 export function SignupScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -69,6 +68,7 @@ export function SignupScreen({navigation}) {
       console.log('PWC is Correct');
     }
   };
+  const i = false;
 
   return (
     <ScrollView>
@@ -84,73 +84,56 @@ export function SignupScreen({navigation}) {
             </View>
           </View>
           <View style={styles.form}>
-            <Item
+            <TextInput
               style={[
-                styles.singleitem,
+                styles.input,
+                {marginTop: 30},
                 isIDFocused ? styles.focused : styles.blurred,
               ]}
-              regular>
-              <Input
-                value={email}
-                onBlur={() => setIsIDFocused(false)}
-                onFocus={() => setIsIDFocused(true)}
-                style={{paddingLeft: 15}}
-                placeholder="Email"
-                onChangeText={userEmail => setEmail(userEmail)}
-                autoCapitalize="none"
-                keyboardType="email-address"
-              />
-              <Button style={styles.idcheckbtn}>
-                <Text style={styles.textpadding}>중복확인</Text>
-                <Icon
-                  type="AntDesign"
-                  name="checkcircle"
-                  style={styles.textpadding}
-                />
-              </Button>
-            </Item>
-
-            <Item
+              onBlur={() => setIsIDFocused(false)}
+              onFocus={() => setIsIDFocused(true)}
+              placeholder="Email"
+              onChangeText={userEmail => setEmail(userEmail)}
+              autoCapitalize="none"
+            />
+            <Label style={styles.errorlabel}>
+              이메일 형식이 옳지 않습니다.
+            </Label>
+            <TextInput
               style={[
-                styles.singleitem,
+                styles.input,
                 isPWFocused ? styles.focused : styles.blurred,
               ]}
-              regular>
-              <Input
-                value={password}
-                onBlur={() => setIsPWFocused(false)}
-                onFocus={() => setIsPWFocused(true)}
-                placeholder="비밀번호"
-                style={{paddingLeft: 15}}
-                onChangeText={userPassword => setPassword(userPassword)}
-                secureTextEntry={true}
-              />
-            </Item>
-            <Item
+              onBlur={() => setIsPWFocused(false)}
+              onFocus={() => setIsPWFocused(true)}
+              placeholder="비밀번호"
+              onChangeText={userEmail => setPassword(userEmail)}
+              secureTextEntry={true}
+            />
+            {i ? (
+              <Label style={styles.errorlabel}>
+                이메일 형식이 옳지 않습니다.
+              </Label>
+            ) : (
+              <Label style={styles.errorlabel}></Label>
+            )}
+            <TextInput
               style={[
-                styles.singleitem,
+                styles.input,
                 isPWCFocused ? styles.focused : styles.blurred,
               ]}
-              regular>
-              <Input
-                value={passwordConfirm}
-                onBlur={() => setIsPWCFocused(false)}
-                onFocus={() => setIsPWCFocused(true)}
-                placeholder="비밀번호 확인"
-                style={{paddingLeft: 15}}
-                onChangeText={userPassword => setPassword(userPassword)}
-                secureTextEntry={true}
-              />
-            </Item>
+              onBlur={() => setIsPWCFocused(false)}
+              onFocus={() => setIsPWCFocused(true)}
+              placeholder="비밀번호 확인"
+              onChangeText={userEmail => setPasswordConfirm(userEmail)}
+              secureTextEntry={true}
+            />
+            <Label style={styles.errorlabel}>
+              이메일 형식이 옳지 않습니다.
+            </Label>
+
             <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText
-                title="Home"
-                onPress={() =>
-                  // navigation.navigate('RecommendationStacks', {
-                  //   screen: 'Surveyintro',
-                  // })
-                  navigation.navigate('Addinfo')
-                }>
+              <AuthButtonText title="Home" onPress={onSubmit}>
                 회원가입
               </AuthButtonText>
             </AuthButton>
@@ -195,13 +178,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 60,
   },
-  singleitem: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: 'white',
-  },
   idcheckbtn: {
     backgroundColor: 'transparent',
     paddingRight: 2,
@@ -225,4 +201,29 @@ const styles = StyleSheet.create({
   blurred: {
     borderColor: '#ECECE2',
   },
+  input: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 5,
+    borderRadius: 12,
+    backgroundColor: 'white',
+    width: '100%',
+    paddingLeft: 15,
+  },
+  errorlabel: {
+    color: 'red',
+    fontSize: 10,
+    alignSelf: 'flex-end',
+    paddingTop: 0,
+    paddingRight: 10,
+    marginTop: 0,
+    textAlignVertical: 'top',
+    lineHeight: 12,
+  },
 });
+
+// 밸리데이션
+//https://stackoverflow.com/questions/54204827/react-native-form-validation
+// reg
+// https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+// https://stackoverflow.com/questions/62727346/how-to-validate-using-useeffect

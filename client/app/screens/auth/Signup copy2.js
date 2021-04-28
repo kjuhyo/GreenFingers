@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {
   Container,
   Header,
@@ -9,10 +9,12 @@ import {
   Button,
   StyleProvider,
   Icon,
+  Label,
 } from 'native-base';
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
+// import {useForm} from 'react-hook-form';
 
 export function SignupScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -82,43 +84,73 @@ export function SignupScreen({navigation}) {
             </View>
           </View>
           <View style={styles.form}>
-            <TextInput
+            <Item
               style={[
-                styles.input,
-                {marginTop: 30},
+                styles.singleitem,
                 isIDFocused ? styles.focused : styles.blurred,
               ]}
-              onBlur={() => setIsIDFocused(false)}
-              onFocus={() => setIsIDFocused(true)}
-              placeholder="Email"
-              onChangeText={userEmail => setEmail(userEmail)}
-              autoCapitalize="none"
-            />
-            <TextInput
+              regular>
+              <Input
+                value={email}
+                onBlur={() => setIsIDFocused(false)}
+                onFocus={() => setIsIDFocused(true)}
+                style={{paddingLeft: 15}}
+                placeholder="Email"
+                onChangeText={userEmail => setEmail(userEmail)}
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+              <Button style={styles.idcheckbtn}>
+                <Text style={styles.textpadding}>중복확인</Text>
+                <Icon
+                  type="AntDesign"
+                  name="checkcircle"
+                  style={styles.textpadding}
+                />
+              </Button>
+            </Item>
+
+            <Item
               style={[
-                styles.input,
+                styles.singleitem,
                 isPWFocused ? styles.focused : styles.blurred,
               ]}
-              onBlur={() => setIsPWFocused(false)}
-              onFocus={() => setIsPWFocused(true)}
-              placeholder="비밀번호"
-              onChangeText={userEmail => setPassword(userEmail)}
-              secureTextEntry={true}
-            />
-            <TextInput
+              regular>
+              <Input
+                value={password}
+                onBlur={() => setIsPWFocused(false)}
+                onFocus={() => setIsPWFocused(true)}
+                placeholder="비밀번호"
+                style={{paddingLeft: 15}}
+                onChangeText={userPassword => setPassword(userPassword)}
+                secureTextEntry={true}
+              />
+            </Item>
+            <Item
               style={[
-                styles.input,
+                styles.singleitem,
                 isPWCFocused ? styles.focused : styles.blurred,
               ]}
-              onBlur={() => setIsPWCFocused(false)}
-              onFocus={() => setIsPWCFocused(true)}
-              placeholder="비밀번호 확인"
-              onChangeText={userEmail => setPasswordConfirm(userEmail)}
-              secureTextEntry={true}
-            />
-
+              regular>
+              <Input
+                value={passwordConfirm}
+                onBlur={() => setIsPWCFocused(false)}
+                onFocus={() => setIsPWCFocused(true)}
+                placeholder="비밀번호 확인"
+                style={{paddingLeft: 15}}
+                onChangeText={userPassword => setPassword(userPassword)}
+                secureTextEntry={true}
+              />
+            </Item>
             <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText title="Home" onPress={onSubmit}>
+              <AuthButtonText
+                title="Home"
+                onPress={() =>
+                  // navigation.navigate('RecommendationStacks', {
+                  //   screen: 'Surveyintro',
+                  // })
+                  navigation.navigate('Addinfo')
+                }>
                 회원가입
               </AuthButtonText>
             </AuthButton>
@@ -163,6 +195,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 60,
   },
+  singleitem: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 8,
+    borderRadius: 12,
+    backgroundColor: 'white',
+  },
   idcheckbtn: {
     backgroundColor: 'transparent',
     paddingRight: 2,
@@ -186,19 +225,4 @@ const styles = StyleSheet.create({
   blurred: {
     borderColor: '#ECECE2',
   },
-  input: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: 'white',
-    width: '100%',
-    paddingLeft: 15,
-  },
 });
-
-// 밸리데이션
-//https://stackoverflow.com/questions/54204827/react-native-form-validation
-// reg
-// https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-// https://stackoverflow.com/questions/62727346/how-to-validate-using-useeffect
