@@ -12,25 +12,34 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // screen
-import {HomeScreen} from './app/screens/main/Home';
-import {RoomScreen} from './app/screens/main/Room';
-import {PlantDetail} from './app/screens/main/PlantDetail';
+import {HomeScreen} from '../screens/main/Home';
+import {RoomScreen} from '../screens/main/Room';
+import {PlantDetail} from '../screens/main/PlantDetail';
 
-import {LoginScreen} from './app/screens/auth/Login';
-import {SignupScreen} from './app/screens/auth/Signup';
+import {LoginScreen} from '../screens/auth/Login';
+import {SignupScreen} from '../screens/auth/Signup';
 
-import {DiaryScreen} from './app/screens/diary/Diary';
-import {DiaryWriteScreen} from './app/screens/diary/DiaryWrite';
-import {DiaryUpdateScreen} from './app/screens/diary/DiaryUpdate';
+import {DiaryScreen} from '../screens/diary/Diary';
+import {DiaryWriteScreen} from '../screens/diary/DiaryWrite';
+import {DiaryUpdateScreen} from '../screens/diary/DiaryUpdate';
 
-import {SurveyintroScreen} from './app/screens/recommendation/SurveyIntro';
-import {SurveyquestionScreen} from './app/screens/recommendation/SurveyQ';
-import {SurveyresultScreen} from './app/screens/recommendation/SurveyResult';
+import {SurveyintroScreen} from '../screens/recommendation/SurveyIntro';
+import {SurveyquestionScreen} from '../screens/recommendation/SurveyQ';
+import {SurveyresultScreen} from '../screens/recommendation/SurveyResult';
 
 // style
-import theme from './app/assets/theme/index';
+import theme from '../assets/theme/index';
 import {ThemeProvider} from 'styled-components';
 import {Icon} from 'native-base';
+
+// redux
+
+import allReducer from '../reducers/index.js';
+
+import {Provider as StoreProvider, useDispatch} from 'react-redux';
+
+import {connect} from 'react-redux';
+import authReducer from '../reducers/authReducer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -149,8 +158,8 @@ function AuthStack() {
   );
 }
 
-export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+const Root = props => {
+  console.log(props);
 
   return (
     <ThemeProvider theme={theme}>
@@ -161,8 +170,13 @@ export default function App() {
         translucent={true}
       />
       <NavigationContainer>
-        {isLogin !== false ? <AuthStack /> : <Tabs />}
+        {props.isLoggedIn ? <Tabs /> : <AuthStack />}
       </NavigationContainer>
     </ThemeProvider>
   );
-}
+};
+
+const mapStateToProps = (state, props) => {
+  return {authReducer: props.authReducer};
+};
+export default connect(mapStateToProps)(Root);
