@@ -85,12 +85,12 @@ export function LoginScreen({navigation}) {
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
 
-  const _signIn = async () => {
+  const google_signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       // console.log(userInfo);
-      const credential = auth.GoogleAuthProvider.credential(
+      const credential = await auth.GoogleAuthProvider.credential(
         userInfo.idToken,
         userInfo.accessToken,
       );
@@ -174,7 +174,7 @@ export function LoginScreen({navigation}) {
                 <AuthButtonText onPress={moveHome}>로그인</AuthButtonText>
               </AuthButton>
               <SocialButton full>
-                <SocialButtonText onPress={_signIn}>
+                <SocialButtonText onPress={google_signIn}>
                   Sign in with Google
                 </SocialButtonText>
               </SocialButton>
