@@ -14,9 +14,7 @@ import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import DatePicker from 'react-native-date-picker';
 import {useState} from 'react';
-
-// import * as ImagePicker from "expo-image-picker";
-// 리액트 네이티브의 image picker 필요
+import ImagePicker from 'react-native-image-crop-picker';
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -69,6 +67,43 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const PlusModal = props => {
+  // take photo, choose photo
+  const [image, setImage] = useState(
+    'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
+  );
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        console.log(image);
+        setImage(image.path);
+        this.bs.current.snapTo(1);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
+  };
+
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        console.log(image);
+        setImage(image.path);
+        this.bs.current.snapTo(1);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
+  };
   const [date, setDate] = useState(new Date());
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -128,7 +163,7 @@ const PlusModal = props => {
               <Text style={styles.chiptext}>사진 등록</Text>
             </Littlechip>
             <ImageArea>
-              <ImageBox onPress={openImagePickerAsync}>
+              <ImageBox onPress={choosePhotoFromLibrary}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="image-multiple"
@@ -136,7 +171,7 @@ const PlusModal = props => {
                 />
                 <Text style={{fontSize: 13, marginTop: 8}}>사진 선택</Text>
               </ImageBox>
-              <ImageBox>
+              <ImageBox onPress={takePhotoFromCamera}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="camera"
