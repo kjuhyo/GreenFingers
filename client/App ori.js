@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 // import { StatusBar } from "expo-status-bar";
 import {StatusBar} from 'react-native';
 
@@ -32,16 +32,6 @@ import theme from './app/assets/theme/index';
 import {ThemeProvider} from 'styled-components';
 import {Icon} from 'native-base';
 
-import allReducer from './app/reducers/index.js';
-import {createStore} from 'redux';
-import Root from './app/navigations/Root';
-import {Provider as StoreProvider, useDispatch, useSelector} from 'react-redux';
-const store = createStore(
-  allReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-);
-
-const state = store.getState();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -142,18 +132,37 @@ function Tabs() {
   );
 }
 
-export default function App() {
-  useEffect(() => {
-    // 렌더링이 얼마나 되는지 확인용
-    console.log('rendering!!!!');
-  });
-
+function AuthStack() {
   return (
-    <StoreProvider store={store}>
-      <Root></Root>
-    </StoreProvider>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{header: () => null}}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{header: () => null}}
+      />
+    </Stack.Navigator>
   );
 }
 
-// redux 함수형
-//https://lannstark.tistory.com/128
+export default function App() {
+  const [isLogin, setIsLogin] = useState(true);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={true}
+        backgroundColor="transparent"
+        translucent={true}
+      />
+      <NavigationContainer>
+        {isLogin !== true ? <AuthStack /> : <Tabs />}
+      </NavigationContainer>
+    </ThemeProvider>
+  );
+}

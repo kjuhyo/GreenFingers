@@ -65,7 +65,7 @@ if (!firebase.apps.length) {
 //redux
 
 import allReducer from '../../reducers/index';
-import to_home from '../../actions/authAction';
+// import to_home from '../../actions/authAction';
 import {createStore} from 'redux';
 import {
   Provider as StoreProvider,
@@ -75,13 +75,15 @@ import {
 } from 'react-redux';
 // import authReducer from '../../reducers/authReducer';
 import {bindActionCreators} from 'redux';
-
+import {toHome} from '../../reducers/authReducer';
 const store = createStore(allReducer);
 
 export function LoginScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
-
+  const dispatch = useDispatch();
+  const moveHome = () => dispatch(toHome());
+  // console.log(dispatch(toHome()));
   // google login
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
@@ -174,10 +176,7 @@ export function LoginScreen({navigation}) {
             </View>
             <View style={styles.pairitem}>
               <AuthButton full>
-                <AuthButtonText
-                  onPress={() => store.dispatch({type: 'TO_HOME'})}>
-                  로그인
-                </AuthButtonText>
+                <AuthButtonText onPress={moveHome}>로그인</AuthButtonText>
               </AuthButton>
               <SocialButton full>
                 <SocialButtonText onPress={_signIn}>
@@ -204,11 +203,6 @@ export function LoginScreen({navigation}) {
     </ScrollView>
   );
 }
-const mapStateToProps = (state, props) => {
-  return {authReducer: state.authReducer};
-};
-
-export default connect(mapStateToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {

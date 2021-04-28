@@ -14,7 +14,7 @@ import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
 
-export function SignupScreen({navigation}) {
+export function AddinfoScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
   const [isNNFocused, setIsNNFocused] = useState(false);
@@ -30,31 +30,10 @@ export function SignupScreen({navigation}) {
             </View>
             <View style={styles.halfbottom}>
               <Text style={styles.logotext}>Fingers</Text>
-              <Text style={styles.signup}>회원가입</Text>
+              <Text style={styles.signup}>닉네임 등록</Text>
             </View>
           </View>
           <View style={styles.form}>
-            <Item
-              style={[
-                styles.singleitem,
-                isIDFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                onBlur={() => setIsIDFocused(false)}
-                onFocus={() => setIsIDFocused(true)}
-                style={{paddingLeft: 15}}
-                placeholder="이름"
-              />
-              <Button style={styles.idcheckbtn}>
-                <Text style={styles.textpadding}>중복확인</Text>
-                <Icon
-                  type="AntDesign"
-                  name="checkcircle"
-                  style={styles.textpadding}
-                />
-              </Button>
-            </Item>
             <Item
               style={[
                 styles.singleitem,
@@ -76,32 +55,6 @@ export function SignupScreen({navigation}) {
                 />
               </Button>
             </Item>
-            <Item
-              style={[
-                styles.singleitem,
-                isPWFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                onBlur={() => setIsPWFocused(false)}
-                onFocus={() => setIsPWFocused(true)}
-                placeholder="비밀번호"
-                style={{paddingLeft: 15}}
-              />
-            </Item>
-            <Item
-              style={[
-                styles.singleitem,
-                isPWCFocused ? styles.focused : styles.blurred,
-              ]}
-              regular>
-              <Input
-                onBlur={() => setIsPWCFocused(false)}
-                onFocus={() => setIsPWCFocused(true)}
-                placeholder="비밀번호 확인"
-                style={{paddingLeft: 15}}
-              />
-            </Item>
             <AuthButton full style={{marginTop: 20}}>
               <AuthButtonText
                 title="Home"
@@ -109,7 +62,7 @@ export function SignupScreen({navigation}) {
                   // navigation.navigate('RecommendationStacks', {
                   //   screen: 'Surveyintro',
                   // })
-                  navigation.navigate('Addinfo')
+                  navigation.navigate('Surveyintro')
                 }>
                 회원가입
               </AuthButtonText>
@@ -158,7 +111,7 @@ const styles = StyleSheet.create({
   singleitem: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginVertical: 8,
+    marginTop: 80,
     borderRadius: 12,
     backgroundColor: 'white',
   },
