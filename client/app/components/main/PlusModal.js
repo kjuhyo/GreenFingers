@@ -17,7 +17,6 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import DatePicker from 'react-native-date-picker';
 import {useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
-import {PhotoChoice} from './PhotoChoice';
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -108,17 +107,7 @@ const PlusModal = props => {
       });
   };
   const [date, setDate] = useState(new Date());
-  let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!');
-      return;
-    }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
-  };
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
