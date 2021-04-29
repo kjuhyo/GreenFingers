@@ -7,7 +7,7 @@ import {
   ModalHeader,
   ModalButtonBox,
   ModalButton,
-} from '../../../assets/theme/DiaryStyle';
+} from '../../../assets/theme/ModalStyle';
 
 export default function CheckDateModal(props) {
   const closeModal = visible => {

@@ -18,6 +18,7 @@
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "5.9.4",
     "@react-navigation/stack": "5.14.4",
+    "axios": "0.21.1",
     "native-base": "2.15.2",
     "radio-buttons-react-native": "1.0.4",
     "react": "17.0.1",

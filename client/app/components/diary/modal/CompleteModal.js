@@ -6,7 +6,7 @@ import {
   ModalBox,
   ModalHeader,
   ModalButton,
-} from '../../../assets/theme/DiaryStyle';
+} from '../../../assets/theme/ModalStyle';
 
 export default function CompleteModal(props) {
   const closeModal = visible => {

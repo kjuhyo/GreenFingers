@@ -3,6 +3,9 @@ import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text} from 'react-native';
 import 'react-native-gesture-handler';
 
+// axios
+import {updateDiary} from '../../api/diary';
+
 // style
 import styled from 'styled-components';
 import {Icon, Toast, Root} from 'native-base';
