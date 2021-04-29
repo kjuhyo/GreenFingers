@@ -9,7 +9,7 @@ export const instance = axios.create({
 });
 
 
-// interceptors
+// interceptors(임시. 백엔드와 협의 필요)
 instance.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data
