@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+// import { StatusBar } from "expo-status-bar";
 import {StatusBar} from 'react-native';
 
 import 'react-native-gesture-handler';
@@ -21,9 +22,12 @@ import {ThemeProvider} from 'styled-components';
 import {Icon} from 'native-base';
 
 // redux
-import {useSelector} from 'react-redux';
-
+import {useSelector, useDispatch} from 'react-redux';
+import firebase from '../components/auth/firebase';
+import auth from '@react-native-firebase/auth';
+import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
+import {addUid} from '../reducers/authReducer';
 
 const Tab = createBottomTabNavigator();
 
@@ -81,10 +85,31 @@ function Tabs() {
 }
 
 export default function Root() {
-  const {isLoggedIn} = useSelector(state => ({
-    isLoggedIn: state.authReducer.isLoggedIn,
+  // const [uid, setUid] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  const {uid} = useSelector(state => ({
+    uid: state.authReducer.uid,
   }));
-  console.log(isLoggedIn);
+
+  const dispatch = useDispatch();
+  const addUserId = uid => dispatch(addUid(uid));
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // setUid(user.uid);
+        console.log(user.uid, uid);
+        if (user.uid != uid) {
+          addUserId(user.uid);
+        }
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, [uid]);
+
   return (
     <ThemeProvider theme={theme}>
       <StatusBar
@@ -93,9 +118,13 @@ export default function Root() {
         backgroundColor="transparent"
         translucent={true}
       />
-      <NavigationContainer>
-        {isLoggedIn ? <Tabs /> : <AuthStack />}
-      </NavigationContainer>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <NavigationContainer>
+          {uid ? <Tabs /> : <AuthStack />}
+        </NavigationContainer>
+      )}
     </ThemeProvider>
   );
 }

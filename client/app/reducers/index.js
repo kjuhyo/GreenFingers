@@ -3,7 +3,7 @@ import authReducer from './authReducer.js';
 import otherReducer from './otherReducer.js';
 const allReducer = combineReducers({
   authReducer,
-  otherReducer,
+  // otherReducer,
 });
 export default allReducer;
 

@@ -1,9 +1,9 @@
 let initialState = {
-  isLoading: true,
-  isSignedUp: false,
-  isLoggedIn: false,
-  userToken: null,
-  haveName: false,
+  // isLoading: true,
+  // isSignedUp: false,
+  // isLoggedIn: false,
+  // userToken: null,
+  // haveName: false,
   // isLoggedOut: false,
   // noAccount: false,
 };
