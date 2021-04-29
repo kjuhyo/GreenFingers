@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
-import {Littlechip} from '../../assets/theme/roomstyle';
+import {Littlechip, LittleMenu} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import DatePicker from 'react-native-date-picker';
 import {useState} from 'react';
@@ -147,12 +147,15 @@ const PlusModal = props => {
             </TextInputBox>
           </View>
           {/* 데려온 날 */}
-          <View style={{marginBottom: 10, marginTop: 70}}>
+          <View style={{marginTop: 40}}>
             <Littlechip style={{marginBottom: 10}}>
               <Text style={styles.chiptext}>데려온 날</Text>
             </Littlechip>
             <DatePicker
-              style={{marginBottom: 10}}
+              style={{
+                marginBottom: 10,
+                marginHorizontal: 10,
+              }}
               date={date}
               mode="date"
               onDateChange={setDate}
@@ -160,39 +163,61 @@ const PlusModal = props => {
           </View>
           {/* 사진등록 */}
           <View style={styles.photo}>
-            <Littlechip>
+            <Littlechip style={{marginTop: 10}}>
               <Text style={styles.chiptext}>사진 등록</Text>
             </Littlechip>
             <ImageArea>
-              <ImageBox onPress={choosePhotoFromLibrary}>
+              <LittleMenu
+                onPress={choosePhotoFromLibrary}
+                style={{marginRight: 10}}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="image-multiple"
-                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
+                  style={{
+                    fontSize: 20,
+                    color: 'rgba(0,0,0,0.7)',
+                    marginRight: 10,
+                  }}
                 />
-                <Text style={{fontSize: 12, marginTop: 1}}>사진 선택</Text>
-              </ImageBox>
-              <ImageBox onPress={takePhotoFromCamera}>
+                <Text style={{fontSize: 10, marginTop: 1}}>사진 선택</Text>
+              </LittleMenu>
+              <LittleMenu onPress={takePhotoFromCamera}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="camera"
-                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
+                  style={{
+                    fontSize: 20,
+                    color: 'rgba(0,0,0,0.7)',
+                    marginRight: 10,
+                  }}
                 />
-                <Text style={{fontSize: 11, marginTop: 1}}>사진 촬영</Text>
-              </ImageBox>
+                <Text style={{fontSize: 10, marginTop: 1}}>사진 촬영</Text>
+              </LittleMenu>
             </ImageArea>
           </View>
+          <View style={styles.identification}>
+            {/* preview */}
+            <View style={styles.preview}>
+              <Image
+                source={{
+                  uri: image,
+                }}
+                style={{
+                  height: 100,
+                  width: 280,
+                  margin: 10,
+                  borderRadius: 5,
+                  backgroundColor: 'white',
+                  padding: 20,
+                }}
+                imageStyle={{borderRadius: 15}}></Image>
+              {/* 식물 분류 */}
+              <View style={styles.result}>
+                <Text style={styles.chiptext}>산세베리아</Text>
+              </View>
+            </View>
+          </View>
         </View>
-        <Littlechip style={{marginTop: 10}}>
-          <Text style={styles.chiptext}>Preview</Text>
-        </Littlechip>
-        <Image
-          source={{
-            uri: image,
-          }}
-          style={{height: 60, width: 60, marginLeft: 20, marginTop: 10}}
-          imageStyle={{borderRadius: 15}}></Image>
-
         {/* 버튼 */}
         <View style={styles.button}>
           <AddButton onPress={() => closeModal(false, 'Cancel')}>
@@ -231,14 +256,14 @@ const styles = StyleSheet.create({
     // backgroundColor: "rgba(52,176,80,0.1)",
     width: WIDTH - 80,
     marginLeft: 20,
-    flex: 1,
+    flex: 0.8,
   },
   content: {
-    flex: 9,
+    flex: 11,
   },
   chiptext: {
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: 12,
   },
   optionlong: {
     marginHorizontal: 5,
@@ -262,13 +287,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   changeroom: {
-    flex: 2,
+    flex: 1,
   },
   input: {
     flex: 1,
   },
   photo: {
-    flex: 5,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  identification: {
+    flex: 3,
+    // flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  preview: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  result: {
+    marginBottom: 10,
   },
 });
 export {PlusModal};

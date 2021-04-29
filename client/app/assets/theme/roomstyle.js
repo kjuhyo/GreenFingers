@@ -24,6 +24,17 @@ export const Plantchip = styled.View`
 `;
 
 export const Littlechip = styled.View`
+  border-radius: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 1px;
+  padding-left: 1px;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  margin-left: 5px;
+`;
+export const LittleMenu = styled.TouchableOpacity`
   border-radius: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -31,9 +42,9 @@ export const Littlechip = styled.View`
   padding-left: 1px;
   justify-content: center;
   align-items: center;
-  background-color: rgba(52, 176, 80, 0.1);
-  width: 80px;
-  margin-left: 18px;
+  width: 100px;
+  background-color: rgba(0, 100, 100, 0.05);
+  flex-direction: row;
 `;
 
 // 모달 버튼 박스
