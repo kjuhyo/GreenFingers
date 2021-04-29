@@ -14,6 +14,36 @@ import {
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
+import auth from '@react-native-firebase/auth';
+import firebase from '@react-native-firebase/app';
+import {
+  WEB_CLIENT_ID,
+  API_KEY,
+  AUTH_DOMAIN,
+  DATABASE_URL,
+  PROEJCT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID,
+  APP_ID,
+  MEASUREMENT_ID,
+} from '@env';
+
+var firebaseConfig = {
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  databaseURL: DATABASE_URL,
+  projectId: PROEJCT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  appId: APP_ID,
+  measurementId: MEASUREMENT_ID,
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app();
+}
 
 export function SignupScreen({navigation}) {
   // input focus variables
@@ -32,6 +62,27 @@ export function SignupScreen({navigation}) {
   const onSubmit = () => {
     // console.log('data', data);
     console.log(email, password, passwordConfirm);
+  };
+
+  const email_signIn = async () => {
+    if (email && !emailError && password && !pwError) {
+      try {
+        const credential = await auth().createUserWithEmailAndPassword(
+          email,
+          password,
+        );
+        console.log(credential);
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          alert('이미 가입된 이메일입니다.');
+        } else {
+          alert('가입에 실패했습니다.');
+          console.log(error);
+        }
+      }
+    } else {
+      alert('가입양식에 맞춰 작성해주세요.');
+    }
   };
 
   const validateEmail = userEmail => {
@@ -144,7 +195,7 @@ export function SignupScreen({navigation}) {
             <Label style={styles.errorlabel}>{pwcError}</Label>
 
             <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText title="Home" onPress={onSubmit}>
+              <AuthButtonText title="Home" onPress={email_signIn}>
                 회원가입
               </AuthButtonText>
             </AuthButton>

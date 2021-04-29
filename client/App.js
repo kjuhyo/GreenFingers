@@ -23,7 +23,7 @@ const store = createStore(
 export default function App() {
   useEffect(() => {
     // 렌더링이 얼마나 되는지 확인용
-    console.log('rendering!!!!');
+    console.log('rendering');
   });
 
   return (
