@@ -28,6 +28,7 @@ import firebase from '../components/auth/firebase';
 import auth from '@react-native-firebase/auth';
 import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
+import {addUid} from '../reducers/authReducer';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,19 +43,30 @@ function Tabs() {
 }
 
 export default function Root() {
-  const [uid, setUid] = useState('');
+  // const [uid, setUid] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  const {uid} = useSelector(state => ({
+    uid: state.authReducer.uid,
+  }));
+
+  const dispatch = useDispatch();
+  const addUserId = uid => dispatch(addUid(uid));
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        setUid(user.uid);
+        // setUid(user.uid);
+        console.log(user.uid, uid);
+        if (user.uid != uid) {
+          addUserId(user.uid);
+        }
         setIsLoading(false);
       } else {
         setIsLoading(false);
       }
     });
-  });
+  }, [uid]);
 
   return (
     <ThemeProvider theme={theme}>
