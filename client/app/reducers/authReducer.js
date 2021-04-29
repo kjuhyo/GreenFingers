@@ -1,19 +1,20 @@
-const TO_LOGIN = 'auth/TO_LOGIN';
-const TO_SIGNUP = 'auth/TO_SIGNUP';
-const TO_ADD_INFO = 'auth/TO_ADD_INFO';
+// const TO_LOGIN = 'auth/TO_LOGIN';
+// const TO_SIGNUP = 'auth/TO_SIGNUP';
+// const TO_ADD_INFO = 'auth/TO_ADD_INFO';
 const TO_HOME = 'TO_HOME';
 
-export const toLogin = () => ({type: TO_LOGIN});
-export const toSignup = () => ({type: TO_SIGNUP});
-export const toAddInfo = () => ({type: TO_ADD_INFO});
+// export const toLogin = () => ({type: TO_LOGIN});
+// export const toSignup = () => ({type: TO_SIGNUP});
+// export const toAddInfo = () => ({type: TO_ADD_INFO});
 export const toHome = () => ({type: TO_HOME});
 
 let initialState = {
   isLoading: true,
-  isSignedUp: false,
+  // isSignedUp: false,
   isLoggedIn: false,
   userToken: null,
-  haveName: false,
+  isEntered: false,
+  // haveName: false,
   // isLoggedOut: false,
   // noAccount: false,
 };
@@ -40,10 +41,9 @@ export default function auth(state = initialState, action) {
         noAccount: false,
       };
     case 'TO_HOME':
-      console.log(state);
       return {
         ...state,
-        isLoggedIn: true,
+        isEntered: true,
       };
     default:
       console.log(state);

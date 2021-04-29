@@ -77,25 +77,30 @@ export function LoginScreen({navigation}) {
   const moveHome = () => dispatch(toHome());
   // console.log(dispatch(toHome()));
 
+  // google login
+  const [loggedIn, setloggedIn] = useState(false);
+  const [userInfo, setuserInfo] = useState([]);
+
   // input focus
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
 
-  // google login
-  const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
+  // input variables
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const google_signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      // console.log(userInfo);
+      console.log(userInfo);
       const credential = await auth.GoogleAuthProvider.credential(
         userInfo.idToken,
         userInfo.accessToken,
       );
-      // console.log(credential);
-      dispatch(toHome());
+      const user = await firebase.auth().currentUser;
+      console.log(user);
+      // dispatch(toHome());
       await auth().signInWithCredential(credential);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -111,16 +116,37 @@ export function LoginScreen({navigation}) {
     }
   };
 
+  const email_logIn = async () => {
+    if (email && password) {
+      try {
+        let response = await auth().signInWithEmailAndPassword(email, password);
+        if (response && response.user) {
+          alert('Success', 'Authenticated successfully');
+          console.log(response);
+        }
+      } catch (e) {
+        console.error(e.message);
+      }
+    } else {
+      alert('이메일과 비밀번호를 입력해주세요');
+      console.log('email, password no');
+    }
+    setEmail('');
+    setPassword('');
+  };
+
   const signOut = async () => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      setloggedIn(false);
-      setuserInfo([]);
+      // setloggedIn(false);
+      // setuserInfo([]);
     } catch (error) {
       console.error(error);
     }
   };
+  //firebase
+  //await firebase.auth().signOut()
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -144,34 +170,35 @@ export function LoginScreen({navigation}) {
           </View>
           <View style={styles.form}>
             <View style={styles.pairitem}>
-              <Item
+              <TextInput
                 style={[
-                  styles.singleitem,
+                  styles.input,
                   isIDFocused ? styles.focused : styles.blurred,
                 ]}
-                regular>
-                <Input
-                  placeholder="ID"
-                  onBlur={() => setIsIDFocused(false)}
-                  onFocus={() => setIsIDFocused(true)}
-                />
-              </Item>
-              <Item
+                value={email}
+                onBlur={() => setIsIDFocused(false)}
+                onFocus={() => setIsIDFocused(true)}
+                placeholder="Email"
+                onChangeText={userEmail => setEmail(userEmail)}
+                autoCapitalize="none"
+              />
+              <TextInput
                 style={[
-                  styles.singleitem,
+                  styles.input,
                   isPWFocused ? styles.focused : styles.blurred,
                 ]}
-                regular>
-                <Input
-                  placeholder="PASSWORD"
-                  onBlur={() => setIsPWFocused(false)}
-                  onFocus={() => setIsPWFocused(true)}
-                />
-              </Item>
+                value={password}
+                placeholder="Password"
+                onBlur={() => setIsPWFocused(false)}
+                onFocus={() => setIsPWFocused(true)}
+                onChangeText={userPW => setPassword(userPW)}
+                autoCapitalize="none"
+                secureTextEntry={true}
+              />
             </View>
             <View style={styles.pairitem}>
               <AuthButton full>
-                <AuthButtonText onPress={moveHome}>로그인</AuthButtonText>
+                <AuthButtonText onPress={email_logIn}>로그인</AuthButtonText>
               </AuthButton>
               <SocialButton full>
                 <SocialButtonText onPress={google_signIn}>
@@ -182,15 +209,24 @@ export function LoginScreen({navigation}) {
                 <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
               </SocialButton> */}
             </View>
-            <View style={styles.textlinkwrap}>
-              <Text
-                style={styles.textleft}
-                title="Signup"
-                onPress={() => navigation.navigate('Signup')}>
-                회원가입
-              </Text>
-              <Text style={styles.textmiddle}>|</Text>
-              <Text style={styles.textright}>비회원 입장</Text>
+            <View style={{flex: 1}}>
+              <View style={styles.textlinkwrap}>
+                <Text
+                  style={styles.textleft}
+                  title="Signup"
+                  onPress={() => navigation.navigate('Signup')}>
+                  회원가입
+                </Text>
+                <Text style={styles.textmiddle}>|</Text>
+                <Text style={styles.textright} onPress={moveHome}>
+                  비회원 입장
+                </Text>
+              </View>
+              <View style={styles.passwordlink}>
+                <Text onPress={() => navigation.navigate('ResetPassword')}>
+                  비밀번호 재설정
+                </Text>
+              </View>
             </View>
           </View>
         </Container>
@@ -241,6 +277,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
+  passwordlink: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
   textleft: {
     flex: 5,
     textAlign: 'right',
@@ -267,6 +309,17 @@ const styles = StyleSheet.create({
   },
   blurred: {
     borderColor: '#ECECE2',
+  },
+  input: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 5,
+    borderRadius: 12,
+    borderColor: 'grey',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    width: '100%',
+    paddingLeft: 15,
   },
 });
 

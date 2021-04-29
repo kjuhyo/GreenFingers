@@ -40,10 +40,10 @@ function Tabs() {
 }
 
 export default function Root() {
-  const {isLoggedIn} = useSelector(state => ({
-    isLoggedIn: state.authReducer.isLoggedIn,
+  const {isEntered} = useSelector(state => ({
+    isEntered: state.authReducer.isEntered,
   }));
-  console.log(isLoggedIn);
+  console.log(isEntered);
   return (
     <ThemeProvider theme={theme}>
       <StatusBar
@@ -53,7 +53,7 @@ export default function Root() {
         translucent={true}
       />
       <NavigationContainer>
-        {isLoggedIn ? <Tabs /> : <AuthStack />}
+        {isEntered ? <Tabs /> : <AuthStack />}
       </NavigationContainer>
     </ThemeProvider>
   );

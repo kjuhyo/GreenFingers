@@ -15,35 +15,7 @@ import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app';
-import {
-  WEB_CLIENT_ID,
-  API_KEY,
-  AUTH_DOMAIN,
-  DATABASE_URL,
-  PROEJCT_ID,
-  STORAGE_BUCKET,
-  MESSAGING_SENDER_ID,
-  APP_ID,
-  MEASUREMENT_ID,
-} from '@env';
-
-var firebaseConfig = {
-  apiKey: API_KEY,
-  authDomain: AUTH_DOMAIN,
-  databaseURL: DATABASE_URL,
-  projectId: PROEJCT_ID,
-  storageBucket: STORAGE_BUCKET,
-  messagingSenderId: MESSAGING_SENDER_ID,
-  appId: APP_ID,
-  measurementId: MEASUREMENT_ID,
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
-}
+import firebase from '../../components/auth/firebase';
 
 export function SignupScreen({navigation}) {
   // input focus variables
@@ -67,10 +39,9 @@ export function SignupScreen({navigation}) {
   const email_signIn = async () => {
     if (email && !emailError && password && !pwError) {
       try {
-        const credential = await auth().createUserWithEmailAndPassword(
-          email,
-          password,
-        );
+        const credential = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
         console.log(credential);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
@@ -195,7 +166,7 @@ export function SignupScreen({navigation}) {
             <Label style={styles.errorlabel}>{pwcError}</Label>
 
             <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText title="Home" onPress={email_signIn}>
+              <AuthButtonText title="Signup" onPress={email_signIn}>
                 회원가입
               </AuthButtonText>
             </AuthButton>
@@ -240,19 +211,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 60,
   },
-  idcheckbtn: {
-    backgroundColor: 'transparent',
-    paddingRight: 2,
-    justifyContent: 'center',
-    alignSelf: 'center',
-    elevation: 0, //테두리 그림자 없애는거
-  },
-  textpadding: {
-    paddingRight: 1,
-    color: 'grey',
-    fontSize: 12,
-    marginHorizontal: 0,
-  },
   focused: {
     borderColor: '#8AD169',
     borderTopWidth: 1.1,
@@ -269,12 +227,15 @@ const styles = StyleSheet.create({
   },
   blurred: {
     borderColor: '#ECECE2',
+    borderWidth: 1,
   },
   input: {
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginVertical: 5,
     borderRadius: 12,
+    borderColor: 'grey',
+    borderWidth: 1,
     backgroundColor: 'white',
     width: '100%',
     paddingLeft: 15,

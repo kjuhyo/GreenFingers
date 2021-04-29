@@ -13,13 +13,40 @@ import {
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
+import firebase from '../../components/auth/firebase';
 
-export function AddinfoScreen({navigation}) {
+export function ResetPwScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
-  const [isPWFocused, setIsPWFocused] = useState(false);
-  const [isNNFocused, setIsNNFocused] = useState(false);
-  const [isPWCFocused, setIsPWCFocused] = useState(false);
+  const [email, setEmail] = useState('');
 
+  const resetPw = async () => {
+    // var actionCodeSettings = {
+    //   url: 'https://www.example.com/?email=' + email,
+    //   iOS: {
+    //     bundleId: 'com.example.ios',
+    //   },
+    //   android: {
+    //     packageName: 'com.green',
+    //     installApp: true,
+    //     minimumVersion: '12',
+    //   },
+    //   handleCodeInApp: true,
+    //   // When multiple custom dynamic link domains are defined, specify which
+    //   // one to use.
+    //   dynamicLinkDomain: 'example.page.link',
+    // };
+    try {
+      const auth = firebase.auth();
+      await auth.sendPasswordResetEmail(email);
+    } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        alert('가입 되지 않은 이메일입니다. 이메일을 다시 확인해주세요');
+      } else {
+        alert('실패했습니다.');
+        console.log(error);
+      }
+    }
+  };
   return (
     <ScrollView>
       <KeyboardAwareScrollView>
@@ -30,42 +57,26 @@ export function AddinfoScreen({navigation}) {
             </View>
             <View style={styles.halfbottom}>
               <Text style={styles.logotext}>Fingers</Text>
-              <Text style={styles.signup}>닉네임 등록</Text>
+              <Text style={styles.signup}>비밀번호 재설정</Text>
             </View>
           </View>
           <View style={styles.form}>
             <Item
               style={[
                 styles.singleitem,
-                isNNFocused ? styles.focused : styles.blurred,
+                isIDFocused ? styles.focused : styles.blurred,
               ]}
               regular>
               <Input
-                onBlur={() => setIsNNFocused(false)}
-                onFocus={() => setIsNNFocused(true)}
+                onBlur={() => setIsIDFocused(false)}
+                onFocus={() => setIsIDFocused(true)}
+                onChangeText={userEmail => setEmail(userEmail)}
                 style={{paddingLeft: 15}}
-                placeholder="닉네임"
+                placeholder="이메일"
               />
-              <Button style={styles.idcheckbtn}>
-                <Text style={styles.textpadding}>중복확인</Text>
-                <Icon
-                  type="AntDesign"
-                  name="checkcircle"
-                  style={styles.textpadding}
-                />
-              </Button>
             </Item>
-            <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText
-                title="Home"
-                onPress={() =>
-                  // navigation.navigate('RecommendationStacks', {
-                  //   screen: 'Surveyintro',
-                  // })
-                  navigation.navigate('Surveyintro')
-                }>
-                회원가입
-              </AuthButtonText>
+            <AuthButton full style={{marginTop: 20}} onPress={resetPw}>
+              <AuthButtonText title="Home">비밀번호 재설정</AuthButtonText>
             </AuthButton>
           </View>
         </Container>
