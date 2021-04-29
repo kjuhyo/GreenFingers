@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 // import { StatusBar } from "expo-status-bar";
 import {StatusBar} from 'react-native';
 
@@ -23,8 +23,10 @@ import {ThemeProvider} from 'styled-components';
 import {Icon} from 'native-base';
 
 // redux
-import {useSelector} from 'react-redux';
-
+import {useSelector, useDispatch} from 'react-redux';
+import firebase from '../components/auth/firebase';
+import auth from '@react-native-firebase/auth';
+import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
 
 const Tab = createBottomTabNavigator();
@@ -40,10 +42,20 @@ function Tabs() {
 }
 
 export default function Root() {
-  const {isEntered} = useSelector(state => ({
-    isEntered: state.authReducer.isEntered,
-  }));
-  console.log(isEntered);
+  const [uid, setUid] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        setUid(user.uid);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    });
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <StatusBar
@@ -52,9 +64,13 @@ export default function Root() {
         backgroundColor="transparent"
         translucent={true}
       />
-      <NavigationContainer>
-        {isEntered ? <Tabs /> : <AuthStack />}
-      </NavigationContainer>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <NavigationContainer>
+          {uid ? <Tabs /> : <AuthStack />}
+        </NavigationContainer>
+      )}
     </ThemeProvider>
   );
 }

@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  TextInput,
+} from 'react-native';
 import {
   Container,
   Header,
@@ -20,24 +27,28 @@ export function ResetPwScreen({navigation}) {
   const [email, setEmail] = useState('');
 
   const resetPw = async () => {
-    // var actionCodeSettings = {
-    //   url: 'https://www.example.com/?email=' + email,
-    //   iOS: {
-    //     bundleId: 'com.example.ios',
-    //   },
-    //   android: {
-    //     packageName: 'com.green',
-    //     installApp: true,
-    //     minimumVersion: '12',
-    //   },
-    //   handleCodeInApp: true,
-    //   // When multiple custom dynamic link domains are defined, specify which
-    //   // one to use.
-    //   dynamicLinkDomain: 'example.page.link',
-    // };
     try {
+      var actionCodeSettings = {
+        url: 'http://greenfingers-e8006.firebaseapp.com',
+        iOS: {
+          bundleId: 'com.example.ios',
+        },
+        android: {
+          packageName: 'com.green',
+          installApp: true,
+          minimumVersion: '12',
+        },
+        handleCodeInApp: true,
+        dynamicLinkDomain: 'greenfingers-e8006.firebaseapp.com/',
+      };
       const auth = firebase.auth();
       await auth.sendPasswordResetEmail(email);
+      Alert.alert(
+        'Alert',
+        '비밀번호 재설정 메일이 발송되었습니다. 메일을 확인해 비밀번호를 변경해 주세요.',
+        [{text: 'OK', onPress: () => navigation.navigate('Login')}],
+      );
+      // navigation.navigate('Login');
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
         alert('가입 되지 않은 이메일입니다. 이메일을 다시 확인해주세요');
@@ -61,20 +72,17 @@ export function ResetPwScreen({navigation}) {
             </View>
           </View>
           <View style={styles.form}>
-            <Item
+            <TextInput
               style={[
+                styles.input,
                 styles.singleitem,
                 isIDFocused ? styles.focused : styles.blurred,
               ]}
-              regular>
-              <Input
-                onBlur={() => setIsIDFocused(false)}
-                onFocus={() => setIsIDFocused(true)}
-                onChangeText={userEmail => setEmail(userEmail)}
-                style={{paddingLeft: 15}}
-                placeholder="이메일"
-              />
-            </Item>
+              placeholder="이메일"
+              onBlur={() => setIsIDFocused(false)}
+              onFocus={() => setIsIDFocused(true)}
+              onChangeText={userEmail => setEmail(userEmail)}
+            />
             <AuthButton full style={{marginTop: 20}} onPress={resetPw}>
               <AuthButtonText title="Home">비밀번호 재설정</AuthButtonText>
             </AuthButton>
@@ -148,5 +156,16 @@ const styles = StyleSheet.create({
   },
   blurred: {
     borderColor: '#ECECE2',
+  },
+  input: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 5,
+    borderRadius: 12,
+    borderColor: 'grey',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    width: '100%',
+    paddingLeft: 15,
   },
 });

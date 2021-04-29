@@ -29,39 +29,10 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   GoogleSignin,
   statusCodes,
-  GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app';
-import {
-  WEB_CLIENT_ID,
-  API_KEY,
-  AUTH_DOMAIN,
-  DATABASE_URL,
-  PROEJCT_ID,
-  STORAGE_BUCKET,
-  MESSAGING_SENDER_ID,
-  APP_ID,
-  MEASUREMENT_ID,
-} from '@env';
-
-var firebaseConfig = {
-  apiKey: API_KEY,
-  authDomain: AUTH_DOMAIN,
-  databaseURL: DATABASE_URL,
-  projectId: PROEJCT_ID,
-  storageBucket: STORAGE_BUCKET,
-  messagingSenderId: MESSAGING_SENDER_ID,
-  appId: APP_ID,
-  measurementId: MEASUREMENT_ID,
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
-}
-
+import firebase from '../../components/auth/firebase';
+import {WEB_CLIENT_ID} from '@env';
 //redux
 import {
   Provider as StoreProvider,
@@ -78,8 +49,8 @@ export function LoginScreen({navigation}) {
   // console.log(dispatch(toHome()));
 
   // google login
-  const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
+  // const [provider, setProvider] = useState(false);
+  // const [userInfo, setuserInfo] = useState([]);
 
   // input focus
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -93,15 +64,14 @@ export function LoginScreen({navigation}) {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
+      // console.log(userInfo);
       const credential = await auth.GoogleAuthProvider.credential(
         userInfo.idToken,
         userInfo.accessToken,
       );
-      const user = await firebase.auth().currentUser;
-      console.log(user);
-      // dispatch(toHome());
-      await auth().signInWithCredential(credential);
+      const response = await auth().signInWithCredential(credential);
+      console.log(response.user.uid);
+      const token = await auth().currentUser.getIdToken(true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');
@@ -121,8 +91,8 @@ export function LoginScreen({navigation}) {
       try {
         let response = await auth().signInWithEmailAndPassword(email, password);
         if (response && response.user) {
-          alert('Success', 'Authenticated successfully');
-          console.log(response);
+          // alert('Success', 'Authenticated successfully');
+          const uid = response.user.uid;
         }
       } catch (e) {
         console.error(e.message);
@@ -209,24 +179,20 @@ export function LoginScreen({navigation}) {
                 <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
               </SocialButton> */}
             </View>
-            <View style={{flex: 1}}>
-              <View style={styles.textlinkwrap}>
-                <Text
-                  style={styles.textleft}
-                  title="Signup"
-                  onPress={() => navigation.navigate('Signup')}>
-                  회원가입
-                </Text>
-                <Text style={styles.textmiddle}>|</Text>
-                <Text style={styles.textright} onPress={moveHome}>
-                  비회원 입장
-                </Text>
-              </View>
-              <View style={styles.passwordlink}>
-                <Text onPress={() => navigation.navigate('ResetPassword')}>
-                  비밀번호 재설정
-                </Text>
-              </View>
+
+            <View style={styles.textlinkwrap}>
+              <Text
+                style={styles.textleft}
+                title="Signup"
+                onPress={() => navigation.navigate('Signup')}>
+                회원가입
+              </Text>
+              <Text style={styles.textmiddle}>|</Text>
+              <Text
+                style={styles.textright}
+                onPress={() => navigation.navigate('ResetPassword')}>
+                비밀번호 재설정
+              </Text>
             </View>
           </View>
         </Container>
@@ -284,7 +250,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   textleft: {
-    flex: 5,
+    flex: 2,
     textAlign: 'right',
   },
   textmiddle: {
@@ -292,7 +258,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   textright: {
-    flex: 5,
+    flex: 3,
     textAlign: 'left',
   },
   singleitem: {

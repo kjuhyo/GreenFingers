@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Alert,
+} from 'react-native';
 import {
   Container,
   Header,
@@ -99,7 +106,21 @@ export function SignupScreen({navigation}) {
       console.log('PWC is Correct');
     }
   };
-  const i = false;
+
+  const submitAlert = () => {
+    Alert.alert(
+      '회원가입',
+      '실제 사용중인 이메일을 입력하셔야 나중에 비밀번호 재설정이 가능합니다. 실제 이메일이 맞나요?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => email_signIn()},
+      ],
+    );
+  };
 
   return (
     <ScrollView>
@@ -166,7 +187,7 @@ export function SignupScreen({navigation}) {
             <Label style={styles.errorlabel}>{pwcError}</Label>
 
             <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText title="Signup" onPress={email_signIn}>
+              <AuthButtonText title="Signup" onPress={submitAlert}>
                 회원가입
               </AuthButtonText>
             </AuthButton>
@@ -238,6 +259,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: 'white',
     width: '100%',
+    fontSize: 12,
     paddingLeft: 15,
   },
   errorlabel: {
