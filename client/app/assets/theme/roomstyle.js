@@ -49,8 +49,8 @@ export const LittleMenu = styled.TouchableOpacity`
 
 // 모달 버튼 박스
 export const ModalButtonBox = styled.View`
-  flex: 3;
-  flex-direction: row;
+  flex: 1;
+  flex-direction: column;
   border-radius: 10px;
   background-color: ${({theme}) => theme.colors.background};
 `;

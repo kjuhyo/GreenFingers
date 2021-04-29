@@ -17,6 +17,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import DatePicker from 'react-native-date-picker';
 import {useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
+import {PlantIdentification} from './PlantIdentification';
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -83,6 +84,7 @@ const PlusModal = props => {
       .then(image => {
         console.log(image);
         setImage(image.path);
+        changeModalVisible(true);
         this.bs.current.snapTo(1);
       })
       .catch(err => {
@@ -100,6 +102,7 @@ const PlusModal = props => {
       .then(image => {
         console.log(image);
         setImage(image.path);
+        changeModalVisible(true);
         this.bs.current.snapTo(1);
       })
       .catch(err => {
@@ -228,6 +231,18 @@ const PlusModal = props => {
               style={{fontSize: 20}}></Icon>
           </AddButton>
         </View>
+        {/* 식물 판별 결과 */}
+        <Modal
+          transparent={true}
+          animationType="fade"
+          visible={isModalVisible}
+          nRequestClose={() => changeModalVisible(false)}
+          style={styles.plantmodal}>
+          <PlantIdentification
+            changeModalVisible={changeModalVisible}
+            setData={setData}
+          />
+        </Modal>
       </View>
     </TouchableOpacity>
   );
