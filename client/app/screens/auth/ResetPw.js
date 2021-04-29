@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  TextInput,
+} from 'react-native';
 import {
   Container,
   Header,
@@ -13,13 +20,44 @@ import {
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
+import firebase from '../../components/auth/firebase';
 
-export function AddinfoScreen({navigation}) {
+export function ResetPwScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);
-  const [isPWFocused, setIsPWFocused] = useState(false);
-  const [isNNFocused, setIsNNFocused] = useState(false);
-  const [isPWCFocused, setIsPWCFocused] = useState(false);
+  const [email, setEmail] = useState('');
 
+  const resetPw = async () => {
+    try {
+      var actionCodeSettings = {
+        url: 'http://greenfingers-e8006.firebaseapp.com',
+        iOS: {
+          bundleId: 'com.example.ios',
+        },
+        android: {
+          packageName: 'com.green',
+          installApp: true,
+          minimumVersion: '12',
+        },
+        handleCodeInApp: true,
+        dynamicLinkDomain: 'greenfingers-e8006.firebaseapp.com/',
+      };
+      const auth = firebase.auth();
+      await auth.sendPasswordResetEmail(email);
+      Alert.alert(
+        'Alert',
+        '비밀번호 재설정 메일이 발송되었습니다. 메일을 확인해 비밀번호를 변경해 주세요.',
+        [{text: 'OK', onPress: () => navigation.navigate('Login')}],
+      );
+      // navigation.navigate('Login');
+    } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        alert('가입 되지 않은 이메일입니다. 이메일을 다시 확인해주세요');
+      } else {
+        alert('실패했습니다.');
+        console.log(error);
+      }
+    }
+  };
   return (
     <ScrollView>
       <KeyboardAwareScrollView>
@@ -30,42 +68,23 @@ export function AddinfoScreen({navigation}) {
             </View>
             <View style={styles.halfbottom}>
               <Text style={styles.logotext}>Fingers</Text>
-              <Text style={styles.signup}>닉네임 등록</Text>
+              <Text style={styles.signup}>비밀번호 재설정</Text>
             </View>
           </View>
           <View style={styles.form}>
-            <Item
+            <TextInput
               style={[
+                styles.input,
                 styles.singleitem,
-                isNNFocused ? styles.focused : styles.blurred,
+                isIDFocused ? styles.focused : styles.blurred,
               ]}
-              regular>
-              <Input
-                onBlur={() => setIsNNFocused(false)}
-                onFocus={() => setIsNNFocused(true)}
-                style={{paddingLeft: 15}}
-                placeholder="닉네임"
-              />
-              <Button style={styles.idcheckbtn}>
-                <Text style={styles.textpadding}>중복확인</Text>
-                <Icon
-                  type="AntDesign"
-                  name="checkcircle"
-                  style={styles.textpadding}
-                />
-              </Button>
-            </Item>
-            <AuthButton full style={{marginTop: 20}}>
-              <AuthButtonText
-                title="Home"
-                onPress={() =>
-                  // navigation.navigate('RecommendationStacks', {
-                  //   screen: 'Surveyintro',
-                  // })
-                  navigation.navigate('Surveyintro')
-                }>
-                회원가입
-              </AuthButtonText>
+              placeholder="이메일"
+              onBlur={() => setIsIDFocused(false)}
+              onFocus={() => setIsIDFocused(true)}
+              onChangeText={userEmail => setEmail(userEmail)}
+            />
+            <AuthButton full style={{marginTop: 20}} onPress={resetPw}>
+              <AuthButtonText title="Home">비밀번호 재설정</AuthButtonText>
             </AuthButton>
           </View>
         </Container>
@@ -137,5 +156,16 @@ const styles = StyleSheet.create({
   },
   blurred: {
     borderColor: '#ECECE2',
+  },
+  input: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 5,
+    borderRadius: 12,
+    borderColor: 'grey',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    width: '100%',
+    paddingLeft: 15,
   },
 });

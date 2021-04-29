@@ -29,39 +29,10 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   GoogleSignin,
   statusCodes,
-  GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app';
-import {
-  WEB_CLIENT_ID,
-  API_KEY,
-  AUTH_DOMAIN,
-  DATABASE_URL,
-  PROEJCT_ID,
-  STORAGE_BUCKET,
-  MESSAGING_SENDER_ID,
-  APP_ID,
-  MEASUREMENT_ID,
-} from '@env';
-
-var firebaseConfig = {
-  apiKey: API_KEY,
-  authDomain: AUTH_DOMAIN,
-  databaseURL: DATABASE_URL,
-  projectId: PROEJCT_ID,
-  storageBucket: STORAGE_BUCKET,
-  messagingSenderId: MESSAGING_SENDER_ID,
-  appId: APP_ID,
-  measurementId: MEASUREMENT_ID,
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
-}
-
+import firebase from '../../components/auth/firebase';
+import {WEB_CLIENT_ID} from '@env';
 //redux
 import {
   Provider as StoreProvider,
@@ -77,13 +48,17 @@ export function LoginScreen({navigation}) {
   const moveHome = () => dispatch(toHome());
   // console.log(dispatch(toHome()));
 
+  // google login
+  // const [provider, setProvider] = useState(false);
+  // const [userInfo, setuserInfo] = useState([]);
+
   // input focus
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
 
-  // google login
-  const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
+  // input variables
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const google_signIn = async () => {
     try {
@@ -94,9 +69,9 @@ export function LoginScreen({navigation}) {
         userInfo.idToken,
         userInfo.accessToken,
       );
-      // console.log(credential);
-      dispatch(toHome());
-      await auth().signInWithCredential(credential);
+      const response = await auth().signInWithCredential(credential);
+      console.log(response.user.uid);
+      const token = await auth().currentUser.getIdToken(true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');
@@ -111,16 +86,37 @@ export function LoginScreen({navigation}) {
     }
   };
 
+  const email_logIn = async () => {
+    if (email && password) {
+      try {
+        let response = await auth().signInWithEmailAndPassword(email, password);
+        if (response && response.user) {
+          // alert('Success', 'Authenticated successfully');
+          const uid = response.user.uid;
+        }
+      } catch (e) {
+        console.error(e.message);
+      }
+    } else {
+      alert('이메일과 비밀번호를 입력해주세요');
+      console.log('email, password no');
+    }
+    setEmail('');
+    setPassword('');
+  };
+
   const signOut = async () => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      setloggedIn(false);
-      setuserInfo([]);
+      // setloggedIn(false);
+      // setuserInfo([]);
     } catch (error) {
       console.error(error);
     }
   };
+  //firebase
+  //await firebase.auth().signOut()
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -144,34 +140,35 @@ export function LoginScreen({navigation}) {
           </View>
           <View style={styles.form}>
             <View style={styles.pairitem}>
-              <Item
+              <TextInput
                 style={[
-                  styles.singleitem,
+                  styles.input,
                   isIDFocused ? styles.focused : styles.blurred,
                 ]}
-                regular>
-                <Input
-                  placeholder="ID"
-                  onBlur={() => setIsIDFocused(false)}
-                  onFocus={() => setIsIDFocused(true)}
-                />
-              </Item>
-              <Item
+                value={email}
+                onBlur={() => setIsIDFocused(false)}
+                onFocus={() => setIsIDFocused(true)}
+                placeholder="Email"
+                onChangeText={userEmail => setEmail(userEmail)}
+                autoCapitalize="none"
+              />
+              <TextInput
                 style={[
-                  styles.singleitem,
+                  styles.input,
                   isPWFocused ? styles.focused : styles.blurred,
                 ]}
-                regular>
-                <Input
-                  placeholder="PASSWORD"
-                  onBlur={() => setIsPWFocused(false)}
-                  onFocus={() => setIsPWFocused(true)}
-                />
-              </Item>
+                value={password}
+                placeholder="Password"
+                onBlur={() => setIsPWFocused(false)}
+                onFocus={() => setIsPWFocused(true)}
+                onChangeText={userPW => setPassword(userPW)}
+                autoCapitalize="none"
+                secureTextEntry={true}
+              />
             </View>
             <View style={styles.pairitem}>
               <AuthButton full>
-                <AuthButtonText onPress={moveHome}>로그인</AuthButtonText>
+                <AuthButtonText onPress={email_logIn}>로그인</AuthButtonText>
               </AuthButton>
               <SocialButton full>
                 <SocialButtonText onPress={google_signIn}>
@@ -182,6 +179,7 @@ export function LoginScreen({navigation}) {
                 <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
               </SocialButton> */}
             </View>
+
             <View style={styles.textlinkwrap}>
               <Text
                 style={styles.textleft}
@@ -190,7 +188,11 @@ export function LoginScreen({navigation}) {
                 회원가입
               </Text>
               <Text style={styles.textmiddle}>|</Text>
-              <Text style={styles.textright}>비회원 입장</Text>
+              <Text
+                style={styles.textright}
+                onPress={() => navigation.navigate('ResetPassword')}>
+                비밀번호 재설정
+              </Text>
             </View>
           </View>
         </Container>
@@ -241,8 +243,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
+  passwordlink: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
   textleft: {
-    flex: 5,
+    flex: 2,
     textAlign: 'right',
   },
   textmiddle: {
@@ -250,7 +258,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   textright: {
-    flex: 5,
+    flex: 3,
     textAlign: 'left',
   },
   singleitem: {
@@ -267,6 +275,17 @@ const styles = StyleSheet.create({
   },
   blurred: {
     borderColor: '#ECECE2',
+  },
+  input: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 5,
+    borderRadius: 12,
+    borderColor: 'grey',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    width: '100%',
+    paddingLeft: 15,
   },
 });
 

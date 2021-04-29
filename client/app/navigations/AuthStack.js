@@ -5,7 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {LoginScreen} from '../screens/auth/Login';
 import {SignupScreen} from '../screens/auth/Signup';
-import {AddinfoScreen} from '../screens/auth/Addinfo';
+import {ResetPwScreen} from '../screens/auth/ResetPw';
 
 const Stack = createStackNavigator();
 
@@ -23,8 +23,8 @@ function AuthStack() {
         options={{header: () => null}}
       />
       <Stack.Screen
-        name="Addinfo"
-        component={AddinfoScreen}
+        name="ResetPassword"
+        component={ResetPwScreen}
         options={{header: () => null}}
       />
     </Stack.Navigator>
