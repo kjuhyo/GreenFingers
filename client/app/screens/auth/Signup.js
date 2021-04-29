@@ -16,13 +16,18 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
 
 export function SignupScreen({navigation}) {
+  // input focus variables
   const [isIDFocused, setIsIDFocused] = useState(false);
   const [isPWFocused, setIsPWFocused] = useState(false);
-  // const [isNNFocused, setIsNNFocused] = useState(false);
   const [isPWCFocused, setIsPWCFocused] = useState(false);
+  // input validation variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  // input error variables
+  const [emailError, setEmailError] = useState('');
+  const [pwError, setPwError] = useState('');
+  const [pwcError, setPwcError] = useState('');
 
   const onSubmit = () => {
     // console.log('data', data);
@@ -34,11 +39,12 @@ export function SignupScreen({navigation}) {
     //e메일 형식
     let regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
     if (regEmail.test(userEmail) === false) {
-      console.log('이메일 형식이 맞지 않습니다');
+      console.log('Email is not Correct');
       setEmail(userEmail);
-      return false;
+      setEmailError('이메일 형식이 맞지 않습니다.');
     } else {
       setEmail(userEmail);
+      setEmailError('');
       console.log('Email is Correct');
     }
   };
@@ -48,23 +54,26 @@ export function SignupScreen({navigation}) {
     // 대문자 최소 1개, 소문자 1개 이상, 숫자 1개이상, 특수문자 1개 이상, 8자리이상
     let regPW = /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
     if (regPW.test(userPW) === false) {
-      console.log('비밀번호 형식이 맞지 않습니다');
+      console.log('대/소문자, 숫자, 특수문자 포함 8자 이상 입력해주세요');
       setPassword(userPW);
-      return false;
+      setPwError('대/소문자, 숫자, 특수문자 포함 8자 이상 입력해주세요.');
     } else {
       setPassword(userPW);
+      setPwError('');
       console.log('PW is Correct');
     }
   };
 
   const validatePWC = userPWC => {
     console.log(userPWC);
-    if (userPWC === password) {
+    if (userPWC !== password) {
       console.log('비밀번호가 일치하지 않습니다');
       setPasswordConfirm(userPWC);
+      setPwcError('비밀번호가 일치하지 않습니다.');
       return false;
     } else {
       setPasswordConfirm(userPWC);
+      setPwcError('');
       console.log('PWC is Correct');
     }
   };
@@ -88,49 +97,51 @@ export function SignupScreen({navigation}) {
               style={[
                 styles.input,
                 {marginTop: 30},
-                isIDFocused ? styles.focused : styles.blurred,
+                emailError
+                  ? styles.error
+                  : isIDFocused
+                  ? styles.focused
+                  : styles.blurred,
               ]}
               onBlur={() => setIsIDFocused(false)}
               onFocus={() => setIsIDFocused(true)}
               placeholder="Email"
-              onChangeText={userEmail => setEmail(userEmail)}
+              onChangeText={userEmail => validateEmail(userEmail)}
               autoCapitalize="none"
             />
-            <Label style={styles.errorlabel}>
-              이메일 형식이 옳지 않습니다.
-            </Label>
+            <Label style={styles.errorlabel}>{emailError}</Label>
             <TextInput
               style={[
                 styles.input,
-                isPWFocused ? styles.focused : styles.blurred,
+                pwError
+                  ? styles.error
+                  : isPWFocused
+                  ? styles.focused
+                  : styles.blurred,
               ]}
               onBlur={() => setIsPWFocused(false)}
               onFocus={() => setIsPWFocused(true)}
               placeholder="비밀번호"
-              onChangeText={userEmail => setPassword(userEmail)}
+              onChangeText={userPW => validatePassword(userPW)}
               secureTextEntry={true}
             />
-            {i ? (
-              <Label style={styles.errorlabel}>
-                이메일 형식이 옳지 않습니다.
-              </Label>
-            ) : (
-              <Label style={styles.errorlabel}></Label>
-            )}
+            <Label style={styles.errorlabel}>{pwError}</Label>
             <TextInput
               style={[
                 styles.input,
-                isPWCFocused ? styles.focused : styles.blurred,
+                pwcError
+                  ? styles.error
+                  : isPWCFocused
+                  ? styles.focused
+                  : styles.blurred,
               ]}
               onBlur={() => setIsPWCFocused(false)}
               onFocus={() => setIsPWCFocused(true)}
               placeholder="비밀번호 확인"
-              onChangeText={userEmail => setPasswordConfirm(userEmail)}
+              onChangeText={userPWC => validatePWC(userPWC)}
               secureTextEntry={true}
             />
-            <Label style={styles.errorlabel}>
-              이메일 형식이 옳지 않습니다.
-            </Label>
+            <Label style={styles.errorlabel}>{pwcError}</Label>
 
             <AuthButton full style={{marginTop: 20}}>
               <AuthButtonText title="Home" onPress={onSubmit}>
@@ -193,6 +204,13 @@ const styles = StyleSheet.create({
   },
   focused: {
     borderColor: '#8AD169',
+    borderTopWidth: 1.1,
+    borderBottomWidth: 1.1,
+    borderLeftWidth: 1.1,
+    borderRightWidth: 1.1,
+  },
+  error: {
+    borderColor: 'red',
     borderTopWidth: 1.1,
     borderBottomWidth: 1.1,
     borderLeftWidth: 1.1,
