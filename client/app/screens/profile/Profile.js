@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Modal, Text} from 'react-native';
 
 // styled-components
 import styled from 'styled-components';
@@ -9,6 +9,9 @@ import {Icon} from 'native-base';
 
 // responsive-screen
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {useState} from 'react';
+import LogoutModal from '../../components/profile/LogoutModal';
+import CompleteModal from '../../components/diary/modal/CompleteModal';
 
 // 프로필 전체 페이지 컨테이너
 const ProfileContainer = styled.View`
@@ -65,6 +68,9 @@ const MenuItem = styled.TouchableOpacity`
 `;
 
 export default function Profile() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
+
   return (
     <ProfileContainer>
       <ProfileBox>
@@ -90,11 +96,43 @@ export default function Profile() {
           <Icon type="MaterialCommunityIcons" name="form-textbox-password" />
           <Text style={{marginLeft: 20}}>비밀번호 재설정</Text>
         </MenuItem>
-        <MenuItem>
+        <MenuItem
+          onPress={() => {
+            setModalVisible(true);
+          }}>
           <Icon type="MaterialCommunityIcons" name="logout" />
           <Text style={{marginLeft: 20}}>로그아웃</Text>
         </MenuItem>
       </MenuBox>
+
+      {/* 로그아웃 확인 모달 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <LogoutModal
+          setModalVisible={setModalVisible}
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
+      </Modal>
+
+      {/* 로그아웃 완료 모달 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={completeModalVisible}
+        onRequestClose={() => {
+          setCompleteModalVisible(!completeModalVisible);
+        }}>
+        <CompleteModal
+          content="로그아웃 되었습니다."
+          setModalVisible={setModalVisible}
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
+      </Modal>
     </ProfileContainer>
   );
 }

@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import {useState} from 'react';
-// import { StatusBar } from "expo-status-bar";
 import {StatusBar} from 'react-native';
 
-import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';
 
 // react navigation
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 //stacks
