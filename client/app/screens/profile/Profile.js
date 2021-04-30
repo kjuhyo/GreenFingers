@@ -113,7 +113,7 @@ export default function Profile({navigation}) {
         </MenuItem>
       </MenuBox>
       <DeleteUser>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Withdrawal')}>
           <Text style={{color: 'grey'}}>회원탈퇴</Text>
         </TouchableOpacity>
       </DeleteUser>
