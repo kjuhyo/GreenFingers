@@ -108,7 +108,7 @@ export default function Root() {
         setIsLoading(false);
       }
     });
-  }, [uid]);
+  });
 
   return (
     <ThemeProvider theme={theme}>
