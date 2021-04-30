@@ -103,12 +103,13 @@ export default function Root() {
         if (user.uid != uid) {
           addUserId(user.uid);
         }
+        // addUserId('');
         setIsLoading(false);
       } else {
         setIsLoading(false);
       }
     });
-  });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

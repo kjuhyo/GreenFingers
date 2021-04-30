@@ -175,11 +175,11 @@ export function LoginScreen({navigation}) {
                   Sign in with Google
                 </SocialButtonText>
               </SocialButton>
-              <SocialButton full>
+              {/* <SocialButton full>
                 <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
-              </SocialButton>
+              </SocialButton> */}
             </View>
-            {/* 
+
             <View style={styles.textlinkwrap}>
               <Text
                 style={styles.textleft}
@@ -193,7 +193,7 @@ export function LoginScreen({navigation}) {
                 onPress={() => navigation.navigate('ResetPassword')}>
                 비밀번호 재설정
               </Text>
-            </View> */}
+            </View>
           </View>
         </Container>
       </KeyboardAwareScrollView>
