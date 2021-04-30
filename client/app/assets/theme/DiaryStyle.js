@@ -52,7 +52,7 @@ export const CompleteBtn = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: ${props => props.marginTop || '10px'};
 `;
 
 // 완료 버튼 텍스트

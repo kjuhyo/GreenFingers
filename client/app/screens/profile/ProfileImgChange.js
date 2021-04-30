@@ -17,7 +17,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useState} from 'react';
 import CompleteModal from '../../components/diary/modal/CompleteModal';
 
-// 프로필 페이지 전체 컨테이너
+// 프로필 사진 변경 페이지 전체 컨테이너
 const ImgChangeContainer = styled.View`
   height: ${hp('63%')}px;
   padding: 30px;

@@ -100,7 +100,7 @@ export default function Profile({navigation}) {
           <Icon type="MaterialCommunityIcons" name="autorenew" />
           <Text style={{marginLeft: 20}}>프로필 사진 변경</Text>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onPress={() => navigation.navigate('PasswordChange')}>
           <Icon type="MaterialCommunityIcons" name="form-textbox-password" />
           <Text style={{marginLeft: 20}}>비밀번호 재설정</Text>
         </MenuItem>

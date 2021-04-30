@@ -20,7 +20,7 @@ export default function CompleteModal(props) {
       return props.complete();
     }
   };
-  
+
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.2">
@@ -34,7 +34,7 @@ export default function CompleteModal(props) {
             closeModal(false);
             changePage();
           }}>
-          <Text>확인</Text>
+          <Text style={{color: '#29582C'}}>확인</Text>
         </ModalButton>
       </ModalBox>
     </ModalContainer>
