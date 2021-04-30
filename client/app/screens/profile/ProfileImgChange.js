@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Text} from 'react-native';
+import {Alert, Modal, Text} from 'react-native';
 
 // style
 import styled from 'styled-components';
@@ -15,6 +15,7 @@ import {Icon} from 'native-base';
 // image-picker
 import ImagePicker from 'react-native-image-crop-picker';
 import {useState} from 'react';
+import CompleteModal from '../../components/diary/modal/CompleteModal';
 
 // 프로필 페이지 전체 컨테이너
 const ImgChangeContainer = styled.View`
@@ -37,10 +38,16 @@ const ProfileImg = styled.Image`
   background-color: black;
 `;
 
-export default function ProfileImgChange() {
+export default function ProfileImgChange({navigation}) {
   const [img, setImg] = useState(
     'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
   );
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  
+  // 완료 버튼을 눌렀을 때 이동할 페이지
+  const complete = () => {
+    navigation.navigate('Profile');
+  };
 
   // 갤러리에서 사진 선택
   const pickSingle = () => {
@@ -102,9 +109,24 @@ export default function ProfileImgChange() {
           <Text>사진 촬영</Text>
         </ImgSelectBtn>
       </ImgSelectBox>
-      <CompleteBtn flexHeight="1">
+      <CompleteBtn flexHeight="1" onPress={() => setCompleteModalVisible(true)}>
         <CompleteBtnText>완료</CompleteBtnText>
       </CompleteBtn>
+
+      {/* 프로필 사진 변경 완료 모달 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={completeModalVisible}
+        onRequestClose={() => {
+          setCompleteModalVisible(!completeModalVisible);
+        }}>
+        <CompleteModal
+          complete={complete}
+          content="프로필 사진 변경 완료"
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
+      </Modal>
     </ImgChangeContainer>
   );
 }
