@@ -75,7 +75,7 @@ const DeleteUser = styled.View`
   margin-top: 5px;
 `;
 
-export default function Profile() {
+export default function Profile({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
@@ -96,7 +96,7 @@ export default function Profile() {
         </ProfileInfo>
       </ProfileBox>
       <MenuBox>
-        <MenuItem>
+        <MenuItem onPress={() => navigation.navigate('ProfileImgChange')}>
           <Icon type="MaterialCommunityIcons" name="autorenew" />
           <Text style={{marginLeft: 20}}>프로필 사진 변경</Text>
         </MenuItem>
@@ -114,7 +114,7 @@ export default function Profile() {
       </MenuBox>
       <DeleteUser>
         <TouchableOpacity>
-          <Text>회원탈퇴</Text>
+          <Text style={{color: 'grey'}}>회원탈퇴</Text>
         </TouchableOpacity>
       </DeleteUser>
 
