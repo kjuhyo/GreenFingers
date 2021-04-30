@@ -1,15 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Modal, Text, TouchableOpacity} from 'react-native';
 
-// styled-components
-import styled from 'styled-components';
+//redux, firebase, google
+import {useDispatch} from 'react-redux';
+import {addUid} from '../../reducers/authReducer';
+import firebase from '../../components/auth/firebase';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+GoogleSignin.configure({});
 
-// native-base
+// style
+import styled from 'styled-components';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Icon} from 'native-base';
 
-// responsive-screen
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useState} from 'react';
+// modal
 import LogoutModal from '../../components/profile/LogoutModal';
 import CompleteModal from '../../components/diary/modal/CompleteModal';
 
@@ -78,6 +82,25 @@ const DeleteUser = styled.View`
 export default function Profile({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const dispatch = useDispatch();
+  const addUserId = uid => dispatch(addUid(uid));
+
+  const signOut = async () => {
+    try {
+      const user = await firebase.auth().currentUser.providerData[0];
+      const provider = user.providerId;
+      console.log('logout user', user);
+      if (provider === 'google.com') {
+        // await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      } else {
+        await firebase.auth().signOut();
+      }
+      await addUserId('');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <ProfileContainer>
@@ -142,6 +165,7 @@ export default function Profile({navigation}) {
         }}>
         <CompleteModal
           content="로그아웃 되었습니다."
+          signOut={signOut}
           setModalVisible={setModalVisible}
           setCompleteModalVisible={setCompleteModalVisible}
         />
