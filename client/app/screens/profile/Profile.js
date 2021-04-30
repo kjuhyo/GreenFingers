@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Text} from 'react-native';
+import {Modal, Text, TouchableOpacity} from 'react-native';
 
 // styled-components
 import styled from 'styled-components';
@@ -15,7 +15,7 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 
 // 프로필 전체 페이지 컨테이너
 const ProfileContainer = styled.View`
-  height: ${hp('60%')}px;
+  height: ${hp('63%')}px;
   padding: 30px;
 `;
 
@@ -67,6 +67,14 @@ const MenuItem = styled.TouchableOpacity`
   align-items: center;
 `;
 
+const DeleteUser = styled.View`
+  flex: 0.2;
+  align-items: flex-end;
+  justify-content: center;
+  padding-right: 8px;
+  margin-top: 5px;
+`;
+
 export default function Profile() {
   const [modalVisible, setModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
@@ -104,6 +112,11 @@ export default function Profile() {
           <Text style={{marginLeft: 20}}>로그아웃</Text>
         </MenuItem>
       </MenuBox>
+      <DeleteUser>
+        <TouchableOpacity>
+          <Text>회원탈퇴</Text>
+        </TouchableOpacity>
+      </DeleteUser>
 
       {/* 로그아웃 확인 모달 */}
       <Modal
