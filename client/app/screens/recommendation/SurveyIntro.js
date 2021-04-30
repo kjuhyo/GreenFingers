@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -20,8 +20,14 @@ import {
 import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
 import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
+import {ACCESS_TOKEN} from '../../config/config';
 
 export function SurveyintroScreen({navigation}) {
+  useEffect(async () => {
+    const token = await ACCESS_TOKEN();
+    console.log('survey token ', token);
+  });
+
   return (
     <Container style={styles.container}>
       <View style={styles.titlecontainer}>

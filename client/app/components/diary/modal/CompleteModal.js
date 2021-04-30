@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text} from 'react-native';
 
 import {
@@ -8,10 +8,41 @@ import {
   ModalButton,
 } from '../../../assets/theme/ModalStyle';
 
+//redux, firebase, google
+import {useSelector, useDispatch} from 'react-redux';
+import {addUid} from '../../../reducers/authReducer';
+import auth from '@react-native-firebase/auth';
+import firebase from '../../../components/auth/firebase';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+// GoogleSignin.configure({});
 export default function CompleteModal(props) {
   const closeModal = visible => {
     props.setCompleteModalVisible(visible);
   };
+
+  const dispatch = useDispatch();
+  const addUserId = uid => dispatch(addUid(uid));
+
+  const signOut = async () => {
+    try {
+      const user = await firebase.auth().currentUser.providerData[0];
+      const provider = user.providerId;
+      console.log('logout user', user);
+      if (provider === 'google.com') {
+        // await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      } else {
+        await firebase.auth().signOut();
+      }
+      await addUserId('');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.2">
@@ -22,6 +53,7 @@ export default function CompleteModal(props) {
           flexHeight="0.4"
           backgroundColor="#EEF9E8"
           onPress={() => {
+            signOut();
             closeModal(false);
           }}>
           <Text>확인</Text>

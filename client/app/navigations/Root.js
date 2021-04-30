@@ -98,17 +98,19 @@ export default function Root() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        // setUid(user.uid);
+        // console.log(user.providerId);
+        console.log(user);
         console.log(user.uid, uid);
         if (user.uid != uid) {
           addUserId(user.uid);
         }
+        // addUserId('');
         setIsLoading(false);
       } else {
         setIsLoading(false);
       }
     });
-  }, [uid]);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
