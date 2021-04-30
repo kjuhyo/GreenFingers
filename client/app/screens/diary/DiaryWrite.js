@@ -3,6 +3,12 @@ import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text} from 'react-native';
 import 'react-native-gesture-handler';
 
+// redux
+import {useSelector} from 'react-redux';
+
+// axios
+import {writeDiary} from '../../api/diary';
+
 // style
 import {Icon, Toast, Root} from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -24,8 +30,46 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import ImagePicker from 'react-native-image-crop-picker';
 
 export function DiaryWriteScreen({navigation}) {
+  const [titleState, setTitleState] = useState('');
+  const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
+
   const maxImgCnt = 5; // 사진 선택 최대 개수
+  const {uid} = useSelector(state => ({uid: state.authReducer.uid}));
+
+  // 다이어리 작성 api 요청 함수
+  const diaryWrite = async () => {
+    // 제목, 내용, 사진 모두 입력했을 경우에만 다이어리 작성 api 요청
+    if (titleState == '') {
+      Toast.show({
+        text: '제목을 입력해주세요.',
+        buttonText: '확인',
+        duration: 4000,
+      });
+    } else if (contentState == '') {
+      Toast.show({
+        text: '내용을 입력해주세요.',
+        buttonText: '확인',
+        duration: 4000,
+      });
+    } else if (imgState.length == 0) {
+      Toast.show({
+        text: '사진을 선택해주세요.',
+        buttonText: '확인',
+        duration: 4000,
+      });
+    } else {
+      const params = {
+        userId: uid,
+        plantId: 1,
+        title: titleState,
+        content: contentState,
+        imgUrls: imgState,
+      };
+      await writeDiary(params);
+      navigation.navigate('Diary');
+    }
+  };
 
   // 여러개의 사진 선택
   const PickMultiple = () => {
@@ -102,8 +146,14 @@ export function DiaryWriteScreen({navigation}) {
           <SubHeadingText>
             <Text style={{fontWeight: 'bold'}}>글 작성</Text>
           </SubHeadingText>
-          <TextInputBox placeholder="제목" />
           <TextInputBox
+            placeholder="제목"
+            onChangeText={setTitleState}
+            value={titleState}
+          />
+          <TextInputBox
+            onChangeText={setContentState}
+            value={contentState}
             multiline
             numberOfLines={10}
             placeholder="식물과 있었던 일을 기록해주세요 :)"
@@ -155,7 +205,7 @@ export function DiaryWriteScreen({navigation}) {
           </SelectedImgBox>
 
           {/* 완료 버튼 */}
-          <CompleteBtn>
+          <CompleteBtn onPress={() => diaryWrite()}>
             <CompleteBtnText>완료</CompleteBtnText>
           </CompleteBtn>
         </KeyboardAwareScrollView>
