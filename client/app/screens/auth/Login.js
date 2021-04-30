@@ -40,12 +40,15 @@ import {
   connect,
   useSelector,
 } from 'react-redux';
-import {toHome} from '../../reducers/authReducer';
+import {signUp} from '../../api/auth';
+import {toHome, addUid} from '../../reducers/authReducer';
 
+// GoogleSignin.configure({});
 export function LoginScreen({navigation}) {
   // redux
   const dispatch = useDispatch();
   const moveHome = () => dispatch(toHome());
+  const addUserId = uid => dispatch(addUid(uid));
   // console.log(dispatch(toHome()));
 
   // google login
@@ -59,7 +62,7 @@ export function LoginScreen({navigation}) {
   // input variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [userId, setUserId] = useState('');
   const google_signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -70,8 +73,17 @@ export function LoginScreen({navigation}) {
         userInfo.accessToken,
       );
       const response = await auth().signInWithCredential(credential);
-      console.log(response.user.uid);
-      const token = await auth().currentUser.getIdToken(true);
+      console.log('google response', response);
+      // await setUserId(response.user.uid);
+      // console.log('uids', userId);
+      await signUp({
+        userId: response.user.uid,
+        // email: email,
+        // nickname: 'bbb',
+      });
+      // console.log('back response', response);
+      addUserId(response.user.uid);
+      // const token = await auth().currentUser.getIdToken(true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');

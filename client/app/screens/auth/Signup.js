@@ -23,6 +23,9 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import firebase from '../../components/auth/firebase';
+import {signUp} from '../../api/auth';
+import {useSelector, useDispatch} from 'react-redux';
+import {addUid} from '../../reducers/authReducer';
 
 export function SignupScreen({navigation}) {
   // input focus variables
@@ -33,15 +36,19 @@ export function SignupScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [userId, setUserId] = useState('');
   // input error variables
   const [emailError, setEmailError] = useState('');
   const [pwError, setPwError] = useState('');
   const [pwcError, setPwcError] = useState('');
 
-  const onSubmit = () => {
-    // console.log('data', data);
-    console.log(email, password, passwordConfirm);
-  };
+  const dispatch = useDispatch();
+  const addUserId = uid => dispatch(addUid(uid));
+
+  // const onSubmit = () => {
+  //   // console.log('data', data);
+  //   console.log(email, password, passwordConfirm);
+  // };
 
   const email_signIn = async () => {
     if (email && !emailError && password && !pwError) {
@@ -49,7 +56,16 @@ export function SignupScreen({navigation}) {
         const credential = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
-        console.log(credential);
+        // console.log(credential.user.uid);
+        // await setUserId(credential.user.uid);
+        // console.log('id', userId);
+        const response = await signUp({
+          userId: credential.user.uid,
+          // email: email,
+          // nickname: 'bbb',
+        });
+        // console.log('bakcend', response);
+        addUserId(credential.user.uid);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           alert('이미 가입된 이메일입니다.');
