@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text} from 'react-native';
 
 import {
@@ -13,7 +13,11 @@ import {useSelector, useDispatch} from 'react-redux';
 import {addUid} from '../../../reducers/authReducer';
 import auth from '@react-native-firebase/auth';
 import firebase from '../../../components/auth/firebase';
-
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+// GoogleSignin.configure({});
 export default function CompleteModal(props) {
   const closeModal = visible => {
     props.setCompleteModalVisible(visible);
@@ -24,9 +28,15 @@ export default function CompleteModal(props) {
 
   const signOut = async () => {
     try {
-      const result = await firebase.auth().signOut();
-      // console.log(result);
-      // await closeModal(false);
+      const user = await firebase.auth().currentUser.providerData[0];
+      const provider = user.providerId;
+      console.log('logout user', user);
+      if (provider === 'google.com') {
+        // await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      } else {
+        await firebase.auth().signOut();
+      }
       await addUserId('');
     } catch (error) {
       console.error(error);

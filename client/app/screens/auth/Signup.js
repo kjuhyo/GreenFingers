@@ -57,15 +57,15 @@ export function SignupScreen({navigation}) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         // console.log(credential.user.uid);
-        await setUserId(credential.user.uid);
+        // await setUserId(credential.user.uid);
         // console.log('id', userId);
         const response = await signUp({
-          id: userId,
-          email: email,
-          nickname: 'bbb',
+          userId: credential.user.uid,
+          // email: email,
+          // nickname: 'bbb',
         });
         // console.log('bakcend', response);
-        addUserId(userId);
+        addUserId(credential.user.uid);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           alert('이미 가입된 이메일입니다.');
