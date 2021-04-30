@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Text} from 'react-native';
+import {Modal, Text, TouchableOpacity} from 'react-native';
 
 // styled-components
 import styled from 'styled-components';
@@ -15,7 +15,7 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 
 // 프로필 전체 페이지 컨테이너
 const ProfileContainer = styled.View`
-  height: ${hp('60%')}px;
+  height: ${hp('63%')}px;
   padding: 30px;
 `;
 
@@ -67,7 +67,15 @@ const MenuItem = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export default function Profile() {
+const DeleteUser = styled.View`
+  flex: 0.2;
+  align-items: flex-end;
+  justify-content: center;
+  padding-right: 8px;
+  margin-top: 5px;
+`;
+
+export default function Profile({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
@@ -88,11 +96,11 @@ export default function Profile() {
         </ProfileInfo>
       </ProfileBox>
       <MenuBox>
-        <MenuItem>
+        <MenuItem onPress={() => navigation.navigate('ProfileImgChange')}>
           <Icon type="MaterialCommunityIcons" name="autorenew" />
           <Text style={{marginLeft: 20}}>프로필 사진 변경</Text>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onPress={() => navigation.navigate('PasswordChange')}>
           <Icon type="MaterialCommunityIcons" name="form-textbox-password" />
           <Text style={{marginLeft: 20}}>비밀번호 재설정</Text>
         </MenuItem>
@@ -104,6 +112,11 @@ export default function Profile() {
           <Text style={{marginLeft: 20}}>로그아웃</Text>
         </MenuItem>
       </MenuBox>
+      <DeleteUser>
+        <TouchableOpacity onPress={() => navigation.navigate('Withdrawal')}>
+          <Text style={{color: 'grey'}}>회원탈퇴</Text>
+        </TouchableOpacity>
+      </DeleteUser>
 
       {/* 로그아웃 확인 모달 */}
       <Modal

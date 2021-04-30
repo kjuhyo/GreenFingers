@@ -23,6 +23,15 @@ export default function CompleteModal(props) {
     props.setCompleteModalVisible(visible);
   };
 
+
+  // 완료 버튼 눌렀을 때 페이지 이동이 필요한 경우
+  const changePage = () => {
+    console.log(props.complete);
+    if (props.complete != undefined) {
+      return props.complete();
+    }
+  };
+
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
 
@@ -55,8 +64,9 @@ export default function CompleteModal(props) {
           onPress={() => {
             signOut();
             closeModal(false);
+            changePage();
           }}>
-          <Text>확인</Text>
+          <Text style={{color: '#29582C'}}>확인</Text>
         </ModalButton>
       </ModalBox>
     </ModalContainer>
