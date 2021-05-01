@@ -99,11 +99,11 @@ export default function Root() {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // console.log(user.providerId);
-        console.log(user);
-        console.log(user.uid, uid);
-        if (user.uid != uid) {
-          addUserId(user.uid);
-        }
+        // console.log(user);
+        // console.log(user.uid, uid);
+        // if (user.uid != uid) {
+        //   addUserId(user.uid);
+        // }
         // addUserId('');
         setIsLoading(false);
       } else {

@@ -82,8 +82,9 @@ export function LoginScreen({navigation}) {
         // nickname: 'bbb',
       });
       // console.log('back response', response);
-      addUserId(response.user.uid);
-      // const token = await auth().currentUser.getIdToken(true);
+      // await addUserId(response.user.uid);
+      const token = await auth().currentUser.getIdToken(true);
+      console.log(token);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');

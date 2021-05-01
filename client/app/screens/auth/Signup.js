@@ -65,7 +65,7 @@ export function SignupScreen({navigation}) {
           // nickname: 'bbb',
         });
         // console.log('bakcend', response);
-        addUserId(credential.user.uid);
+        await addUserId(credential.user.uid);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           alert('이미 가입된 이메일입니다.');
