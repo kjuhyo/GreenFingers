@@ -11,9 +11,11 @@ import {CompleteBtn, CompleteBtnText} from '../../assets/theme/DiaryStyle';
 import CompleteModal from '../../components/diary/modal/CompleteModal';
 
 // firebase, redux
-import {useDispatch} from 'react-redux';
-import {addUid} from '../../reducers/authReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {addUid, addUser} from '../../reducers/authReducer';
 import firebase from '../../components/auth/firebase';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+GoogleSignin.configure({});
 
 // backend api
 import {deleteUser} from '../../api/auth';
@@ -55,7 +57,10 @@ export default function Withdrawal() {
   const [checkedState, setCheckedState] = useState(false);
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
-
+  const curUser = (email, provider) => dispatch(addUser(email, provider));
+  const {provider} = useSelector(state => ({
+    provider: state.authReducer.provider,
+  }));
   // 체크박스가 true일 경우 완료 모달, false일 경우 Toast 띄움
   const check = () => {
     if (!checkedState) {
@@ -70,15 +75,18 @@ export default function Withdrawal() {
     }
   };
 
-  const signout = async () => {
+  const signOut = async () => {
+    await curUser('', '');
     await addUserId('');
   };
 
   const withdraw = async () => {
-    // const backresponse = await deleteUser();
-    // console.log(backresponse);
-    console.log('withdraw');
+    if (provider === 'google.com') {
+      await GoogleSignin.revokeAccess();
+      // await GoogleSignin.signOut();
+    }
     const user = await firebase.auth().currentUser;
+    await deleteUser();
     await user.delete();
   };
 
@@ -149,7 +157,7 @@ export default function Withdrawal() {
           <CompleteModal
             // complete={complete}
             content="회원탈퇴 완료"
-            signout={signout}
+            signOut={signOut}
             setCompleteModalVisible={setCompleteModalVisible}
           />
         </Modal>

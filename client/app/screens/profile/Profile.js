@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {Modal, Text, TouchableOpacity} from 'react-native';
 
 //redux, firebase, google
-import {useDispatch} from 'react-redux';
-import {addUid} from '../../reducers/authReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {addUid, addUser} from '../../reducers/authReducer';
 import firebase from '../../components/auth/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 GoogleSignin.configure({});
@@ -84,18 +84,12 @@ export default function Profile({navigation}) {
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
-  const [userEmail, setUserEmail] = useState('');
-  const [provider, setProvider] = useState('');
+  const curUser = (email, provider) => dispatch(addUser(email, provider));
 
-  getUser = async () => {
-    const user = await firebase.auth().currentUser;
-    setUserEmail(user.email);
-    setProvider(user.providerData[0].providerId);
-  };
-
-  useEffect(() => {
-    getUser();
-  });
+  const {email, provider} = useSelector(state => ({
+    email: state.authReducer.email,
+    provider: state.authReducer.provider,
+  }));
 
   const signOut = async () => {
     try {
@@ -105,6 +99,7 @@ export default function Profile({navigation}) {
       } else {
         await firebase.auth().signOut();
       }
+      await curUser('', '');
       await addUserId('');
     } catch (error) {
       console.error(error);
@@ -123,7 +118,7 @@ export default function Profile({navigation}) {
           />
         </ProfileImgBox>
         <ProfileInfo>
-          <Text style={{fontSize: 15, width: 200}}>{userEmail}</Text>
+          <Text style={{fontSize: 15, width: 200}}>{email}</Text>
           <Text style={{fontSize: 15, color: 'grey'}}>보유 식물 3개</Text>
         </ProfileInfo>
       </ProfileBox>

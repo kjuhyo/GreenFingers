@@ -42,15 +42,14 @@ import {
   useSelector,
 } from 'react-redux';
 import {signUp} from '../../api/auth';
-import {toHome, addUid} from '../../reducers/authReducer';
+import {addUid, addUser} from '../../reducers/authReducer';
 
 // GoogleSignin.configure({});
 export function LoginScreen({navigation}) {
   // redux
   const dispatch = useDispatch();
-  const moveHome = () => dispatch(toHome());
   const addUserId = uid => dispatch(addUid(uid));
-  // console.log(dispatch(toHome()));
+  const curUser = (email, provider) => dispatch(addUser(email, provider));
 
   // google login
   // const [provider, setProvider] = useState(false);
@@ -73,7 +72,11 @@ export function LoginScreen({navigation}) {
         userInfo.accessToken,
       );
       const response = await auth().signInWithCredential(credential);
-      console.log('google response', response);
+      console.log('google response', response.user);
+      await curUser(
+        response.user.email,
+        response.user.providerData[0].providerId,
+      );
       await signUp();
       await addUserId(response.user.uid);
     } catch (error) {
@@ -96,7 +99,13 @@ export function LoginScreen({navigation}) {
         let response = await auth().signInWithEmailAndPassword(email, password);
         if (response && response.user) {
           // alert('Success', 'Authenticated successfully');
-          const uid = response.user.uid;
+          // const uid = response.user.uid;
+          // console.log(response);
+          await curUser(
+            response.user.email,
+            response.user.providerData[0].providerId,
+          );
+          await addUserId(response.user.uid);
         }
       } catch (error) {
         if (error.code === 'auth/wrong-password') {

@@ -25,7 +25,7 @@ import auth from '@react-native-firebase/auth';
 import firebase from '../../components/auth/firebase';
 import {signUp} from '../../api/auth';
 import {useSelector, useDispatch} from 'react-redux';
-import {addUid} from '../../reducers/authReducer';
+import {addUid, addUser} from '../../reducers/authReducer';
 
 export function SignupScreen({navigation}) {
   // input focus variables
@@ -44,6 +44,7 @@ export function SignupScreen({navigation}) {
 
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
+  const curUser = (email, provider) => dispatch(addUser(email, provider));
 
   const email_signIn = async () => {
     if (email && !emailError && password && !pwError) {
@@ -52,6 +53,11 @@ export function SignupScreen({navigation}) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         const response = await signUp();
+
+        await curUser(
+          credential.user.email,
+          credential.user.providerData[0].providerId,
+        );
         await addUserId(credential.user.uid);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {

@@ -27,7 +27,7 @@ import firebase from '../components/auth/firebase';
 import auth from '@react-native-firebase/auth';
 import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
-import {addUid} from '../reducers/authReducer';
+import {addUid, addUser} from '../reducers/authReducer';
 
 const Tab = createBottomTabNavigator();
 
@@ -94,6 +94,7 @@ export default function Root() {
 
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
+  const curUser = (email, provider) => dispatch(addUser(email, provider));
 
   printToken = async () => {
     const token = await auth().currentUser.getIdToken(true);
@@ -103,16 +104,18 @@ export default function Root() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        // if (user.uid != uid) {
-        //   addUserId(user.uid);
-        // }
-        addUserId('');
+        if (user.uid != uid) {
+          addUserId(user.uid);
+          curUser(user.email, user.providerData[0].providerId);
+        }
+        // addUserId('');
+        // curUser('', '');
         setIsLoading(false);
       } else {
         setIsLoading(false);
       }
     });
-    // printToken();
+    printToken();
   }, []);
 
   return (
