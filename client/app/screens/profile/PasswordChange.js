@@ -10,6 +10,7 @@ import {useState} from 'react';
 
 // firebase google redux
 import firebase from '../../components/auth/firebase';
+import {set} from 'react-native-reanimated';
 
 // 비밀번호 재설정 페이지 전체 컨테이너
 const ImgChangeContainer = styled.View`
@@ -45,9 +46,23 @@ export default function PasswordChange({navigation}) {
   const [newPw, setNewPw] = useState('');
   const [newPwConfirm, setNewPwConfirm] = useState('');
   const [message, setMessage] = useState('');
-  // const complete = () => {
-  //   navigation.navigate('Profile');
-  // };
+  const complete = () => {
+    if (message === '비밀번호가 변경되었습니다.') {
+      navigation.navigate('Profile');
+    } else {
+    }
+  };
+
+  validateProvider = async () => {
+    const provider = await firebase.auth().currentUser.providerData[0]
+      .providerId;
+    if (provider === 'google.com') {
+      setMessage('구글로그인은 비밀번호를 변경할 수 없습니다.');
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   validatePassword = () => {
     // console.log(userPW);
@@ -72,9 +87,16 @@ export default function PasswordChange({navigation}) {
   };
 
   const onSubmit = async () => {
+    // const token = await firebase.auth().currentUser.getIdToken(true);
+    // console.log(token);
+
     const user = await firebase.auth().currentUser;
-    console.log('passwordchange', user.email);
-    const email = user.email;
+    const valProvider = await validateProvider();
+    if (!valProvider) {
+      console.log(message);
+      setCompleteModalVisible(true);
+      return;
+    }
     const valPw = await validatePassword();
     if (!valPw) {
       console.log(message);
@@ -87,19 +109,25 @@ export default function PasswordChange({navigation}) {
       setCompleteModalVisible(true);
       return;
     }
-    setMessage('비밀번호가 변경되었습니다.');
-    setCompleteModalVisible(true);
+    try {
+      await user.updatePassword(newPw);
+      await setMessage('비밀번호가 변경되었습니다.');
+      await setCompleteModalVisible(true);
+    } catch (error) {
+      setMessage(error);
+      return;
+    }
   };
 
   return (
     <ImgChangeContainer>
-      <InputBox>
+      {/* <InputBox>
         <Label>현재 비밀번호</Label>
         <PasswordInput
           onChangeText={userPW => setPassword(userPW)}
           secureTextEntry={true}
         />
-      </InputBox>
+      </InputBox> */}
       <InputBox>
         <Label>새 비밀번호</Label>
         <PasswordInput
@@ -133,7 +161,7 @@ export default function PasswordChange({navigation}) {
           setCompleteModalVisible(!completeModalVisible);
         }}>
         <CompleteModal
-          // complete={complete}
+          complete={complete}
           content={message}
           setCompleteModalVisible={setCompleteModalVisible}
         />

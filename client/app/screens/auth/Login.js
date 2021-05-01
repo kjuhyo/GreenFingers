@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {
   Container,
@@ -76,11 +77,9 @@ export function LoginScreen({navigation}) {
       console.log('google response', response);
       // await setUserId(response.user.uid);
       // console.log('uids', userId);
-      await signUp({
-        userId: response.user.uid,
-        // email: email,
-        // nickname: 'bbb',
-      });
+      // await signUp({
+      //   userId: response.user.uid,
+      // });
       // console.log('back response', response);
       // await addUserId(response.user.uid);
       const token = await auth().currentUser.getIdToken(true);
@@ -107,11 +106,24 @@ export function LoginScreen({navigation}) {
           // alert('Success', 'Authenticated successfully');
           const uid = response.user.uid;
         }
-      } catch (e) {
-        console.error(e.message);
+      } catch (error) {
+        if (error.code === 'auth/wrong-password') {
+          Alert.alert('로그인 오류', '비밀번호가 일치하지 않습니다.');
+        } else if (error.code === 'auth/user-not-found') {
+          Alert.alert('로그인 오류', '가입되지 않은 이메일입니다.');
+        } else if (error.code === 'auth/invalid-email') {
+          Alert.alert('로그인 오류', '이메일 형식이 유효하지 않습니다.');
+        } else if (error.code === 'auth/too-many-requests') {
+          Alert.alert(
+            '로그인 오류',
+            '여러번 로그인에 실패하여 로그인이 차단 되었습니다. 잠시 후에 다시 시도하거나 관리자에게 문의해주세요.',
+          );
+        } else {
+          Alert.alert('로그인 오류', '로그인에 실패했습니다.');
+        }
       }
     } else {
-      alert('이메일과 비밀번호를 입력해주세요');
+      Alert.alert('로그인 오류', '이메일과 비밀번호를 입력해주세요');
       console.log('email, password no');
     }
     setEmail('');

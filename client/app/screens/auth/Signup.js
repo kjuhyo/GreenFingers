@@ -59,11 +59,10 @@ export function SignupScreen({navigation}) {
         // console.log(credential.user.uid);
         // await setUserId(credential.user.uid);
         // console.log('id', userId);
-        const response = await signUp({
-          userId: credential.user.uid,
-          // email: email,
-          // nickname: 'bbb',
-        });
+        // const response = await signUp({
+        // userId: credential.user.uid,
+        // email: email,
+        // });
         // console.log('bakcend', response);
         await addUserId(credential.user.uid);
       } catch (error) {
