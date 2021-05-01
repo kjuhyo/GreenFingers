@@ -63,27 +63,19 @@ export function LoginScreen({navigation}) {
   // input variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userId, setUserId] = useState('');
   const google_signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      // console.log(userInfo);
+
       const credential = await auth.GoogleAuthProvider.credential(
         userInfo.idToken,
         userInfo.accessToken,
       );
       const response = await auth().signInWithCredential(credential);
       console.log('google response', response);
-      // await setUserId(response.user.uid);
-      // console.log('uids', userId);
-      // await signUp({
-      //   userId: response.user.uid,
-      // });
-      // console.log('back response', response);
-      // await addUserId(response.user.uid);
-      const token = await auth().currentUser.getIdToken(true);
-      console.log(token);
+      await signUp();
+      await addUserId(response.user.uid);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');

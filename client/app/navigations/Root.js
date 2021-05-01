@@ -95,21 +95,24 @@ export default function Root() {
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
 
+  printToken = async () => {
+    const token = await auth().currentUser.getIdToken(true);
+    console.log(token);
+  };
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        // console.log(user.providerId);
-        // console.log(user);
-        // console.log(user.uid, uid);
-        if (user.uid != uid) {
-          addUserId(user.uid);
-        }
-        // addUserId('');
+        // if (user.uid != uid) {
+        //   addUserId(user.uid);
+        // }
+        addUserId('');
         setIsLoading(false);
       } else {
         setIsLoading(false);
       }
     });
+    // printToken();
   }, []);
 
   return (

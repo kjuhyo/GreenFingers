@@ -87,9 +87,6 @@ export default function PasswordChange({navigation}) {
   };
 
   const onSubmit = async () => {
-    // const token = await firebase.auth().currentUser.getIdToken(true);
-    // console.log(token);
-
     const user = await firebase.auth().currentUser;
     const valProvider = await validateProvider();
     if (!valProvider) {

@@ -10,6 +10,14 @@ import {CompleteBtn, CompleteBtnText} from '../../assets/theme/DiaryStyle';
 // Modal
 import CompleteModal from '../../components/diary/modal/CompleteModal';
 
+// firebase, redux
+import {useDispatch} from 'react-redux';
+import {addUid} from '../../reducers/authReducer';
+import firebase from '../../components/auth/firebase';
+
+// backend api
+import {deleteUser} from '../../api/auth';
+
 // 회원탈퇴 안내 페이지 전체 컨테이너
 const Withdrawalcontainer = styled.View`
   height: ${hp('80%')}px;
@@ -45,6 +53,8 @@ const NoticeText = styled.Text`
 export default function Withdrawal() {
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const [checkedState, setCheckedState] = useState(false);
+  const dispatch = useDispatch();
+  const addUserId = uid => dispatch(addUid(uid));
 
   // 체크박스가 true일 경우 완료 모달, false일 경우 Toast 띄움
   const check = () => {
@@ -55,8 +65,21 @@ export default function Withdrawal() {
         duration: 5000,
       });
     } else {
+      withdraw();
       setCompleteModalVisible(true);
     }
+  };
+
+  const signout = async () => {
+    await addUserId('');
+  };
+
+  const withdraw = async () => {
+    // const backresponse = await deleteUser();
+    // console.log(backresponse);
+    console.log('withdraw');
+    const user = await firebase.auth().currentUser;
+    await user.delete();
   };
 
   return (
@@ -126,6 +149,7 @@ export default function Withdrawal() {
           <CompleteModal
             // complete={complete}
             content="회원탈퇴 완료"
+            signout={signout}
             setCompleteModalVisible={setCompleteModalVisible}
           />
         </Modal>

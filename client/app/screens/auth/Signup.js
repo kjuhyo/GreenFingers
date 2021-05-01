@@ -45,25 +45,13 @@ export function SignupScreen({navigation}) {
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
 
-  // const onSubmit = () => {
-  //   // console.log('data', data);
-  //   console.log(email, password, passwordConfirm);
-  // };
-
   const email_signIn = async () => {
     if (email && !emailError && password && !pwError) {
       try {
         const credential = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
-        // console.log(credential.user.uid);
-        // await setUserId(credential.user.uid);
-        // console.log('id', userId);
-        // const response = await signUp({
-        // userId: credential.user.uid,
-        // email: email,
-        // });
-        // console.log('bakcend', response);
+        const response = await signUp();
         await addUserId(credential.user.uid);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
