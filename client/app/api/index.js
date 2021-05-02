@@ -2,7 +2,7 @@ import axios from 'axios';
 import {Alert} from 'react-native';
 import {ACCESS_TOKEN, API_BASE_URL} from '../config/config';
 
-// 토큰 있는 axios 인스턴스(엑세스토큰 수정 필요)
+// axios 인스턴스
 export const instance = axios.create({
   baseURL: `${API_BASE_URL}`,
   headers: {
@@ -24,7 +24,7 @@ instance.interceptors.request.use(
   },
 );
 
-// interceptors(임시. 백엔드와 협의 필요)
+// interceptors
 instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger

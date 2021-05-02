@@ -77,21 +77,9 @@ export function DiaryUpdateScreen({navigation}) {
 
   // 촬영하거나 선택한 사진들 보여주는 함수
   const imgRendering = () => {
-    const result = [];
-
-    // 최대 사진 개수를 넘어가지 않는 경우 현재 선택된 사진 개수만큼 for문 돌림
-    if (imgState != undefined && imgState.length <= maxImgCnt) {
-      for (let i = 0; i < imgState.length; i++) {
-        result.push(<SelectedImg key={i} source={{uri: imgState[i]}} />);
-      }
-    }
-    // 최대 사진 개수를 넘어갈 경우 최대 개수만큼 for문 돌림
-    else {
-      for (let i = 0; i < maxImgCnt; i++) {
-        result.push(<SelectedImg key={i} source={{uri: imgState[i].uri}} />);
-      }
-    }
-    return result;
+    return imgState.map((img, idx) => (
+      <SelectedImg key={idx} source={{uri: img}} />
+    ));
   };
 
   return (

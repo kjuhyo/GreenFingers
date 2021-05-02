@@ -3,9 +3,6 @@ import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text} from 'react-native';
 import 'react-native-gesture-handler';
 
-// redux
-import {useSelector} from 'react-redux';
-
 // axios
 import {writeDiary} from '../../api/diary';
 
@@ -33,34 +30,28 @@ export function DiaryWriteScreen({navigation}) {
   const [titleState, setTitleState] = useState('');
   const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
-
   const maxImgCnt = 5; // 사진 선택 최대 개수
-  const {uid} = useSelector(state => ({uid: state.authReducer.uid}));
+
+  // Toast 띄우는 함수
+  const toastShow = keyword => {
+    Toast.show({
+      text: keyword,
+      buttonText: '확인',
+      duration: 4000,
+    });
+  };
 
   // 다이어리 작성 api 요청 함수
   const diaryWrite = async () => {
     // 제목, 내용, 사진 모두 입력했을 경우에만 다이어리 작성 api 요청
     if (titleState == '') {
-      Toast.show({
-        text: '제목을 입력해주세요.',
-        buttonText: '확인',
-        duration: 4000,
-      });
+      toastShow('제목을 입력해주세요.');
     } else if (contentState == '') {
-      Toast.show({
-        text: '내용을 입력해주세요.',
-        buttonText: '확인',
-        duration: 4000,
-      });
+      toastShow('내용을 입력해주세요.');
     } else if (imgState.length == 0) {
-      Toast.show({
-        text: '사진을 선택해주세요.',
-        buttonText: '확인',
-        duration: 4000,
-      });
+      toastShow('사진을 선택해주세요.');
     } else {
       const params = {
-        userId: uid,
         plantId: 1,
         title: titleState,
         content: contentState,
@@ -121,21 +112,9 @@ export function DiaryWriteScreen({navigation}) {
 
   // 촬영하거나 선택한 사진들 보여주는 함수
   const imgRendering = () => {
-    const result = [];
-
-    // 최대 사진 개수를 넘어가지 않는 경우 현재 선택된 사진 개수만큼 for문 돌림
-    if (imgState != undefined && imgState.length <= maxImgCnt) {
-      for (let i = 0; i < imgState.length; i++) {
-        result.push(<SelectedImg key={i} source={{uri: imgState[i]}} />);
-      }
-    }
-    // 최대 사진 개수를 넘어갈 경우 최대 개수만큼 for문 돌림
-    else {
-      for (let i = 0; i < maxImgCnt; i++) {
-        result.push(<SelectedImg key={i} source={{uri: imgState[i].uri}} />);
-      }
-    }
-    return result;
+    return imgState.map((img, idx) => (
+      <SelectedImg key={idx} source={{uri: img}} />
+    ));
   };
 
   return (
