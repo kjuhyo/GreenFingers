@@ -5,10 +5,26 @@ import {ACCESS_TOKEN, API_BASE_URL} from '../config/config';
 // 토큰 있는 axios 인스턴스(엑세스토큰 수정 필요)
 export const instance = axios.create({
   baseURL: `${API_BASE_URL}`,
-  headers: {'Content-type': 'application/json', token: ACCESS_TOKEN},
+  headers: {
+    'Content-type': 'application/json',
+  },
 });
 
-// interceptors
+// 백엔드에 요청 보낼 때, 인터셉터로 토큰 담기!
+instance.interceptors.request.use(
+  async function (config) {
+    const token = await ACCESS_TOKEN();
+    config.headers.TOKEN = token;
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    console.log(error);
+    return Promise.reject(error);
+  },
+);
+
+// interceptors(임시. 백엔드와 협의 필요)
 instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger

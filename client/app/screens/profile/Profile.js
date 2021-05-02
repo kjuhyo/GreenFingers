@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Modal, Text, TouchableOpacity} from 'react-native';
 
 //redux, firebase, google
-import {useDispatch} from 'react-redux';
-import {addUid} from '../../reducers/authReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {addUid, addUser} from '../../reducers/authReducer';
 import firebase from '../../components/auth/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 GoogleSignin.configure({});
@@ -41,16 +41,16 @@ const ProfileImgBox = styled.View`
 `;
 // 프로필 사진
 const ProfileImg = styled.Image`
-  width: 85px;
-  height: 85px;
-  border-radius: 170px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
 `;
 
 // 유저 정보 영역(이메일, 보유 식물 수)
 const ProfileInfo = styled.View`
-  flex: 2;
+  flex: 4;
   height: 40%;
-  justify-content: space-between;
+  justify-content: center;
   padding: 10px;
   margin-left: 10px;
 `;
@@ -84,18 +84,22 @@ export default function Profile({navigation}) {
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
+  const curUser = (email, provider) => dispatch(addUser(email, provider));
+
+  const {email, provider} = useSelector(state => ({
+    email: state.authReducer.email,
+    provider: state.authReducer.provider,
+  }));
 
   const signOut = async () => {
     try {
-      const user = await firebase.auth().currentUser.providerData[0];
-      const provider = user.providerId;
-      console.log('logout user', user);
       if (provider === 'google.com') {
         // await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
       } else {
         await firebase.auth().signOut();
       }
+      await curUser('', '');
       await addUserId('');
     } catch (error) {
       console.error(error);
@@ -114,8 +118,8 @@ export default function Profile({navigation}) {
           />
         </ProfileImgBox>
         <ProfileInfo>
-          <Text style={{fontSize: 19}}>user@user.com</Text>
-          <Text style={{fontSize: 13, color: 'grey'}}>보유 식물 3개</Text>
+          <Text style={{fontSize: 15, width: 200}}>{email}</Text>
+          <Text style={{fontSize: 15, color: 'grey'}}>보유 식물 3개</Text>
         </ProfileInfo>
       </ProfileBox>
       <MenuBox>

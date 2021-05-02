@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {
   Container,
@@ -41,15 +42,14 @@ import {
   useSelector,
 } from 'react-redux';
 import {signUp} from '../../api/auth';
-import {toHome, addUid} from '../../reducers/authReducer';
+import {addUid, addUser} from '../../reducers/authReducer';
 
 // GoogleSignin.configure({});
 export function LoginScreen({navigation}) {
   // redux
   const dispatch = useDispatch();
-  const moveHome = () => dispatch(toHome());
   const addUserId = uid => dispatch(addUid(uid));
-  // console.log(dispatch(toHome()));
+  const curUser = (email, provider) => dispatch(addUser(email, provider));
 
   // google login
   // const [provider, setProvider] = useState(false);
@@ -62,28 +62,23 @@ export function LoginScreen({navigation}) {
   // input variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userId, setUserId] = useState('');
   const google_signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      // console.log(userInfo);
+
       const credential = await auth.GoogleAuthProvider.credential(
         userInfo.idToken,
         userInfo.accessToken,
       );
       const response = await auth().signInWithCredential(credential);
-      console.log('google response', response);
-      // await setUserId(response.user.uid);
-      // console.log('uids', userId);
-      await signUp({
-        userId: response.user.uid,
-        // email: email,
-        // nickname: 'bbb',
-      });
-      // console.log('back response', response);
-      addUserId(response.user.uid);
-      // const token = await auth().currentUser.getIdToken(true);
+      console.log('google response', response.user);
+      await curUser(
+        response.user.email,
+        response.user.providerData[0].providerId,
+      );
+      await signUp();
+      await addUserId(response.user.uid);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');
@@ -104,13 +99,32 @@ export function LoginScreen({navigation}) {
         let response = await auth().signInWithEmailAndPassword(email, password);
         if (response && response.user) {
           // alert('Success', 'Authenticated successfully');
-          const uid = response.user.uid;
+          // const uid = response.user.uid;
+          // console.log(response);
+          await curUser(
+            response.user.email,
+            response.user.providerData[0].providerId,
+          );
+          await addUserId(response.user.uid);
         }
-      } catch (e) {
-        console.error(e.message);
+      } catch (error) {
+        if (error.code === 'auth/wrong-password') {
+          Alert.alert('로그인 오류', '비밀번호가 일치하지 않습니다.');
+        } else if (error.code === 'auth/user-not-found') {
+          Alert.alert('로그인 오류', '가입되지 않은 이메일입니다.');
+        } else if (error.code === 'auth/invalid-email') {
+          Alert.alert('로그인 오류', '이메일 형식이 유효하지 않습니다.');
+        } else if (error.code === 'auth/too-many-requests') {
+          Alert.alert(
+            '로그인 오류',
+            '여러번 로그인에 실패하여 로그인이 차단 되었습니다. 잠시 후에 다시 시도하거나 관리자에게 문의해주세요.',
+          );
+        } else {
+          Alert.alert('로그인 오류', '로그인에 실패했습니다.');
+        }
       }
     } else {
-      alert('이메일과 비밀번호를 입력해주세요');
+      Alert.alert('로그인 오류', '이메일과 비밀번호를 입력해주세요');
       console.log('email, password no');
     }
     setEmail('');
