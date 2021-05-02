@@ -43,6 +43,7 @@ export const SelectedImg = styled.Image`
   width: 75px;
   height: 75px;
   margin-right: 8px;
+  margin-top: 4px;
 `;
 
 // 완료 버튼

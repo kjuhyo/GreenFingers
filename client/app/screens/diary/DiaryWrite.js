@@ -1,16 +1,20 @@
 // react
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text} from 'react-native';
+import {
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import 'react-native-gesture-handler';
-
-// redux
-import {useSelector} from 'react-redux';
 
 // axios
 import {writeDiary} from '../../api/diary';
 
 // style
-import {Icon, Toast, Root} from 'native-base';
+import {Icon, Toast, Root, Badge} from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   SubHeadingText,
@@ -33,34 +37,28 @@ export function DiaryWriteScreen({navigation}) {
   const [titleState, setTitleState] = useState('');
   const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
-
   const maxImgCnt = 5; // 사진 선택 최대 개수
-  const {uid} = useSelector(state => ({uid: state.authReducer.uid}));
+
+  // Toast 띄우는 함수
+  const toastShow = content => {
+    Toast.show({
+      text: content,
+      buttonText: '확인',
+      duration: 4000,
+    });
+  };
 
   // 다이어리 작성 api 요청 함수
   const diaryWrite = async () => {
     // 제목, 내용, 사진 모두 입력했을 경우에만 다이어리 작성 api 요청
     if (titleState == '') {
-      Toast.show({
-        text: '제목을 입력해주세요.',
-        buttonText: '확인',
-        duration: 4000,
-      });
+      toastShow('제목을 입력해주세요.');
     } else if (contentState == '') {
-      Toast.show({
-        text: '내용을 입력해주세요.',
-        buttonText: '확인',
-        duration: 4000,
-      });
+      toastShow('내용을 입력해주세요.');
     } else if (imgState.length == 0) {
-      Toast.show({
-        text: '사진을 선택해주세요.',
-        buttonText: '확인',
-        duration: 4000,
-      });
+      toastShow('사진을 선택해주세요.');
     } else {
       const params = {
-        userId: uid,
         plantId: 1,
         title: titleState,
         content: contentState,
@@ -75,16 +73,13 @@ export function DiaryWriteScreen({navigation}) {
   const PickMultiple = () => {
     ImagePicker.openPicker({
       multiple: true,
+      mediaType: 'photo', // 사진만 받기(동영상x)
     })
       .then(images => {
         const tmpImg = images.map(i => i.path);
         // 최대 사진 개수가 넘어갈 경우 Toast 띄움
         if (imgState.length + tmpImg.length > maxImgCnt) {
-          Toast.show({
-            text: `사진은 최대 ${maxImgCnt}장까지 선택할 수 있어요.`,
-            buttonText: '확인',
-            duration: 3000,
-          });
+          toastShow(`사진은 최대 ${maxImgCnt}장까지 선택할 수 있어요.`);
         }
         // 최대 사진 개수 이하일 경우 imgState에 새로 선택한 사진 추가
         else {
@@ -101,15 +96,12 @@ export function DiaryWriteScreen({navigation}) {
       cropping: true,
       width: 500,
       height: 500,
+      mediaType: 'photo', // 사진만 받기(동영상x)
     })
       .then(image => {
         // 최대 사진 개수가 넘어갈 경우 Toast 띄움
         if (imgState.length + 1 > maxImgCnt) {
-          Toast.show({
-            text: `사진은 최대 ${maxImgCnt}장까지 선택할 수 있어요.`,
-            buttonText: '확인',
-            duration: 3000,
-          });
+          toastShow(`사진은 최대 ${maxImgCnt}장까지 선택할 수 있어요.`);
         }
         // 최대 사진 개수 이하일 경우 imgState에 새로 선택한 사진 추가
         else {
@@ -119,23 +111,34 @@ export function DiaryWriteScreen({navigation}) {
       .catch(e => console.log(e));
   };
 
+  // 엑스 버튼 눌렀을 때 imgState에서 해당 사진 uri 삭제하는 함수
+  const deleteImg = deleteID => {
+    const newImg = imgState.filter((img, idx) => {
+      return idx !== deleteID;
+    });
+    setImgState(newImg);
+  };
+
   // 촬영하거나 선택한 사진들 보여주는 함수
   const imgRendering = () => {
-    const result = [];
-
-    // 최대 사진 개수를 넘어가지 않는 경우 현재 선택된 사진 개수만큼 for문 돌림
-    if (imgState != undefined && imgState.length <= maxImgCnt) {
-      for (let i = 0; i < imgState.length; i++) {
-        result.push(<SelectedImg key={i} source={{uri: imgState[i]}} />);
-      }
-    }
-    // 최대 사진 개수를 넘어갈 경우 최대 개수만큼 for문 돌림
-    else {
-      for (let i = 0; i < maxImgCnt; i++) {
-        result.push(<SelectedImg key={i} source={{uri: imgState[i].uri}} />);
-      }
-    }
-    return result;
+    return imgState.map((img, idx) => (
+      <View key={idx}>
+        <SelectedImg source={{uri: img}} />
+        <TouchableOpacity
+          style={{position: 'absolute', zIndex: 10, right: -3}}
+          onPress={() => deleteImg(idx)}>
+          <Badge style={{backgroundColor: 'rgba(0,0,0,0)'}}>
+            <View style={{backgroundColor: 'white', borderRadius: 50}}>
+              <Icon
+                type="AntDesign"
+                name="closecircle"
+                style={{color: 'rgba(0,0,0, 0.8)', fontSize: 25}}
+              />
+            </View>
+          </Badge>
+        </TouchableOpacity>
+      </View>
+    ));
   };
 
   return (
