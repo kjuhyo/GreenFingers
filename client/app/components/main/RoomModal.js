@@ -13,6 +13,8 @@ import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useSelector} from 'react-redux';
+import {findRoom} from '../../api/room';
 
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
@@ -68,6 +70,10 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const RoomModal = props => {
+  //uid
+  const {uid} = useSelector(state => ({
+    uid: state.authReducer.uid,
+  }));
   // take photo, choose photo
   const [image, setImage] = useState(
     'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
