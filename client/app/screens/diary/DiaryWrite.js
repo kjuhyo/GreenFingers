@@ -1,5 +1,5 @@
 // react
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Button,
   ScrollView,
@@ -14,7 +14,7 @@ import 'react-native-gesture-handler';
 import {writeDiary} from '../../api/diary';
 
 // style
-import {Icon, Toast, Root, Badge} from 'native-base';
+import {Icon, Toast, Root, Badge, Item} from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   SubHeadingText,
@@ -37,7 +37,29 @@ export function DiaryWriteScreen({navigation}) {
   const [titleState, setTitleState] = useState('');
   const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
+  const [multiPicker, setMultiPicker] = useState(false);
+  const [isCrop, setIsCrop] = useState(false);
+
   const maxImgCnt = 5; // 사진 선택 최대 개수
+
+  useEffect(() => {
+    // console.log('크롭 전 imgState', imgState);
+    const cropImgState = imgState.map(img => {
+      // console.log('hi');
+      // console.log('img 하나하나', img);
+      const cropImg = crop(img);
+      // console.log('crop함수 결과', cropImg);
+      return cropImg;
+    });
+    // console.log('crop 후 cropImgState', cropImgState);
+    // console.log('crop 후 imgState', imgState);
+    setImgState(cropImgState);
+    // console.log('hh', imgState);
+
+    // return () => {
+    //   cleanup;
+    // };
+  }, [multiPicker]);
 
   // Toast 띄우는 함수
   const toastShow = content => {
@@ -62,19 +84,46 @@ export function DiaryWriteScreen({navigation}) {
       formData.append('plantId', 1);
       formData.append('title', titleState);
       formData.append('content', contentState);
-      formData.append('files', {
-        uri: imgState[0],
-        name: 'image.jpg',
-        type: 'image/jpeg',
+      imgState.forEach((img, i) => {
+        formData.append('files', {
+          uri: img,
+          name: 'image.jpg',
+          type: 'image/jpeg',
+        });
       });
-      await writeDiary(formData);
+      const result = await writeDiary(formData);
+      console.log(result);
       navigation.navigate('Diary');
     }
+  };
+
+  const crop = async imgPath => {
+    setIsCrop(false);
+    const cropResult = await ImagePicker.openCropper({
+      path: imgPath,
+      width: 500,
+      height: 500,
+    });
+    // console.log('cropper 안', img.path);
+
+    // console.log('크롭 안 크롭 결과', cropResult);
+    setIsCrop(true);
+    return cropResult.path;
+
+    // const cropResult = await ImagePicker.openCropper({
+    //   path: imgPath,
+    //   width: 500,
+    //   height: 500,
+    // });
+    // console.log('크롭 직후', cropResult.path);
+    // return cropResult.path;
   };
 
   // 여러개의 사진 선택
   const PickMultiple = () => {
     ImagePicker.openPicker({
+      compressImageMaxWidth: 500,
+      compressImageMaxHeight: 500,
       multiple: true,
       mediaType: 'photo', // 사진만 받기(동영상x)
     })
@@ -124,6 +173,7 @@ export function DiaryWriteScreen({navigation}) {
 
   // 촬영하거나 선택한 사진들 보여주는 함수
   const imgRendering = () => {
+    // console.log('이미지 렌더링', imgState);
     return imgState.map((img, idx) => (
       <View key={idx}>
         <SelectedImg source={{uri: img}} />
