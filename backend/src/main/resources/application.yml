@@ -12,3 +12,15 @@ spring:
     properties:
       hibernate:
         format_sql: false
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIATZ7MGZQVP3VFN6MA
+      secretKey: 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
+    s3:
+      bucket: ssafybucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
