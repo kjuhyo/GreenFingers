@@ -71,6 +71,7 @@ export default function ProfileImgChange({navigation}) {
     ImagePicker.openCamera({
       width: 500,
       height: 500,
+      mediaType: 'photo', // 사진만 받기(동영상x)
       cropping: true,
       cropperCircleOverlay: true,
     })

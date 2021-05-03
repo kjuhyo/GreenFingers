@@ -58,16 +58,15 @@ export function DiaryWriteScreen({navigation}) {
     } else if (imgState.length == 0) {
       toastShow('사진을 선택해주세요.');
     } else {
-      const formData = new FormData();
-      formData.append('plantId', 1);
-      formData.append('title', titleState);
-      formData.append('content', contentState);
-      formData.append('files', {
-        uri: imgState[0],
-        name: 'image.jpg',
-        type: 'image/jpeg',
-      });
-      await writeDiary(formData);
+      const params = {
+        plantId: 1,
+        title: titleState,
+        content: contentState,
+        files: imgState,
+      };
+      console.log('파라미터', params);
+      const res = await writeDiary(params);
+      console.log('응답', res);
       navigation.navigate('Diary');
     }
   };
