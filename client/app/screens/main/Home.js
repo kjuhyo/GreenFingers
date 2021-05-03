@@ -66,6 +66,7 @@ function Home({navigation}) {
   useEffect(() => {
     findRoom().then(res => {
       console.log('방정보조회', res.data);
+      console.log(uid);
     });
   });
 

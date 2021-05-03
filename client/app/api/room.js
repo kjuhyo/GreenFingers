@@ -19,3 +19,8 @@ export function findRoom() {
 export function changeThema() {
   return instance.get('user/changeThema');
 }
+
+// 업로드한 이미지 주소
+export function imageUpload() {
+  return instance.post('upload');
+}
