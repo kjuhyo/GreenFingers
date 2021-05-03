@@ -65,7 +65,7 @@ function Home({navigation}) {
   // 방 정보 조회
   useEffect(() => {
     findRoom().then(res => {
-      console.log(res.data);
+      console.log('방정보조회', res.data);
     });
   });
 
