@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 // import { StatusBar } from "expo-status-bar";
-import {Dimensions, StatusBar} from 'react-native';
+import {Dimensions, StatusBar, Alert} from 'react-native';
 
 import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';
@@ -11,21 +11,33 @@ import theme from './app/assets/theme/index';
 import {ThemeProvider} from 'styled-components';
 import {Icon} from 'native-base';
 
+//navigation
+import Root from './app/navigations/Root';
+
+//redux
 import allReducer from './app/reducers/index.js';
 import {createStore} from 'redux';
-import Root from './app/navigations/Root';
 import {Provider as StoreProvider} from 'react-redux';
+
+//firebase
+import messaging from '@react-native-firebase/messaging';
+// import firebase from '@react-native-firebase/app';
+// import firebase from '@react-native-firebase/app';
+
 const store = createStore(
   allReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
-import firebase from './app/components/auth/firebase';
 
 export default function App() {
   useEffect(() => {
-    // 렌더링이 얼마나 되는지 확인용
-    console.log('rendering');
-  });
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const title = JSON.stringify(remoteMessage.notification.title);
+      const body = JSON.stringify(remoteMessage.notification.body);
+      Alert.alert(title, body);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <StoreProvider store={store}>

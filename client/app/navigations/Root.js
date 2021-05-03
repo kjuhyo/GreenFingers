@@ -24,6 +24,8 @@ import {Icon} from 'native-base';
 // redux
 import {useSelector, useDispatch} from 'react-redux';
 import firebase from '../components/auth/firebase';
+// import firebase from '@react-native-firebase/app';
+
 import auth from '@react-native-firebase/auth';
 import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
@@ -104,6 +106,7 @@ export default function Root() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
+        printToken();
         if (user.uid != uid) {
           addUserId(user.uid);
           curUser(user.email, user.providerData[0].providerId);
@@ -115,7 +118,6 @@ export default function Root() {
         setIsLoading(false);
       }
     });
-    printToken();
   }, []);
 
   return (

@@ -186,14 +186,18 @@ android {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
+
 dependencies {
 
     //firebase google login
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-core:18.0.3'
+
     implementation 'com.google.firebase:firebase-analytics'
     implementation(project(":react-native-google-signin")) // <--- add this dependency
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0' 
+    
 
     
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -232,3 +236,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'
