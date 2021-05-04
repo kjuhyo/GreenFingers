@@ -1,8 +1,9 @@
 import {instance} from './index';
+import {instanceFile} from './index';
 
 // 방 생성
-export function createRoom() {
-  return instance.post('room/create/v2');
+export function createRoom(formData) {
+  return instanceFile.post('room/create/v2', formData);
 }
 
 // 방 삭제
@@ -22,5 +23,5 @@ export function changeThema() {
 
 // 업로드한 이미지 주소
 export function imageUpload() {
-  return instance.post('upload');
+  return instanceFile.post('upload');
 }
