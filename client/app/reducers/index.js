@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux';
 import authReducer from './authReducer.js';
-import otherReducer from './otherReducer.js';
+import plantReducer from './plantReducer.js';
 const allReducer = combineReducers({
   authReducer,
-  // otherReducer,
+  plantReducer,
 });
 export default allReducer;
 
