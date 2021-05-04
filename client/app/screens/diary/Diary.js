@@ -54,7 +54,12 @@ const renderTabBar = props => {
   return <ScrollableTab />;
 };
 export function DiaryScreen({navigation}) {
-  
+  // useEffect(() => {
+  //   effect
+  //   return () => {
+  //     cleanup
+  //   }
+  // }, [input])
 
   return (
     <Container>
