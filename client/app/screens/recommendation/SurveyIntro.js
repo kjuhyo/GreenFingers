@@ -21,17 +21,26 @@ import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
 import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
 
-import {useSelector} from 'react-redux';
+// for redux texting
+import {useSelector, useDispatch} from 'react-redux';
+import {tempAddPlant} from '../../components/auth/mockdata';
+import {addPlant, updatePlant} from '../../reducers/plantReducer';
 
 export function SurveyintroScreen({navigation}) {
+  // redux testing
+  const dispatch = useDispatch();
+  const addUserPlant = plant => dispatch(addPlant(plant));
+  const updateUserPlant = (pid, plant) => dispatch(updatePlant(pid, plant));
   const {userPlants} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
   }));
 
   useEffect(() => {
-    console.log('redux plants', userPlants);
-  });
-
+    // console.log('redux plants', userPlants);
+    // updateUserPlant(14, tempAddPlant);
+    // console.log('redux plants add', userPlants);
+  }, []);
+  //redux testing over
   return (
     <Container style={styles.container}>
       <View style={styles.titlecontainer}>

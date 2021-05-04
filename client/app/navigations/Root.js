@@ -32,6 +32,9 @@ import {set} from 'react-native-reanimated';
 import {addUid, addUser} from '../reducers/authReducer';
 import {setPlants} from '../reducers/plantReducer';
 import {userInfo} from '../../app/api/auth';
+// mock data
+import {tempResponse, tempPlants} from '../components/auth/mockdata';
+
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
@@ -105,41 +108,6 @@ export default function Root() {
     // console.log(token);
   };
 
-  const tempResponse = {
-    userId: 'cG7Ym43v0dPsiWhUpcbpte5fVdC3',
-    nickname: '다정',
-    profile:
-      'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
-    thema: 'DEAFULT_THEMA_IMAGE',
-  };
-
-  const tempPlants = [
-    {
-      pid: '12',
-      nickname: '스투루루루',
-      name: 'whatname?2',
-      lastDate: '2020-05-30',
-      image:
-        'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
-    },
-    {
-      pid: '14',
-      nickname: '야미야미',
-      name: 'whatname?2',
-      lastDate: '2020-05-30',
-      image:
-        'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
-    },
-    {
-      pid: '16',
-      nickname: '뉸뉴뉸뉴뉸',
-      name: 'whatname?3',
-      lastDate: '2020-05-30',
-      image:
-        'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
-    },
-  ];
-
   saveUserInfo = async user => {
     // console.log('user', user);
     if (user) {
@@ -152,8 +120,10 @@ export default function Root() {
       await savePlants(tempPlants);
       // console.log('allaboutuser', allAboutUser.data.plants);
       await curUser(user.email, user.providerData[0].providerId);
-      setIsLoading(false);
+      await setIsLoading(false);
     } else {
+      addUserId('');
+      curUser('', '');
       setIsLoading(false);
     }
   };
