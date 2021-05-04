@@ -14,12 +14,7 @@ import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector} from 'react-redux';
-import {findRoom} from '../../api/room';
 import {createRoom} from '../../api/room';
-import {imageUpload} from '../../api/room';
-
-// import * as ImagePicker from "expo-image-picker";
-// 리액트 네이티브의 image picker 필요
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -70,12 +65,14 @@ const ImageBox = styled.TouchableOpacity`
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
-const HEIGHT_MODAL = 300;
+
 const RoomModal = props => {
-  // take photo, choose photo
+  // image에 image.path 저장
   const [image, setImage] = useState(
     'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
   );
+  const [mime, setMime] = useState('image/jpeg');
+  // 카메라이용하여 사진 저장
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -86,13 +83,13 @@ const RoomModal = props => {
       .then(image => {
         console.log(image);
         setImage(image.path);
-        this.bs.current.snapTo(1);
+        setMime(image.mime);
       })
       .catch(err => {
         console.log('openCamera catch' + err.toString());
       });
   };
-
+  // 갤러리에서 사진 저장
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -103,13 +100,13 @@ const RoomModal = props => {
       .then(image => {
         console.log(image);
         setImage(image.path);
-        this.bs.current.snapTo(1);
+        setMime(image.mime);
       })
       .catch(err => {
         console.log('openCamera catch' + err.toString());
       });
   };
-
+  // 모달 닫기
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
@@ -119,40 +116,29 @@ const RoomModal = props => {
     setChooseData(data);
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-
-    const user = {
-      name: this.state.name,
-    };
-
-    axios
-      .post(`https://jsonplaceholder.typicode.com/users`, {user})
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      });
-  };
-
-  const plusRoom = () => {
-    imageUpload(image)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  // 방 등록
+  const plusRoom = async () => {
+    // var photo = {
+    //   uri: image,
+    //   name: 'photo.jpg',
+    //   type: 'image/jpeg',
+    // };
+    console.log(image);
+    const formData = new FormData();
+    formData.append('roomName', '뿌잉');
+    formData.append('theme', {
+      uri: image,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+    });
+    await createRoom(formData)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
     closeModal(false, 'Cancel');
   };
-  // async () => {
-  // const params = {
-  //   roomName: '거실',
-  //   theme: image,
-  // };
-  // await createRoom(params);
-  // await imageUpload(image);
 
   bs = React.createRef();
+
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -184,6 +170,7 @@ const RoomModal = props => {
               <Text style={styles.chiptext}>사진 등록</Text>
             </Littlechip>
             <ImageArea>
+              {/* 갤러리에서 사진 고르기 */}
               <ImageBox onPress={choosePhotoFromLibrary}>
                 <Icon
                   type="MaterialCommunityIcons"
@@ -192,6 +179,7 @@ const RoomModal = props => {
                 />
                 <Text style={{fontSize: 12, marginTop: 1}}>사진 선택</Text>
               </ImageBox>
+              {/* 카메라로 사진 찍기 */}
               <ImageBox onPress={takePhotoFromCamera}>
                 <Icon
                   type="MaterialCommunityIcons"
@@ -212,7 +200,7 @@ const RoomModal = props => {
           }}
           style={{height: 60, width: 60, marginLeft: 20, marginTop: 10}}
           imageStyle={{borderRadius: 15}}></Image>
-        {/* 버튼 */}
+        {/* 저장 버튼 */}
         <View style={styles.button}>
           <AddButton onPress={() => plusRoom()}>
             <ButtonText>저장</ButtonText>
