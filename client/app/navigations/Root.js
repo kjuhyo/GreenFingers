@@ -101,22 +101,22 @@ export default function Root() {
     console.log(token);
   };
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        if (user.uid != uid) {
-          addUserId(user.uid);
-          curUser(user.email, user.providerData[0].providerId);
-        }
-        // addUserId('');
-        // curUser('', '');
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-      }
-    });
-    printToken();
-  }, []);
+  // useEffect(() => {
+  //   firebase.auth().onAuthStateChanged(function (user) {
+  //     if (user) {
+  //       if (user.uid != uid) {
+  //         addUserId(user.uid);
+  //         curUser(user.email, user.providerData[0].providerId);
+  //       }
+  //       // addUserId('');
+  //       // curUser('', '');
+  //       setIsLoading(false);
+  //     } else {
+  //       setIsLoading(false);
+  //     }
+  //   });
+  //   printToken();
+  // }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -129,9 +129,7 @@ export default function Root() {
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <NavigationContainer>
-          {uid ? <Tabs /> : <AuthStack />}
-        </NavigationContainer>
+        <NavigationContainer>{uid ? <Tabs /> : <Tabs />}</NavigationContainer>
       )}
     </ThemeProvider>
   );
