@@ -1,4 +1,4 @@
-import {instance} from './index';
+import {instance, instanceFile} from './index';
 
 export function deleteDiary(id) {
   return instance.put(`diary/delete/${id}`);
@@ -20,6 +20,6 @@ export function updateDiary(id, params) {
   return instance.put(`diary/update/${id}`, params);
 }
 
-export function writeDiary(params) {
-  return instance.post('diary/write', params);
+export function writeDiary(formData) {
+  return instanceFile.post('diary/write/v2', formData);
 }

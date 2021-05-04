@@ -1,6 +1,7 @@
 // react
 import React, {useState} from 'react';
 import {
+  Button,
   ScrollView,
   StyleSheet,
   Text,
@@ -36,7 +37,6 @@ export function DiaryWriteScreen({navigation}) {
   const [titleState, setTitleState] = useState('');
   const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
-
   const maxImgCnt = 5; // 사진 선택 최대 개수
 
   // Toast 띄우는 함수
@@ -58,18 +58,15 @@ export function DiaryWriteScreen({navigation}) {
     } else if (imgState.length == 0) {
       toastShow('사진을 선택해주세요.');
     } else {
-      const formData = new FormData();
-      formData.append('plantId', 1);
-      formData.append('title', titleState);
-      formData.append('content', contentState);
-      imgState.forEach((img, i) => {
-        formData.append('files', {
-          uri: img,
-          name: `image${i}.jpg`,
-          type: 'image/jpeg',
-        });
-      });
-      await writeDiary(formData);
+      const params = {
+        plantId: 1,
+        title: titleState,
+        content: contentState,
+        files: imgState,
+      };
+      console.log('파라미터', params);
+      const res = await writeDiary(params);
+      console.log('응답', res);
       navigation.navigate('Diary');
     }
   };
@@ -77,8 +74,6 @@ export function DiaryWriteScreen({navigation}) {
   // 여러개의 사진 선택
   const PickMultiple = () => {
     ImagePicker.openPicker({
-      compressImageMaxWidth: 500,
-      compressImageMaxHeight: 500,
       multiple: true,
       mediaType: 'photo', // 사진만 받기(동영상x)
     })
