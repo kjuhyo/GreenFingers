@@ -71,6 +71,7 @@ export function LoginScreen({navigation}) {
         userInfo.idToken,
         userInfo.accessToken,
       );
+      console.log(credential);
       const response = await auth().signInWithCredential(credential);
       console.log('google response', response.user);
       await curUser(
@@ -88,7 +89,7 @@ export function LoginScreen({navigation}) {
         alert('PLAY_SERVICES_NOT_AVAILABLE');
       } else {
         alert('some other happend');
-        console.log(error);
+        console.log(error.code, error.message);
       }
     }
   };

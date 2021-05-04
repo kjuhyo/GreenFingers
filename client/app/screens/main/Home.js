@@ -63,12 +63,12 @@ function Home({navigation}) {
     uid: state.authReducer.uid,
   }));
   // 방 정보 조회
-  useEffect(() => {
-    findRoom().then(res => {
-      console.log('방정보조회', res.data);
-      console.log(uid);
-    });
-  });
+  // useEffect(() => {
+  //   findRoom().then(res => {
+  //     console.log('방정보조회', res.data);
+  //     console.log(uid);
+  //   });
+  // });
 
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
