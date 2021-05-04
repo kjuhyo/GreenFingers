@@ -9,6 +9,9 @@ import {
   ScrollView,
   Dimensions,
   Modal,
+  Alert,
+  SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {Container, Icon, Button, Content} from 'native-base';
 import {RoomModal} from '../../components/main/RoomModal';
@@ -50,6 +53,7 @@ function Home({navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
+  const [roomData, setRoomData] = useState([]);
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
@@ -62,14 +66,93 @@ function Home({navigation}) {
   const {uid} = useSelector(state => ({
     uid: state.authReducer.uid,
   }));
+  const [loading, setLoading] = useState(false);
   // 방 정보 조회
-  // useEffect(() => {
-  //   findRoom().then(res => {
-  //     console.log('방정보조회', res.data);
-  //     console.log(uid);
-  //   });
-  // });
-
+  const getRoomData = () => {
+    findRoom()
+      .then(res => setRoomData(res.data.response))
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        Alert.alert('에러가났습니다');
+      });
+  };
+  useEffect(() => {
+    getRoomData();
+  }, []);
+  const onEndReached = () => {
+    if (loading) {
+      return;
+    } else {
+      getRoomData();
+    }
+  };
+  const renderItem = ({item}) => {
+    return (
+      <View style={styles.rooms}>
+        <Text
+          style={styles.roomname}
+          onPress={() => {
+            console.log('click room name');
+            navigation.navigate('Room');
+          }}>
+          {item.roomName}
+        </Text>
+        <View style={styles.abovecard}>
+          <TouchableOpacity
+            style={styles.plantcard}
+            onPress={() => {
+              console.log('click left');
+              navigation.navigate('Room');
+            }}>
+            <Image
+              source={require('../../assets/images/plant.jpg')}
+              style={styles.plantimg}
+            />
+            <View style={styles.plantinfo}>
+              <Text style={styles.plantname}>산세베리아</Text>
+              <View style={styles.rightinfo}>
+                <View style={styles.water}>
+                  <Text style={styles.watertext}>물 준 날짜</Text>
+                  <Text style={styles.waterdate}>2021/02/11</Text>
+                </View>
+                <Image
+                  source={require('../../assets/images/plant1.png')}
+                  style={styles.planticon}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.plantcard}
+            onPress={() => {
+              console.log('click right');
+              navigation.navigate('Room');
+            }}>
+            <Image
+              source={require('../../assets/images/plant.jpg')}
+              style={styles.plantimg}
+            />
+            <View style={styles.plantinfo}>
+              <Text style={styles.plantname}>산세베리아가</Text>
+              <View style={styles.rightinfo}>
+                <View style={styles.water}>
+                  <Text style={styles.watertext}>물 준 날짜</Text>
+                  <Text style={styles.waterdate}>2021/02/11</Text>
+                </View>
+                <Image
+                  source={require('../../assets/images/plant1.png')}
+                  style={styles.planticon}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       <View style={{flex: 0.1}}>
@@ -83,7 +166,7 @@ function Home({navigation}) {
           source={require('../../assets/images/mainroom.jpg')}
         />
       </View>
-
+      {/* 오른쪽 상단 아이콘 */}
       <View style={styles.mainicons}>
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Icon
@@ -109,168 +192,56 @@ function Home({navigation}) {
           />
         </Modal>
       </View>
-      <ScrollView style={styles.scrollview}>
-        <View style={styles.mainname}>
-          <Text style={styles.nametext}>Dasol House</Text>
+      {/* 홈이름 */}
+      <View style={styles.mainname}>
+        <Text style={styles.nametext}>Dasol House</Text>
+        <Icon
+          type="Ionicons"
+          name="pencil-outline"
+          style={styles.pencil}
+          onPress={() => {
+            console.log('click pencil');
+          }}></Icon>
+      </View>
+      {/* 날씨 */}
+      <View style={styles.now}>
+        <View style={styles.middlebox}>
+          <Icon type="Ionicons" name="sunny-outline"></Icon>
+          <Text style={styles.info}>sunny</Text>
+          <Icon type="Ionicons" name="water-outline"></Icon>
+          <Text style={styles.info}>55%</Text>
+          <Icon type="Ionicons" name="thermometer-outline"></Icon>
+          <Text style={styles.info}>25°C</Text>
+        </View>
+      </View>
+      {/* 방추가아이콘 */}
+      <View style={styles.add}>
+        <TouchableOpacity onPress={() => changeModalVisible(true)}>
           <Icon
             type="Ionicons"
-            name="pencil-outline"
-            style={styles.pencil}
-            onPress={() => {
-              console.log('click pencil');
-            }}></Icon>
-        </View>
-        <View style={styles.now}>
-          <View style={styles.middlebox}>
-            <Icon type="Ionicons" name="sunny-outline"></Icon>
-            <Text style={styles.info}>sunny</Text>
-            <Icon type="Ionicons" name="water-outline"></Icon>
-            <Text style={styles.info}>55%</Text>
-            <Icon type="Ionicons" name="thermometer-outline"></Icon>
-            <Text style={styles.info}>25°C</Text>
-          </View>
-        </View>
-        <View style={styles.add}>
-          <TouchableOpacity onPress={() => changeModalVisible(true)}>
-            <Icon
-              type="Ionicons"
-              name="add-circle-outline"
-              style={styles.addicon}></Icon>
-          </TouchableOpacity>
-          <Modal
-            transparent={true}
-            animationType="fade"
-            visible={isModalVisible}
-            nRequestClose={() => changeModalVisible(false)}
-            style={styles.plantmodal}>
-            <RoomModal
-              changeModalVisible={changeModalVisible}
-              setData={setData}
-            />
-          </Modal>
-        </View>
-
-        <View style={styles.rooms}>
-          <Text
-            style={styles.roomname}
-            onPress={() => {
-              console.log('click room name');
-              navigation.navigate('Room');
-            }}>
-            거실
-          </Text>
-          <View style={styles.abovecard}>
-            <TouchableOpacity
-              style={styles.plantcard}
-              onPress={() => {
-                console.log('click left');
-                navigation.navigate('Room');
-              }}>
-              <Image
-                source={require('../../assets/images/plant.jpg')}
-                style={styles.plantimg}
-              />
-              <View style={styles.plantinfo}>
-                <Text style={styles.plantname}>산세베리아</Text>
-                <View style={styles.rightinfo}>
-                  <View style={styles.water}>
-                    <Text style={styles.watertext}>물 준 날짜</Text>
-                    <Text style={styles.waterdate}>2021/02/11</Text>
-                  </View>
-                  <Image
-                    source={require('../../assets/images/plant1.png')}
-                    style={styles.planticon}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.plantcard}
-              onPress={() => {
-                console.log('click right');
-                navigation.navigate('Room');
-              }}>
-              <Image
-                source={require('../../assets/images/plant.jpg')}
-                style={styles.plantimg}
-              />
-              <View style={styles.plantinfo}>
-                <Text style={styles.plantname}>산세베리아가</Text>
-                <View style={styles.rightinfo}>
-                  <View style={styles.water}>
-                    <Text style={styles.watertext}>물 준 날짜</Text>
-                    <Text style={styles.waterdate}>2021/02/11</Text>
-                  </View>
-                  <Image
-                    source={require('../../assets/images/plant1.png')}
-                    style={styles.planticon}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.rooms}>
-          <Text
-            style={styles.roomname}
-            onPress={() => {
-              console.log('click room name');
-              navigation.navigate('Room');
-            }}>
-            거실
-          </Text>
-          <View style={styles.abovecard}>
-            <TouchableOpacity
-              style={styles.plantcard}
-              onPress={() => {
-                console.log('click left');
-                navigation.navigate('Room');
-              }}>
-              <Image
-                source={require('../../assets/images/plant.jpg')}
-                style={styles.plantimg}
-              />
-              <View style={styles.plantinfo}>
-                <Text style={styles.plantname}>산세베리아</Text>
-                <View style={styles.rightinfo}>
-                  <View style={styles.water}>
-                    <Text style={styles.watertext}>물 준 날짜</Text>
-                    <Text style={styles.waterdate}>2021/02/11</Text>
-                  </View>
-                  <Image
-                    source={require('../../assets/images/plant1.png')}
-                    style={styles.planticon}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.plantcard}
-              onPress={() => {
-                console.log('click right');
-                navigation.navigate('Room');
-              }}>
-              <Image
-                source={require('../../assets/images/plant.jpg')}
-                style={styles.plantimg}
-              />
-              <View style={styles.plantinfo}>
-                <Text style={styles.plantname}>산세베리아가</Text>
-                <View style={styles.rightinfo}>
-                  <View style={styles.water}>
-                    <Text style={styles.watertext}>물 준 날짜</Text>
-                    <Text style={styles.waterdate}>2021/02/11</Text>
-                  </View>
-                  <Image
-                    source={require('../../assets/images/plant1.png')}
-                    style={styles.planticon}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+            name="add-circle-outline"
+            style={styles.addicon}></Icon>
+        </TouchableOpacity>
+        <Modal
+          transparent={true}
+          animationType="fade"
+          visible={isModalVisible}
+          nRequestClose={() => changeModalVisible(false)}
+          style={styles.plantmodal}>
+          <RoomModal
+            changeModalVisible={changeModalVisible}
+            setData={setData}
+          />
+        </Modal>
+      </View>
+      {/* 방리스트 */}
+      <SafeAreaView>
+        <FlatList
+          data={roomData}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </SafeAreaView>
     </View>
   );
 }
@@ -336,7 +307,6 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   now: {
-    flex: 0.5,
     // backgroundColor: "yellow",
     alignItems: 'center',
     marginBottom: 10,
@@ -350,10 +320,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingLeft: 20,
+    height: 40,
   },
-  rooms: {
-    flex: 5,
-  },
+  rooms: {},
   info: {
     paddingHorizontal: 15,
     color: 'white',
@@ -376,9 +345,9 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
     flex: 0.4,
+    // marginTop: 40,
   },
   abovecard: {
-    flex: 4,
     flexDirection: 'row',
     paddingHorizontal: 20,
     // padding: 20,
