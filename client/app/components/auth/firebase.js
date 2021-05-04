@@ -19,13 +19,15 @@ var firebaseConfig = {
   storageBucket: STORAGE_BUCKET,
   messagingSenderId: MESSAGING_SENDER_ID,
   appId: APP_ID,
-  measurementId: MEASUREMENT_ID,
 };
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+  console.log(firebase.app);
 } else {
   firebase.app();
 }
+
+// firebase.app.delete();
 
 export default firebase;

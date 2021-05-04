@@ -1,5 +1,4 @@
 import auth from '@react-native-firebase/auth';
-import firebase from '../components/auth/firebase';
 
 export const ACCESS_TOKEN = async () => {
   try {

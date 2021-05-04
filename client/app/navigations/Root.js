@@ -24,6 +24,8 @@ import {Icon} from 'native-base';
 // redux
 import {useSelector, useDispatch} from 'react-redux';
 import firebase from '../components/auth/firebase';
+// import firebase from '@react-native-firebase/app';
+
 import auth from '@react-native-firebase/auth';
 import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
@@ -101,22 +103,22 @@ export default function Root() {
     console.log(token);
   };
 
-  // useEffect(() => {
-  //   firebase.auth().onAuthStateChanged(function (user) {
-  //     if (user) {
-  //       if (user.uid != uid) {
-  //         addUserId(user.uid);
-  //         curUser(user.email, user.providerData[0].providerId);
-  //       }
-  //       // addUserId('');
-  //       // curUser('', '');
-  //       setIsLoading(false);
-  //     } else {
-  //       setIsLoading(false);
-  //     }
-  //   });
-  //   printToken();
-  // }, []);
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        printToken();
+        if (user.uid != uid) {
+          addUserId(user.uid);
+          curUser(user.email, user.providerData[0].providerId);
+        }
+        // addUserId('');
+        // curUser('', '');
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
