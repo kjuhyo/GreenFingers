@@ -23,23 +23,41 @@ import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
 
 // for redux texting
 import {useSelector, useDispatch} from 'react-redux';
-import {tempAddPlant} from '../../components/auth/mockdata';
-import {addPlant, updatePlant} from '../../reducers/plantReducer';
+import {tempAddPlant, tempResponse} from '../../components/auth/mockdata';
+import {
+  addPlant,
+  updatePlant,
+  updatePlantNickname,
+  updatePlantLastDate,
+} from '../../reducers/plantReducer';
+import {
+  updateProfileNickname,
+  updateProfileImage,
+  setProfile,
+} from '../../reducers/profileReducer';
 
 export function SurveyintroScreen({navigation}) {
   // redux testing
   const dispatch = useDispatch();
   const addUserPlant = plant => dispatch(addPlant(plant));
   const updateUserPlant = (pid, plant) => dispatch(updatePlant(pid, plant));
-  const {userPlants} = useSelector(state => ({
+  const updatePlantNN = (pid, nickname) =>
+    dispatch(updatePlantNickname(pid, nickname));
+  const updatePlantWaterDate = (pid, lastdate) =>
+    dispatch(updatePlantLastDate(pid, lastdate));
+  const {userPlants, userProfile} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
+    userProfile: state.profileReducer,
   }));
 
+  const updateProfileNN = nickname => dispatch(updateProfileNickname(nickname));
+  const updateProfileImg = image => dispatch(updateProfileImage(image));
+  const setUserProfile = profile => dispatch(setProfile(profile));
   useEffect(() => {
-    // console.log('redux plants', userPlants);
-    // updateUserPlant(14, tempAddPlant);
-    // console.log('redux plants add', userPlants);
-  }, []);
+    console.log('redux profile', userProfile);
+    setUserProfile(tempResponse);
+    console.log('redux profile add', userProfile);
+  });
   //redux testing over
   return (
     <Container style={styles.container}>

@@ -1,14 +1,18 @@
-const UPDATE_PROFILE = 'UPDATE_PROFILE';
+const UPDATE_PROFILE_NICKNAME = 'UPDATE_PROFILE_NICKNAME';
+const UPDATE_PROFILE_IMAGE = 'UPDATE_PROFILE_IMAGE';
+const SET_PROFILE = 'SET_PROFILE';
 
-export const addUser = (email, provider) => ({
-  type: ADD_USER,
-  email,
-  provider,
+export const updateProfileNickname = nickname => ({
+  type: UPDATE_PROFILE_NICKNAME,
+  nickname,
 });
-
-export const addUid = uid => ({
-  type: ADD_UID,
-  uid,
+export const updateProfileImage = image => ({
+  type: UPDATE_PROFILE_IMAGE,
+  image,
+});
+export const setProfile = profile => ({
+  type: SET_PROFILE,
+  profile,
 });
 
 const profileState = {
@@ -18,19 +22,20 @@ const profileState = {
   thema: 'DEAFULT_THEMA_IMAGE',
 };
 
-export default function auth(state = initialState, action) {
+export default function profile(state = profileState, action) {
   switch (action.type) {
-    case 'ADD_UID':
+    case 'SET_PROFILE':
+      console.log(action.profile);
+      return action.profile;
+    case 'UPDATE_PROFILE_NICKNAME':
       return {
         ...state,
-        uid: action.uid,
+        nickname: action.profile,
       };
-    case 'ADD_USER':
-      console.log(action);
+    case 'UPDATE_PROFILE_IMAGE':
       return {
         ...state,
-        email: action.email,
-        provider: action.provider,
+        profile: action.image,
       };
     default:
       return state;
