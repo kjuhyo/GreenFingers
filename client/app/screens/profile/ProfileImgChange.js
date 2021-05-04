@@ -43,7 +43,7 @@ export default function ProfileImgChange({navigation}) {
     'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
   );
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
-  
+
   // 완료 버튼을 눌렀을 때 이동할 페이지
   const complete = () => {
     navigation.navigate('Profile');
@@ -69,6 +69,9 @@ export default function ProfileImgChange({navigation}) {
   // 사진 촬영
   const PickSingleWithCamera = () => {
     ImagePicker.openCamera({
+      width: 500,
+      height: 500,
+      mediaType: 'photo', // 사진만 받기(동영상x)
       cropping: true,
       cropperCircleOverlay: true,
     })

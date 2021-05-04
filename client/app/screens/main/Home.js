@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -20,6 +20,9 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
+
+import {useSelector} from 'react-redux';
+import {findRoom} from '../../api/room';
 
 // import Modal from "react-native-modal";
 
@@ -56,6 +59,17 @@ function Home({navigation}) {
   const setData = data => {
     setChooseData(data);
   };
+  const {uid} = useSelector(state => ({
+    uid: state.authReducer.uid,
+  }));
+  // 방 정보 조회
+  useEffect(() => {
+    findRoom().then(res => {
+      console.log('방정보조회', res.data);
+      console.log(uid);
+    });
+  });
+
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       <View style={{flex: 0.1}}>

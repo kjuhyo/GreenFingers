@@ -40,9 +40,10 @@ export const SelectedImgBox = styled.View`
 // 선택한 사진
 export const SelectedImg = styled.Image`
   border-radius: 10px;
-  width: 60px;
-  height: 60px;
+  width: 75px;
+  height: 75px;
   margin-right: 8px;
+  margin-top: 4px;
 `;
 
 // 완료 버튼

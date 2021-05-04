@@ -16,6 +16,8 @@ import {
   ModalButton,
 } from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
+import axios from 'axios';
+import {InputAutoSuggest} from 'react-native-autocomplete-search';
 
 // 글 작성 textInput 박스
 const SearchBar = styled.TextInput`
@@ -35,11 +37,21 @@ const ButtonText = styled.Text`
   font-weight: bold;
   font-size: 16px;
 `;
-
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const PlantIdentification = props => {
+  const [result, setResult] = useState('1');
+  useEffect(() => {
+    console.log('render');
+    axios
+      .get(`http://k4c103.p.ssafy.io/green/plant/info`)
+      .then(res => {
+        const persons = res.data;
+        console.log(persons);
+      })
+      .catch(err => console.log(err));
+  });
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
@@ -82,19 +94,79 @@ const PlantIdentification = props => {
               </View>
             </TouchableOpacity>
           </View>
-          {/* <View style={styles.listbottom}>
-            <TouchableOpacity style={styles.plant2}>
-              <Text>산세베리아</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.plant3}>
-              <Text>파스향나무</Text>
-            </TouchableOpacity>
-          </View> */}
           <View style={styles.plantinput}>
             <Text style={{marginBottom: 20}}>
               '싱고니움'이 아니라면 직접 입력해주세요
             </Text>
-            <SearchBar placeholder="   검색어를 입력해 주세요" />
+            <Text style={{fontWeight: 'bold'}}>{result}</Text>
+            {/* <SearchBar placeholder="   검색어를 입력해 주세요" /> */}
+            <InputAutoSuggest
+              style={{flex: 1}}
+              staticData={[
+                {
+                  someAttribute: 'val1',
+                  details: {
+                    id: '1',
+                    name: 'Paris',
+                    country: 'FR',
+                    continent: 'Europe',
+                  },
+                },
+                {
+                  someAttribute: 'val2',
+                  details: {
+                    id: '2',
+                    name: 'Pattanduru',
+                    country: 'PA',
+                    continent: 'South America',
+                  },
+                },
+                {
+                  someAttribute: 'val3',
+                  details: {
+                    id: '3',
+                    name: 'Para',
+                    country: 'PA',
+                    continent: 'South America',
+                  },
+                },
+                {
+                  someAttribute: 'val4',
+                  details: {
+                    id: '4',
+                    name: 'London',
+                    country: 'UK',
+                    continent: 'Europe',
+                  },
+                },
+                {
+                  someAttribute: 'val5',
+                  details: {
+                    id: '5',
+                    name: 'New York',
+                    country: 'US',
+                    continent: 'North America',
+                  },
+                },
+                {
+                  someAttribute: 'val6',
+                  details: {
+                    id: '6',
+                    name: 'Berlin',
+                    country: 'DE',
+                    continent: 'Europe',
+                  },
+                },
+              ]}
+              itemFormat={{
+                id: 'details.id',
+                name: 'details.name',
+                tags: ['details.continent', 'details.country'],
+              }}
+              onDataSelectedChange={data =>
+                data !== null ? setResult(data.name) : console.log(data)
+              }
+            />
           </View>
         </View>
         <View style={styles.last}>

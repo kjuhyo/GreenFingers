@@ -13,6 +13,10 @@ import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useSelector} from 'react-redux';
+import {findRoom} from '../../api/room';
+import {createRoom} from '../../api/room';
+import {imageUpload} from '../../api/room';
 
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
@@ -105,13 +109,49 @@ const RoomModal = props => {
         console.log('openCamera catch' + err.toString());
       });
   };
+
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+
   const setData = data => {
     setChooseData(data);
   };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const user = {
+      name: this.state.name,
+    };
+
+    axios
+      .post(`https://jsonplaceholder.typicode.com/users`, {user})
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      });
+  };
+
+  const plusRoom = () => {
+    imageUpload(image)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    closeModal(false, 'Cancel');
+  };
+  // async () => {
+  // const params = {
+  //   roomName: '거실',
+  //   theme: image,
+  // };
+  // await createRoom(params);
+  // await imageUpload(image);
+
   bs = React.createRef();
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
@@ -129,7 +169,7 @@ const RoomModal = props => {
         </View>
         {/* 내용 */}
         <View style={styles.content}>
-          {/* 식물이름입력 */}
+          {/* 방이름입력 */}
           <View style={styles.input}>
             <Littlechip>
               <Text style={styles.chiptext}>방 이름</Text>
@@ -174,7 +214,7 @@ const RoomModal = props => {
           imageStyle={{borderRadius: 15}}></Image>
         {/* 버튼 */}
         <View style={styles.button}>
-          <AddButton onPress={() => closeModal(false, 'Cancel')}>
+          <AddButton onPress={() => plusRoom()}>
             <ButtonText>저장</ButtonText>
             <Icon
               type="Ionicons"
