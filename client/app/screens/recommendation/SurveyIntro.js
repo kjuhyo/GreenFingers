@@ -20,12 +20,16 @@ import {
 import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
 import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
-import {ACCESS_TOKEN} from '../../config/config';
+
+import {useSelector} from 'react-redux';
 
 export function SurveyintroScreen({navigation}) {
-  useEffect(async () => {
-    const token = await ACCESS_TOKEN();
-    console.log('survey token ', token);
+  const {userPlants} = useSelector(state => ({
+    userPlants: state.plantReducer.userPlants,
+  }));
+
+  useEffect(() => {
+    console.log('redux plants', userPlants);
   });
 
   return (

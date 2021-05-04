@@ -8,7 +8,6 @@ import {
   STORAGE_BUCKET,
   MESSAGING_SENDER_ID,
   APP_ID,
-  MEASUREMENT_ID,
 } from '@env';
 
 var firebaseConfig = {
@@ -23,7 +22,6 @@ var firebaseConfig = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-  console.log(firebase.app);
 } else {
   firebase.app();
 }

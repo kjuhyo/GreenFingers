@@ -30,7 +30,8 @@ import auth from '@react-native-firebase/auth';
 import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
 import {addUid, addUser} from '../reducers/authReducer';
-
+import {setPlants} from '../reducers/plantReducer';
+import {userInfo} from '../../app/api/auth';
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
@@ -97,27 +98,84 @@ export default function Root() {
   const dispatch = useDispatch();
   const addUserId = uid => dispatch(addUid(uid));
   const curUser = (email, provider) => dispatch(addUser(email, provider));
+  const savePlants = plants => dispatch(setPlants(plants));
 
   printToken = async () => {
     const token = await auth().currentUser.getIdToken(true);
-    console.log(token);
+    // console.log(token);
   };
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        printToken();
-        if (user.uid != uid) {
-          addUserId(user.uid);
-          curUser(user.email, user.providerData[0].providerId);
-        }
-        // addUserId('');
-        // curUser('', '');
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
+  const tempResponse = {
+    userId: 'cG7Ym43v0dPsiWhUpcbpte5fVdC3',
+    nickname: '다정',
+    profile:
+      'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
+    thema: 'DEAFULT_THEMA_IMAGE',
+  };
+
+  const tempPlants = [
+    {
+      pid: '12',
+      nickname: '스투루루루',
+      name: 'whatname?2',
+      lastDate: '2020-05-30',
+      image:
+        'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
+    },
+    {
+      pid: '14',
+      nickname: '야미야미',
+      name: 'whatname?2',
+      lastDate: '2020-05-30',
+      image:
+        'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
+    },
+    {
+      pid: '16',
+      nickname: '뉸뉴뉸뉴뉸',
+      name: 'whatname?3',
+      lastDate: '2020-05-30',
+      image:
+        'http://t1.daumcdn.net/liveboard/nylon/f14d6b83fcae464985e8c3090237cf2d.JPG',
+    },
+  ];
+
+  saveUserInfo = async user => {
+    // console.log('user', user);
+    if (user) {
+      if (user.uid != uid) {
+        await addUserId(user.uid);
       }
-    });
+      const allAboutUser = await userInfo();
+      const myPlants = allAboutUser.data.plants;
+      const myInfo = allAboutUser.data.response;
+      await savePlants(tempPlants);
+      // console.log('allaboutuser', allAboutUser.data.plants);
+      await curUser(user.email, user.providerData[0].providerId);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(async () => {
+    // await firebase.auth().onAuthStateChanged(function (user) {
+    //   if (user) {
+    //     // printToken();
+    //     print('a', user);
+    //     if (user.uid != uid) {
+    //       addUserId(user.uid);
+    //       curUser(user.email, user.providerData[0].providerId);
+    //     }
+    //     // addUserId('');
+    //     // curUser('', '');
+    //     setIsLoading(false);
+    //   } else {
+    //     setIsLoading(false);
+    //   }
+    // });
+    // await printToken();
+    await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, []);
 
   return (
