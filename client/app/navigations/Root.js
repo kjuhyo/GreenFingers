@@ -131,7 +131,9 @@ export default function Root() {
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <NavigationContainer>{uid ? <Tabs /> : <Tabs />}</NavigationContainer>
+        <NavigationContainer>
+          {uid ? <Tabs /> : <AuthStack />}
+        </NavigationContainer>
       )}
     </ThemeProvider>
   );
