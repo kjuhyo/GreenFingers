@@ -105,12 +105,14 @@ export default function Root() {
 
   printToken = async () => {
     const token = await auth().currentUser.getIdToken(true);
-    // console.log(token);
+    console.log(token);
   };
 
   saveUserInfo = async user => {
     // console.log('user', user);
+    console.log(uid);
     if (user) {
+      console.log('저장된 유저', user);
       if (user.uid != uid) {
         await addUserId(user.uid);
       }
@@ -144,7 +146,7 @@ export default function Root() {
     //     setIsLoading(false);
     //   }
     // });
-    // await printToken();
+    await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, []);
 

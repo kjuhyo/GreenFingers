@@ -93,11 +93,9 @@ export default function Profile({navigation}) {
 
   const signOut = async () => {
     try {
+      await firebase.auth().signOut();
       if (provider === 'google.com') {
-        // await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
-      } else {
-        await firebase.auth().signOut();
       }
       await curUser('', '');
       await addUserId('');

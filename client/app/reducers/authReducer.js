@@ -29,7 +29,6 @@ export default function auth(state = initialState, action) {
         uid: action.uid,
       };
     case 'ADD_USER':
-      console.log(action);
       return {
         ...state,
         email: action.email,
