@@ -1,5 +1,3 @@
-import {useAnimatedReaction} from 'react-native-reanimated';
-
 const ADD_PLANT = 'ADD_PLANT';
 const UPDATE_PLANT = 'UPDATE_PLANT';
 const SET_PLANTS = 'SET_PLANTS';

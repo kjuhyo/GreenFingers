@@ -32,6 +32,10 @@ import {set} from 'react-native-reanimated';
 import {addUid, addUser} from '../reducers/authReducer';
 import {setPlants} from '../reducers/plantReducer';
 import {userInfo} from '../../app/api/auth';
+
+// messaging
+import messaging from '@react-native-firebase/messaging';
+
 // mock data
 import {tempResponse, tempPlants} from '../components/auth/mockdata';
 
@@ -113,13 +117,15 @@ export default function Root() {
     console.log(uid);
     if (user) {
       console.log('저장된 유저', user);
+      const deviceToken = await messaging().getToken();
+      console.log('device token', deviceToken);
       if (user.uid != uid) {
         await addUserId(user.uid);
       }
-      const allAboutUser = await userInfo();
-      const myPlants = allAboutUser.data.plants;
-      const myInfo = allAboutUser.data.response;
-      await savePlants(tempPlants);
+      // const allAboutUser = await userInfo();
+      // const myPlants = allAboutUser.data.plants;
+      // const myInfo = allAboutUser.data.response;
+      // await savePlants(tempPlants);
       // console.log('allaboutuser', allAboutUser.data.plants);
       await curUser(user.email, user.providerData[0].providerId);
       await setIsLoading(false);
@@ -146,7 +152,7 @@ export default function Root() {
     //     setIsLoading(false);
     //   }
     // });
-    await printToken();
+    // await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, []);
 

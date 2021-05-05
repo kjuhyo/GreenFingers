@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image, PickerIOSComponent} from 'react-native';
 import {
   Container,
@@ -17,36 +17,60 @@ import {
   SurveyButton,
   SurveyButtonText,
   SurveyQText,
+  AnsButton,
+  AnsText,
 } from '../../assets/theme/surveystyles';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ProgressBar from '../../components/recommendation/progressbar';
+//mockdata
+import {mockMBTI} from '../../components/auth/mockdata';
 
-export function SurveyquestionScreen({navigation}) {
-  const data1 = [
-    {
-      label: '있어요',
-    },
-    {
-      label: '없어요',
-    },
-  ];
+// redux
+import {useSelector, useDispatch} from 'react-redux';
+import {setMBTI, setAnswer} from '../../reducers/surveyReducer';
 
-  const data2 = [
-    {
-      label: '일주일에 2-3번 이상',
-    },
-    {
-      label: '일주일에 2-3번 이상',
-    },
-    {
-      label: '일주일에 2-3번 이상',
-    },
-    {
-      label: '일주일에 2-3번 이상',
-    },
-  ];
+// export function SurveyquestionScreen({navigation}) {
+export function SurveyquestionScreen(props) {
+  const [selected, setSelected] = useState('');
 
-  const ProgressData = {completed: 50};
+  const dispatch = useDispatch();
+  const setUserAnswer = (id, answer) => dispatch(setAnswer(id, answer));
+
+  const {mbti, answer} = useSelector(state => ({
+    mbti: state.surveyReducer.mbti,
+    answer: state.surveyReducer.answer,
+  }));
+  console.log('redux answer', answer);
+
+  let pageId = props.route.params.id;
+  let mbtiIdx = props.route.params.id - 1;
+
+  let question = mbti[mbtiIdx].question;
+  let answerA = mbti[mbtiIdx].optA.ans;
+  let answerB = mbti[mbtiIdx].optB.ans;
+  let valueA = mbti[mbtiIdx].optA.val;
+  let valueB = mbti[mbtiIdx].optB.val;
+
+  const onSubmit = async () => {
+    if (selected === 'A') {
+      setUserAnswer(pageId, valueA);
+    } else {
+      setUserAnswer(pageId, valueB);
+    }
+    setSelected('');
+    console.log(pageId, mbti.length, props);
+    if (pageId === mbti.length) {
+      props.navigation.navigate('Surveyresult');
+    } else {
+      props.navigation.push('Surveyquestion', {
+        id: pageId + 1,
+      });
+    }
+  };
+
+  const ProgressData = {
+    completed: (mbtiIdx / mbti.length) * 100,
+  };
 
   return (
     <Container style={styles.container}>
@@ -55,44 +79,27 @@ export function SurveyquestionScreen({navigation}) {
       </View>
       <View style={styles.contentcontainer}>
         <SurveyQText style={styles.contentques} multiline={true}>
-          식물을 키워본 경험이 있나요?
+          {question}
         </SurveyQText>
         <View style={styles.contentoptions}>
-          {/* <RadioButtonRN
-            data={data1}
-            selectedBtn={(e) => console.log(e)}
-            style={{ flex: 1, flexDirection: "row" }}
-            boxStyle={styles.optionshort}
-            textStyle={styles.optiontext}
-            icon={<Icon></Icon>}
-            circleSize={10}
-            activeColor={"#8AD169"}
-            deactiveColor={"transparent"}
-            boxActiveBgColor={"#F9F9F9"}
-            boxDeactiveBgColor={"#EFEFEF"}
-            textColor={"black"}
-          ></RadioButtonRN> */}
-          <RadioButtonRN
-            data={data2}
-            selectedBtn={e => console.log(e)}
-            style={{
-              flex: 1,
-              height: 250,
-            }}
-            boxStyle={styles.optionlong}
-            textStyle={styles.optiontext}
-            icon={<Icon></Icon>}
-            circleSize={10}
-            activeColor={'#8AD169'}
-            deactiveColor={'transparent'}
-            boxActiveBgColor={'#F9F9F9'}
-            boxDeactiveBgColor={'#EFEFEF'}
-            textColor={'black'}></RadioButtonRN>
+          <AnsButton
+            style={selected === 'A' ? styles.selected : styles.ansbutton}
+            onPress={() => setSelected('A')}>
+            <AnsText>{answerA}</AnsText>
+          </AnsButton>
+          <AnsButton
+            style={selected === 'B' ? styles.selected : styles.ansbutton}
+            onPress={() => setSelected('B')}>
+            <AnsText>{answerB}</AnsText>
+          </AnsButton>
         </View>
       </View>
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
-          <SurveyButton onPress={() => navigation.navigate('Surveyresult')}>
+          <SurveyButton
+            onPress={() => {
+              onSubmit();
+            }}>
             <SurveyButtonText>계속</SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>
@@ -133,10 +140,18 @@ const styles = StyleSheet.create({
   contentoptions: {
     flex: 5,
     paddingVertical: 5,
-    flexDirection: 'row',
+    marginVertical: 20,
+    // flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-
+  ansbutton: {
+    // marginVertical: 25,
+  },
+  selected: {
+    borderColor: '#8AD169',
+    backgroundColor: 'white',
+    borderWidth: 0.8,
+  },
   optionshort: {
     marginHorizontal: 10,
     flex: 1,

@@ -2,10 +2,12 @@ import {combineReducers} from 'redux';
 import authReducer from './authReducer.js';
 import plantReducer from './plantReducer.js';
 import profileReducer from './profileReducer.js';
+import surveyReducer from './surveyReducer.js';
 const allReducer = combineReducers({
   authReducer,
   plantReducer,
   profileReducer,
+  surveyReducer,
 });
 export default allReducer;
 

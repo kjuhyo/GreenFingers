@@ -78,7 +78,7 @@ export function LoginScreen({navigation}) {
         response.user.email,
         response.user.providerData[0].providerId,
       );
-      await signUp();
+      // await signUp();
       await addUserId(response.user.uid);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
