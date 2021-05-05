@@ -32,7 +32,7 @@ export default function Feed(props) {
 
   const renderTruncatedFooter = handlePress => {
     return (
-      <Text style={{color: 'grey'}} onPress={handlePress}>
+      <Text style={{color: 'black'}} onPress={handlePress}>
         더보기
       </Text>
     );
@@ -40,13 +40,15 @@ export default function Feed(props) {
 
   const renderRevealedFooter = handlePress => {
     return (
-      <Text style={{color: 'grey'}} onPress={handlePress}>
+      <Text style={{color: 'black'}} onPress={handlePress}>
         접기
       </Text>
     );
   };
 
-  const handleTextReady = () => {};
+  const handleTextReady = () => {
+    console.log('ready');
+  };
 
   return (
     <Container>
@@ -73,7 +75,7 @@ export default function Feed(props) {
                 uri:
                   'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
               }}
-              style={{height: 300, width: null, flex: 1}}
+              style={{height: 400, width: null, flex: 1}}
             />
           </CardItem>
           <CardItem>
@@ -82,7 +84,8 @@ export default function Feed(props) {
                 numberOfLines={3}
                 renderTruncatedFooter={renderTruncatedFooter}
                 renderRevealedFooter={renderRevealedFooter}
-                onReady={handleTextReady}>
+                // onReady={handleTextReady}
+              >
                 <Text>
                   오늘은 스투키를 데려온지 10일째다. 그냥 귀여워서 찍어봤다!
                   스투키는 늘 귀여워 새로워 짜릿해오늘은 스투키를 데려온지

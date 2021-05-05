@@ -1,6 +1,7 @@
 // react
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -36,6 +37,7 @@ export function DiaryWriteScreen({navigation}) {
   const [titleState, setTitleState] = useState('');
   const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const maxImgCnt = 5; // 사진 선택 최대 개수
 
@@ -70,6 +72,7 @@ export function DiaryWriteScreen({navigation}) {
         });
       });
       await writeDiary(formData);
+      setIsLoading(false);
       navigation.navigate('Diary');
     }
   };
@@ -148,6 +151,20 @@ export function DiaryWriteScreen({navigation}) {
     ));
   };
 
+  const renderLoading = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color="#8AD169"
+          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <Root>
       <ScrollView>
@@ -215,9 +232,16 @@ export function DiaryWriteScreen({navigation}) {
           </SelectedImgBox>
 
           {/* 완료 버튼 */}
-          <CompleteBtn onPress={() => diaryWrite()}>
+          <CompleteBtn
+            onPress={() => {
+              setIsLoading(true);
+              diaryWrite();
+            }}>
             <CompleteBtnText>완료</CompleteBtnText>
           </CompleteBtn>
+
+          {/* indicator 표시 */}
+          {renderLoading()}
         </KeyboardAwareScrollView>
       </ScrollView>
     </Root>
