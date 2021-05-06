@@ -1,24 +1,17 @@
 import React, {useState} from 'react';
 
-// style
+// native-base
 import {Icon} from 'native-base';
-import styled from 'styled-components';
-
-// responsive-screen
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 // calendar
 import {Calendar} from 'react-native-calendars';
 import {Modal, View} from 'react-native';
-
-// modal
 import DiarySelectModal from './modal/DiarySelectModal';
 import CheckDateModal from './modal/CheckDateModal';
 import CompleteModal from './modal/CompleteModal';
+import styled from 'styled-components';
 
 const CalendarContainer = styled.View`
-  height: ${hp('75%')}px;
-  justify-content: center;
   padding: 30px;
 `;
 
@@ -39,14 +32,10 @@ export function CalendarView(props) {
       <Calendar
         style={{borderRadius: 10}}
         theme={{
-          todayTextColor: '#8AD169',
-          monthTextColor: '#29582C',
-          textMonthFontSize: 20,
-          textMonthFontWeight: 'bold',
           'stylesheet.day.basic': {
             base: {
               width: 32,
-              height: 45,
+              height: 60,
               justifyContent: 'center',
               alignItems: 'center',
             },
@@ -132,8 +121,8 @@ export function CalendarView(props) {
         // Enable the option to swipe between months. Default = false
         enableSwipeMonths={false}
         markedDates={{
-          '2021-05-18': {marked: true, dotColor: '#8AD169'},
-          '2021-05-19': {marked: true, dotColor: '#8AD169'},
+          '2021-04-18': {marked: true, dotColor: '#8AD169'},
+          '2021-04-19': {marked: true, dotColor: '#8AD169'},
         }}
       />
 
