@@ -117,9 +117,9 @@ export default function Root() {
   saveUserInfo = async user => {
     if (user) {
       // await printToken();
-      console.log(uid);
-      const deviceToken = await messaging().getToken();
-      console.log('device token', deviceToken);
+      // console.log(uid);
+      // const deviceToken = await messaging().getToken();
+      // console.log('device token', deviceToken);
       const allAboutUser = await userInfo();
 
       const myPlants = allAboutUser.data.plants;

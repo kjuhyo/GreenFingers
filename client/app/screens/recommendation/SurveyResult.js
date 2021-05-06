@@ -25,7 +25,6 @@ import {mockRecom} from '../../components/auth/mockdata';
 export function SurveyresultScreen(props) {
   const [plantId, setPlantId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
   const recom = {
     pid: 1,
     plantname: '싱고니움',

@@ -33,6 +33,11 @@ import {
 } from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
 import axios from 'axios';
+//modal
+import MessageModal from '../../components/auth/Messagemodal';
+
+// api
+import {getMessage} from '../../api/auth';
 
 // import Modal from "react-native-modal";
 
@@ -40,18 +45,60 @@ import axios from 'axios';
 const win = Dimensions.get('window');
 
 function CustomDrawerContent(props) {
+  const [myMessages, setMyMessages] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [detailMessage, setDetailMessage] = useState('');
+
+  useEffect(async () => {
+    const messageResponse = await getMessage();
+    setMyMessages(messageResponse.data.response);
+    console.log('alarm props', props.state.routes[0]);
+  }, []);
+
+  // const MessageDetail = item => {
+  //   console.log(item);
+  //   Alert.alert(item.title, item.content, [{text: '확인'}]);
+  // };
+
+  const messageDetailModal = item => {
+    setDetailMessage(item);
+    setModalVisible(!modalVisible);
+  };
+
+  const renderItem = ({item}) => {
+    return (
+      <DrawerItem label={item.title} onPress={() => messageDetailModal(item)} />
+    );
+  };
+
+  const flatMessage = data => {
+    return (
+      <View>
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={item => String(item.id)}
+        />
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <MessageModal
+            setModalVisible={setModalVisible}
+            message={detailMessage}></MessageModal>
+        </Modal>
+      </View>
+    );
+  };
+
   return (
     <DrawerContentScrollView {...props}>
       <Text>알람목록</Text>
       <DrawerItemList {...props} />
-      <DrawerItem
-        label="물을 더 주세요"
-        onPress={() => props.navigation.closeDrawer()}
-      />
-      <DrawerItem
-        label="햇빛을 보고 싶어요"
-        onPress={() => props.navigation.toggleDrawer()}
-      />
+      {flatMessage(myMessages)}
     </DrawerContentScrollView>
   );
 }
