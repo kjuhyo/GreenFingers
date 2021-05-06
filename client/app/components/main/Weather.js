@@ -16,7 +16,6 @@ const requestLocationPermission = async () => {
         message: 'Example App access to your location ',
       },
     );
-    console.log(granted);
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       console.log('You can use the location');
     } else {
@@ -52,7 +51,6 @@ const Weather = props => {
       })
       .catch(err => err);
   };
-  console.log(condition, humidity, temp);
   useEffect(async () => {
     await requestLocationPermission();
     await fecthData();
