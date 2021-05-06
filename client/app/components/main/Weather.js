@@ -41,8 +41,6 @@ const Weather = props => {
       setLatitude(position.coords.latitude);
       setLongitude(position.coords.longitude);
     });
-    console.log('lat', latitude);
-    console.log('long', longitude);
     const getWeatherApi = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
     await fetch(getWeatherApi)
       .then(res => res.json())
@@ -51,10 +49,10 @@ const Weather = props => {
         setCondition(result.weather[0].main);
         setHumidity(result.main.humidity);
         setTemp(result.main.temp);
-        console.log('res', result);
-      });
+      })
+      .catch(err => err);
   };
-  console.log('data', data);
+  console.log(condition, humidity, temp);
   useEffect(async () => {
     await requestLocationPermission();
     await fecthData();

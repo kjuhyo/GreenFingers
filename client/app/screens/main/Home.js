@@ -65,22 +65,7 @@ function Home({navigation}) {
   const [temp, setTemp] = useState(0);
   const [humidity, setHumidity] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const API_KEY = '6fcf0b794f725bba2bbcf2a8ce20c07f';
 
-  // getWeather = () => {
-  //   axios
-  //     .get(
-  //       `http://api.openweathermap.org/data/2.5/weather?id=2172797&appid=${API_KEY}&units=metric`,
-  //     )
-  //     .then(data => {
-  //       console.log('ee', data);
-  //       setCondition(data.weather[0].main);
-  //       setHumidity(data.main.humidity);
-  //       setTemp(data.main.temp);
-  //     });
-
-  //   setIsLoading(false);
-  // };
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
@@ -114,11 +99,8 @@ function Home({navigation}) {
     icon: 'loading',
   });
 
-  useEffect(() => {
-    // getPosition();
+  useEffect(async () => {
     getRoomData();
-
-    // getWeather();
   }, []);
   const onEndReached = () => {
     if (loading) {
@@ -245,7 +227,6 @@ function Home({navigation}) {
       </View>
       {/* 날씨 */}
       <Weather />
-
       {/* 방추가아이콘 */}
       <View style={styles.add}>
         <TouchableOpacity onPress={() => changeModalVisible(true)}>
