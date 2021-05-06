@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, Image, Modal, TouchableOpacity} from 'react-native';
+import {Text, Image, Modal, TouchableOpacity, View} from 'react-native';
 
 // style
 import {
@@ -32,17 +32,21 @@ export default function Feed(props) {
 
   const renderTruncatedFooter = handlePress => {
     return (
-      <Text style={{color: 'black'}} onPress={handlePress}>
-        더보기
-      </Text>
+      <View style={{alignItems: 'flex-end'}}>
+        <Text style={{color: 'grey'}} onPress={handlePress}>
+          더보기
+        </Text>
+      </View>
     );
   };
 
   const renderRevealedFooter = handlePress => {
     return (
-      <Text style={{color: 'black'}} onPress={handlePress}>
-        접기
-      </Text>
+      <View style={{alignItems: 'flex-end'}}>
+        <Text style={{color: 'grey'}} onPress={handlePress}>
+          접기
+        </Text>
+      </View>
     );
   };
 
@@ -80,6 +84,7 @@ export default function Feed(props) {
           </CardItem>
           <CardItem>
             <Body>
+              <Text>날짜</Text>
               <ReadMore
                 numberOfLines={3}
                 renderTruncatedFooter={renderTruncatedFooter}
@@ -87,14 +92,10 @@ export default function Feed(props) {
                 // onReady={handleTextReady}
               >
                 <Text>
-                  오늘은 스투키를 데려온지 10일째다. 그냥 귀여워서 찍어봤다!
-                  스투키는 늘 귀여워 새로워 짜릿해오늘은 스투키를 데려온지
-                  10일째다. 그냥 귀여워서 찍어봤다! 스투키는 늘 귀여워 새로워
-                  짜릿해오늘은 스투키를 데려온지 10일째다.오늘은 스투키를
-                  데려온지 10일째다. 그냥 귀여워서 찍어봤다! 스투키는 늘 귀여워
-                  새로워 짜릿해오늘은 스투키를 데려온지 10일째다. 그냥 귀여워서
-                  찍어봤다! 스투키는 늘 귀여워 새로워 짜릿해오늘은 스투키를
-                  데려온지 10일째다.
+                  오늘은 스투키를 데려온지 10일째다. 잘 자라고 있는 스투키 사진
+                  한장 찰칵~~~ 뾰족뾰족 스투키 귀여워 뾰족뾰족 스투키 귀여워
+                  뾰족뾰족 스투키 귀여워 뾰족뾰족 스투키 귀여워 뾰족뾰족 스투키
+                  귀여워
                 </Text>
               </ReadMore>
             </Body>

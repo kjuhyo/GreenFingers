@@ -148,6 +148,7 @@ export function CalendarView(props) {
         }}>
         <DiarySelectModal
           setModalVisible={setModalVisible}
+          setShowDiary={props.setShowDiary}
           setDateCheckModalVisible={setDateCheckModalVisible}
           navigation={props.navigation}
         />

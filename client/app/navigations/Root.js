@@ -147,9 +147,10 @@ export default function Root() {
         await addUserId(user.uid);
       }
       const allAboutUser = await userInfo();
+      console.log(allAboutUser.data);
       const myPlants = allAboutUser.data.plants;
       const myInfo = allAboutUser.data.response;
-      await savePlants(tempPlants);
+      await savePlants(myPlants);
       // console.log('allaboutuser', allAboutUser.data.plants);
       await curUser(user.email, user.providerData[0].providerId);
       setIsLoading(false);

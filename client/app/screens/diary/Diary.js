@@ -1,7 +1,7 @@
 // react
 import React, {useState} from 'react';
 import 'react-native-gesture-handler';
-import {ScrollView} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 
 // native-base
@@ -58,39 +58,14 @@ const renderTabBar = props => {
 
 export function DiaryScreen({navigation}) {
   const [activeTab, setActiveTab] = useState(0);
-  const [tmpPlantData, setTmpPlantData] = useState([
-    {
-      pid: 12,
-      nickname: '귀여운 선인장',
-      name: 'name_test2',
-      lastDate: '2021-05-03',
-      image:
-        'https://atlas-content-cdn.pixelsquid.com/assets_v2/201/2013432544741037094/jpeg-600/G03.jpg?modifiedAt=1',
-    },
-    {
-      pid: 13,
-      nickname: '귀여운 잡초',
-      name: 'name_test',
-      lastDate: '2021-05-03',
-      image:
-        'https://png.pngtree.com/element_our/20190528/ourmid/pngtree-potted-plants-image_1153974.jpg',
-    },
-    {
-      pid: 13,
-      nickname: '귀여운 잡초',
-      name: 'name_test',
-      lastDate: '2021-05-03',
-      image:
-        'https://png.pngtree.com/element_our/20190528/ourmid/pngtree-potted-plants-image_1153974.jpg',
-    },
-  ]);
+  const [showDiary, setShowDiary] = useState(false);
 
   const {userPlants} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
   }));
 
   const renderTab = () => {
-    return tmpPlantData.map((plant, idx) => (
+    return userPlants.map((plant, idx) => (
       <Tab
         key={idx}
         // tabStyle={{backgroundColor: '#F9F9F9'}}
@@ -111,13 +86,15 @@ export function DiaryScreen({navigation}) {
                   ? {borderColor: '#29582C', borderWidth: 2}
                   : null
               }
-              // {props.activeTab === idx && style={{borderColor: '#29582C', borderWidth: 2}}}
             />
           </TabHeading>
         }>
         <ScrollView style={{backgroundColor: '#F9F9F9'}}>
-          <CalendarView navigation={navigation} />
-          {/* <Feed navigation={navigation} /> */}
+          {showDiary ? (
+            <Feed navigation={navigation} />
+          ) : (
+            <CalendarView navigation={navigation} setShowDiary={setShowDiary} />
+          )}
         </ScrollView>
       </Tab>
     ));
@@ -129,6 +106,7 @@ export function DiaryScreen({navigation}) {
         renderTabBar={renderTabBar}
         onChangeTab={e => {
           setActiveTab(e.i);
+          setShowDiary(false);
         }}>
         {renderTab()}
       </Tabs>
