@@ -118,7 +118,6 @@ function Home({navigation}) {
             console.log('click room name');
             navigation.navigate('Room', {rid: item.rid, rname: item.roomName});
           }}>
-          {item.rid}
           {item.roomName}
         </Text>
         <View style={styles.abovecard}>

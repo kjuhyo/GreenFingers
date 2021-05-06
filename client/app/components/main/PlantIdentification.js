@@ -18,6 +18,8 @@ import {
 import RadioButtonRN from 'radio-buttons-react-native';
 import axios from 'axios';
 import {InputAutoSuggest} from 'react-native-autocomplete-search';
+import {plantAll} from '../../api/plant';
+import {useSelector} from 'react-redux';
 
 // 글 작성 textInput 박스
 const SearchBar = styled.TextInput`
@@ -41,17 +43,19 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const PlantIdentification = props => {
-  const [result, setResult] = useState('1');
-  useEffect(() => {
-    console.log('render');
-    axios
-      .get(`http://k4c103.p.ssafy.io/green/plant/info`)
-      .then(res => {
-        const persons = res.data;
-        console.log(persons);
-      })
+  const {uid} = useSelector(state => ({uid: state.authReducer.uid}));
+  const [result, setResult] = useState();
+  const [info, setInfo] = useState([]);
+  // autocomplete을 위한 식물 정보 불러오기
+  const getPlantInfo = () => {
+    plantAll()
+      .then(res => setInfo(res.data))
       .catch(err => console.log(err));
-  });
+  };
+  console.log('if', info);
+  useEffect(async () => {
+    await getPlantInfo();
+  }, []);
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
@@ -72,7 +76,7 @@ const PlantIdentification = props => {
           </View>
         </View>
         <View>
-          <Text style={styles.intro}>Dasol님의 식물은</Text>
+          <Text style={styles.intro}>{uid}님의 식물은</Text>
         </View>
         <View style={styles.modalbody}>
           <View style={styles.listtop}>
@@ -99,69 +103,13 @@ const PlantIdentification = props => {
               '싱고니움'이 아니라면 직접 입력해주세요
             </Text>
             <Text style={{fontWeight: 'bold'}}>{result}</Text>
-            {/* <SearchBar placeholder="   검색어를 입력해 주세요" /> */}
             <InputAutoSuggest
               style={{flex: 1}}
-              staticData={[
-                {
-                  someAttribute: 'val1',
-                  details: {
-                    id: '1',
-                    name: 'Paris',
-                    country: 'FR',
-                    continent: 'Europe',
-                  },
-                },
-                {
-                  someAttribute: 'val2',
-                  details: {
-                    id: '2',
-                    name: 'Pattanduru',
-                    country: 'PA',
-                    continent: 'South America',
-                  },
-                },
-                {
-                  someAttribute: 'val3',
-                  details: {
-                    id: '3',
-                    name: 'Para',
-                    country: 'PA',
-                    continent: 'South America',
-                  },
-                },
-                {
-                  someAttribute: 'val4',
-                  details: {
-                    id: '4',
-                    name: 'London',
-                    country: 'UK',
-                    continent: 'Europe',
-                  },
-                },
-                {
-                  someAttribute: 'val5',
-                  details: {
-                    id: '5',
-                    name: 'New York',
-                    country: 'US',
-                    continent: 'North America',
-                  },
-                },
-                {
-                  someAttribute: 'val6',
-                  details: {
-                    id: '6',
-                    name: 'Berlin',
-                    country: 'DE',
-                    continent: 'Europe',
-                  },
-                },
-              ]}
+              staticData={info}
               itemFormat={{
-                id: 'details.id',
-                name: 'details.name',
-                tags: ['details.continent', 'details.country'],
+                id: 'id',
+                name: 'name',
+                tags: ['common'],
               }}
               onDataSelectedChange={data =>
                 data !== null ? setResult(data.name) : console.log(data)
@@ -199,7 +147,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
   },
   modaltop: {
-    flex: 0.3,
     borderBottomColor: 'green',
     borderBottomWidth: 0.3,
     justifyContent: 'space-between',
@@ -217,7 +164,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   intro: {
-    fontSize: 30,
+    fontSize: 15,
     marginLeft: 40,
     marginTop: 40,
     fontWeight: 'bold',
@@ -227,7 +174,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'space-around',
     alignItems: 'center',
-    margin: 35,
+    marginTop: 35,
+    marginHorizontal: 30,
     flexDirection: 'row',
     height: 170,
   },
@@ -239,27 +187,16 @@ const styles = StyleSheet.create({
   listbottom: {
     flexDirection: 'row',
   },
-  plant2: {
-    backgroundColor: 'rgba(52,176,80,0.2)',
-    flex: 1,
-    marginLeft: 30,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  plant3: {
-    backgroundColor: 'red',
-    flex: 1,
-    marginRight: 40,
-    marginLeft: 10,
-  },
   plantinput: {
     margin: 30,
   },
   last: {
-    flex: 0.2,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    // flexDirection: 'row',
+    // alignItems: 'flex-end',
+    // justifyContent: 'center',
+    // backgroundColor: 'yellow',
+    bottom: HEIGHT - 770,
+    left: WIDTH / 2 - 50,
   },
   lastbtn: {
     width: 100,

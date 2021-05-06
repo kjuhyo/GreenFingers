@@ -41,7 +41,7 @@ export function myPlantWaterInfo(pid) {
 }
 
 // 물 준 날짜 수정
-export function myPlantWaterRegister(wid) {
+export function myPlantWaterEdit(wid) {
   return instance.put(`plant/care/water/${wid}`);
 }
 
