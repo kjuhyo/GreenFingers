@@ -99,7 +99,7 @@ export function SurveyintroScreen({navigation}) {
         <View style={styles.contentinfo}>
           <View style={styles.infoleft}>
             <Icon type="FontAwesome" name="pencil" />
-            <Text> 전체 몇문항</Text>
+            <Text> 전체 16문항</Text>
           </View>
           <View style={styles.inforight}>
             <Icon type="Ionicons" name="alarm-outline" />

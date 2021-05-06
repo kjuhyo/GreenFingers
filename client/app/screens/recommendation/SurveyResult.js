@@ -93,7 +93,9 @@ export function SurveyresultScreen(props) {
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
           <SurveyButton>
-            <SurveyButtonText>완료</SurveyButtonText>
+            <SurveyButtonText onPress={() => props.navigation.navigate('Home')}>
+              완료
+            </SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>
       </View>

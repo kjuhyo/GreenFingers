@@ -31,6 +31,7 @@ import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
 import {addUid, addUser} from '../reducers/authReducer';
 import {setPlants} from '../reducers/plantReducer';
+import {setProfile, setUserID} from '../reducers/profileReducer';
 import {userInfo} from '../../app/api/auth';
 
 // messaging
@@ -95,66 +96,45 @@ function Tabs() {
 }
 
 export default function Root() {
-  // const [uid, setUid] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   const {uid} = useSelector(state => ({
-    uid: state.authReducer.uid,
+    uid: state.profileReducer.userId,
   }));
 
   const dispatch = useDispatch();
-  const addUserId = uid => dispatch(addUid(uid));
-  const curUser = (email, provider) => dispatch(addUser(email, provider));
   const savePlants = plants => dispatch(setPlants(plants));
+  const saveUid = userId => dispatch(setUserID(userId));
+  const saveProfile = (profile, provider, useremail) =>
+    dispatch(setProfile(profile, provider, useremail));
 
+  //삭제예정
   printToken = async () => {
     const token = await auth().currentUser.getIdToken(true);
     console.log(token);
   };
 
   saveUserInfo = async user => {
-    // console.log('user', user);
-    console.log(uid);
     if (user) {
-      console.log('저장된 유저', user);
-      // const deviceToken = await messaging().getToken();
-      // console.log('device token', deviceToken);
-      if (user.uid != uid) {
-        await addUserId(user.uid);
-      }
-      // const allAboutUser = await userInfo();
-      // const myPlants = allAboutUser.data.plants;
-      // const myInfo = allAboutUser.data.response;
-      // await savePlants(tempPlants);
-      // console.log('allaboutuser', allAboutUser.data.plants);
-      await curUser(user.email, user.providerData[0].providerId);
-      await setIsLoading(false);
+      // // const deviceToken = await messaging().getToken();
+      // // console.log('device token', deviceToken);
+      const allAboutUser = await userInfo();
+      const myPlants = allAboutUser.data.plants;
+      const myInfo = allAboutUser.data.response;
+      savePlants(myPlants);
+      saveProfile(myInfo, user.providerData[0].providerId, user.email);
+
+      setIsLoading(false);
     } else {
-      addUserId('');
-      curUser('', '');
+      saveUid('');
       setIsLoading(false);
     }
   };
 
   useEffect(async () => {
-    // await firebase.auth().onAuthStateChanged(function (user) {
-    //   if (user) {
-    //     // printToken();
-    //     print('a', user);
-    //     if (user.uid != uid) {
-    //       addUserId(user.uid);
-    //       curUser(user.email, user.providerData[0].providerId);
-    //     }
-    //     // addUserId('');
-    //     // curUser('', '');
-    //     setIsLoading(false);
-    //   } else {
-    //     setIsLoading(false);
-    //   }
-    // });
-    await printToken();
+    // await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
-  }, []);
+  }, [uid]);
 
   return (
     <ThemeProvider theme={theme}>
