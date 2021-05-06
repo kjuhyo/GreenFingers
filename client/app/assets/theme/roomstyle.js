@@ -69,6 +69,7 @@ export const ModalButton = styled.TouchableOpacity`
 // 모달 오른쪽 버튼
 export const ModalButton1 = styled.TouchableOpacity`
   flex: 1;
+  border-radius: 10px;
   align-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
