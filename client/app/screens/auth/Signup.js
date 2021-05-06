@@ -24,8 +24,8 @@ import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import firebase from '../../components/auth/firebase';
 import {userInfo} from '../../api/auth';
-// import {useSelector, useDispatch} from 'react-redux';
-// import {setProfile, setUserID} from '../../reducers/profileReducer';
+import {useSelector, useDispatch} from 'react-redux';
+import {setProfile, setUserID} from '../../reducers/profileReducer';
 
 export function SignupScreen({navigation}) {
   // input focus variables
@@ -42,9 +42,9 @@ export function SignupScreen({navigation}) {
   const [pwError, setPwError] = useState('');
   const [pwcError, setPwcError] = useState('');
 
-  // const dispatch = useDispatch();
-  // const saveProfile = (profile, provider, useremail) =>
-  //   dispatch(setProfile(profile, provider, useremail));
+  const dispatch = useDispatch();
+  const saveProfile = (profile, provider, useremail) =>
+    dispatch(setProfile(profile, provider, useremail));
 
   const email_signIn = async () => {
     if (email && !emailError && password && !pwError) {
@@ -53,6 +53,7 @@ export function SignupScreen({navigation}) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         const profile = await userInfo();
+        await saveProfile(profile, 'password', email);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           alert('이미 가입된 이메일입니다.');

@@ -116,15 +116,19 @@ export default function Root() {
 
   saveUserInfo = async user => {
     if (user) {
-      // // const deviceToken = await messaging().getToken();
-      // // console.log('device token', deviceToken);
+      // await printToken();
+      console.log(uid);
+      const deviceToken = await messaging().getToken();
+      console.log('device token', deviceToken);
       const allAboutUser = await userInfo();
+
       const myPlants = allAboutUser.data.plants;
       const myInfo = allAboutUser.data.response;
       savePlants(myPlants);
       saveProfile(myInfo, user.providerData[0].providerId, user.email);
 
       setIsLoading(false);
+      console.log(isLoading);
     } else {
       saveUid('');
       setIsLoading(false);
@@ -132,7 +136,6 @@ export default function Root() {
   };
 
   useEffect(async () => {
-    // await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, [uid]);
 

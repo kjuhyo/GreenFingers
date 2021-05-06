@@ -26,17 +26,17 @@ import auth from '@react-native-firebase/auth';
 import {WEB_CLIENT_ID} from '@env';
 
 //redux
-// import {useDispatch} from 'react-redux';
-// import {setProfile} from '../../reducers/profileReducer';
+import {useDispatch} from 'react-redux';
+import {setProfile} from '../../reducers/profileReducer';
 
 //api
 import {userInfo} from '../../api/auth';
 
 export function LoginScreen({navigation}) {
   // redux
-  // const dispatch = useDispatch();
-  // const saveProfile = (profile, provider, useremail) =>
-  //   dispatch(setProfile(profile, provider, useremail));
+  const dispatch = useDispatch();
+  const saveProfile = (profile, provider, useremail) =>
+    dispatch(setProfile(profile, provider, useremail));
 
   // input focus
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -54,12 +54,9 @@ export function LoginScreen({navigation}) {
         googleUserInfo.accessToken,
       );
       const response = await auth().signInWithCredential(credential);
-      // console.log('reas', response);
-      // const googleMail = googleUserInfo.user.email;
-      // console.log(googleMail);
+      const googleMail = googleUserInfo.user.email;
       const profile = await userInfo();
-      // console.log('google login email', googleUserInfo.user.email);
-      // await saveProfile(profile, 'google.com', googleMail);
+      await saveProfile(profile, 'google.com', googleMail);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');
@@ -80,7 +77,7 @@ export function LoginScreen({navigation}) {
         let response = await auth().signInWithEmailAndPassword(email, password);
         if (response && response.user) {
           const profile = await userInfo();
-          // await saveProfile(profile, 'password', email);
+          await saveProfile(profile, 'password', email);
         }
       } catch (error) {
         if (error.code === 'auth/wrong-password') {
