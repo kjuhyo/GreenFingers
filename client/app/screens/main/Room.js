@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -16,11 +16,12 @@ import {RoomEditModal} from '../../components/main/RoomEditModal';
 import {DeleteRoomModal} from '../../components/main/DeleteRoomModal';
 const win = Dimensions.get('window');
 
-export function RoomScreen({navigation}) {
+export function RoomScreen({route, navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [isModalVisible3, setisModalVisible3] = useState(false);
   const [ChooseData, setChooseData] = useState();
+  const [title, setTitle] = useState('');
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
@@ -33,6 +34,14 @@ export function RoomScreen({navigation}) {
   const setData = data => {
     setChooseData(data);
   };
+  useEffect(() => {
+    if (ChooseData === 'Delete') {
+      navigation.navigate('Home');
+    }
+  });
+  console.log(ChooseData);
+  const {rid} = route.params;
+  const {rname} = route.params;
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       <View style={{flex: 0.1}}>
@@ -56,7 +65,7 @@ export function RoomScreen({navigation}) {
             type="Ionicons"
             name="chevron-back-outline"
             style={{color: 'white', fontSize: 20, paddingRight: 8}}></Icon>
-          <Text style={styles.roomtext}>거실</Text>
+          <Text style={styles.roomtext}>{rname}</Text>
           <Icon
             type="Ionicons"
             name="pencil-outline"
@@ -81,6 +90,8 @@ export function RoomScreen({navigation}) {
             <DeleteRoomModal
               changeModalVisible={changeModalVisible3}
               setData={setData}
+              rid={rid}
+              rname={rname}
             />
           </Modal>
           <TouchableOpacity onPress={() => changeModalVisible2(true)}>

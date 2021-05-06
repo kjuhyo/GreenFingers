@@ -13,9 +13,9 @@ import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {createRoom} from '../../api/room';
-
+import {changeRoom} from '../../reducers/roomReducer';
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
   {uri: '../../assets/images/mainroom.jpg'},
@@ -72,6 +72,12 @@ const RoomModal = props => {
     'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
   );
   const [mime, setMime] = useState('image/jpeg');
+  const [roomName, setRoomName] = useState('');
+  const {uid} = useSelector(state => ({
+    uid: state.authReducer.uid,
+  }));
+  const dispatch = useDispatch();
+  const roomchange = () => dispatch(changeRoom());
   // 카메라이용하여 사진 저장
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -91,6 +97,7 @@ const RoomModal = props => {
   };
   // 갤러리에서 사진 저장
   const choosePhotoFromLibrary = () => {
+    console.log(uid);
     ImagePicker.openPicker({
       width: 300,
       height: 300,
@@ -118,23 +125,19 @@ const RoomModal = props => {
 
   // 방 등록
   const plusRoom = async () => {
-    // var photo = {
-    //   uri: image,
-    //   name: 'photo.jpg',
-    //   type: 'image/jpeg',
-    // };
     console.log(image);
     const formData = new FormData();
-    formData.append('roomName', '뿌잉');
+    formData.append('roomName', roomName);
     formData.append('theme', {
       uri: image,
       name: 'photo.jpg',
       type: 'image/jpeg',
     });
     await createRoom(formData)
-      .then(res => console.log(res))
+      .then(res => console.log(res.data))
       .catch(err => console.log(err));
-    closeModal(false, 'Cancel');
+    closeModal(false, 'Plus');
+    await roomchange();
   };
 
   bs = React.createRef();
@@ -161,7 +164,11 @@ const RoomModal = props => {
               <Text style={styles.chiptext}>방 이름</Text>
             </Littlechip>
             <TextInputBox style={{marginBottom: 10}}>
-              <TextInput placeholder="방 이름" />
+              <TextInput
+                placeholder="방 이름"
+                onChangeText={setRoomName}
+                value={roomName}
+              />
             </TextInputBox>
           </View>
           {/* 사진등록 */}

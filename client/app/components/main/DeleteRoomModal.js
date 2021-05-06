@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,6 +14,9 @@ import {
   ModalButton1,
   ModalButton,
 } from '../../assets/theme/roomstyle';
+import {deleteRoom} from '../../api/room';
+import {useDispatch} from 'react-redux';
+import {changeRoom} from '../../reducers/roomReducer';
 
 // 글 작성 textInput 박스
 const TextInputBox = styled.View`
@@ -41,10 +44,23 @@ const ButtonText = styled.Text`
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
-const DeleteRoomModal = props => {
+export function DeleteRoomModal(props) {
+  const rname = props.rname;
+  const rid = props.rid;
+  const [checkDelete, setCheckDelete] = useState(false);
+  useEffect(() => console.log(props));
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
+  };
+  const dispatch = useDispatch();
+  const roomchange = () => dispatch(changeRoom());
+  // 방 삭제
+  const roomDelete = async () => {
+    setCheckDelete(true);
+    await deleteRoom(rid);
+    await roomchange();
+    closeModal(false, 'Delete');
   };
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
@@ -66,23 +82,27 @@ const DeleteRoomModal = props => {
               fontWeight: 'bold',
               marginLeft: 10,
             }}>
-            {} 을 삭제하시겠습니까?
+            {rname}
+            <Text>을 삭제하시겠습니까?</Text>
           </Text>
         </View>
         <View style={styles.buttons}>
-          <ModalButtonBox>
-            <ModalButton onPress={() => closeModal(false, 'Cancel')}>
-              <Text style={{fontsize: 15, fontWeight: 'bold'}}>삭제</Text>
+          <View style={styles.buttonbox}>
+            <ModalButton
+              onPress={() => {
+                roomDelete();
+              }}>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>삭제</Text>
             </ModalButton>
             <ModalButton1 onPress={() => closeModal(false, 'Cancel')}>
-              <Text style={{fontsize: 15, fontWeight: 'bold'}}>취소</Text>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>취소</Text>
             </ModalButton1>
-          </ModalButtonBox>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -107,18 +127,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 6,
     paddingHorizontal: 14,
-    // backgroundColor: "rgba(52,176,80,0.1)",
     width: WIDTH - 120,
   },
   question: {
-    flex: 1,
+    flex: 0.3,
+    // backgroundColor: 'red',
     marginHorizontal: 20,
   },
   buttons: {
     flex: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
+    // backgroundColor: 'yellow',
     justifyContent: 'center',
   },
+  buttonbox: {
+    flex: 0.6,
+    // backgroundColor: 'green',
+    flexDirection: 'row',
+  },
 });
-export {DeleteRoomModal};
