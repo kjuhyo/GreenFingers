@@ -26,6 +26,13 @@ import {
 
 import {useSelector} from 'react-redux';
 import {findRoom} from '../../api/room';
+import {Weather} from '../../components/main/Weather';
+import {
+  getCurrentPosition,
+  Geolocation,
+} from 'react-native-geolocation-service';
+import {PermissionsAndroid} from 'react-native';
+import axios from 'axios';
 
 // import Modal from "react-native-modal";
 
@@ -54,6 +61,26 @@ function Home({navigation}) {
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
   const [roomData, setRoomData] = useState([]);
+  const [condition, setCondition] = useState('hi');
+  const [temp, setTemp] = useState(0);
+  const [humidity, setHumidity] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const API_KEY = '6fcf0b794f725bba2bbcf2a8ce20c07f';
+
+  // getWeather = () => {
+  //   axios
+  //     .get(
+  //       `http://api.openweathermap.org/data/2.5/weather?id=2172797&appid=${API_KEY}&units=metric`,
+  //     )
+  //     .then(data => {
+  //       console.log('ee', data);
+  //       setCondition(data.weather[0].main);
+  //       setHumidity(data.main.humidity);
+  //       setTemp(data.main.temp);
+  //     });
+
+  //   setIsLoading(false);
+  // };
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
@@ -75,12 +102,23 @@ function Home({navigation}) {
         setLoading(false);
       })
       .catch(err => {
+        console.log(err);
         setLoading(false);
-        Alert.alert('에러가났습니다');
       });
   };
+  const [info, setInfo] = useState({
+    name: 'loading !!',
+    temp: 'loading',
+    humidity: 'loading',
+    desc: 'loading',
+    icon: 'loading',
+  });
+
   useEffect(() => {
+    // getPosition();
     getRoomData();
+
+    // getWeather();
   }, []);
   const onEndReached = () => {
     if (loading) {
@@ -89,6 +127,8 @@ function Home({navigation}) {
       getRoomData();
     }
   };
+  // asking for location permission
+
   const renderItem = ({item}) => {
     return (
       <View style={styles.rooms}>
@@ -204,16 +244,8 @@ function Home({navigation}) {
           }}></Icon>
       </View>
       {/* 날씨 */}
-      <View style={styles.now}>
-        <View style={styles.middlebox}>
-          <Icon type="Ionicons" name="sunny-outline"></Icon>
-          <Text style={styles.info}>sunny</Text>
-          <Icon type="Ionicons" name="water-outline"></Icon>
-          <Text style={styles.info}>55%</Text>
-          <Icon type="Ionicons" name="thermometer-outline"></Icon>
-          <Text style={styles.info}>25°C</Text>
-        </View>
-      </View>
+      <Weather />
+
       {/* 방추가아이콘 */}
       <View style={styles.add}>
         <TouchableOpacity onPress={() => changeModalVisible(true)}>
@@ -263,8 +295,6 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-
-    // position: "absolute",
     resizeMode: 'cover',
     justifyContent: 'center',
   },
@@ -280,8 +310,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 30,
     // backgroundColor: "yellow",
-    marginTop: 70,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 0,
   },
   mainname: {
     // backgroundColor: "yellow",
