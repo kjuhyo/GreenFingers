@@ -117,8 +117,8 @@ export default function Root() {
     console.log(uid);
     if (user) {
       console.log('저장된 유저', user);
-      const deviceToken = await messaging().getToken();
-      console.log('device token', deviceToken);
+      // const deviceToken = await messaging().getToken();
+      // console.log('device token', deviceToken);
       if (user.uid != uid) {
         await addUserId(user.uid);
       }
@@ -152,7 +152,7 @@ export default function Root() {
     //     setIsLoading(false);
     //   }
     // });
-    // await printToken();
+    await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, []);
 

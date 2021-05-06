@@ -1,15 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, PickerIOSComponent} from 'react-native';
-import {
-  Container,
-  Header,
-  Content,
-  Input,
-  Item,
-  StyleProvider,
-  Button,
-  Icon,
-} from 'native-base';
+import {View, StyleSheet, Modal} from 'react-native';
+import {Container} from 'native-base';
 
 import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
@@ -22,17 +13,15 @@ import {
 } from '../../assets/theme/surveystyles';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ProgressBar from '../../components/recommendation/progressbar';
-//mockdata
-import {mockMBTI} from '../../components/auth/mockdata';
-
+import CompleteModal from '../../components/diary/modal/CompleteModal';
 // redux
 import {useSelector, useDispatch} from 'react-redux';
-import {setMBTI, setAnswer} from '../../reducers/surveyReducer';
+import {setAnswer} from '../../reducers/surveyReducer';
 
 // export function SurveyquestionScreen({navigation}) {
 export function SurveyquestionScreen(props) {
-  const [selected, setSelected] = useState('');
-
+  const [message, setMessage] = useState('');
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const dispatch = useDispatch();
   const setUserAnswer = (id, answer) => dispatch(setAnswer(id, answer));
 
@@ -41,23 +30,25 @@ export function SurveyquestionScreen(props) {
     answer: state.surveyReducer.answer,
   }));
   console.log('redux answer', answer);
-
-  let pageId = props.route.params.id;
-  let mbtiIdx = props.route.params.id - 1;
-
-  let question = mbti[mbtiIdx].question;
-  let answerA = mbti[mbtiIdx].optA.ans;
-  let answerB = mbti[mbtiIdx].optB.ans;
-  let valueA = mbti[mbtiIdx].optA.val;
-  let valueB = mbti[mbtiIdx].optB.val;
+  const pageId = props.route.params.id;
+  const mbtiIdx = props.route.params.id - 1;
+  const question = mbti[mbtiIdx].question;
+  const answerA = mbti[mbtiIdx].optA.ans;
+  const answerB = mbti[mbtiIdx].optB.ans;
+  const valueA = mbti[mbtiIdx].optA.val;
+  const valueB = mbti[mbtiIdx].optB.val;
+  const [selected, setSelected] = useState(answer[mbtiIdx]);
 
   const onSubmit = async () => {
     if (selected === 'A') {
       setUserAnswer(pageId, valueA);
-    } else {
+    } else if (selected === 'B') {
       setUserAnswer(pageId, valueB);
+    } else {
+      setMessage('답변을 선택해주세요');
+      setCompleteModalVisible(true);
+      return;
     }
-    setSelected('');
     console.log(pageId, mbti.length, props);
     if (pageId === mbti.length) {
       props.navigation.navigate('Surveyresult');
@@ -104,6 +95,18 @@ export function SurveyquestionScreen(props) {
           </SurveyButton>
         </ThemeProvider>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={completeModalVisible}
+        onRequestClose={() => {
+          setCompleteModalVisible(!completeModalVisible);
+        }}>
+        <CompleteModal
+          content={message}
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
+      </Modal>
     </Container>
   );
 }

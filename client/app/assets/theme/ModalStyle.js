@@ -13,7 +13,8 @@ export const ModalContainer = styled.View`
 // 모달 박스
 export const ModalBox = styled.View`
   flex: ${props => props.flexHeight || 0.3};
-  width: 250px;
+  /* width: 250px; */
+  width: ${props => props.modalWidth || '250px'};
   background-color: white;
   padding: 16px;
   border-radius: 10px;

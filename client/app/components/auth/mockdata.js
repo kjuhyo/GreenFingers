@@ -57,26 +57,41 @@ export const mockMBTI = [
   },
   {
     id: 2,
-    question: '떡이 먹고싶어진 나는?',
+    question: '떡 vs 빵?',
     optA: {
       val: 'E',
-      ans: '바람도 쐴 겸 직접 과일을 사러 간다.',
+      ans: '떡이 최고!',
     },
     optB: {
       val: 'I',
-      ans: '집에서 인터넷으로 주문한다.',
+      ans: '빵이 최고 !!',
     },
   },
   {
     id: 3,
-    question: '고기가 먹고싶어진 나는?',
+    question: '고기는 어떤고기가 최고?',
     optA: {
       val: 'E',
-      ans: '바람도 쐴 겸 직접 과일을 사러 간다.',
+      ans: '돼지고기',
     },
     optB: {
       val: 'I',
-      ans: '집에서 인터넷으로 주문한다.',
+      ans: '소고기',
     },
+  },
+];
+
+export const mockRecom = [
+  {
+    id: 1, // 식물고유id
+    name: '싱고니움',
+    plangImgUrl:
+      'https://www.ikea.com/kr/en/images/products/fejka-artificial-potted-plant-with-pot-in-outdoor-succulent__0614211_pe686835_s5.jpg?f=s',
+  },
+  {
+    id: 45,
+    name: '몬스테라',
+    plangImgUrl:
+      'https://www.ikea.com/kr/en/images/products/fejka-artificial-potted-plant-with-pot-in-outdoor-succulent__0614211_pe686835_s5.jpg?f=s',
   },
 ];
