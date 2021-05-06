@@ -93,6 +93,7 @@ instanceFile.interceptors.response.use(
       Alert.alert('주의⚠', 'Not Found(Error Code: 404)');
     } else {
       Alert.alert('주의⚠', '오류 발생');
+      console.log(error);
     }
     return Promise.reject(error);
   },

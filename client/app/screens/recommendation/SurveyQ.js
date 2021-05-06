@@ -1,15 +1,6 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, PickerIOSComponent} from 'react-native';
-import {
-  Container,
-  Header,
-  Content,
-  Input,
-  Item,
-  StyleProvider,
-  Button,
-  Icon,
-} from 'native-base';
+import React, {Component, useEffect, useState} from 'react';
+import {View, StyleSheet, Modal} from 'react-native';
+import {Container} from 'native-base';
 
 import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
@@ -17,36 +8,60 @@ import {
   SurveyButton,
   SurveyButtonText,
   SurveyQText,
+  AnsButton,
+  AnsText,
 } from '../../assets/theme/surveystyles';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ProgressBar from '../../components/recommendation/progressbar';
+import CompleteModal from '../../components/diary/modal/CompleteModal';
+// redux
+import {useSelector, useDispatch} from 'react-redux';
+import {setAnswer} from '../../reducers/surveyReducer';
 
-export function SurveyquestionScreen({navigation}) {
-  const data1 = [
-    {
-      label: '있어요',
-    },
-    {
-      label: '없어요',
-    },
-  ];
+// export function SurveyquestionScreen({navigation}) {
+export function SurveyquestionScreen(props) {
+  const [message, setMessage] = useState('');
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const dispatch = useDispatch();
+  const setUserAnswer = (id, answer) => dispatch(setAnswer(id, answer));
 
-  const data2 = [
-    {
-      label: '일주일에 2-3번 이상',
-    },
-    {
-      label: '일주일에 2-3번 이상',
-    },
-    {
-      label: '일주일에 2-3번 이상',
-    },
-    {
-      label: '일주일에 2-3번 이상',
-    },
-  ];
+  const {mbti, answer} = useSelector(state => ({
+    mbti: state.surveyReducer.mbti,
+    answer: state.surveyReducer.answer,
+  }));
+  console.log('redux answer', answer);
+  const pageId = props.route.params.id;
+  const mbtiIdx = props.route.params.id - 1;
+  const question = mbti[mbtiIdx].question;
+  const answerA = mbti[mbtiIdx].optA.ans;
+  const answerB = mbti[mbtiIdx].optB.ans;
+  const valueA = mbti[mbtiIdx].optA.val;
+  const valueB = mbti[mbtiIdx].optB.val;
+  const [selected, setSelected] = useState(answer[mbtiIdx]);
 
-  const ProgressData = {completed: 50};
+  const onSubmit = async () => {
+    if (selected === 'A') {
+      setUserAnswer(pageId, valueA);
+    } else if (selected === 'B') {
+      setUserAnswer(pageId, valueB);
+    } else {
+      setMessage('답변을 선택해주세요');
+      setCompleteModalVisible(true);
+      return;
+    }
+    console.log(pageId, mbti.length, props);
+    if (pageId === mbti.length) {
+      props.navigation.navigate('Surveyresult');
+    } else {
+      props.navigation.push('Surveyquestion', {
+        id: pageId + 1,
+      });
+    }
+  };
+
+  const ProgressData = {
+    completed: (mbtiIdx / mbti.length) * 100,
+  };
 
   return (
     <Container style={styles.container}>
@@ -55,48 +70,43 @@ export function SurveyquestionScreen({navigation}) {
       </View>
       <View style={styles.contentcontainer}>
         <SurveyQText style={styles.contentques} multiline={true}>
-          식물을 키워본 경험이 있나요?
+          {question}
         </SurveyQText>
         <View style={styles.contentoptions}>
-          {/* <RadioButtonRN
-            data={data1}
-            selectedBtn={(e) => console.log(e)}
-            style={{ flex: 1, flexDirection: "row" }}
-            boxStyle={styles.optionshort}
-            textStyle={styles.optiontext}
-            icon={<Icon></Icon>}
-            circleSize={10}
-            activeColor={"#8AD169"}
-            deactiveColor={"transparent"}
-            boxActiveBgColor={"#F9F9F9"}
-            boxDeactiveBgColor={"#EFEFEF"}
-            textColor={"black"}
-          ></RadioButtonRN> */}
-          <RadioButtonRN
-            data={data2}
-            selectedBtn={e => console.log(e)}
-            style={{
-              flex: 1,
-              height: 250,
-            }}
-            boxStyle={styles.optionlong}
-            textStyle={styles.optiontext}
-            icon={<Icon></Icon>}
-            circleSize={10}
-            activeColor={'#8AD169'}
-            deactiveColor={'transparent'}
-            boxActiveBgColor={'#F9F9F9'}
-            boxDeactiveBgColor={'#EFEFEF'}
-            textColor={'black'}></RadioButtonRN>
+          <AnsButton
+            style={selected === 'A' ? styles.selected : styles.ansbutton}
+            onPress={() => setSelected('A')}>
+            <AnsText>{answerA}</AnsText>
+          </AnsButton>
+          <AnsButton
+            style={selected === 'B' ? styles.selected : styles.ansbutton}
+            onPress={() => setSelected('B')}>
+            <AnsText>{answerB}</AnsText>
+          </AnsButton>
         </View>
       </View>
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
-          <SurveyButton onPress={() => navigation.navigate('Surveyresult')}>
+          <SurveyButton
+            onPress={() => {
+              onSubmit();
+            }}>
             <SurveyButtonText>계속</SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={completeModalVisible}
+        onRequestClose={() => {
+          setCompleteModalVisible(!completeModalVisible);
+        }}>
+        <CompleteModal
+          content={message}
+          setCompleteModalVisible={setCompleteModalVisible}
+        />
+      </Modal>
     </Container>
   );
 }
@@ -133,10 +143,18 @@ const styles = StyleSheet.create({
   contentoptions: {
     flex: 5,
     paddingVertical: 5,
-    flexDirection: 'row',
+    marginVertical: 20,
+    // flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-
+  ansbutton: {
+    // marginVertical: 25,
+  },
+  selected: {
+    borderColor: '#8AD169',
+    backgroundColor: 'white',
+    borderWidth: 0.8,
+  },
   optionshort: {
     marginHorizontal: 10,
     flex: 1,

@@ -21,16 +21,60 @@ import {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
 import {SurveyButton, SurveyButtonText} from '../../assets/theme/surveystyles';
 
-import {useSelector} from 'react-redux';
+// for redux texting
+import {useSelector, useDispatch} from 'react-redux';
+import {tempAddPlant, tempResponse} from '../../components/auth/mockdata';
+import {
+  addPlant,
+  updatePlant,
+  updatePlantNickname,
+  updatePlantLastDate,
+} from '../../reducers/plantReducer';
+import {
+  updateProfileNickname,
+  updateProfileImage,
+  setProfile,
+} from '../../reducers/profileReducer';
+//mbti redux
+import {setMBTI, setAnswer} from '../../reducers/surveyReducer';
+
+//mockdata
+import {mockMBTI} from '../../components/auth/mockdata';
 
 export function SurveyintroScreen({navigation}) {
-  const {userPlants} = useSelector(state => ({
-    userPlants: state.plantReducer.userPlants,
-  }));
+  const dispatch = useDispatch();
+  const setMBTIs = mbti => dispatch(setMBTI(mbti));
 
-  useEffect(() => {
-    console.log('redux plants', userPlants);
-  });
+  const saveMBTI = () => {
+    setMBTIs(mockMBTI);
+  };
+
+  useEffect(async () => {
+    // 백엔드에서 mbti 문제가져오기
+    console.log(mockMBTI);
+    setMBTIs(mockMBTI);
+  }, []);
+  // redux testing
+  // const dispatch = useDispatch();
+  // const addUserPlant = plant => dispatch(addPlant(plant));
+  // const updateUserPlant = (pid, plant) => dispatch(updatePlant(pid, plant));
+  // const updatePlantNN = (pid, nickname) =>
+  //   dispatch(updatePlantNickname(pid, nickname));
+  // const updatePlantWaterDate = (pid, lastdate) =>
+  //   dispatch(updatePlantLastDate(pid, lastdate));
+  // const {userPlants, userProfile} = useSelector(state => ({
+  //   userPlants: state.plantReducer.userPlants,
+  //   userProfile: state.profileReducer,
+  // }));
+  // const updateProfileNN = nickname => dispatch(updateProfileNickname(nickname));
+  // const updateProfileImg = image => dispatch(updateProfileImage(image));
+  // const setUserProfile = profile => dispatch(setProfile(profile));
+  // useEffect(() => {
+  //   console.log('redux profile', userProfile);
+  //   setUserProfile(tempResponse);
+  //   console.log('redux profile add', userProfile);
+  // });
+  //redux testing over
 
   return (
     <Container style={styles.container}>
@@ -55,7 +99,7 @@ export function SurveyintroScreen({navigation}) {
         <View style={styles.contentinfo}>
           <View style={styles.infoleft}>
             <Icon type="FontAwesome" name="pencil" />
-            <Text> 전체 몇문항</Text>
+            <Text> 전체 16문항</Text>
           </View>
           <View style={styles.inforight}>
             <Icon type="Ionicons" name="alarm-outline" />
@@ -65,7 +109,8 @@ export function SurveyintroScreen({navigation}) {
       </View>
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
-          <SurveyButton onPress={() => navigation.navigate('Surveyquestion')}>
+          <SurveyButton
+            onPress={() => navigation.navigate('Surveyquestion', {id: 1})}>
             <SurveyButtonText>시작</SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>
