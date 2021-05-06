@@ -24,7 +24,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {findRoom} from '../../api/room';
 import {Weather} from '../../components/main/Weather';
 import {
@@ -57,14 +57,15 @@ function CustomDrawerContent(props) {
 }
 
 function Home({navigation}) {
+  // redux에서 state값 불러오기
+  const {roomnum} = useSelector(state => ({
+    roomnum: state.roomReducer.roomnum,
+  }));
+  console.log('roomnum', roomnum);
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
   const [roomData, setRoomData] = useState([]);
-  const [condition, setCondition] = useState('hi');
-  const [temp, setTemp] = useState(0);
-  const [humidity, setHumidity] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
 
   const changeModalVisible = bool => {
     setisModalVisible(bool);
@@ -75,9 +76,7 @@ function Home({navigation}) {
   const setData = data => {
     setChooseData(data);
   };
-  const {uid} = useSelector(state => ({
-    uid: state.authReducer.uid,
-  }));
+  console.log(ChooseData);
   const [loading, setLoading] = useState(false);
   // 방 정보 조회
   const getRoomData = () => {
@@ -99,9 +98,10 @@ function Home({navigation}) {
     icon: 'loading',
   });
 
-  useEffect(async () => {
+  useEffect(() => {
     getRoomData();
-  }, []);
+    console.log(roomData);
+  }, [roomnum]);
   const onEndReached = () => {
     if (loading) {
       return;
@@ -118,8 +118,9 @@ function Home({navigation}) {
           style={styles.roomname}
           onPress={() => {
             console.log('click room name');
-            navigation.navigate('Room');
+            navigation.navigate('Room', {rid: item.rid, rname: item.roomName});
           }}>
+          {item.rid}
           {item.roomName}
         </Text>
         <View style={styles.abovecard}>
@@ -127,7 +128,10 @@ function Home({navigation}) {
             style={styles.plantcard}
             onPress={() => {
               console.log('click left');
-              navigation.navigate('Room');
+              navigation.navigate('Room', {
+                rid: item.rid,
+                rname: item.roomName,
+              });
             }}>
             <Image
               source={require('../../assets/images/plant.jpg')}
@@ -151,7 +155,10 @@ function Home({navigation}) {
             style={styles.plantcard}
             onPress={() => {
               console.log('click right');
-              navigation.navigate('Room');
+              navigation.navigate('Room', {
+                rid: item.rid,
+                rname: item.roomName,
+              });
             }}>
             <Image
               source={require('../../assets/images/plant.jpg')}
@@ -253,6 +260,7 @@ function Home({navigation}) {
           data={roomData}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
+          nestedScrollEnabled
         />
       </SafeAreaView>
     </View>
@@ -291,7 +299,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 30,
     // backgroundColor: "yellow",
-    marginTop: 10,
+    marginTop: 30,
     marginBottom: 0,
   },
   mainname: {

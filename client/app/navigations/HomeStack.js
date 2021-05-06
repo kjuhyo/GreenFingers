@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeScreen} from '../screens/main/Home';
 import {RoomScreen} from '../screens/main/Room';
 import {PlantDetail} from '../screens/main/PlantDetail';
+import {DeleteRoomModal} from '../components/main/DeleteRoomModal';
 
 const HomeStack = createStackNavigator();
 
@@ -25,6 +26,11 @@ function HomeStacks() {
       <HomeStack.Screen
         name="PlantDetail"
         component={PlantDetail}
+        options={{header: () => null}}
+      />
+      <HomeStack.Screen
+        name="DeleteRoomModal"
+        component={DeleteRoomModal}
         options={{header: () => null}}
       />
     </HomeStack.Navigator>

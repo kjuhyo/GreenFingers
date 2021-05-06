@@ -13,9 +13,9 @@ import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {createRoom} from '../../api/room';
-
+import {changeRoom} from '../../reducers/roomReducer';
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
   {uri: '../../assets/images/mainroom.jpg'},
@@ -76,6 +76,8 @@ const RoomModal = props => {
   const {uid} = useSelector(state => ({
     uid: state.authReducer.uid,
   }));
+  const dispatch = useDispatch();
+  const roomchange = () => dispatch(changeRoom());
   // 카메라이용하여 사진 저장
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -134,7 +136,8 @@ const RoomModal = props => {
     await createRoom(formData)
       .then(res => console.log(res.data))
       .catch(err => console.log(err));
-    closeModal(false, 'Cancel');
+    closeModal(false, 'Plus');
+    await roomchange();
   };
 
   bs = React.createRef();
