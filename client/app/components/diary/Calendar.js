@@ -72,9 +72,10 @@ export function CalendarView(props) {
           },
           'stylesheet.dot': {
             dot: {
-              width: 7,
-              height: 7,
-              borderRadius: 20,
+              width: 8,
+              height: 8,
+              marginTop: 3,
+              borderRadius: 4,
             },
           },
         }}
