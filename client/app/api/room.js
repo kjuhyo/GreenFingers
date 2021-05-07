@@ -18,7 +18,7 @@ export function findRoom() {
 
 // 테마 변경
 export function changeThema() {
-  return instance.get('user/changeThema');
+  return instanceFile.put('user/changeThema');
 }
 
 // 업로드한 이미지 주소

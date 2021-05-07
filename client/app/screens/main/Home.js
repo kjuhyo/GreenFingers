@@ -61,7 +61,6 @@ function Home({navigation}) {
   const {roomnum} = useSelector(state => ({
     roomnum: state.roomReducer.roomnum,
   }));
-  console.log('roomnum', roomnum);
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
@@ -100,7 +99,6 @@ function Home({navigation}) {
 
   useEffect(() => {
     getRoomData();
-    console.log(roomData);
   }, [roomnum]);
   const onEndReached = () => {
     if (loading) {
@@ -120,7 +118,6 @@ function Home({navigation}) {
             console.log('click room name');
             navigation.navigate('Room', {rid: item.rid, rname: item.roomName});
           }}>
-          {item.rid}
           {item.roomName}
         </Text>
         <View style={styles.abovecard}>
