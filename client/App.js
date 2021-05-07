@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 // import { StatusBar } from "expo-status-bar";
-import {Dimensions, StatusBar, Alert} from 'react-native';
+import {Dimensions, StatusBar, Alert, Modal} from 'react-native';
 
 import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';
@@ -21,8 +21,9 @@ import {Provider as StoreProvider} from 'react-redux';
 
 //firebase
 import messaging from '@react-native-firebase/messaging';
-// import firebase from '@react-native-firebase/app';
-// import firebase from '@react-native-firebase/app';
+
+//messaging
+import MessageModal from './app/components/auth/Messagemodal';
 
 const store = createStore(
   allReducer,
@@ -30,10 +31,20 @@ const store = createStore(
 );
 
 export default function App() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [detailMessage, setDetailMessage] = useState('');
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      const title = JSON.stringify(remoteMessage.notification.title);
+      const title = JSON.parse(
+        JSON.stringify(remoteMessage.notification.title),
+      );
       const body = JSON.stringify(remoteMessage.notification.body);
+      const messageResponse = JSON.parse(
+        JSON.stringify(remoteMessage.notification),
+      );
+      setDetailMessage(messageResponse);
+      setModalVisible(!modalVisible);
+      console.log(remoteMessage.notification);
       Alert.alert(title, body);
     });
     return unsubscribe;
@@ -42,6 +53,17 @@ export default function App() {
   return (
     <StoreProvider store={store}>
       <Root></Root>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <MessageModal
+          setModalVisible={setModalVisible}
+          message={detailMessage}></MessageModal>
+      </Modal>
     </StoreProvider>
   );
 }

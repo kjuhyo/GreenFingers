@@ -1,13 +1,14 @@
 import {instance} from './index';
+import {instanceFile} from './index';
 
 // 나의 식물 조회 기반 등록
-export function myPlantRegister() {
-  return instance.post('plant/care');
+export function myPlantRegister(formData) {
+  return instanceFile.post('plant/care', formData);
 }
 
 // 나의 식물 이미지 분류 기반 등록
 export function myPlantIdentiyRegister(common) {
-  return instance.post(`plant/care/${common}`);
+  return instanceFile.post(`plant/care/${common}`);
 }
 
 // 나의 식물 상세 정보
@@ -17,7 +18,7 @@ export function myPlantInfo(pid) {
 
 // 나의 식물 수정
 export function myPlantEdit(pid) {
-  return instance.put(`plant/care/${pid}`);
+  return instanceFile.put(`plant/care/${pid}`);
 }
 
 // 나의 식물 떠나감
@@ -41,7 +42,7 @@ export function myPlantWaterInfo(pid) {
 }
 
 // 물 준 날짜 수정
-export function myPlantWaterRegister(wid) {
+export function myPlantWaterEdit(wid) {
   return instance.put(`plant/care/water/${wid}`);
 }
 

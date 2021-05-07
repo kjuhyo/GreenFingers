@@ -18,6 +18,9 @@ import DatePicker from 'react-native-date-picker';
 import {useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import {PlantIdentification} from './PlantIdentification';
+import {myPlantRegister} from '../../api/plant';
+import {useDispatch} from 'react-redux';
+import {changeRoom} from '../../reducers/roomReducer';
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -70,6 +73,11 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const PlusModal = props => {
+  // roomchange
+  const dispatch = useDispatch();
+  const roomchange = () => dispatch(changeRoom());
+  // rid
+  const rid = props.rid;
   // take photo, choose photo
   const [image, setImage] = useState(
     'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
@@ -85,7 +93,6 @@ const PlusModal = props => {
         console.log(image);
         setImage(image.path);
         changeModalVisible(true);
-        this.bs.current.snapTo(1);
       })
       .catch(err => {
         console.log('openCamera catch' + err.toString());
@@ -103,7 +110,6 @@ const PlusModal = props => {
         console.log(image);
         setImage(image.path);
         changeModalVisible(true);
-        this.bs.current.snapTo(1);
       })
       .catch(err => {
         console.log('openCamera catch' + err.toString());
@@ -117,12 +123,51 @@ const PlusModal = props => {
   };
   const [isModalVisible, setisModalVisible] = useState(false);
   const [ChooseData, setChooseData] = useState();
-  const changeModalVisible = bool => {
-    setisModalVisible(bool);
-  };
+
   const setData = data => {
     setChooseData(data);
   };
+  const changeModalVisible = bool => {
+    setisModalVisible(bool);
+  };
+  const [plantName, setPlantName] = useState('');
+  // 식물 조회 후 등록
+  const plusplant = async () => {
+    if (ChooseData !== undefined) {
+      var dd = date.getDate();
+      var mm = date.getMonth() + 1;
+      var yyyy = date.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      yyyy = yyyy.toString();
+      mm = mm.toString();
+      dd = dd.toString();
+      var ndate = yyyy + '-' + mm + '-' + dd;
+
+      const formData = new FormData();
+      formData.append('pid', ChooseData.id);
+      // rid append. 식물을 등록할 방 고유 번호
+      formData.append('rid', rid);
+      formData.append('nickname', plantName);
+      formData.append('image', {
+        uri: image,
+        name: 'plant.jpg',
+        type: 'image/jpeg',
+      });
+      formData.append('startedDate', ndate);
+      console.log(formData);
+      await myPlantRegister(formData)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err));
+    }
+    closeModal(false, 'Cancel');
+    await roomchange();
+  };
+
   bs = React.createRef();
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
@@ -146,7 +191,11 @@ const PlusModal = props => {
               <Text style={styles.chiptext}>식물 이름</Text>
             </Littlechip>
             <TextInputBox style={{marginBottom: 10}}>
-              <TextInput placeholder="식물 이름" />
+              <TextInput
+                placeholder="식물 이름"
+                onChangeText={setPlantName}
+                value={plantName}
+              />
             </TextInputBox>
           </View>
           {/* 데려온 날 */}
@@ -216,14 +265,16 @@ const PlusModal = props => {
                 imageStyle={{borderRadius: 15}}></Image>
               {/* 식물 분류 */}
               <View style={styles.result}>
-                <Text style={styles.chiptext}>산세베리아</Text>
+                {ChooseData !== undefined ? (
+                  <Text style={styles.chiptext}>{ChooseData.name}</Text>
+                ) : null}
               </View>
             </View>
           </View>
         </View>
         {/* 버튼 */}
         <View style={styles.button}>
-          <AddButton onPress={() => closeModal(false, 'Cancel')}>
+          <AddButton onPress={() => plusplant()}>
             <ButtonText>저장</ButtonText>
             <Icon
               type="Ionicons"

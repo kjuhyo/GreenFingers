@@ -23,6 +23,10 @@ instance.interceptors.request.use(
   async function (config) {
     const token = await ACCESS_TOKEN();
     config.headers.TOKEN = token;
+
+    // 디바이스 토큰 등록할때 필요
+    // config.headers.DEVICE_TOKEN = 'decivetokenexample';
+    // console.log('headers example', config);
     return config;
   },
   function (error) {
@@ -93,6 +97,7 @@ instanceFile.interceptors.response.use(
       Alert.alert('주의⚠', 'Not Found(Error Code: 404)');
     } else {
       Alert.alert('주의⚠', '오류 발생');
+      console.log(error);
     }
     return Promise.reject(error);
   },

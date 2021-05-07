@@ -4,9 +4,10 @@ import {Modal, Text, TouchableOpacity} from 'react-native';
 //redux, firebase, google
 import {useDispatch, useSelector} from 'react-redux';
 import {addUid, addUser} from '../../reducers/authReducer';
+import {clearUser} from '../../reducers/profileReducer';
 import firebase from '../../components/auth/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-GoogleSignin.configure({});
+// GoogleSignin.configure({});
 
 // style
 import styled from 'styled-components';
@@ -83,24 +84,22 @@ export default function Profile({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const addUserId = uid => dispatch(addUid(uid));
-  const curUser = (email, provider) => dispatch(addUser(email, provider));
+  const clearUserInfo = () => dispatch(clearUser());
 
-  const {email, provider} = useSelector(state => ({
-    email: state.authReducer.email,
-    provider: state.authReducer.provider,
+  const {image, email, provider} = useSelector(state => ({
+    image: state.profileReducer.profile,
+    email: state.profileReducer.useremail,
+    provider: state.profileReducer.provider,
   }));
+  console.log(email, provider);
 
   const signOut = async () => {
     try {
+      await firebase.auth().signOut();
       if (provider === 'google.com') {
-        // await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
-      } else {
-        await firebase.auth().signOut();
       }
-      await curUser('', '');
-      await addUserId('');
+      await clearUserInfo();
     } catch (error) {
       console.error(error);
     }
@@ -113,7 +112,8 @@ export default function Profile({navigation}) {
           <ProfileImg
             source={{
               uri:
-                'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
+                // 'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
+                image,
             }}
           />
         </ProfileImgBox>

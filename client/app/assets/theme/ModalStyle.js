@@ -13,7 +13,8 @@ export const ModalContainer = styled.View`
 // 모달 박스
 export const ModalBox = styled.View`
   flex: ${props => props.flexHeight || 0.3};
-  width: 250px;
+  /* width: 250px; */
+  width: ${props => props.modalWidth || '250px'};
   background-color: white;
   padding: 16px;
   border-radius: 10px;
@@ -26,6 +27,16 @@ export const ModalHeader = styled.View`
   justify-content: ${props => props.justifyContent || 'flex-end'};
   align-items: center;
   margin-bottom: 10px;
+  margin-left: 4px;
+`;
+
+// 모달 컨텐트
+export const ModalContent = styled.View`
+  flex: ${props => props.flexHeight || 0.5};
+  flex-direction: row;
+  justify-content: ${props => props.justifyContent || 'flex-end'};
+  align-items: center;
+  margin-bottom: 3px;
   margin-left: 4px;
 `;
 
