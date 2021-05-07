@@ -116,7 +116,7 @@ export default function Root() {
 
   saveUserInfo = async user => {
     if (user) {
-      // await printToken();
+      await printToken();
       // console.log(uid);
       // const deviceToken = await messaging().getToken();
       // console.log('device token', deviceToken);
@@ -157,3 +157,5 @@ export default function Root() {
     </ThemeProvider>
   );
 }
+
+//"collapseKey": "com.green", "data": {}, "from": "1052953661921", "messageId": "0:1620355844004654%3b8058563b805856", "notification": {"android": {}, "body": "테스팅중입니다", "title": "아아아"}, "sentTime": 1620355844000, "ttl": 2419200}

@@ -9,9 +9,12 @@ import {
   ModalContent,
 } from '../../assets/theme/ModalStyle';
 
+import {readMessage} from '../../api/auth';
+
 export default function MessageModal(props) {
-  const closeModal = visible => {
+  const closeModal = async visible => {
     // 알림 읽음으로 변경 로직 추가
+    // await readMessage();
     props.setModalVisible(visible);
   };
 
@@ -24,7 +27,7 @@ export default function MessageModal(props) {
           <Text>{props.message.title}</Text>
         </ModalHeader>
         <ModalContent justifyContent="center" flexHeight="0.6">
-          <Text>{props.message.content}</Text>
+          <Text>{props.message.content || props.message.body}</Text>
         </ModalContent>
         <ModalButton
           flexHeight="0.4"
