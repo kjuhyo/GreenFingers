@@ -61,7 +61,7 @@ export function DiaryWriteScreen({navigation}) {
       toastShow('사진을 선택해주세요.');
     } else {
       const formData = new FormData();
-      formData.append('plantId', 1);
+      formData.append('plantId', 22);
       formData.append('title', titleState);
       formData.append('content', contentState);
       imgState.forEach((img, i) => {
