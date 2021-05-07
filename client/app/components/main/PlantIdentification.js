@@ -44,7 +44,7 @@ const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const PlantIdentification = props => {
   const {uid} = useSelector(state => ({uid: state.authReducer.uid}));
-  const [result, setResult] = useState();
+  const [result, setResult] = useState([]);
   const [info, setInfo] = useState([]);
   // autocomplete을 위한 식물 정보 불러오기
   const getPlantInfo = () => {
@@ -59,6 +59,7 @@ const PlantIdentification = props => {
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
+    console.log(data);
   };
 
   return (
@@ -102,24 +103,23 @@ const PlantIdentification = props => {
             <Text style={{marginBottom: 20}}>
               '싱고니움'이 아니라면 직접 입력해주세요
             </Text>
-            <Text style={{fontWeight: 'bold'}}>{result}</Text>
+            <Text style={{fontWeight: 'bold'}}>{result.name}</Text>
             <InputAutoSuggest
               style={{flex: 1}}
               staticData={info}
               itemFormat={{
                 id: 'id',
                 name: 'name',
-                tags: ['common'],
               }}
               onDataSelectedChange={data =>
-                data !== null ? setResult(data.name) : console.log(data)
+                data !== null ? setResult(data) : console.log(data)
               }
             />
           </View>
         </View>
         <View style={styles.last}>
           <Button
-            onPress={() => closeModal(false, 'Cancel')}
+            onPress={() => closeModal(false, result)}
             style={styles.lastbtn}>
             <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>
               완료

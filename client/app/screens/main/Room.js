@@ -174,7 +174,8 @@ export function RoomScreen({route, navigation}) {
             nRequestClose={() => changeModalVisible(false)}>
             <PlusModal
               changeModalVisible={changeModalVisible}
-              setData={setData}></PlusModal>
+              setData={setData}
+              rid={rid}></PlusModal>
           </Modal>
         </TouchableOpacity>
       </View>
