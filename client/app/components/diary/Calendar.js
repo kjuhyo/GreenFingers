@@ -34,7 +34,6 @@ export function CalendarView(props) {
   const [markedDateState, setMarkedDateState] = useState(); // markedDates에 넣을 객체
 
   // props로 전달받은 날짜 목록으로 markedDate 세팅
-
   const initailMarkedDate = async () => {
     let markedDate = {};
     await Promise.all(
@@ -93,6 +92,7 @@ export function CalendarView(props) {
           setSelectDay(day.day);
           setSelectMonth(day.month);
           setSelectYear(day.year);
+          props.setSelectedDate(day.dateString);
           // console.log(day);
         }}
         // Handler which gets executed on day long press. Default = undefined
@@ -150,7 +150,7 @@ export function CalendarView(props) {
         //   );
         // }}
         // Enable the option to swipe between months. Default = false
-        enableSwipeMonths={false}
+        enableSwipeMonths={true}
         markedDates={markedDateState} // dot 표시할 날짜 넣어줌
       />
 

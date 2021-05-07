@@ -29,6 +29,7 @@ export default function Feed(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const [currentImg, setCurrentImg] = useState(props.diary.imgUrls[0]);
 
   const renderTruncatedFooter = handlePress => {
     return (
@@ -50,16 +51,31 @@ export default function Feed(props) {
     );
   };
 
-  const handleTextReady = () => {
-    console.log('ready');
+  // '>' 클릭했을 때 다음 이미지 set
+  const nextImg = () => {
+    let currentImgIdx = props.diary.imgUrls.indexOf(currentImg);
+    if (currentImgIdx < props.diary.imgUrls.length - 1) {
+      currentImgIdx += 1;
+      setCurrentImg(props.diary.imgUrls[currentImgIdx]);
+    }
+  };
+
+  // '<' 클릭했을 때 이전 이미지 set
+  const beforeImg = () => {
+    let currentImgIdx = props.diary.imgUrls.indexOf(currentImg);
+    if (currentImgIdx > 0) {
+      currentImgIdx -= 1;
+      setCurrentImg(props.diary.imgUrls[currentImgIdx]);
+    }
   };
 
   return (
-    <Container>
+    <View>
       <Content>
         <Card>
           <CardItem>
             <Left />
+
             <Right>
               <TouchableOpacity
                 onPress={() => {
@@ -73,35 +89,65 @@ export default function Feed(props) {
               </TouchableOpacity>
             </Right>
           </CardItem>
+
           <CardItem cardBody>
+            {/* 왼쪽 '<' 버튼 */}
+            <TouchableOpacity
+              onPress={() => {
+                beforeImg();
+              }}>
+              <Icon type="SimpleLineIcons" name="arrow-left" />
+            </TouchableOpacity>
             <Image
               source={{
-                uri:
-                  'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
+                uri: currentImg,
               }}
               style={{height: 400, width: null, flex: 1}}
             />
+            {/* 오른쪽 '>' 버튼 */}
+            <TouchableOpacity
+              onPress={() => {
+                nextImg();
+              }}>
+              <Icon type="SimpleLineIcons" name="arrow-right" />
+            </TouchableOpacity>
           </CardItem>
+
+          {/* 몇번째 사진인지 표시 */}
+          <View style={{alignItems: 'center'}}>
+            <Text style={{color: 'grey'}}>
+              {props.diary.imgUrls.indexOf(currentImg) + 1}/
+              {props.diary.imgUrls.length}
+            </Text>
+          </View>
           <CardItem>
             <Body>
-              <Text>날짜</Text>
+              {/* 날짜 */}
+              <Text style={{color: 'grey'}}>
+                {props.selectedDate.substring(0, 4)}년{' '}
+                {props.selectedDate.substring(5, 7)}월{' '}
+                {props.selectedDate.substring(8, 10)}일
+              </Text>
+
+              {/* 제목, 내용 */}
               <ReadMore
                 numberOfLines={3}
                 renderTruncatedFooter={renderTruncatedFooter}
                 renderRevealedFooter={renderRevealedFooter}
                 // onReady={handleTextReady}
               >
-                <Text>
-                  오늘은 스투키를 데려온지 10일째다. 잘 자라고 있는 스투키 사진
-                  한장 찰칵~~~ 뾰족뾰족 스투키 귀여워 뾰족뾰족 스투키 귀여워
-                  뾰족뾰족 스투키 귀여워 뾰족뾰족 스투키 귀여워 뾰족뾰족 스투키
-                  귀여워
-                </Text>
+                <View>
+                  <Text style={{color: '#363333', fontSize: 13}}>
+                    제목: {props.diary.title}
+                  </Text>
+                  <Text style={{fontSize: 16}}>{props.diary.content}</Text>
+                </View>
               </ReadMore>
             </Body>
           </CardItem>
         </Card>
       </Content>
+
       {/* 다이어리 수정,삭제 선택 모달 */}
       <Modal
         animationType="fade"
@@ -144,6 +190,6 @@ export default function Feed(props) {
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
-    </Container>
+    </View>
   );
 }
