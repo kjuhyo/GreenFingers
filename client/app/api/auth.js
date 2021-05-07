@@ -1,4 +1,4 @@
-import {instance} from './index';
+import {instance, instanceFile} from './index';
 
 export function signUp() {
   return instance.post('user/oauth');
@@ -10,6 +10,10 @@ export function deleteUser() {
 
 export function userInfo() {
   return instance.post('user/oauth/v2');
+}
+
+export function updateImage(info) {
+  return instanceFile.put('user/updateInfo', info);
 }
 
 // 메시징

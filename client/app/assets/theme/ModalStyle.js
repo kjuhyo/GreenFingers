@@ -30,6 +30,16 @@ export const ModalHeader = styled.View`
   margin-left: 4px;
 `;
 
+// 모달 컨텐트
+export const ModalContent = styled.View`
+  flex: ${props => props.flexHeight || 0.5};
+  flex-direction: row;
+  justify-content: ${props => props.justifyContent || 'flex-end'};
+  align-items: center;
+  margin-bottom: 3px;
+  margin-left: 4px;
+`;
+
 // 모달 버튼 박스
 export const ModalButtonBox = styled.View`
   flex: ${props => props.flexHeight || 3};

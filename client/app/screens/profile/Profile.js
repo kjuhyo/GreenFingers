@@ -86,7 +86,8 @@ export default function Profile({navigation}) {
   const dispatch = useDispatch();
   const clearUserInfo = () => dispatch(clearUser());
 
-  const {email, provider} = useSelector(state => ({
+  const {image, email, provider} = useSelector(state => ({
+    image: state.profileReducer.profile,
     email: state.profileReducer.useremail,
     provider: state.profileReducer.provider,
   }));
@@ -111,7 +112,8 @@ export default function Profile({navigation}) {
           <ProfileImg
             source={{
               uri:
-                'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
+                // 'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
+                image,
             }}
           />
         </ProfileImgBox>
