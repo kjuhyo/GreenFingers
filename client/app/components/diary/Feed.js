@@ -30,8 +30,6 @@ export default function Feed(props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const [currentImg, setCurrentImg] = useState(props.diary.imgUrls[0]);
-  const [leftArrow, setLeftArrow] = useState(false);
-  const [rightArrow, setRightArrow] = useState(true);
   const [currentImgIdx, setCurrentImgIdx] = useState(0);
 
   const renderTruncatedFooter = handlePress => {
@@ -56,7 +54,6 @@ export default function Feed(props) {
 
   // '>' 클릭했을 때 다음 이미지 set
   const nextImg = () => {
-    // let currentImgIdx = props.diary.imgUrls.indexOf(currentImg);
     if (currentImgIdx < props.diary.imgUrls.length - 1) {
       const tmp = currentImgIdx + 1;
       setCurrentImgIdx(tmp);
@@ -66,7 +63,6 @@ export default function Feed(props) {
 
   // '<' 클릭했을 때 이전 이미지 set
   const beforeImg = () => {
-    // let currentImgIdx = props.diary.imgUrls.indexOf(currentImg);
     if (currentImgIdx > 0) {
       const tmp = currentImgIdx - 1;
       setCurrentImgIdx(tmp);
@@ -165,7 +161,7 @@ export default function Feed(props) {
               {props.selectedDate.substring(8, 10)}일
             </Text>
 
-            {/* 제목, 내용 */}
+            {/* 제목 */}
             <Text
               style={{
                 color: '#363333',
@@ -175,16 +171,18 @@ export default function Feed(props) {
               }}>
               제목: {props.diary.title}
             </Text>
-            <ReadMore
-              numberOfLines={3}
-              renderTruncatedFooter={renderTruncatedFooter}
-              renderRevealedFooter={renderRevealedFooter}
-              // onReady={handleTextReady}
-            >
-              <View>
+
+            {/* 내용 */}
+            <View style={{width: '100%'}}>
+              <ReadMore
+                numberOfLines={2}
+                renderTruncatedFooter={renderTruncatedFooter}
+                renderRevealedFooter={renderRevealedFooter}
+                // onReady={handleTextReady}
+              >
                 <Text style={{fontSize: 16}}>{props.diary.content}</Text>
-              </View>
-            </ReadMore>
+              </ReadMore>
+            </View>
           </Body>
         </CardItem>
       </Card>
@@ -204,7 +202,7 @@ export default function Feed(props) {
         />
       </Modal>
 
-      {/* 삭제 확인 모달창 */}
+      {/* 삭제 확인 모달 */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -219,7 +217,7 @@ export default function Feed(props) {
         />
       </Modal>
 
-      {/* 삭제 완료 모달창 */}
+      {/* 삭제 완료 모달 */}
       <Modal
         animationType="fade"
         transparent={true}

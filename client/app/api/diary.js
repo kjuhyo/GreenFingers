@@ -21,5 +21,5 @@ export function updateDiary(id, params) {
 }
 
 export function writeDiary(formData) {
-  return instanceFile.post('diary/write/v2', formData);
+  return instanceFile.post('diary/write/v3', formData);
 }

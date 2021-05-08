@@ -170,6 +170,7 @@ export function CalendarView(props) {
           setDateCheckModalVisible={setDateCheckModalVisible}
           navigation={props.navigation}
           activePlant={props.activePlant}
+          selectedDate={props.selectedDate}
         />
       </Modal>
 

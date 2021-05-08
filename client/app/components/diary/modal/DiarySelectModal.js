@@ -51,6 +51,7 @@ export default function DiarySelectModal(props) {
               closeModal(false);
               props.navigation.navigate('DiaryWrite', {
                 activePlant: `${props.activePlant}`,
+                selectedDate: `${props.selectedDate}`,
               });
             }}>
             <Text>다이어리 작성</Text>

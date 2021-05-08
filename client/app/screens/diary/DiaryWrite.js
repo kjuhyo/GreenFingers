@@ -64,6 +64,7 @@ export function DiaryWriteScreen({route, navigation}) {
       formData.append('plantId', route.params.activePlant);
       formData.append('title', titleState);
       formData.append('content', contentState);
+      formData.append('writeDateTime', route.params.selectedDate);
       imgState.forEach((img, i) => {
         formData.append('files', {
           uri: img,
