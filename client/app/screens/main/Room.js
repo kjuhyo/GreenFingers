@@ -97,7 +97,6 @@ export function RoomScreen({route, navigation}) {
             type="Ionicons"
             name="chevron-back-outline"
             style={{color: 'white', fontSize: 20, paddingRight: 8}}></Icon>
-          <Text style={styles.roomtext}>{rid}</Text>
           <Text style={styles.roomtext}>{rname}</Text>
         </TouchableOpacity>
         <View style={styles.setting}>
