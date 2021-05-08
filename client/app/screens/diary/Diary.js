@@ -80,7 +80,6 @@ export function DiaryScreen({navigation}) {
   const {userPlants} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
   }));
-  console.log('보유 식물', userPlants);
 
   // 보유 식물이 있을 경우에만 activePlant 값 설정
   const isPlant = () => {
@@ -164,7 +163,9 @@ export function DiaryScreen({navigation}) {
         <TouchableOpacity
           style={{marginTop: 10}}
           onPress={() => setShowDiary(false)}>
-          <Text style={{color: '#29582C'}}>달력으로 돌아가기</Text>
+          <Text style={{color: '#29582C', fontSize: 15, fontWeight: 'bold'}}>
+            달력으로 돌아가기
+          </Text>
         </TouchableOpacity>
       </TextContainer>
     );
@@ -218,19 +219,16 @@ export function DiaryScreen({navigation}) {
         <View
           style={{
             flex: 1,
+            backgroundColor: '#F9F9F9',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{fontSize: 16}}>아직 등록된 식물이 없어요.</Text>
-          <Text style={{fontSize: 16}}>
+          <Text style={{fontSize: 18}}>아직 등록된 식물이 없어요.</Text>
+          <Text style={{fontSize: 18}}>
             식물을 등록하고 다이어리를 관리해보세요🌻
           </Text>
-          <TouchableOpacity
-            style={{marginTop: 15}}
-            onPress={() => {
-              navigation.navigate('Home');
-            }}>
-            <Text style={{color: '#29582C', fontWeight: 'bold'}}>
+          <TouchableOpacity style={{marginTop: 15}}>
+            <Text style={{color: '#29582C', fontWeight: 'bold', fontSize: 17}}>
               식물 등록하러 가기
             </Text>
           </TouchableOpacity>
