@@ -80,9 +80,19 @@ export function DiaryScreen({navigation}) {
   const {userPlants} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
   }));
+  console.log('보유 식물', userPlants);
+
+  // 보유 식물이 있을 경우에만 activePlant 값 설정
+  const isPlant = () => {
+    if (userPlants.length == 0) {
+      return undefined;
+    } else {
+      return userPlants[0].pid;
+    }
+  };
 
   // 현재 선택된 식물 id. 첫번째 식물 아이디를 초기값으로 설정
-  const [activePlant, setActivePlant] = useState(userPlants[0].pid);
+  const [activePlant, setActivePlant] = useState(isPlant);
 
   // 처음에 다이어리 전체 목록 가져와서 현재 선택된 탭의 식물에 해당하는 다이어리 작성 날짜 리스트 set하는 함수
   const initialDiary = async () => {
@@ -204,17 +214,40 @@ export function DiaryScreen({navigation}) {
 
   return (
     <Container>
-      <Tabs
-        locked={true}
-        renderTabBar={renderTabBar}
-        onChangeTab={e => {
-          // console.log(e);
-          setActiveTab(e.i);
-          setActivePlant(userPlants[e.i].pid);
-          setShowDiary(false);
-        }}>
-        {renderTab()}
-      </Tabs>
+      {userPlants.length == 0 ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 16}}>아직 등록된 식물이 없어요.</Text>
+          <Text style={{fontSize: 16}}>
+            식물을 등록하고 다이어리를 관리해보세요🌻
+          </Text>
+          <TouchableOpacity
+            style={{marginTop: 15}}
+            onPress={() => {
+              navigation.navigate('Home');
+            }}>
+            <Text style={{color: '#29582C', fontWeight: 'bold'}}>
+              식물 등록하러 가기
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <Tabs
+          locked={true}
+          renderTabBar={renderTabBar}
+          onChangeTab={e => {
+            // console.log(e);
+            setActiveTab(e.i);
+            setActivePlant(userPlants[e.i].pid);
+            setShowDiary(false);
+          }}>
+          {renderTab()}
+        </Tabs>
+      )}
     </Container>
   );
 }
