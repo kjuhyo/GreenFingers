@@ -51,7 +51,7 @@ export default function Feed(props) {
       </View>
     );
   };
-
+  // console.log('피드에서 프롭스로 받은 다이어리', props.diary);
   // '>' 클릭했을 때 다음 이미지 set
   const nextImg = () => {
     if (currentImgIdx < props.diary.imgUrls.length - 1) {
@@ -199,6 +199,7 @@ export default function Feed(props) {
           setModalVisible={setModalVisible}
           setDeleteModalVisible={setDeleteModalVisible}
           navigation={props.navigation}
+          diary={props.diary}
         />
       </Modal>
 
