@@ -33,7 +33,7 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 // image-picker
 import ImagePicker from 'react-native-image-crop-picker';
 
-export function DiaryWriteScreen({navigation}) {
+export function DiaryWriteScreen({route, navigation}) {
   const [titleState, setTitleState] = useState('');
   const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
@@ -61,7 +61,7 @@ export function DiaryWriteScreen({navigation}) {
       toastShow('사진을 선택해주세요.');
     } else {
       const formData = new FormData();
-      formData.append('plantId', 22);
+      formData.append('plantId', route.params.activePlant);
       formData.append('title', titleState);
       formData.append('content', contentState);
       imgState.forEach((img, i) => {

@@ -174,6 +174,7 @@ export default function Feed(props) {
         <DeleteModal
           setDeleteModalVisible={setDeleteModalVisible}
           setCompleteModalVisible={setCompleteModalVisible}
+          diaryId={props.diary.id}
         />
       </Modal>
 

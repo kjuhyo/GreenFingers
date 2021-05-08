@@ -1,5 +1,6 @@
-import React from 'react';
-import {View, Text, _View} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, _View, ActivityIndicator} from 'react-native';
+import {deleteDiary} from '../../../api/diary';
 
 import {
   ModalContainer,
@@ -10,12 +11,37 @@ import {
 } from '../../../assets/theme/ModalStyle';
 
 export default function DeleteModal(props) {
+  const [isLoading, setIsLoading] = useState(false);
   const closeModal = visible => {
     props.setDeleteModalVisible(visible);
   };
   const openModal = visible => {
     props.setCompleteModalVisible(visible);
   };
+
+  // 다이어리 삭제 api 요청 함수
+  const diaryDelete = async () => {
+    await deleteDiary(props.diaryId);
+    setIsLoading(false); // indicator 없애기
+    closeModal(false); // 삭제확인 모달 닫기
+    openModal(true); // 삭제완료 모달 열기
+  };
+
+  // indicator 렌더링 함수
+  const renderLoading = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color="#8AD169"
+          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.2">
@@ -26,8 +52,10 @@ export default function DeleteModal(props) {
           <ModalButton
             backgroundColor="#F44336"
             onPress={() => {
-              closeModal(false);
-              openModal(true);
+              setIsLoading(true);
+              diaryDelete();
+              // closeModal(false);
+              // openModal(true);
             }}>
             <Text style={{color: 'white'}}>삭제</Text>
           </ModalButton>
@@ -35,6 +63,9 @@ export default function DeleteModal(props) {
             <Text>취소</Text>
           </ModalButton>
         </ModalButtonBox>
+
+        {/* indicator 표시 */}
+        {renderLoading()}
       </ModalBox>
     </ModalContainer>
   );
