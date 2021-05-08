@@ -110,14 +110,10 @@ instanceFile.interceptors.response.use(
 // 백엔드에 요청 보낼 때, 인터셉터로 토큰 담기!
 instanceDevice.interceptors.request.use(
   async function (config) {
-    console.log('in');
     const token = await ACCESS_TOKEN();
     config.headers.TOKEN = token;
-    console.log('token');
     const device_token = await DEVICE_TOKEN();
-    console.log('devicetoken');
-    config.headers.DEVICE_TOKEN = device_token;
-    console.log('device token config', config.headers);
+    config.headers.DEVICE = device_token;
     return config;
   },
   function (error) {

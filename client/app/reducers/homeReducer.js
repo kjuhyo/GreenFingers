@@ -1,19 +1,14 @@
 const SETMAIN = 'SETMAIN';
-const UPDATE_THEME = 'UPDATE_THEME';
 
 let homeState = {
   theme: '',
   homename: '',
 };
-export const setMain = (homename, theme) => ({
+export const setMain = (homename, theme, address) => ({
   type: SETMAIN,
   homename,
   theme,
-});
-export const updateMain = (homename, theme) => ({
-  type: UPDATE_THEME,
-  homename,
-  theme,
+  address,
 });
 
 export default function home(state = homeState, action) {
@@ -22,6 +17,7 @@ export default function home(state = homeState, action) {
       return {
         homename: action.homename,
         theme: action.theme,
+        address: action.address,
       };
     default:
       return state;

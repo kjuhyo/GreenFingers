@@ -30,7 +30,7 @@ export function readMessage() {
 
 // 디바이스 토큰 등록
 export function registerDevice() {
-  return instanceDevice.post('user/register/test1');
+  return instanceDevice.post('user/register');
 }
 
 // 디바이스 토큰 삭제

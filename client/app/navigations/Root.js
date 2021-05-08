@@ -139,7 +139,7 @@ export default function Root() {
   };
 
   useEffect(async () => {
-    await printToken();
+    // await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, [uid]);
 

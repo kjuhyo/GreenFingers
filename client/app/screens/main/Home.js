@@ -41,7 +41,7 @@ import {getMessage} from '../../api/auth';
 import {main} from '../../api/room';
 
 // home theme
-import {themes} from '../../assets/theme/roomTheme';
+import {themes, themesA, themesB} from '../../assets/theme/roomTheme';
 import {setMain} from '../../reducers/homeReducer';
 
 // import Modal from "react-native-modal";
@@ -107,16 +107,16 @@ function Home({navigation}) {
   const [ChooseData, setChooseData] = useState();
   const [roomData, setRoomData] = useState([]);
   // const [homename, setHomename] = useState('');
-  const [themeAddress, setThemeAddress] = useState('');
-
-  const {homename, theme} = useSelector(state => ({
+  const {homename, theme, address} = useSelector(state => ({
     homename: state.homeReducer.homename,
     theme: state.homeReducer.theme,
+    address: state.homeReducer.address,
   }));
+  const [themeAddress, setThemeAddress] = useState(address);
 
   const dispatch = useDispatch();
-  const setMainInfo = (mainnickname, maintheme) =>
-    dispatch(setMain(mainnickname, maintheme));
+  const setMainInfo = (mainnickname, maintheme, mainaddress) =>
+    dispatch(setMain(mainnickname, maintheme, mainaddress));
 
   const changeModalVisible = bool => {
     setisModalVisible(bool);
@@ -141,20 +141,15 @@ function Home({navigation}) {
         setLoading(false);
       });
   };
-
   // // 메인 화면 정보 조회
   const getMainInfo = async () => {
     const mainResponse = await main();
     const mainInfo = mainResponse.data;
-    // console.log(mainInfo);
-    // setHomename(mainInfo.homeNickname);
-    console.log(themes);
-    await setMainInfo(mainInfo.homeNickname, mainInfo.theme);
     themes.forEach(savedTheme => {
       if (savedTheme.name === theme) {
-        console.log('redusx theme', theme);
-        console.log(savedTheme);
-        setThemeAddress(theme.address);
+        // console.log(savedTheme.address);
+        setThemeAddress(savedTheme.address);
+        setMainInfo(mainInfo.homeNickname, mainInfo.theme, savedTheme.address);
       }
     });
   };
@@ -178,6 +173,7 @@ function Home({navigation}) {
       getRoomData();
     }
   };
+
   // asking for location permission
 
   const renderItem = ({item}) => {
@@ -260,8 +256,8 @@ function Home({navigation}) {
             top: 0,
             left: 0,
           }}
-          source={require('../../assets/images/mainroom.jpg')}
-          // source={require({themeAddress})}
+          // source={require('../../assets/images/mainroom.jpg')}
+          source={themeAddress}
         />
       </View>
       {/* 오른쪽 상단 아이콘 */}

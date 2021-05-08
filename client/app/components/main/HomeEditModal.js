@@ -82,8 +82,8 @@ const HomeEditModal = props => {
   const [homename, setHomename] = useState(saveHomename);
 
   const dispatch = useDispatch();
-  const setMainInfo = (mainnickname, maintheme) =>
-    dispatch(setMain(mainnickname, maintheme));
+  const setMainInfo = (mainnickname, maintheme, mainaddress) =>
+    dispatch(setMain(mainnickname, maintheme, mainaddress));
 
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -104,7 +104,11 @@ const HomeEditModal = props => {
       thema: isSelected,
     };
     changeNickTheme(params);
-    setMainInfo(homename, isSelected);
+    themes.forEach(savedTheme => {
+      if (savedTheme.name === isSelected) {
+        setMainInfo(homename, isSelected, savedTheme.address);
+      }
+    });
   };
 
   const themeImages = () => {
@@ -115,8 +119,8 @@ const HomeEditModal = props => {
           onPress={() => setIsSelected(theme.name)}
           style={styles.imagewrap}>
           <Image
-            // source={require({...theme.address})}
-            source={require('../../assets/images/mainroom.jpg')}
+            source={theme.address}
+            // source={require('../../assets/images/mainroom.jpg')}
             style={
               isSelected === theme.name ? styles.selected : styles.themeimg
             }

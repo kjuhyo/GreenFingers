@@ -96,7 +96,6 @@ export default function Profile({navigation}) {
     email: state.profileReducer.useremail,
     provider: state.profileReducer.provider,
   }));
-  console.log(email, provider);
 
   const signOut = async () => {
     try {
@@ -117,8 +116,8 @@ export default function Profile({navigation}) {
           <ProfileImg
             source={{
               uri:
-                // 'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
-                image,
+                image ||
+                'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
             }}
           />
         </ProfileImgBox>

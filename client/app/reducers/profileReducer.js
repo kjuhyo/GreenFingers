@@ -39,7 +39,6 @@ const profileState = {
 export default function profile(state = profileState, action) {
   switch (action.type) {
     case 'SET_PROFILE':
-      console.log(action);
       return {
         ...action.profile,
         provider: action.provider,
