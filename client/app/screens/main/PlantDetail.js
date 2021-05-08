@@ -14,10 +14,14 @@ import {Container, Icon, Button, Content} from 'native-base';
 import {Cardback, Plantchip} from '../../assets/theme/roomstyle';
 import {PlantModal} from '../../components/main/PlantModal';
 import {myPlantInfo} from '../../api/plant';
+import {useDispatch, useSelector} from 'react-redux';
 
 const win = Dimensions.get('window');
 
 export function PlantDetail({route, navigation}) {
+  const {plantnum} = useSelector(state => ({
+    plantnum: state.roomReducer.plantnum,
+  }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [ChooseData, setChooseData] = useState();
   const [myInfo, setMyInfo] = useState([]);
@@ -28,11 +32,12 @@ export function PlantDetail({route, navigation}) {
     setChooseData(data);
   };
   const {pid} = route.params;
-
+  const {pname} = route.params;
   useEffect(async () => {
     const plantDetail = await myPlantInfo(pid);
     setMyInfo(plantDetail.data);
-  }, []);
+    console.log(myInfo);
+  }, [plantnum]);
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       <View style={{flex: 0.7}}>
@@ -66,6 +71,8 @@ export function PlantDetail({route, navigation}) {
             <PlantModal
               changeModalVisible={changeModalVisible}
               setData={setData}
+              pid={pid}
+              pname={pname}
             />
           </Modal>
 

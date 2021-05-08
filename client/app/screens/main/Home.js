@@ -174,7 +174,7 @@ function Home({navigation}) {
 
   useEffect(async () => {
     await getRoomData();
-    console.log(roomData);
+    console.log(roomData[0].plantList);
   }, [roomnum]);
   // const onEndReached = () => {
   //   if (loading) {

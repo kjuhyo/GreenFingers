@@ -36,6 +36,8 @@ const PlantModal = props => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+  const pid = props.pid;
+  const pname = props.pname;
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -116,6 +118,8 @@ const PlantModal = props => {
             <DeletePlant
               changeModalVisible={changeModalVisible2}
               setData={setData}
+              pid={pid}
+              pname={pname}
             />
           </Modal>
         </View>

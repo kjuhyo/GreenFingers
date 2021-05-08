@@ -14,6 +14,9 @@ import {
   ModalButton1,
   ModalButton,
 } from '../../assets/theme/roomstyle';
+import {myPlantDelete} from '../../api/plant';
+import {useDispatch} from 'react-redux';
+import {changePlant} from '../../reducers/roomReducer';
 
 // 글 작성 textInput 박스
 const TextInputBox = styled.View`
@@ -42,9 +45,18 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const DeletePlant = props => {
+  const pid = props.pid;
+  const pname = props.pname;
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
+  };
+  const dispatch = useDispatch();
+  const plantchange = () => dispatch(changePlant());
+  const plantDelete = async () => {
+    await myPlantDelete(pid);
+    await plantchange();
+    closeModal(false, 'delete');
   };
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
@@ -66,18 +78,21 @@ const DeletePlant = props => {
               fontWeight: 'bold',
               marginLeft: 10,
             }}>
-            {} 을 삭제하시겠습니까?
+            {pname} 을 삭제하시겠습니까?
           </Text>
         </View>
         <View style={styles.buttons}>
-          <ModalButtonBox>
-            <ModalButton onPress={() => closeModal(false, 'Cancel')}>
-              <Text style={{fontsize: 15, fontWeight: 'bold'}}>삭제</Text>
+          <View style={styles.buttonbox}>
+            <ModalButton
+              onPress={() => {
+                plantDelete();
+              }}>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>삭제</Text>
             </ModalButton>
             <ModalButton1 onPress={() => closeModal(false, 'Cancel')}>
-              <Text style={{fontsize: 15, fontWeight: 'bold'}}>취소</Text>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>취소</Text>
             </ModalButton1>
-          </ModalButtonBox>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -107,18 +122,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 6,
     paddingHorizontal: 14,
-    // backgroundColor: "rgba(52,176,80,0.1)",
     width: WIDTH - 120,
   },
   question: {
-    flex: 1,
+    flex: 0.3,
+    // backgroundColor: 'red',
     marginHorizontal: 20,
   },
   buttons: {
     flex: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
+    // backgroundColor: 'yellow',
     justifyContent: 'center',
+  },
+  buttonbox: {
+    flex: 0.6,
+    // backgroundColor: 'green',
+    flexDirection: 'row',
   },
 });
 export {DeletePlant};

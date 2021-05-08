@@ -17,8 +17,12 @@ import {PlusModal} from '../../components/main/PlusModal';
 import {RoomEditModal} from '../../components/main/RoomEditModal';
 import {DeleteRoomModal} from '../../components/main/DeleteRoomModal';
 const win = Dimensions.get('window');
+import {useDispatch, useSelector} from 'react-redux';
 
 export function RoomScreen({route, navigation}) {
+  const {plantnum} = useSelector(state => ({
+    plantnum: state.roomReducer.plantnum,
+  }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [isModalVisible3, setisModalVisible3] = useState(false);
@@ -45,7 +49,7 @@ export function RoomScreen({route, navigation}) {
     if (ChooseData === 'Delete') {
       navigation.navigate('Home');
     }
-  });
+  }, []);
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
@@ -53,6 +57,7 @@ export function RoomScreen({route, navigation}) {
         onPress={() => {
           navigation.navigate('PlantDetail', {
             pid: item.pid,
+            pname: item.nickname,
           });
         }}>
         <Image source={{uri: item.image}} style={styles.plantimg} />
