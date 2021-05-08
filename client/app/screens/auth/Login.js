@@ -3,20 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   ScrollView,
   Alert,
 } from 'react-native';
-import {
-  Container,
-  Header,
-  Content,
-  Input,
-  Item,
-  Button,
-  StyleProvider,
-} from 'native-base';
+import {Container} from 'native-base';
 import 'react-native-gesture-handler';
 import {useState, useEffect} from 'react';
 import {
@@ -32,28 +23,20 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import firebase from '../../components/auth/firebase';
 import {WEB_CLIENT_ID} from '@env';
-//redux
-import {
-  Provider as StoreProvider,
-  useDispatch,
-  connect,
-  useSelector,
-} from 'react-redux';
-import {signUp} from '../../api/auth';
-import {addUid, addUser} from '../../reducers/authReducer';
 
-// GoogleSignin.configure({});
+//redux
+import {useDispatch} from 'react-redux';
+import {setProfile} from '../../reducers/profileReducer';
+
+//api
+import {userInfo} from '../../api/auth';
+
 export function LoginScreen({navigation}) {
   // redux
   const dispatch = useDispatch();
-  const addUserId = uid => dispatch(addUid(uid));
-  const curUser = (email, provider) => dispatch(addUser(email, provider));
-
-  // google login
-  // const [provider, setProvider] = useState(false);
-  // const [userInfo, setuserInfo] = useState([]);
+  const saveProfile = (profile, provider, useremail) =>
+    dispatch(setProfile(profile, provider, useremail));
 
   // input focus
   const [isIDFocused, setIsIDFocused] = useState(false);
@@ -65,21 +48,15 @@ export function LoginScreen({navigation}) {
   const google_signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-
+      const googleUserInfo = await GoogleSignin.signIn();
       const credential = await auth.GoogleAuthProvider.credential(
-        userInfo.idToken,
-        userInfo.accessToken,
+        googleUserInfo.idToken,
+        googleUserInfo.accessToken,
       );
-      console.log(credential);
       const response = await auth().signInWithCredential(credential);
-      console.log('google response', response.user);
-      await curUser(
-        response.user.email,
-        response.user.providerData[0].providerId,
-      );
-      await signUp();
-      await addUserId(response.user.uid);
+      const googleMail = googleUserInfo.user.email;
+      const profile = await userInfo();
+      await saveProfile(profile, 'google.com', googleMail);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');
@@ -99,14 +76,8 @@ export function LoginScreen({navigation}) {
       try {
         let response = await auth().signInWithEmailAndPassword(email, password);
         if (response && response.user) {
-          // alert('Success', 'Authenticated successfully');
-          // const uid = response.user.uid;
-          // console.log(response);
-          await curUser(
-            response.user.email,
-            response.user.providerData[0].providerId,
-          );
-          await addUserId(response.user.uid);
+          const profile = await userInfo();
+          await saveProfile(profile, 'password', email);
         }
       } catch (error) {
         if (error.code === 'auth/wrong-password') {
@@ -131,19 +102,6 @@ export function LoginScreen({navigation}) {
     setEmail('');
     setPassword('');
   };
-
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      // setloggedIn(false);
-      // setuserInfo([]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  //firebase
-  //await firebase.auth().signOut()
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -202,9 +160,6 @@ export function LoginScreen({navigation}) {
                   Sign in with Google
                 </SocialButtonText>
               </SocialButton>
-              {/* <SocialButton full>
-                <SocialButtonText onPress={signOut}>Sign out</SocialButtonText>
-              </SocialButton> */}
             </View>
 
             <View style={styles.textlinkwrap}>

@@ -18,7 +18,9 @@ export default function DiarySelectModal(props) {
   const openCheckModal = visible => {
     props.setDateCheckModalVisible(visible);
   };
-
+  const showDiary = val => {
+    props.setShowDiary(val);
+  };
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.3">
@@ -34,6 +36,7 @@ export default function DiarySelectModal(props) {
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
+              showDiary(true);
             }}>
             <Text>다이어리 보기</Text>
             <Icon type="Octicons" name="book" style={{fontSize: 20}} />

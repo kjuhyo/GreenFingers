@@ -56,9 +56,10 @@ export default function Withdrawal() {
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const [checkedState, setCheckedState] = useState(false);
   const dispatch = useDispatch();
-  const addUserId = uid => dispatch(addUid(uid));
-  const curUser = (email, provider) => dispatch(addUser(email, provider));
-  const {provider} = useSelector(state => ({
+  const clearUserInfo = () => dispatch(clearUser());
+
+  const {email, provider} = useSelector(state => ({
+    email: state.authReducer.email,
     provider: state.authReducer.provider,
   }));
   // 체크박스가 true일 경우 완료 모달, false일 경우 Toast 띄움
@@ -76,8 +77,7 @@ export default function Withdrawal() {
   };
 
   const signOut = async () => {
-    await curUser('', '');
-    await addUserId('');
+    clearUserInfo();
   };
 
   const withdraw = async () => {
@@ -105,8 +105,7 @@ export default function Withdrawal() {
             style={{fontSize: 18}}
           />
           <NoticeText fontWeight="bold" fontSize="16px">
-            사용하고 계신 아이디(user@user.com)는 탈퇴할 경우 복구가
-            불가능합니다.
+            사용하고 계신 아이디({email})는 탈퇴할 경우 복구가 불가능합니다.
           </NoticeText>
         </TextBox>
         <TextBox marginBottom="30px" flexHeight="1.7">
@@ -127,7 +126,7 @@ export default function Withdrawal() {
         </TextBox>
         <NoticeTextBox style={{alignItems: 'center'}}>
           <NoticeText color="#F44336">
-            탈퇴 후에는 아이디 user@user.com으로 다시 가입할 수 없으며 아이디와
+            탈퇴 후에는 아이디 {email}으로 다시 가입할 수 있으나 아이디와
             데이터는 복구할 수 없습니다.
           </NoticeText>
         </NoticeTextBox>

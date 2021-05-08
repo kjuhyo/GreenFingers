@@ -1,9 +1,6 @@
 const ADD_USER = 'ADD_USER';
 const ADD_UID = 'ADD_UID';
 
-// export const toLogin = () => ({type: TO_LOGIN});
-// export const toSignup = () => ({type: TO_SIGNUP});
-// export const toAddInfo = () => ({type: TO_ADD_INFO});
 export const addUser = (email, provider) => ({
   type: ADD_USER,
   email,
@@ -29,7 +26,6 @@ export default function auth(state = initialState, action) {
         uid: action.uid,
       };
     case 'ADD_USER':
-      console.log(action);
       return {
         ...state,
         email: action.email,

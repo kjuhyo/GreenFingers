@@ -17,6 +17,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useState} from 'react';
 import CompleteModal from '../../components/diary/modal/CompleteModal';
 
+import {updateImage} from '../../api/auth';
+// redux
+import {updateProfileImage} from '../../reducers/profileReducer';
+import {useDispatch, useSelector} from 'react-redux';
+
 // 프로필 사진 변경 페이지 전체 컨테이너
 const ImgChangeContainer = styled.View`
   height: ${hp('63%')}px;
@@ -39,8 +44,16 @@ const ProfileImg = styled.Image`
 `;
 
 export default function ProfileImgChange({navigation}) {
+  const dispatch = useDispatch();
+  const updateProfileImg = image => dispatch(updateProfileImage(image));
+
+  const {image} = useSelector(state => ({
+    image: state.profileReducer.profile,
+  }));
+
   const [img, setImg] = useState(
-    'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
+    // 'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
+    image,
   );
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
@@ -81,6 +94,25 @@ export default function ProfileImgChange({navigation}) {
       .catch(e => console.log(e));
   };
 
+  // 사진 수정
+  const updateProfileImage = async () => {
+    // 사진 폼데이터 형식으로 변환
+    // const formData = new FormData();
+    // formData.append('nickname', '바꿀닉네임');
+    // formData.append('profile', {
+    //   uri: img,
+    //   name: 'profile.jpg',
+    //   type: 'image/jpeg',
+    // });
+    // console.log(formData);
+    //백엔드 요청
+    // const response = await updateImage(formData);
+    // console.log(response);
+    //리덕스 디스패치
+    // await updateProfileImg(response.profile);
+    setCompleteModalVisible(true);
+  };
+
   return (
     <ImgChangeContainer>
       <ImgPreviewBox>
@@ -112,7 +144,8 @@ export default function ProfileImgChange({navigation}) {
           <Text>사진 촬영</Text>
         </ImgSelectBtn>
       </ImgSelectBox>
-      <CompleteBtn flexHeight="1" onPress={() => setCompleteModalVisible(true)}>
+      <CompleteBtn flexHeight="1" onPress={() => updateProfileImage()}>
+        {/* <CompleteBtn flexHeight="1" onPress={() => setCompleteModalVisible(true)}> */}
         <CompleteBtnText>완료</CompleteBtnText>
       </CompleteBtn>
 

@@ -33,7 +33,15 @@ import {
 } from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
 import axios from 'axios';
+
 import room from '../../reducers/roomReducer';
+
+//modal
+import MessageModal from '../../components/auth/Messagemodal';
+
+// api
+import {getMessage} from '../../api/auth';
+
 
 // import Modal from "react-native-modal";
 
@@ -41,18 +49,83 @@ import room from '../../reducers/roomReducer';
 const win = Dimensions.get('window');
 
 function CustomDrawerContent(props) {
+  const [myMessages, setMyMessages] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [detailMessage, setDetailMessage] = useState('');
+
+  useEffect(async () => {
+    const messageResponse = await getMessage();
+    setMyMessages(messageResponse.data.response);
+  }, []);
+
+  // const MessageDetail = item => {
+  //   console.log(item);
+  //   Alert.alert(item.title, item.content, [{text: '확인'}]);
+  // };
+
+  // const renderItem = ({item}) => {
+  //   return (
+  //     <DrawerItem label={item.title} onPress={() => messageDetailModal(item)} />
+  //   );
+  // };
+
+  // const flatMessage = data => {
+  //   return (
+  //     <View>
+  //       <FlatList
+  //         data={data}
+  //         renderItem={renderItem}
+  //         keyExtractor={item => String(item.id)}
+  //       />
+  //       <Modal
+  //         animationType="fade"
+  //         transparent={true}
+  //         visible={modalVisible}
+  //         onRequestClose={() => {
+  //           setModalVisible(!modalVisible);
+  //         }}>
+  //         <MessageModal
+  //           setModalVisible={setModalVisible}
+  //           message={detailMessage}></MessageModal>
+  //       </Modal>
+  //     </View>
+  //   );
+  // };
+
+  const messageDetailModal = item => {
+    setDetailMessage(item);
+    setModalVisible(!modalVisible);
+  };
+
+  const allMessages = data => {
+    return data.map((item, i) => {
+      return (
+        <DrawerItem
+          key={i}
+          label={item.title}
+          style={{backgroundColor: '#fafafa'}}
+          onPress={() => messageDetailModal(item)}
+        />
+      );
+    });
+  };
+
   return (
     <DrawerContentScrollView {...props}>
-      <Text>알람목록</Text>
+      {/* <Text>알람목록</Text> */}
       <DrawerItemList {...props} />
-      <DrawerItem
-        label="물을 더 주세요"
-        onPress={() => props.navigation.closeDrawer()}
-      />
-      <DrawerItem
-        label="햇빛을 보고 싶어요"
-        onPress={() => props.navigation.toggleDrawer()}
-      />
+      {allMessages(myMessages)}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <MessageModal
+          setModalVisible={setModalVisible}
+          message={detailMessage}></MessageModal>
+      </Modal>
     </DrawerContentScrollView>
   );
 }
@@ -347,12 +420,21 @@ function Home({navigation}) {
     </View>
   );
 }
+
 const Drawer = createDrawerNavigator();
 export function HomeScreen() {
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name="Feed" component={Home} />
+      <Drawer.Screen
+        name="Feed"
+        component={Home}
+        options={{
+          // drawerLabel: '알림목록',
+          title: '알림목록',
+          drawerIcon: () => null,
+        }}
+      />
     </Drawer.Navigator>
   );
 }

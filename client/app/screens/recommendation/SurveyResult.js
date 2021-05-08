@@ -1,15 +1,14 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, PickerIOSComponent} from 'react-native';
+import React, {Component, useEffect, useState} from 'react';
 import {
-  Container,
-  Header,
-  Content,
-  Input,
-  Item,
-  StyleProvider,
-  Button,
-  Icon,
-} from 'native-base';
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  PickerIOSComponent,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
+import {Container} from 'native-base';
 
 import styled, {ThemeProvider} from 'styled-components';
 import theme from '../../assets/theme/index';
@@ -19,13 +18,30 @@ import {
   SurveyQText,
 } from '../../assets/theme/surveystyles';
 import ProgressBar from '../../components/recommendation/progressbar';
+import Plantdetailmodal from '../../components/recommendation/plantdetailmodal';
+//mock data
+import {mockRecom} from '../../components/auth/mockdata';
 
-export function SurveyresultScreen({navigation}) {
+export function SurveyresultScreen(props) {
+  const [plantId, setPlantId] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   const recom = {
+    pid: 1,
     plantname: '싱고니움',
     imageURI:
-      'https://o.remove.bg/downloads/559acbae-9756-4d71-a518-a46367902275/image-removebg-preview.png',
+      'https://www.ikea.com/kr/en/images/products/fejka-artificial-potted-plant-with-pot-in-outdoor-succulent__0614211_pe686835_s5.jpg?f=s',
   };
+
+  const openModal = id => {
+    setModalVisible(true);
+    setPlantId(id);
+  };
+  const id = 1;
+  useEffect(async () => {
+    // 백엔드에서 mbti 문제가져오기
+    // console.log(mockMBTI);
+    // setMBTIs(mockMBTI);
+  }, []);
 
   const ProgressData = {completed: 100};
 
@@ -40,7 +56,9 @@ export function SurveyresultScreen({navigation}) {
         </SurveyQText>
         <View style={styles.contentoptions}>
           <View style={styles.recomwrap}>
-            <View style={styles.recom}>
+            <TouchableOpacity
+              style={styles.recom}
+              onPress={() => openModal(id)}>
               <Image
                 style={styles.recomimg}
                 source={{
@@ -48,8 +66,10 @@ export function SurveyresultScreen({navigation}) {
                 }}
               />
               <Text style={styles.recomtext}>{recom.plantname}</Text>
-            </View>
-            <View style={styles.recom}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.recom}
+              onPress={() => openModal(id)}>
               <Image
                 style={styles.recomimg}
                 source={{
@@ -57,7 +77,7 @@ export function SurveyresultScreen({navigation}) {
                 }}
               />
               <Text style={styles.recomtext}>{recom.plantname}</Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -72,10 +92,23 @@ export function SurveyresultScreen({navigation}) {
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
           <SurveyButton>
-            <SurveyButtonText>완료</SurveyButtonText>
+            <SurveyButtonText onPress={() => props.navigation.navigate('Home')}>
+              완료
+            </SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <Plantdetailmodal
+          setModalVisible={setModalVisible}
+          plantId={plantId}></Plantdetailmodal>
+      </Modal>
     </Container>
   );
 }

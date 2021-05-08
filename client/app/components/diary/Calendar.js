@@ -1,14 +1,26 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
-// native-base
+// style
 import {Icon} from 'native-base';
+import styled from 'styled-components';
+
+// responsive-screen
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 // calendar
 import {Calendar} from 'react-native-calendars';
 import {Modal, View} from 'react-native';
+
+// modal
 import DiarySelectModal from './modal/DiarySelectModal';
 import CheckDateModal from './modal/CheckDateModal';
 import CompleteModal from './modal/CompleteModal';
+
+const CalendarContainer = styled.View`
+  height: ${hp('75%')}px;
+  justify-content: center;
+  padding: 30px;
+`;
 
 export function CalendarView(props) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,28 +31,56 @@ export function CalendarView(props) {
   const [selectMonth, setSelectMonth] = useState('');
   const [selectYear, setSelectYear] = useState('');
 
+  const [markedDateState, setMarkedDateState] = useState(); // markedDates에 넣을 객체
+
+  // props로 전달받은 날짜 목록으로 markedDate 세팅
+  const initailMarkedDate = async () => {
+    let markedDate = {};
+    await Promise.all(
+      props.diaryDate.map(diary => {
+        markedDate[diary] = {marked: true, dotColor: '#8AD169'};
+      }),
+    );
+    setMarkedDateState(markedDate);
+  };
+
+  useEffect(() => {
+    if (props.diaryDate != undefined) {
+      initailMarkedDate();
+    }
+  }, [props.diaryDate]);
+
+  // 현재 날짜 및 시간
+  const date = new Date();
+
   return (
-    <View>
+    <CalendarContainer>
       <Calendar
+        style={{borderRadius: 10}}
         theme={{
+          todayTextColor: '#8AD169',
+          monthTextColor: '#29582C',
+          textMonthFontSize: 20,
+          textMonthFontWeight: 'bold',
           'stylesheet.day.basic': {
             base: {
               width: 32,
-              height: 60,
+              height: 50,
               justifyContent: 'center',
               alignItems: 'center',
             },
           },
           'stylesheet.dot': {
             dot: {
-              width: 7,
-              height: 7,
-              borderRadius: 5,
+              width: 8,
+              height: 8,
+              marginTop: 3,
+              borderRadius: 4,
             },
           },
         }}
         // Initially visible month. Default = Date()
-        current={'2021-04-20'}
+        current={date}
         // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
         minDate={'2021-01-01'}
         // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
@@ -53,6 +93,7 @@ export function CalendarView(props) {
           setSelectDay(day.day);
           setSelectMonth(day.month);
           setSelectYear(day.year);
+          props.setSelectedDate(day.dateString);
           // console.log(day);
         }}
         // Handler which gets executed on day long press. Default = undefined
@@ -110,11 +151,8 @@ export function CalendarView(props) {
         //   );
         // }}
         // Enable the option to swipe between months. Default = false
-        enableSwipeMonths={false}
-        markedDates={{
-          '2021-04-18': {marked: true, dotColor: '#8AD169'},
-          '2021-04-19': {marked: true, dotColor: '#8AD169'},
-        }}
+        enableSwipeMonths={true}
+        markedDates={markedDateState} // dot 표시할 날짜 넣어줌
       />
 
       {/* 다이어리 보기/다이어리 작성/물주기 선택 모달 */}
@@ -128,6 +166,7 @@ export function CalendarView(props) {
         }}>
         <DiarySelectModal
           setModalVisible={setModalVisible}
+          setShowDiary={props.setShowDiary}
           setDateCheckModalVisible={setDateCheckModalVisible}
           navigation={props.navigation}
         />
@@ -165,6 +204,6 @@ export function CalendarView(props) {
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
-    </View>
+    </CalendarContainer>
   );
 }
