@@ -1,10 +1,21 @@
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 
 export const ACCESS_TOKEN = async () => {
   try {
     const token = await auth().currentUser.getIdToken(true);
-    console.log(token);
+    // console.log(token);
     return await token;
+  } catch (error) {
+    console.log('access code error');
+  }
+};
+
+export const DEVICE_TOKEN = async () => {
+  try {
+    const device_token = await messaging().getToken();
+    // console.log(device_token);
+    return await device_token;
   } catch (error) {
     console.log('access code error');
   }

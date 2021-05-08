@@ -17,6 +17,7 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 // redux
 import {useSelector, useDispatch} from 'react-redux';
 import {setAnswer} from '../../reducers/surveyReducer';
+import {initialWindowMetrics} from 'react-native-safe-area-context';
 
 // export function SurveyquestionScreen({navigation}) {
 export function SurveyquestionScreen(props) {
@@ -33,10 +34,10 @@ export function SurveyquestionScreen(props) {
   const pageId = props.route.params.id;
   const mbtiIdx = props.route.params.id - 1;
   const question = mbti[mbtiIdx].question;
-  const answerA = mbti[mbtiIdx].optA.ans;
-  const answerB = mbti[mbtiIdx].optB.ans;
-  const valueA = mbti[mbtiIdx].optA.val;
-  const valueB = mbti[mbtiIdx].optB.val;
+  const answerA = mbti[mbtiIdx].opt1.answer;
+  const answerB = mbti[mbtiIdx].opt2.answer;
+  const valueA = mbti[mbtiIdx].opt1.val;
+  const valueB = mbti[mbtiIdx].opt2.val;
   const [selected, setSelected] = useState(answer[mbtiIdx]);
 
   const onSubmit = async () => {
@@ -81,7 +82,7 @@ export function SurveyquestionScreen(props) {
           <AnsButton
             style={selected === 'B' ? styles.selected : styles.ansbutton}
             onPress={() => setSelected('B')}>
-            <AnsText>{answerB}</AnsText>
+            <AnsText style={{flexWrap: 'wrap'}}>{answerB}</AnsText>
           </AnsButton>
         </View>
       </View>

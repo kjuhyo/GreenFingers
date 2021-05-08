@@ -28,7 +28,7 @@ export const SurveyButtonText = styled(Text)`
 `;
 
 export const SurveyQText = styled(Text)`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   width: 100%;
   justify-content: center;
@@ -39,9 +39,12 @@ export const AnsButton = styled(Button)`
   width: 100%;
   background-color: #efefef;
   border-radius: 10px;
-  height: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
+  height: auto;
+  /* height: fit-content; */
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
   margin-top: 25px;
 `;
 
@@ -49,6 +52,8 @@ export const AnsText = styled(Text)`
   font-size: 17px;
   align-self: center;
   width: 100%;
+  /* height: auto; */
+  /* height: fit-content; */
   text-align: center;
   color: #333333;
 `;

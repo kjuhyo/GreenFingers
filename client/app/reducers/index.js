@@ -4,12 +4,14 @@ import plantReducer from './plantReducer.js';
 import profileReducer from './profileReducer.js';
 import surveyReducer from './surveyReducer.js';
 import roomReducer from './roomReducer.js';
+import homeReducer from './homeReducer.js';
 const allReducer = combineReducers({
   authReducer,
   plantReducer,
   profileReducer,
   surveyReducer,
-    roomReducer,
+  roomReducer,
+  homeReducer,
 });
 export default allReducer;
 

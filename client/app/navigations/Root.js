@@ -33,7 +33,7 @@ import {addUid, addUser} from '../reducers/authReducer';
 import {setPlants} from '../reducers/plantReducer';
 import {setProfile, setUserID} from '../reducers/profileReducer';
 import {userInfo} from '../../app/api/auth';
-
+import {registerDevice} from '../../app/api/auth';
 // messaging
 import messaging from '@react-native-firebase/messaging';
 
@@ -112,14 +112,17 @@ export default function Root() {
   printToken = async () => {
     const token = await auth().currentUser.getIdToken(true);
     console.log(token);
+    // const deviceToken = await messaging().getToken();
+    // console.log('device token', deviceToken);
+    // const response = await registerDevice();
+    // console.log('device token test', response);
   };
 
   saveUserInfo = async user => {
     if (user) {
-      await printToken();
+      // await printToken();
       // console.log(uid);
-      // const deviceToken = await messaging().getToken();
-      // console.log('device token', deviceToken);
+
       const allAboutUser = await userInfo();
 
       const myPlants = allAboutUser.data.plants;
@@ -136,6 +139,7 @@ export default function Root() {
   };
 
   useEffect(async () => {
+    await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, [uid]);
 

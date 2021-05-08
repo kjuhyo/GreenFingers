@@ -20,18 +20,18 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 
 // 프로필 전체 페이지 컨테이너
 const ProfileContainer = styled.View`
-  height: ${hp('90%')}px;
+  height: ${hp('63%')}px;
   padding: 30px;
 `;
 
 // 프로필 영역
 const ProfileBox = styled.View`
-  height: ${hp('15%')}px;
+  flex: 1;
   flex-direction: row;
   align-items: center;
   background-color: white;
   border-radius: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   padding-left: 30px;
   padding-right: 10px;
 `;
@@ -58,23 +58,18 @@ const ProfileInfo = styled.View`
 
 // 메뉴 영역
 const MenuBox = styled.View`
+  flex: 1.5;
   background-color: white;
   border-radius: 10px;
   padding-left: 30px;
   padding-right: 30px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-`;
-//메뉴 영역 래퍼
-const MenuWrap = styled.View`
-  flex: 3;
 `;
 
 // 메뉴 한개
 const MenuItem = styled.TouchableOpacity`
+  flex: 1;
   flex-direction: row;
   align-items: center;
-  height: ${hp('8%')}px;
 `;
 
 const DeleteUser = styled.View`
@@ -127,36 +122,28 @@ export default function Profile({navigation}) {
           <Text style={{fontSize: 15, color: 'grey'}}>보유 식물 3개</Text>
         </ProfileInfo>
       </ProfileBox>
-      <MenuWrap>
-        <MenuBox>
-          <MenuItem onPress={() => navigation.navigate('ProfileImgChange')}>
-            <Icon type="MaterialCommunityIcons" name="thumb-up-outline" />
-            <Text style={{marginLeft: 20}}>식물 추천 받기</Text>
-          </MenuItem>
-        </MenuBox>
-        <MenuBox>
-          <MenuItem onPress={() => navigation.navigate('ProfileImgChange')}>
-            <Icon type="MaterialCommunityIcons" name="autorenew" />
-            <Text style={{marginLeft: 20}}>프로필 사진 변경</Text>
-          </MenuItem>
-          <MenuItem onPress={() => navigation.navigate('PasswordChange')}>
-            <Icon type="MaterialCommunityIcons" name="form-textbox-password" />
-            <Text style={{marginLeft: 20}}>비밀번호 재설정</Text>
-          </MenuItem>
-          <MenuItem
-            onPress={() => {
-              setModalVisible(true);
-            }}>
-            <Icon type="MaterialCommunityIcons" name="logout" />
-            <Text style={{marginLeft: 20}}>로그아웃</Text>
-          </MenuItem>
-        </MenuBox>
-        <DeleteUser>
-          <TouchableOpacity onPress={() => navigation.navigate('Withdrawal')}>
-            <Text style={{color: 'grey'}}>회원탈퇴</Text>
-          </TouchableOpacity>
-        </DeleteUser>
-      </MenuWrap>
+      <MenuBox>
+        <MenuItem onPress={() => navigation.navigate('ProfileImgChange')}>
+          <Icon type="MaterialCommunityIcons" name="autorenew" />
+          <Text style={{marginLeft: 20}}>프로필 사진 변경</Text>
+        </MenuItem>
+        <MenuItem onPress={() => navigation.navigate('PasswordChange')}>
+          <Icon type="MaterialCommunityIcons" name="form-textbox-password" />
+          <Text style={{marginLeft: 20}}>비밀번호 재설정</Text>
+        </MenuItem>
+        <MenuItem
+          onPress={() => {
+            setModalVisible(true);
+          }}>
+          <Icon type="MaterialCommunityIcons" name="logout" />
+          <Text style={{marginLeft: 20}}>로그아웃</Text>
+        </MenuItem>
+      </MenuBox>
+      <DeleteUser>
+        <TouchableOpacity onPress={() => navigation.navigate('Withdrawal')}>
+          <Text style={{color: 'grey'}}>회원탈퇴</Text>
+        </TouchableOpacity>
+      </DeleteUser>
 
       {/* 로그아웃 확인 모달 */}
       <Modal

@@ -38,6 +38,7 @@ import {
 //mbti redux
 import {setMBTI, setAnswer} from '../../reducers/surveyReducer';
 
+import {mbtiQuestions} from '../../api/recommendation';
 //mockdata
 import {mockMBTI} from '../../components/auth/mockdata';
 
@@ -51,8 +52,11 @@ export function SurveyintroScreen({navigation}) {
 
   useEffect(async () => {
     // 백엔드에서 mbti 문제가져오기
-    console.log(mockMBTI);
-    setMBTIs(mockMBTI);
+    // console.log(mockMBTI);
+    const mbtis = await mbtiQuestions();
+    console.log(mbtis.data);
+    setMBTIs(mbtis.data);
+    // setMBTIs(mockMBTI);
   }, []);
   // redux testing
   // const dispatch = useDispatch();

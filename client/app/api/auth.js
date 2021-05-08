@@ -1,4 +1,4 @@
-import {instance, instanceFile} from './index';
+import {instance, instanceFile, instanceDevice} from './index';
 
 export function signUp() {
   return instance.post('user/oauth');
@@ -30,7 +30,7 @@ export function readMessage() {
 
 // 디바이스 토큰 등록
 export function registerDevice() {
-  return instance.post('user/register');
+  return instanceDevice.post('user/register/test1');
 }
 
 // 디바이스 토큰 삭제
