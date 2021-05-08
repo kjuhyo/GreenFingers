@@ -33,6 +33,7 @@ import {
 } from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
 import axios from 'axios';
+import room from '../../reducers/roomReducer';
 
 // import Modal from "react-native-modal";
 
@@ -80,7 +81,9 @@ function Home({navigation}) {
   // 방 정보 조회
   const getRoomData = () => {
     findRoom()
-      .then(res => setRoomData(res.data.response))
+      .then(res => {
+        setRoomData(res.data.response);
+      })
       .then(() => {
         setLoading(false);
       })
@@ -97,85 +100,166 @@ function Home({navigation}) {
     icon: 'loading',
   });
 
-  useEffect(() => {
-    getRoomData();
+  useEffect(async () => {
+    await getRoomData();
+    console.log(roomData);
   }, [roomnum]);
-  const onEndReached = () => {
-    if (loading) {
-      return;
-    } else {
-      getRoomData();
-    }
-  };
+  // const onEndReached = () => {
+  //   if (loading) {
+  //     return;
+  //   } else {
+  //     getRoomData();
+  //   }
+  // };
   // asking for location permission
 
   const renderItem = ({item}) => {
     return (
       <View style={styles.rooms}>
-        <Text
-          style={styles.roomname}
-          onPress={() => {
-            console.log('click room name');
-            navigation.navigate('Room', {rid: item.rid, rname: item.roomName});
-          }}>
-          {item.roomName}
-        </Text>
-        <View style={styles.abovecard}>
-          <TouchableOpacity
-            style={styles.plantcard}
+        <View style={styles.roominfo}>
+          <Text
+            style={styles.roomname}
             onPress={() => {
-              console.log('click left');
+              console.log('click room name');
               navigation.navigate('Room', {
                 rid: item.rid,
                 rname: item.roomName,
               });
             }}>
-            <Image
-              source={require('../../assets/images/plant.jpg')}
-              style={styles.plantimg}
-            />
-            <View style={styles.plantinfo}>
-              <Text style={styles.plantname}>산세베리아</Text>
-              <View style={styles.rightinfo}>
-                <View style={styles.water}>
-                  <Text style={styles.watertext}>물 준 날짜</Text>
-                  <Text style={styles.waterdate}>2021/02/11</Text>
-                </View>
-                <Image
-                  source={require('../../assets/images/plant1.png')}
-                  style={styles.planticon}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.plantcard}
+            {item.roomName}
+          </Text>
+          <Text
+            style={styles.gotoroom}
             onPress={() => {
-              console.log('click right');
+              console.log('click room name');
               navigation.navigate('Room', {
                 rid: item.rid,
                 rname: item.roomName,
               });
             }}>
-            <Image
-              source={require('../../assets/images/plant.jpg')}
-              style={styles.plantimg}
-            />
-            <View style={styles.plantinfo}>
-              <Text style={styles.plantname}>산세베리아가</Text>
-              <View style={styles.rightinfo}>
-                <View style={styles.water}>
-                  <Text style={styles.watertext}>물 준 날짜</Text>
-                  <Text style={styles.waterdate}>2021/02/11</Text>
-                </View>
-                <Image
-                  source={require('../../assets/images/plant1.png')}
-                  style={styles.planticon}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
+            {item.plantList.length}개의 식물 보러가기
+          </Text>
         </View>
+        {item.plantList.length == 2 ? (
+          <View>
+            <View style={styles.abovecard}>
+              <TouchableOpacity
+                style={styles.plantcard}
+                onPress={() => {
+                  console.log('click left');
+                  navigation.navigate('Room', {
+                    rid: item.rid,
+                    rname: item.roomName,
+                  });
+                }}>
+                <Image
+                  source={{uri: item.plantList[0].image}}
+                  style={styles.plantimg}
+                />
+                <View style={styles.plantinfo}>
+                  <Text style={styles.plantname}>
+                    {item.plantList[0].nickname}
+                  </Text>
+                  <View style={styles.rightinfo}>
+                    <View style={styles.water}>
+                      <Text style={styles.watertext}>물 준 날짜</Text>
+                      <Text style={styles.waterdate}>
+                        {item.plantList[0].lastDate}
+                      </Text>
+                    </View>
+                    <Image
+                      source={require('../../assets/images/plant1.png')}
+                      style={styles.planticon}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.plantcard}
+                onPress={() => {
+                  console.log('click right');
+                  navigation.navigate('Room', {
+                    rid: item.rid,
+                    rname: item.roomName,
+                  });
+                }}>
+                <Image
+                  source={{uri: item.plantList[0].image}}
+                  style={styles.plantimg}
+                />
+                <View style={styles.plantinfo}>
+                  <Text style={styles.plantname}>
+                    {item.plantList[1].nickname}
+                  </Text>
+                  <View style={styles.rightinfo}>
+                    <View style={styles.water}>
+                      <Text style={styles.watertext}>물 준 날짜</Text>
+                      <Text style={styles.waterdate}>
+                        {item.plantList[1].lastDate}
+                      </Text>
+                    </View>
+                    <Image
+                      source={require('../../assets/images/plant1.png')}
+                      style={styles.planticon}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <View>
+            {item.plantList.length == 1 ? (
+              <View style={styles.abovecard}>
+                <TouchableOpacity
+                  style={styles.plantcard}
+                  onPress={() => {
+                    console.log('click left');
+                    navigation.navigate('Room', {
+                      rid: item.rid,
+                      rname: item.roomName,
+                    });
+                  }}>
+                  <Image
+                    source={{uri: item.plantList[0].image}}
+                    style={styles.plantimg}
+                  />
+                  <View style={styles.plantinfo}>
+                    <Text style={styles.plantname}>
+                      {item.plantList[0].nickname}
+                    </Text>
+                    <View style={styles.rightinfo}>
+                      <View style={styles.water}>
+                        <Text style={styles.watertext}>물 준 날짜</Text>
+                        <Text style={styles.waterdate}>
+                          {item.plantList[0].lastDate}
+                        </Text>
+                      </View>
+                      <Image
+                        source={require('../../assets/images/plant1.png')}
+                        style={styles.planticon}
+                      />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.abovecard}>
+                <TouchableOpacity
+                  style={styles.plantcard2}
+                  onPress={() => {
+                    console.log('click left');
+                    navigation.navigate('Room', {
+                      rid: item.rid,
+                      rname: item.roomName,
+                    });
+                  }}>
+                  <Text style={styles.gotoaddplant}>please add plant</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        )}
       </View>
     );
   };
@@ -338,7 +422,10 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     height: 40,
   },
-  rooms: {},
+  roominfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   info: {
     paddingHorizontal: 15,
     color: 'white',
@@ -359,9 +446,17 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     paddingLeft: 30,
     paddingTop: 20,
-    paddingBottom: 10,
+    // paddingBottom: 10,
     flex: 0.4,
     // marginTop: 40,
+  },
+  gotoroom: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '700',
+    paddingTop: 25,
+    flex: 0.4,
+    // backgroundColor: 'yellow',
   },
   abovecard: {
     flexDirection: 'row',
@@ -377,6 +472,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     // alignItems: "center",
+  },
+  plantcard2: {
+    flex: 5,
+    margin: 3,
+    height: win.height * 0.2,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   plantname: {
     fontWeight: 'bold',
@@ -412,5 +518,10 @@ const styles = StyleSheet.create({
   },
   waterdate: {
     fontSize: 9,
+  },
+  gotoaddplant: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: 'white',
   },
 });
