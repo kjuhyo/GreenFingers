@@ -9,6 +9,8 @@ import {
   ScrollView,
   Dimensions,
   Modal,
+  FlatList,
+  SafeAreaView,
 } from 'react-native';
 import {Container, Icon, Button, Content} from 'native-base';
 import {PlusModal} from '../../components/main/PlusModal';
@@ -34,16 +36,43 @@ export function RoomScreen({route, navigation}) {
   const setData = data => {
     setChooseData(data);
   };
+  console.log(ChooseData);
+  // plantList 안에든거 image, lastDate, name, nickname, pid
+  const {rid} = route.params;
+  const {rname} = route.params;
+  const {plantList} = route.params;
   useEffect(() => {
     if (ChooseData === 'Delete') {
       navigation.navigate('Home');
     }
   });
-  console.log(ChooseData);
-  const {rid} = route.params;
-  const {rname} = route.params;
+  const renderItem = ({item}) => {
+    return (
+      <TouchableOpacity
+        style={styles.plantcard}
+        onPress={() => {
+          navigation.navigate('PlantDetail');
+        }}>
+        <Image source={{uri: item.image}} style={styles.plantimg} />
+        <View style={styles.plantinfo}>
+          <Text style={styles.plantname}>{item.nickname}</Text>
+          <View style={styles.rightinfo}>
+            <View style={styles.water}>
+              <Text style={styles.watertext}>물 준 날짜</Text>
+              <Text style={styles.waterdate}>{item.lastDate}</Text>
+            </View>
+            <Image
+              source={require('../../assets/images/plant1.png')}
+              style={styles.planticon}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
+      {/* 배경사진 */}
       <View style={{flex: 0.1}}>
         <Image
           style={{
@@ -56,6 +85,7 @@ export function RoomScreen({route, navigation}) {
         />
       </View>
       <View style={{flexDirection: 'row', marginTop: 40}}>
+        {/* 방 이름 */}
         <TouchableOpacity
           style={styles.roomname}
           onPress={() => {
@@ -65,14 +95,8 @@ export function RoomScreen({route, navigation}) {
             type="Ionicons"
             name="chevron-back-outline"
             style={{color: 'white', fontSize: 20, paddingRight: 8}}></Icon>
+          <Text style={styles.roomtext}>{rid}</Text>
           <Text style={styles.roomtext}>{rname}</Text>
-          <Icon
-            type="Ionicons"
-            name="pencil-outline"
-            style={styles.pencil}
-            onPress={() => {
-              console.log('click pencil');
-            }}></Icon>
         </TouchableOpacity>
         <View style={styles.setting}>
           <TouchableOpacity onPress={() => changeModalVisible3(true)}>
@@ -113,53 +137,17 @@ export function RoomScreen({route, navigation}) {
           </Modal>
         </View>
       </View>
+      {/* 식물 목록 */}
       <View style={styles.plantlist}>
-        <TouchableOpacity
-          style={styles.plantcard}
-          onPress={() => {
-            navigation.navigate('PlantDetail');
-          }}>
-          <Image
-            source={require('../../assets/images/plant.jpg')}
-            style={styles.plantimg}
+        <SafeAreaView>
+          <FlatList
+            data={plantList}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            nestedScrollEnabled
           />
-          <View style={styles.plantinfo}>
-            <Text style={styles.plantname}>산세베리아</Text>
-            <View style={styles.rightinfo}>
-              <View style={styles.water}>
-                <Text style={styles.watertext}>물 준 날짜</Text>
-                <Text style={styles.waterdate}>2021/02/11</Text>
-              </View>
-              <Image
-                source={require('../../assets/images/plant1.png')}
-                style={styles.planticon}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.plantcard}
-          onPress={() => {
-            navigation.navigate('PlantDetail');
-          }}>
-          <Image
-            source={require('../../assets/images/plant.jpg')}
-            style={styles.plantimg}
-          />
-          <View style={styles.plantinfo}>
-            <Text style={styles.plantname}>산세베리아</Text>
-            <View style={styles.rightinfo}>
-              <View style={styles.water}>
-                <Text style={styles.watertext}>물 준 날짜</Text>
-                <Text style={styles.waterdate}>2021/02/11</Text>
-              </View>
-              <Image
-                source={require('../../assets/images/plant1.png')}
-                style={styles.planticon}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
+        </SafeAreaView>
+
         <TouchableOpacity style={styles.pluscard}>
           <TouchableOpacity onPress={() => changeModalVisible(true)}>
             <Icon
