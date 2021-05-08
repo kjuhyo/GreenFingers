@@ -206,6 +206,8 @@ export function DiaryScreen({navigation}) {
               setShowDiary={setShowDiary}
               diaryDate={diaryDate} // 다이어리 쓴 날짜 리스트
               setSelectedDate={setSelectedDate} // 선택한 날짜 set
+              selectedDate={selectedDate} // 선택한 날짜
+              activePlant={activePlant} // 선택한 식물 id
             />
           )}
         </ScrollView>

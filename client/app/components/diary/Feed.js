@@ -30,6 +30,7 @@ export default function Feed(props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const [currentImg, setCurrentImg] = useState(props.diary.imgUrls[0]);
+  const [currentImgIdx, setCurrentImgIdx] = useState(0);
 
   const renderTruncatedFooter = handlePress => {
     return (
@@ -50,103 +51,141 @@ export default function Feed(props) {
       </View>
     );
   };
-
+  // console.log('피드에서 프롭스로 받은 다이어리', props.diary);
   // '>' 클릭했을 때 다음 이미지 set
   const nextImg = () => {
-    let currentImgIdx = props.diary.imgUrls.indexOf(currentImg);
     if (currentImgIdx < props.diary.imgUrls.length - 1) {
-      currentImgIdx += 1;
-      setCurrentImg(props.diary.imgUrls[currentImgIdx]);
+      const tmp = currentImgIdx + 1;
+      setCurrentImgIdx(tmp);
+      setCurrentImg(props.diary.imgUrls[tmp]);
     }
   };
 
   // '<' 클릭했을 때 이전 이미지 set
   const beforeImg = () => {
-    let currentImgIdx = props.diary.imgUrls.indexOf(currentImg);
     if (currentImgIdx > 0) {
-      currentImgIdx -= 1;
-      setCurrentImg(props.diary.imgUrls[currentImgIdx]);
+      const tmp = currentImgIdx - 1;
+      setCurrentImgIdx(tmp);
+      setCurrentImg(props.diary.imgUrls[tmp]);
     }
   };
 
   return (
-    <View>
-      <Content>
-        <Card>
-          <CardItem>
-            <Left />
-
-            <Right>
-              <TouchableOpacity
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}>
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name="dots-vertical"
-                  style={{color: 'black'}}
-                />
-              </TouchableOpacity>
-            </Right>
-          </CardItem>
-
-          <CardItem cardBody>
-            {/* 왼쪽 '<' 버튼 */}
+    <View style={{backgroundColor: '#F9F9F9', paddingHorizontal: 10}}>
+      <Card transparent>
+        <CardItem>
+          <Left />
+          <Right>
             <TouchableOpacity
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <Icon
+                type="MaterialCommunityIcons"
+                name="dots-vertical"
+                style={{color: 'black', fontSize: 23}}
+              />
+            </TouchableOpacity>
+          </Right>
+        </CardItem>
+
+        <CardItem cardBody>
+          {/* 왼쪽 '<' 버튼 */}
+          {currentImgIdx != 0 && (
+            <TouchableOpacity
+              style={{position: 'absolute', left: 8, zIndex: 1}}
               onPress={() => {
                 beforeImg();
               }}>
-              <Icon type="SimpleLineIcons" name="arrow-left" />
+              <Icon
+                type="SimpleLineIcons"
+                name="arrow-left"
+                style={{
+                  color: 'white',
+                  fontSize: 30,
+                  textShadowRadius: 10,
+                  textShadowOffset: {width: 2, height: 1.5},
+                }}
+              />
             </TouchableOpacity>
-            <Image
-              source={{
-                uri: currentImg,
-              }}
-              style={{height: 400, width: null, flex: 1}}
-            />
-            {/* 오른쪽 '>' 버튼 */}
+          )}
+          <Image
+            source={{
+              uri: currentImg,
+            }}
+            style={{height: 400, width: null, flex: 1}}
+          />
+          {/* 오른쪽 '>' 버튼 */}
+          {currentImgIdx != props.diary.imgUrls.length - 1 && (
             <TouchableOpacity
+              style={{position: 'absolute', right: 8, zIndex: 1}}
               onPress={() => {
                 nextImg();
               }}>
-              <Icon type="SimpleLineIcons" name="arrow-right" />
+              <Icon
+                type="SimpleLineIcons"
+                name="arrow-right"
+                style={{
+                  color: 'white',
+                  fontSize: 30,
+                  textShadowRadius: 10,
+                  textShadowOffset: {width: 2, height: 1.5},
+                }}
+              />
             </TouchableOpacity>
-          </CardItem>
+          )}
 
           {/* 몇번째 사진인지 표시 */}
-          <View style={{alignItems: 'center'}}>
-            <Text style={{color: 'grey'}}>
-              {props.diary.imgUrls.indexOf(currentImg) + 1}/
-              {props.diary.imgUrls.length}
+          <View
+            style={{
+              alignItems: 'center',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              position: 'absolute',
+              zIndex: 1,
+              bottom: 3,
+              left: '46%',
+              borderRadius: 5,
+              paddingHorizontal: 4,
+            }}>
+            <Text style={{color: 'white'}}>
+              {currentImgIdx + 1}/{props.diary.imgUrls.length}
             </Text>
           </View>
-          <CardItem>
-            <Body>
-              {/* 날짜 */}
-              <Text style={{color: 'grey'}}>
-                {props.selectedDate.substring(0, 4)}년{' '}
-                {props.selectedDate.substring(5, 7)}월{' '}
-                {props.selectedDate.substring(8, 10)}일
-              </Text>
+        </CardItem>
+        <CardItem>
+          <Body>
+            {/* 날짜 */}
+            <Text style={{color: 'grey'}}>
+              {props.selectedDate.substring(0, 4)}년{' '}
+              {props.selectedDate.substring(5, 7)}월{' '}
+              {props.selectedDate.substring(8, 10)}일
+            </Text>
 
-              {/* 제목, 내용 */}
+            {/* 제목 */}
+            <Text
+              style={{
+                color: '#363333',
+                fontSize: 13,
+                marginTop: 3,
+                marginBottom: 5,
+              }}>
+              제목: {props.diary.title}
+            </Text>
+
+            {/* 내용 */}
+            <View style={{width: '100%'}}>
               <ReadMore
-                numberOfLines={3}
+                numberOfLines={2}
                 renderTruncatedFooter={renderTruncatedFooter}
                 renderRevealedFooter={renderRevealedFooter}
                 // onReady={handleTextReady}
               >
-                <View>
-                  <Text style={{color: '#363333', fontSize: 13}}>
-                    제목: {props.diary.title}
-                  </Text>
-                  <Text style={{fontSize: 16}}>{props.diary.content}</Text>
-                </View>
+                <Text style={{fontSize: 16}}>{props.diary.content}</Text>
               </ReadMore>
-            </Body>
-          </CardItem>
-        </Card>
-      </Content>
+            </View>
+          </Body>
+        </CardItem>
+      </Card>
 
       {/* 다이어리 수정,삭제 선택 모달 */}
       <Modal
@@ -160,10 +199,11 @@ export default function Feed(props) {
           setModalVisible={setModalVisible}
           setDeleteModalVisible={setDeleteModalVisible}
           navigation={props.navigation}
+          diary={props.diary}
         />
       </Modal>
 
-      {/* 삭제 확인 모달창 */}
+      {/* 삭제 확인 모달 */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -174,10 +214,11 @@ export default function Feed(props) {
         <DeleteModal
           setDeleteModalVisible={setDeleteModalVisible}
           setCompleteModalVisible={setCompleteModalVisible}
+          diaryId={props.diary.id}
         />
       </Modal>
 
-      {/* 삭제 완료 모달창 */}
+      {/* 삭제 완료 모달 */}
       <Modal
         animationType="fade"
         transparent={true}

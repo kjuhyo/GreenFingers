@@ -18,6 +18,7 @@ export default function FeedSelectModal(props) {
   const openDeleteModal = visible => {
     props.setDeleteModalVisible(visible);
   };
+  // console.log('피드셀렉모달에서 받은 프롭스 다이어리', props.diary);
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.22">
@@ -32,7 +33,9 @@ export default function FeedSelectModal(props) {
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              props.navigation.navigate('DiaryUpdate');
+              props.navigation.navigate('DiaryUpdate', {
+                diary: props.diary,
+              });
             }}>
             <Text>다이어리 수정</Text>
             <Icon

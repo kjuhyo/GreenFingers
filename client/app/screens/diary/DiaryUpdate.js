@@ -1,6 +1,7 @@
 // react
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,7 +11,7 @@ import {
 import 'react-native-gesture-handler';
 
 // axios
-import {writeDiary} from '../../api/diary';
+import {updateDiary} from '../../api/diary';
 
 // style
 import {Icon, Toast, Root, Badge} from 'native-base';
@@ -32,10 +33,11 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 // image-picker
 import ImagePicker from 'react-native-image-crop-picker';
 
-export function DiaryUpdateScreen({navigation}) {
-  const [titleState, setTitleState] = useState('');
-  const [contentState, setContentState] = useState('');
-  const [imgState, setImgState] = useState([]);
+export function DiaryUpdateScreen({route, navigation: {goBack}}) {
+  const [titleState, setTitleState] = useState(route.params.diary.title);
+  const [contentState, setContentState] = useState(route.params.diary.content);
+  const [imgState, setImgState] = useState(route.params.diary.imgUrls);
+  const [isLoading, setIsLoading] = useState(false);
 
   const maxImgCnt = 5; // 사진 선택 최대 개수
 
@@ -47,9 +49,9 @@ export function DiaryUpdateScreen({navigation}) {
       duration: 4000,
     });
   };
-
-  // 다이어리 작성 api 요청 함수
-  const diaryWrite = async () => {
+  // console.log(route.params.diary);
+  // 다이어리 수정 api 요청 함수
+  const diaryUpdate = async () => {
     // 제목, 내용, 사진 모두 입력했을 경우에만 다이어리 작성 api 요청
     if (titleState == '') {
       toastShow('제목을 입력해주세요.');
@@ -59,9 +61,10 @@ export function DiaryUpdateScreen({navigation}) {
       toastShow('사진을 선택해주세요.');
     } else {
       const formData = new FormData();
-      formData.append('plantId', 1);
+      formData.append('plantId', route.params.diary.plantId);
       formData.append('title', titleState);
       formData.append('content', contentState);
+      // formData.append('writeDateTime', route.params.selectedDate);
       imgState.forEach((img, i) => {
         formData.append('files', {
           uri: img,
@@ -69,8 +72,9 @@ export function DiaryUpdateScreen({navigation}) {
           type: 'image/jpeg',
         });
       });
-      await writeDiary(formData);
-      navigation.navigate('Diary');
+      await updateDiary(route.params.diary.id, formData);
+      setIsLoading(false);
+      goBack();
     }
   };
 
@@ -148,6 +152,20 @@ export function DiaryUpdateScreen({navigation}) {
     ));
   };
 
+  const renderLoading = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color="#8AD169"
+          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <Root>
       <ScrollView>
@@ -215,9 +233,16 @@ export function DiaryUpdateScreen({navigation}) {
           </SelectedImgBox>
 
           {/* 완료 버튼 */}
-          <CompleteBtn onPress={() => diaryWrite()}>
+          <CompleteBtn
+            onPress={() => {
+              setIsLoading(true);
+              diaryUpdate();
+            }}>
             <CompleteBtnText>완료</CompleteBtnText>
           </CompleteBtn>
+
+          {/* indicator 표시 */}
+          {renderLoading()}
         </KeyboardAwareScrollView>
       </ScrollView>
     </Root>

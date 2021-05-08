@@ -17,9 +17,9 @@ export function findDiaryByDate(date) {
 }
 
 export function updateDiary(id, params) {
-  return instance.put(`diary/update/${id}`, params);
+  return instance.put(`diary/update/v2/${id}`, params);
 }
 
 export function writeDiary(formData) {
-  return instanceFile.post('diary/write/v2', formData);
+  return instanceFile.post('diary/write/v3', formData);
 }

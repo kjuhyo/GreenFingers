@@ -21,6 +21,7 @@ export default function DiarySelectModal(props) {
   const showDiary = val => {
     props.setShowDiary(val);
   };
+
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.3">
@@ -48,7 +49,10 @@ export default function DiarySelectModal(props) {
             justifyContent="space-between"
             onPress={() => {
               closeModal(false);
-              props.navigation.navigate('DiaryWrite');
+              props.navigation.navigate('DiaryWrite', {
+                activePlant: `${props.activePlant}`,
+                selectedDate: `${props.selectedDate}`,
+              });
             }}>
             <Text>다이어리 작성</Text>
             <Icon type="SimpleLineIcons" name="pencil" style={{fontSize: 18}} />
