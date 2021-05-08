@@ -51,7 +51,9 @@ export function RoomScreen({route, navigation}) {
       <TouchableOpacity
         style={styles.plantcard}
         onPress={() => {
-          navigation.navigate('PlantDetail');
+          navigation.navigate('PlantDetail', {
+            pid: item.pid,
+          });
         }}>
         <Image source={{uri: item.image}} style={styles.plantimg} />
         <View style={styles.plantinfo}>

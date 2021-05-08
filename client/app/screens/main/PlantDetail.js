@@ -16,7 +16,7 @@ import {PlantModal} from '../../components/main/PlantModal';
 
 const win = Dimensions.get('window');
 
-export function PlantDetail({navigation}) {
+export function PlantDetail({route, navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [ChooseData, setChooseData] = useState();
   const changeModalVisible = bool => {
@@ -25,6 +25,7 @@ export function PlantDetail({navigation}) {
   const setData = data => {
     setChooseData(data);
   };
+  const {pid} = route.params;
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       <View style={{flex: 0.7}}>
@@ -93,6 +94,7 @@ export function PlantDetail({navigation}) {
               <Text style={{color: '#29582C', fontWeight: 'bold'}}>
                 Lemon Tree
               </Text>
+              <Text>{pid}</Text>
             </Plantchip>
             <View style={styles.leftdown}>
               <Text style={styles.plantname}>레모나</Text>
