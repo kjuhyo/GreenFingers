@@ -29,7 +29,8 @@ export function RoomScreen({route, navigation}) {
   const [isModalVisible3, setisModalVisible3] = useState(false);
   const [ChooseData, setChooseData] = useState();
   const [title, setTitle] = useState('');
-  const [roomDetail, setRoomDetail] = useState();
+  const [roomDetail, setRoomDetail] = useState([]);
+  const [roomPlantDetail, setRoomPlantDetail] = useState([]);
   const [loading, setLoading] = useState(true);
   const changeModalVisible = bool => {
     setisModalVisible(bool);
@@ -48,11 +49,13 @@ export function RoomScreen({route, navigation}) {
   const {rid} = route.params;
   const {rname} = route.params;
   const {plantList} = route.params;
-  const getPlantData = async () => {
-    await findRoomDetail(rid)
+  // 식물 정보 조회
+  const getPlantData = () => {
+    findRoomDetail(rid)
       .then(res => {
-        console.log('axios', res.data.response);
         setRoomDetail(res.data.response);
+        setRoomPlantDetail(res.data.response.plantList);
+        console.log('axios', res.data.response);
       })
       .then(() => {
         setLoading(false);
@@ -62,8 +65,8 @@ export function RoomScreen({route, navigation}) {
         setLoading(false);
       });
   };
-  useEffect(async () => {
-    await getPlantData();
+  useEffect(() => {
+    getPlantData(rid);
     if (ChooseData === 'Delete') {
       navigation.navigate('Home');
     }
@@ -97,13 +100,13 @@ export function RoomScreen({route, navigation}) {
     );
   };
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: 'transparent'}}>
       {loading ? (
         <View>
           <Text>로딩중</Text>
         </View>
       ) : (
-        <View style={{flex: 1, backgroundColor: 'transparent'}}>
+        <View style={{flex: 1}}>
           {/* 배경사진 */}
           <View style={{flex: 0.1}}>
             <Image
@@ -127,7 +130,7 @@ export function RoomScreen({route, navigation}) {
                 type="Ionicons"
                 name="chevron-back-outline"
                 style={{color: 'white', fontSize: 20, paddingRight: 8}}></Icon>
-              <Text style={styles.roomtext}>{rname}</Text>
+              <Text style={styles.roomtext}>{roomDetail.roomName}</Text>
             </TouchableOpacity>
             <View style={styles.setting}>
               <TouchableOpacity onPress={() => changeModalVisible3(true)}>

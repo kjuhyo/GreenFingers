@@ -158,6 +158,9 @@ function Home({navigation}) {
     findRoom()
       .then(res => {
         setRoomData(res.data.response);
+        console.log('homehome', res.data.response);
+        console.log('homeplant', res.data.response[0].plantList);
+        // console.log('home', roomData);
       })
       .then(() => {
         setLoading(false);
@@ -177,8 +180,8 @@ function Home({navigation}) {
 
   useEffect(async () => {
     await getRoomData();
-    console.log(roomData[0].plantList);
   }, [roomnum, plantnum]);
+
   // const onEndReached = () => {
   //   if (loading) {
   //     return;
@@ -200,7 +203,6 @@ function Home({navigation}) {
                 rid: item.rid,
                 rname: item.roomName,
                 plantList: item.plantList,
-                pid: item.pid,
               });
             }}>
             {item.roomName}
@@ -213,7 +215,6 @@ function Home({navigation}) {
                 rid: item.rid,
                 rname: item.roomName,
                 plantList: item.plantList,
-                pid: item.pid,
               });
             }}>
             {item.plantList.length}개의 식물 보러가기
@@ -230,7 +231,6 @@ function Home({navigation}) {
                     rid: item.rid,
                     rname: item.roomName,
                     plantList: item.plantList,
-                    pid: item.pid,
                   });
                 }}>
                 <Image
@@ -263,7 +263,6 @@ function Home({navigation}) {
                     rid: item.rid,
                     rname: item.roomName,
                     plantList: item.plantList,
-                    pid: item.pid,
                   });
                 }}>
                 <Image
