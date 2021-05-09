@@ -1,6 +1,7 @@
 import {Icon} from 'native-base';
-import React from 'react';
-import {Text, Pressable} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text, Pressable, ActivityIndicator} from 'react-native';
+import {myPlantWaterCancel} from '../../../api/plant';
 
 import {
   ModalContainer,
@@ -12,6 +13,9 @@ import {
 } from '../../../assets/theme/ModalStyle';
 
 export default function DiarySelectModal(props) {
+  const [isWater, setIsWater] = useState(false); // 물을 준 상태면 true, 안 준 상태면 false
+  const [isLoading, setIsLoading] = useState(false);
+
   const closeModal = visible => {
     props.setModalVisible(visible);
   };
@@ -22,6 +26,38 @@ export default function DiarySelectModal(props) {
     props.setShowDiary(val);
   };
 
+  // 물주기 취소 api 요청 함수
+  const cancelWater = async () => {
+    await myPlantWaterCancel(props.waterDateId[props.selectedDate]);
+    setIsLoading(false);
+    closeModal(false);
+  };
+  // 선택한 날짜에 물을 줬는지 안줬는지 체크하는 함수
+  const checkWaterDate = () => {
+    if (props.waterDate.includes(props.selectedDate)) {
+      setIsWater(true);
+    } else {
+      setIsWater(false);
+    }
+  };
+
+  useEffect(() => {
+    checkWaterDate();
+  }, []);
+
+  const renderLoading = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color="#8AD169"
+          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.3">
@@ -63,17 +99,35 @@ export default function DiarySelectModal(props) {
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
-              closeModal(false);
-              openCheckModal(true);
+              if (isWater) {
+                setIsLoading(true);
+                cancelWater();
+              } else {
+                closeModal(false);
+                openCheckModal(true);
+              }
             }}>
-            <Text style={{color: '#6BABE7'}}>물주기</Text>
-            <Icon
-              type="Ionicons"
-              name="water"
-              style={{fontSize: 20, color: '#6BABE7'}}
-            />
+            <Text style={{color: isWater ? '#F44336' : '#6BABE7'}}>
+              {isWater ? '물주기 취소' : '물주기'}
+            </Text>
+            {isWater ? (
+              <Icon
+                type="MaterialCommunityIcons"
+                name="water-off"
+                style={{fontSize: 22}}
+              />
+            ) : (
+              <Icon
+                type="Ionicons"
+                name="water"
+                style={{fontSize: 20, color: '#6BABE7'}}
+              />
+            )}
           </ModalButton>
         </ModalButtonBox>
+        
+        {/* indicator 표시 */}
+        {renderLoading()}
       </ModalBox>
     </ModalContainer>
   );
