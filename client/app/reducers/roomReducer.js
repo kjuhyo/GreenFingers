@@ -1,13 +1,16 @@
+import {ActionSheet} from 'native-base';
+
 const CHANGE = 'CHANGE';
 const CHANGE_PLANT = 'CHANGE_PLANT';
 
 let roomState = {
-  roomnum: 0,
+  roomact: '',
   plantact: '',
   act: '',
 };
-export const changeRoom = () => ({
+export const changeRoom = act => ({
   type: CHANGE,
+  act,
 });
 export const changePlant = act => ({
   type: CHANGE_PLANT,
@@ -18,7 +21,8 @@ export default function room(state = roomState, action) {
   switch (action.type) {
     case 'CHANGE':
       return {
-        roomnum: state.roomnum + 1,
+        ...state,
+        roomact: action.act,
       };
     case 'CHANGE_PLANT':
       return {

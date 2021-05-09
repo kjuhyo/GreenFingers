@@ -54,7 +54,7 @@ export function DeleteRoomModal(props) {
     props.setData(data);
   };
   const dispatch = useDispatch();
-  const roomchange = () => dispatch(changeRoom());
+  const roomchange = () => dispatch(changeRoom('trash'));
   // 방 삭제
   const roomDelete = async () => {
     // setCheckDelete(true);

@@ -131,8 +131,8 @@ function CustomDrawerContent(props) {
 
 function Home({navigation}) {
   // redux에서 state값 불러오기
-  const {roomnum} = useSelector(state => ({
-    roomnum: state.roomReducer.roomnum,
+  const {roomact} = useSelector(state => ({
+    roomact: state.roomReducer.roomact,
   }));
   const {plantact} = useSelector(state => ({
     plantact: state.roomReducer.plantact,
@@ -177,7 +177,7 @@ function Home({navigation}) {
 
   useEffect(async () => {
     await getRoomData();
-  }, [roomnum, plantact]);
+  }, [roomact, plantact]);
 
   // const onEndReached = () => {
   //   if (loading) {
