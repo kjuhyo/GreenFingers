@@ -1,5 +1,5 @@
-import React from 'react';
-import {Text} from 'react-native';
+import React, {useState} from 'react';
+import {ActivityIndicator, Text} from 'react-native';
 import {myPlantWaterRegister} from '../../../api/plant';
 
 import {
@@ -11,21 +11,41 @@ import {
 } from '../../../assets/theme/ModalStyle';
 
 export default function CheckDateModal(props) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const closeModal = visible => {
     props.setDateCheckModalVisible(visible);
   };
   const openCompleteModal = visible => {
     props.setCompleteModalVisible(visible);
   };
+
+  // 물주기 api 요청 함수
   const waterRegister = async () => {
     const selectDate =
       props.selectYear + '-' + props.selectMonth + '-' + props.selectDay;
-    // console.log('물 줄 날짜', selectDate);
     const params = {pid: props.activePlant, waterDate: selectDate};
+
     await myPlantWaterRegister(params);
-    // console.log('params', params);
+    setIsLoading(false);
+    closeModal(false);
+    openCompleteModal(true);
   };
-  // console.log(props);
+
+  const renderLoading = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color="#8AD169"
+          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.2">
@@ -45,13 +65,13 @@ export default function CheckDateModal(props) {
           <ModalButton
             backgroundColor="#EEF9E8"
             onPress={() => {
-              closeModal(false);
-              openCompleteModal(true);
+              setIsLoading(true);
               waterRegister();
             }}>
             <Text style={{color: '#29582c'}}>네</Text>
           </ModalButton>
         </ModalButtonBox>
+        {renderLoading()}
       </ModalBox>
     </ModalContainer>
   );
