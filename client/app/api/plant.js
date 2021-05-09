@@ -32,8 +32,8 @@ export function myPlantDelete(pid) {
 }
 
 // 물 준 날짜 등록
-export function myPlantWaterRegister() {
-  return instance.post('plant/care/water');
+export function myPlantWaterRegister(parmas) {
+  return instance.post('plant/care/water', parmas);
 }
 
 // 식물의 모든 물 준 날짜 조회

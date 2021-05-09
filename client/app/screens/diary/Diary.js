@@ -1,10 +1,10 @@
 // react
 import React, {useState, useEffect} from 'react';
 import 'react-native-gesture-handler';
-import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {ScrollView, Text, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 
-// native-base
+// style
 import {
   Container,
   Tab,
@@ -13,8 +13,9 @@ import {
   Thumbnail,
   TabHeading,
   View,
-  Content,
+  Root,
 } from 'native-base';
+import styled from 'styled-components';
 
 // library
 import {CalendarView} from '../../components/diary/Calendar';
@@ -22,8 +23,12 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 // components
 import Feed from '../../components/diary/Feed';
-import {findAllDiary} from '../../api/diary';
-import styled from 'styled-components';
+
+//api
+import {findAllDiary, findDiaryByDate} from '../../api/diary';
+import {myPlantWaterInfo} from '../../api/plant';
+
+// import {}
 
 // const PlusButton = styled.TouchableOpacity`
 //   width: 50px;
@@ -75,6 +80,7 @@ export function DiaryScreen({navigation}) {
   const [diaryDate, setDiaryDate] = useState(); // 현재 선택한 식물의 다이어리 날짜 리스트
   const [selectedDate, setSelectedDate] = useState(); // 선택한 날짜
   const [selectedDiary, setSelectedDiary] = useState(); // 현재 식물의 선택한 날짜의 다이어리 목록
+  const [waterDate, setWaterDate] = useState();
 
   // 유저의 식물 정보 리덕스에서 가져오기
   const {userPlants} = useSelector(state => ({
@@ -110,37 +116,69 @@ export function DiaryScreen({navigation}) {
     setDiaryDate(activePlantDate);
   };
 
+  // 물 준 날짜 조회 api 호출 후 물 준 날짜 set하는 함수
+  const getWaterDate = async () => {
+    const waterInfo = await myPlantWaterInfo(activePlant);
+    // console.log(waterInfo.data);
+    // api 응답에서 날짜만 추출
+    if (waterInfo.data.length != 0) {
+      const cutDate = await Promise.all(
+        waterInfo.data.map(water => {
+          return water.waterDate.substring(0, 10);
+        }),
+      );
+      setWaterDate(cutDate);
+    } else {
+      setWaterDate([]);
+    }
+  };
+  // console.log(waterDate);
   useEffect(() => {
     initialDiary();
+    getWaterDate();
   }, [activePlant]);
 
   // 현재 식물의 선택된 날짜에 해당하는 다이어리 목록을 set 해주는 함수
   const diaryList = async () => {
-    const activePlantDiary = await Promise.all(
-      allDiaryState.map(diary => {
-        if (
-          diary.plantId === activePlant &&
-          selectedDate === diary.writeDateTime.substring(0, 10)
-        ) {
-          return diary;
-        }
-      }),
-    );
-    const filterdList = activePlantDiary.filter(diary => {
-      return diary != undefined;
-    });
-    // console.log('필터 거침', filterdList);
-    setSelectedDiary(filterdList);
-    // console.log(
-    //   '현재 식물의 현재 선택된 날짜의 다이어리 목록',
-    //   activePlantDiary,
-    // );
+    if (selectedDate) {
+      const diaryByDate = await findDiaryByDate(selectedDate);
+      const diaryByDateRes = diaryByDate.data.response;
+
+      // 현재 선택된 식물의 다이어리만 가져오기
+      if (diaryByDateRes.length != 0) {
+        const activePlantDiary = await Promise.all(
+          diaryByDateRes.map(diary => {
+            if (diary.plantId === activePlant) {
+              return diary;
+            }
+          }),
+        );
+
+        // undefined 제거
+        const fileterdList = activePlantDiary.filter(diary => {
+          return diary != undefined;
+        });
+
+        // 해당되는 다이어리 목록을 set
+        setSelectedDiary(fileterdList);
+      }
+    }
   };
 
   useEffect(() => {
     diaryList();
   }, [selectedDate, activePlant]);
   // console.log('undefined인가?', selectedDiary);
+
+  // useEffect(() => {
+  //   const reRender = navigation.addListener('focus', () => {
+  //     console.log('현재 선택된 탭의 식물 아이디는', activePlant);
+  //     initialDiary();
+  //     diaryList();
+  //     // feedRendering();
+  //   });
+  //   return reRender;
+  // }, [navigation]);
 
   // 다이어리 보기 눌렀을 경우 피드 목록 렌더링하는 함수
   const feedRendering = () => {
@@ -205,6 +243,7 @@ export function DiaryScreen({navigation}) {
               navigation={navigation}
               setShowDiary={setShowDiary}
               diaryDate={diaryDate} // 다이어리 쓴 날짜 리스트
+              waterDate={waterDate}
               setSelectedDate={setSelectedDate} // 선택한 날짜 set
               selectedDate={selectedDate} // 선택한 날짜
               activePlant={activePlant} // 선택한 식물 id
@@ -216,38 +255,41 @@ export function DiaryScreen({navigation}) {
   };
 
   return (
-    <Container>
-      {userPlants.length == 0 ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: '#F9F9F9',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 18}}>아직 등록된 식물이 없어요.</Text>
-          <Text style={{fontSize: 18}}>
-            식물을 등록하고 다이어리를 관리해보세요🌻
-          </Text>
-          <TouchableOpacity style={{marginTop: 15}}>
-            <Text style={{color: '#29582C', fontWeight: 'bold', fontSize: 17}}>
-              식물 등록하러 가기
+    <Root>
+      <Container>
+        {userPlants.length == 0 ? (
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: '#F9F9F9',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 18}}>아직 등록된 식물이 없어요.</Text>
+            <Text style={{fontSize: 18}}>
+              식물을 등록하고 다이어리를 관리해보세요🌻
             </Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <Tabs
-          locked={true}
-          renderTabBar={renderTabBar}
-          onChangeTab={e => {
-            // console.log(e);
-            setActiveTab(e.i);
-            setActivePlant(userPlants[e.i].pid);
-            setShowDiary(false);
-          }}>
-          {renderTab()}
-        </Tabs>
-      )}
-    </Container>
+            <TouchableOpacity style={{marginTop: 15}}>
+              <Text
+                style={{color: '#29582C', fontWeight: 'bold', fontSize: 17}}>
+                식물 등록하러 가기
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <Tabs
+            locked={true}
+            renderTabBar={renderTabBar}
+            onChangeTab={e => {
+              // console.log(e);
+              setActiveTab(e.i);
+              setActivePlant(userPlants[e.i].pid);
+              setShowDiary(false);
+            }}>
+            {renderTab()}
+          </Tabs>
+        )}
+      </Container>
+    </Root>
   );
 }

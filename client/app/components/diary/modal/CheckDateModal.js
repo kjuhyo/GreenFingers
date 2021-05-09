@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text} from 'react-native';
+import {myPlantWaterRegister} from '../../../api/plant';
 
 import {
   ModalContainer,
@@ -16,6 +17,15 @@ export default function CheckDateModal(props) {
   const openCompleteModal = visible => {
     props.setCompleteModalVisible(visible);
   };
+  const waterRegister = async () => {
+    const selectDate =
+      props.selectYear + '-' + props.selectMonth + '-' + props.selectDay;
+    // console.log('물 줄 날짜', selectDate);
+    const params = {pid: props.activePlant, waterDate: selectDate};
+    await myPlantWaterRegister(params);
+    // console.log('params', params);
+  };
+  // console.log(props);
   return (
     <ModalContainer>
       <ModalBox flexHeight="0.2">
@@ -37,6 +47,7 @@ export default function CheckDateModal(props) {
             onPress={() => {
               closeModal(false);
               openCompleteModal(true);
+              waterRegister();
             }}>
             <Text style={{color: '#29582c'}}>네</Text>
           </ModalButton>
