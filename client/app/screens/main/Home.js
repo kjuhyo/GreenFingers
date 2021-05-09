@@ -42,7 +42,6 @@ import MessageModal from '../../components/auth/Messagemodal';
 // api
 import {getMessage} from '../../api/auth';
 
-
 // import Modal from "react-native-modal";
 
 // import PropTypes from "prop-types";
@@ -132,8 +131,11 @@ function CustomDrawerContent(props) {
 
 function Home({navigation}) {
   // redux에서 state값 불러오기
-  const {roomnum} = useSelector(state => ({
-    roomnum: state.roomReducer.roomnum,
+  const {roomact} = useSelector(state => ({
+    roomact: state.roomReducer.roomact,
+  }));
+  const {plantact} = useSelector(state => ({
+    plantact: state.roomReducer.plantact,
   }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
@@ -175,8 +177,8 @@ function Home({navigation}) {
 
   useEffect(async () => {
     await getRoomData();
-    console.log(roomData);
-  }, [roomnum]);
+  }, [roomact, plantact]);
+
   // const onEndReached = () => {
   //   if (loading) {
   //     return;
@@ -197,6 +199,7 @@ function Home({navigation}) {
               navigation.navigate('Room', {
                 rid: item.rid,
                 rname: item.roomName,
+                plantList: item.plantList,
               });
             }}>
             {item.roomName}
@@ -208,12 +211,13 @@ function Home({navigation}) {
               navigation.navigate('Room', {
                 rid: item.rid,
                 rname: item.roomName,
+                plantList: item.plantList,
               });
             }}>
             {item.plantList.length}개의 식물 보러가기
           </Text>
         </View>
-        {item.plantList.length == 2 ? (
+        {item.plantList.length > 1 ? (
           <View>
             <View style={styles.abovecard}>
               <TouchableOpacity
@@ -223,6 +227,7 @@ function Home({navigation}) {
                   navigation.navigate('Room', {
                     rid: item.rid,
                     rname: item.roomName,
+                    plantList: item.plantList,
                   });
                 }}>
                 <Image
@@ -254,6 +259,7 @@ function Home({navigation}) {
                   navigation.navigate('Room', {
                     rid: item.rid,
                     rname: item.roomName,
+                    plantList: item.plantList,
                   });
                 }}>
                 <Image
@@ -291,6 +297,8 @@ function Home({navigation}) {
                     navigation.navigate('Room', {
                       rid: item.rid,
                       rname: item.roomName,
+                      plantList: item.plantList,
+                      pid: item.pid,
                     });
                   }}>
                   <Image
@@ -325,6 +333,8 @@ function Home({navigation}) {
                     navigation.navigate('Room', {
                       rid: item.rid,
                       rname: item.roomName,
+                      plantList: item.plantList,
+                      pid: item.pid,
                     });
                   }}>
                   <Text style={styles.gotoaddplant}>please add plant</Text>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,40 @@ import {
 import {Container, Icon, Button, Content} from 'native-base';
 import {Cardback, Plantchip} from '../../assets/theme/roomstyle';
 import {PlantModal} from '../../components/main/PlantModal';
+import {myPlantInfo} from '../../api/plant';
+import {useDispatch, useSelector} from 'react-redux';
+import {changePlant} from '../../reducers/roomReducer';
 
 const win = Dimensions.get('window');
 
-export function PlantDetail({navigation}) {
+export function PlantDetail({route, navigation}) {
+  const {plantact} = useSelector(state => ({
+    plantact: state.roomReducer.plantact,
+  }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [ChooseData, setChooseData] = useState();
+  const [myInfo, setMyInfo] = useState([]);
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
   const setData = data => {
     setChooseData(data);
   };
+  const {pid} = route.params;
+  const {pname} = route.params;
+  const {rid} = route.params;
+  const {rname} = route.params;
+  const dispatch = useDispatch();
+  const makeclean = () => dispatch(changePlant(''));
+  useEffect(async () => {
+    if (plantact === 'back') {
+      await makeclean();
+      navigation.navigate('Room', {rid: rid, rname: rname});
+    }
+    console.log('test');
+    const plantDetail = await myPlantInfo(pid);
+    setMyInfo(plantDetail.data);
+  }, [plantact]);
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       <View style={{flex: 0.7}}>
@@ -46,7 +68,6 @@ export function PlantDetail({navigation}) {
             margin: 10,
             alignItems: 'center',
           }}>
-          {/* <Text>{ChooseData}</Text> */}
           <TouchableOpacity onPress={() => changeModalVisible(true)}>
             <Icon type="Ionicons" name="ellipsis-vertical-outline"></Icon>
           </TouchableOpacity>
@@ -59,6 +80,8 @@ export function PlantDetail({navigation}) {
             <PlantModal
               changeModalVisible={changeModalVisible}
               setData={setData}
+              pid={pid}
+              pname={pname}
             />
           </Modal>
 
@@ -69,10 +92,7 @@ export function PlantDetail({navigation}) {
             <Icon type="Ionicons" name="close-circle-outline"></Icon>
           </TouchableOpacity>
         </View>
-        <Image
-          source={require('../../assets/images/yellowplant.jpg')}
-          style={styles.plantimg}
-        />
+        <Image source={{uri: myInfo.image}} style={styles.plantimg} />
         <View
           style={{
             flexDirection: 'row',
@@ -86,21 +106,29 @@ export function PlantDetail({navigation}) {
                   color: '#29582C',
                   fontWeight: 'bold',
                   marginRight: 5,
-                  fontSize: 20,
+                  fontSize: 15,
                 }}>
                 |
               </Text>
               <Text style={{color: '#29582C', fontWeight: 'bold'}}>
-                Lemon Tree
+                {myInfo.common}
               </Text>
             </Plantchip>
             <View style={styles.leftdown}>
-              <Text style={styles.plantname}>레모나</Text>
-              <Text style={styles.startdate}>2021/04/20~</Text>
-              <Text style={styles.plantdesc}>
-                레몬가지를 꽃병에 꽂아놨어요 레몬 먹고 싶다 레몬은 셔요 레몬은
-                바보에요
-              </Text>
+              <Text style={styles.plantname}>{myInfo.nickname}</Text>
+              <Text style={styles.startdate}>{myInfo.startedDate}</Text>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.plantdesc}>적정온도</Text>
+                <Text style={styles.plantdesc2}>{myInfo.temp}</Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.plantdesc}>적정습도</Text>
+                <Text style={styles.plantdesc2}>{myInfo.humid}</Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.plantdesc}>급수주기</Text>
+                <Text style={styles.plantdesc2}>{myInfo.water}</Text>
+              </View>
             </View>
           </View>
           <View
@@ -134,7 +162,7 @@ export function PlantDetail({navigation}) {
             <View style={styles.rightinfo}>
               <View style={styles.water}>
                 <Text style={styles.watertext}>물 준 날짜</Text>
-                <Text style={styles.waterdate}>2021/02/11</Text>
+                <Text style={styles.waterdate}>{myInfo.lastDate}</Text>
               </View>
               <Image
                 source={require('../../assets/images/plant1.png')}
@@ -177,9 +205,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   plantdesc: {
-    marginTop: 10,
     fontSize: 12,
-    width: 160,
+    width: 70,
+    fontWeight: '700',
+    // backgroundColor: "yellow",
+  },
+  plantdesc2: {
+    // marginTop: 2,
+    fontSize: 12,
+    width: 70,
     fontWeight: '200',
     // backgroundColor: "yellow",
   },

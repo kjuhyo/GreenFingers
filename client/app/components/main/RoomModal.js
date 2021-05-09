@@ -77,7 +77,7 @@ const RoomModal = props => {
     uid: state.authReducer.uid,
   }));
   const dispatch = useDispatch();
-  const roomchange = () => dispatch(changeRoom());
+  const roomchange = () => dispatch(changeRoom('plus'));
   // 카메라이용하여 사진 저장
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({

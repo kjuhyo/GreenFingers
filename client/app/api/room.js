@@ -25,3 +25,8 @@ export function changeThema() {
 export function imageUpload() {
   return instanceFile.post('upload');
 }
+
+// 해당 방 상세 조회
+export function findRoomDetail(id) {
+  return instance.get(`room/find/${id}`);
+}
