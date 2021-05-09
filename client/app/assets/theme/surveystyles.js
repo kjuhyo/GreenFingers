@@ -40,7 +40,6 @@ export const AnsButton = styled(Button)`
   background-color: #efefef;
   border-radius: 10px;
   height: auto;
-  /* height: fit-content; */
   padding-top: 15px;
   padding-bottom: 15px;
   padding-left: 30px;
@@ -52,8 +51,6 @@ export const AnsText = styled(Text)`
   font-size: 17px;
   align-self: center;
   width: 100%;
-  /* height: auto; */
-  /* height: fit-content; */
   text-align: center;
   color: #333333;
 `;

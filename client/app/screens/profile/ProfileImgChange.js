@@ -40,7 +40,9 @@ const ProfileImg = styled.Image`
   width: 140px;
   height: 140px;
   border-radius: 180px;
-  background-color: black;
+  /* background-color: black; */
+  border-width: 3px;
+  border-color: grey;
 `;
 
 export default function ProfileImgChange({navigation}) {
@@ -51,10 +53,7 @@ export default function ProfileImgChange({navigation}) {
     image: state.profileReducer.profile,
   }));
 
-  const [img, setImg] = useState(
-    // 'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
-    image,
-  );
+  const [img, setImg] = useState(image);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
   // 완료 버튼을 눌렀을 때 이동할 페이지
@@ -95,21 +94,21 @@ export default function ProfileImgChange({navigation}) {
   };
 
   // 사진 수정
-  const updateProfileImage = async () => {
+  const changeProfileImage = async () => {
     // 사진 폼데이터 형식으로 변환
-    // const formData = new FormData();
-    // formData.append('nickname', '바꿀닉네임');
-    // formData.append('profile', {
-    //   uri: img,
-    //   name: 'profile.jpg',
-    //   type: 'image/jpeg',
-    // });
-    // console.log(formData);
-    //백엔드 요청
-    // const response = await updateImage(formData);
-    // console.log(response);
+    const formData = new FormData();
+    formData.append('nickname', '바꿀닉네임');
+    formData.append('profile', {
+      uri: img,
+      name: 'profile.jpg',
+      type: 'image/jpeg',
+    });
+    console.log(formData);
+    // 백엔드 요청
+    const response = await updateImage(formData);
+    const newImage = response.data.response.profile;
     //리덕스 디스패치
-    // await updateProfileImg(response.profile);
+    await updateProfileImg(newImage);
     setCompleteModalVisible(true);
   };
 
@@ -144,7 +143,7 @@ export default function ProfileImgChange({navigation}) {
           <Text>사진 촬영</Text>
         </ImgSelectBtn>
       </ImgSelectBox>
-      <CompleteBtn flexHeight="1" onPress={() => updateProfileImage()}>
+      <CompleteBtn flexHeight="1" onPress={() => changeProfileImage()}>
         {/* <CompleteBtn flexHeight="1" onPress={() => setCompleteModalVisible(true)}> */}
         <CompleteBtnText>완료</CompleteBtnText>
       </CompleteBtn>

@@ -30,7 +30,6 @@ export function SurveyquestionScreen(props) {
     mbti: state.surveyReducer.mbti,
     answer: state.surveyReducer.answer,
   }));
-  console.log('redux answer', answer);
   const pageId = props.route.params.id;
   const mbtiIdx = props.route.params.id - 1;
   const question = mbti[mbtiIdx].question;
@@ -50,7 +49,6 @@ export function SurveyquestionScreen(props) {
       setCompleteModalVisible(true);
       return;
     }
-    console.log(pageId, mbti.length, props);
     if (pageId === mbti.length) {
       props.navigation.navigate('Surveyresult');
     } else {

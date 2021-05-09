@@ -91,10 +91,11 @@ export default function Profile({navigation}) {
   const dispatch = useDispatch();
   const clearUserInfo = () => dispatch(clearUser());
 
-  const {image, email, provider} = useSelector(state => ({
+  const {image, email, provider, plants} = useSelector(state => ({
     image: state.profileReducer.profile,
     email: state.profileReducer.useremail,
     provider: state.profileReducer.provider,
+    plants: state.plantReducer.userPlants,
   }));
 
   const signOut = async () => {
@@ -123,12 +124,14 @@ export default function Profile({navigation}) {
         </ProfileImgBox>
         <ProfileInfo>
           <Text style={{fontSize: 15, width: 200}}>{email}</Text>
-          <Text style={{fontSize: 15, color: 'grey'}}>보유 식물 3개</Text>
+          <Text style={{fontSize: 15, color: 'grey'}}>
+            보유 식물 {plants.length}개
+          </Text>
         </ProfileInfo>
       </ProfileBox>
       <MenuWrap>
         <MenuBox>
-          <MenuItem onPress={() => navigation.navigate('ProfileImgChange')}>
+          <MenuItem onPress={() => navigation.navigate('추천')}>
             <Icon type="MaterialCommunityIcons" name="thumb-up-outline" />
             <Text style={{marginLeft: 20}}>식물 추천 받기</Text>
           </MenuItem>

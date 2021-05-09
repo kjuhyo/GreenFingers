@@ -106,13 +106,12 @@ function Home({navigation}) {
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
   const [roomData, setRoomData] = useState([]);
-  // const [homename, setHomename] = useState('');
+
   const {homename, theme, address} = useSelector(state => ({
     homename: state.homeReducer.homename,
     theme: state.homeReducer.theme,
     address: state.homeReducer.address,
   }));
-  const [themeAddress, setThemeAddress] = useState(address);
 
   const dispatch = useDispatch();
   const setMainInfo = (mainnickname, maintheme, mainaddress) =>
@@ -145,15 +144,15 @@ function Home({navigation}) {
   const getMainInfo = async () => {
     const mainResponse = await main();
     const mainInfo = mainResponse.data;
+    console.log('maininfo', mainInfo);
     themes.forEach(savedTheme => {
-      if (savedTheme.name === theme) {
-        // console.log(savedTheme.address);
-        setThemeAddress(savedTheme.address);
+      if (savedTheme.name === mainInfo.theme) {
         setMainInfo(mainInfo.homeNickname, mainInfo.theme, savedTheme.address);
       }
     });
   };
 
+  console.log('home reducer', homename, theme, address);
   const [info, setInfo] = useState({
     name: 'loading !!',
     temp: 'loading',
@@ -163,8 +162,8 @@ function Home({navigation}) {
   });
 
   useEffect(async () => {
-    await getRoomData();
     await getMainInfo();
+    await getRoomData();
   }, [roomnum]);
   const onEndReached = () => {
     if (loading) {
@@ -257,7 +256,7 @@ function Home({navigation}) {
             left: 0,
           }}
           // source={require('../../assets/images/mainroom.jpg')}
-          source={themeAddress}
+          source={address}
         />
       </View>
       {/* 오른쪽 상단 아이콘 */}

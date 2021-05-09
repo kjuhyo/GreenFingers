@@ -1,19 +1,23 @@
 import {instance, instanceFile, instanceDevice} from './index';
 
+//회원가입, 로그인
 export function signUp() {
   return instance.post('user/oauth');
 }
 
+//탈퇴
 export function deleteUser() {
   return instance.put('user/delete');
 }
 
+//유저 정보
 export function userInfo() {
   return instance.post('user/oauth/v2');
 }
 
+//유저 사진 정보 수정
 export function updateImage(info) {
-  return instanceFile.put('user/updateInfo', info);
+  return instanceFile.put('user/updateInfo/v2', info);
 }
 
 // 메시징

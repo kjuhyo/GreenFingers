@@ -33,12 +33,9 @@ import {addUid, addUser} from '../reducers/authReducer';
 import {setPlants} from '../reducers/plantReducer';
 import {setProfile, setUserID} from '../reducers/profileReducer';
 import {userInfo} from '../../app/api/auth';
-import {registerDevice} from '../../app/api/auth';
+
 // messaging
 import messaging from '@react-native-firebase/messaging';
-
-// mock data
-import {tempResponse, tempPlants} from '../components/auth/mockdata';
 
 const Tab = createBottomTabNavigator();
 
@@ -120,7 +117,7 @@ export default function Root() {
 
   saveUserInfo = async user => {
     if (user) {
-      // await printToken();
+      await printToken();
       // console.log(uid);
 
       const allAboutUser = await userInfo();

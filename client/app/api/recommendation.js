@@ -7,3 +7,7 @@ export function recomPlantDetail(id) {
 export function mbtiQuestions() {
   return instance.get('mbti/all');
 }
+
+export function mbtiResult(answer) {
+  return instance.get(`mbti/result/${answer}`);
+}
