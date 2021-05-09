@@ -54,7 +54,7 @@ export function RoomScreen({route, navigation}) {
     findRoomDetail(rid)
       .then(res => {
         setRoomDetail(res.data.response);
-        setRoomPlantDetail(res.data.response.plantList);
+        console.log(res.data.response);
       })
       .then(() => {
         setLoading(false);
@@ -134,8 +134,16 @@ export function RoomScreen({route, navigation}) {
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       {loading ? (
-        <View>
-          <Text>로딩중</Text>
+        <View style={{flex: 0.1}}>
+          <Image
+            style={{
+              height: win.height,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+            }}
+            source={require('../../assets/images/mainroom.jpg')}
+          />
         </View>
       ) : (
         <View style={{flex: 1}}>
