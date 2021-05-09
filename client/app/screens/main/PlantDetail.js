@@ -15,12 +15,13 @@ import {Cardback, Plantchip} from '../../assets/theme/roomstyle';
 import {PlantModal} from '../../components/main/PlantModal';
 import {myPlantInfo} from '../../api/plant';
 import {useDispatch, useSelector} from 'react-redux';
+import {changePlant} from '../../reducers/roomReducer';
 
 const win = Dimensions.get('window');
 
 export function PlantDetail({route, navigation}) {
-  const {plantnum} = useSelector(state => ({
-    plantnum: state.roomReducer.plantnum,
+  const {plantact} = useSelector(state => ({
+    plantact: state.roomReducer.plantact,
   }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [ChooseData, setChooseData] = useState();
@@ -33,11 +34,19 @@ export function PlantDetail({route, navigation}) {
   };
   const {pid} = route.params;
   const {pname} = route.params;
+  const {rid} = route.params;
+  const {rname} = route.params;
+  const dispatch = useDispatch();
+  const makeclean = () => dispatch(changePlant(''));
   useEffect(async () => {
+    if (plantact === 'back') {
+      await makeclean();
+      navigation.navigate('Room', {rid: rid, rname: rname});
+    }
+    console.log('test');
     const plantDetail = await myPlantInfo(pid);
     setMyInfo(plantDetail.data);
-    console.log(myInfo);
-  }, [plantnum]);
+  }, [plantact]);
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       <View style={{flex: 0.7}}>

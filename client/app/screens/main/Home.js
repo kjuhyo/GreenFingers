@@ -134,8 +134,8 @@ function Home({navigation}) {
   const {roomnum} = useSelector(state => ({
     roomnum: state.roomReducer.roomnum,
   }));
-  const {plantnum} = useSelector(state => ({
-    plantnum: state.roomReducer.plantnum,
+  const {plantact} = useSelector(state => ({
+    plantact: state.roomReducer.plantact,
   }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
@@ -158,9 +158,6 @@ function Home({navigation}) {
     findRoom()
       .then(res => {
         setRoomData(res.data.response);
-        console.log('homehome', res.data.response);
-        console.log('homeplant', res.data.response[0].plantList);
-        // console.log('home', roomData);
       })
       .then(() => {
         setLoading(false);
@@ -180,7 +177,7 @@ function Home({navigation}) {
 
   useEffect(async () => {
     await getRoomData();
-  }, [roomnum, plantnum]);
+  }, [roomnum, plantact]);
 
   // const onEndReached = () => {
   //   if (loading) {

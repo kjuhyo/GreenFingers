@@ -52,11 +52,11 @@ const DeletePlant = props => {
     props.setData(data);
   };
   const dispatch = useDispatch();
-  const plantchange = () => dispatch(changePlant());
+  const plantchange = () => dispatch(changePlant('trash'));
   // 식물 삭제
   const plantDelete = async () => {
     await myPlantDelete(pid);
-    await plantchange();
+    plantchange();
     closeModal(false, 'Delete');
   };
   return (

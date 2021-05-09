@@ -53,12 +53,12 @@ const ByePlant = props => {
   const pname = props.pname;
   // redux
   const dispatch = useDispatch();
-  const plantchange = () => dispatch(changePlant());
+  const plantchange = () => dispatch(changePlant('bye'));
   // 식물 떠나감
   const plantDead = async () => {
     await myPlantDead(pid);
-    await plantchange();
-    closeModal(false, 'Dead');
+    plantchange();
+    closeModal(false, 'Delete');
   };
   return (
     <TouchableOpacity disabled={true} style={styles.container}>

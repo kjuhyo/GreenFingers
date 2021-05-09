@@ -11,11 +11,17 @@ import {Icon} from 'native-base';
 import {ByePlant} from './ByePlant';
 import {DeletePlant} from './DeletePlant';
 import {EditPlantModal} from './EditPlantModal';
+import {useDispatch, useSelector} from 'react-redux';
+import {changePlant} from '../../reducers/roomReducer';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const PlantModal = props => {
+  // redux
+  const {plantact} = useSelector(state => ({
+    plantact: state.roomReducer.plantact,
+  }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [isModalVisible3, setisModalVisible3] = useState(false);
@@ -38,11 +44,21 @@ const PlantModal = props => {
   };
   // 식물 삭제 시 ChooseData는 Delete
   //삭제 후에는 모달창이 닫혀야되니까 closeModal을 실행하고 props값을 Room.js로 넘겨준다.
-  useEffect(() => {
-    if (props.data === 'Delete') {
-      closeModal(false, 'Delete');
+  const dispatch = useDispatch();
+  const plantback = () => dispatch(changePlant('back'));
+  useEffect(async () => {
+    console.log('pa', plantact);
+    if (plantact === 'bye') {
+      plantback();
+      closeModal(false, 'Bye');
+      console.log('actS', plantact);
     }
-  }, []);
+    if (plantact === 'trash') {
+      plantback();
+      closeModal(false, 'Trash');
+      console.log(plantact);
+    }
+  }, [plantact]);
   const pid = props.pid;
   const pname = props.pname;
   return (

@@ -3,13 +3,15 @@ const CHANGE_PLANT = 'CHANGE_PLANT';
 
 let roomState = {
   roomnum: 0,
-  plantnum: 0,
+  plantact: '',
+  act: '',
 };
 export const changeRoom = () => ({
   type: CHANGE,
 });
-export const changePlant = () => ({
+export const changePlant = act => ({
   type: CHANGE_PLANT,
+  act,
 });
 
 export default function room(state = roomState, action) {
@@ -20,7 +22,8 @@ export default function room(state = roomState, action) {
       };
     case 'CHANGE_PLANT':
       return {
-        plantnum: state.plantnum + 1,
+        ...state,
+        plantact: action.act,
       };
     default:
       return state;

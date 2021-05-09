@@ -47,7 +47,7 @@ const HEIGHT_MODAL = 300;
 export function DeleteRoomModal(props) {
   const rname = props.rname;
   const rid = props.rid;
-  const [checkDelete, setCheckDelete] = useState(false);
+  // const [checkDelete, setCheckDelete] = useState(false);
   useEffect(() => console.log(props));
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
@@ -57,7 +57,7 @@ export function DeleteRoomModal(props) {
   const roomchange = () => dispatch(changeRoom());
   // 방 삭제
   const roomDelete = async () => {
-    setCheckDelete(true);
+    // setCheckDelete(true);
     await deleteRoom(rid);
     await roomchange();
     closeModal(false, 'Delete');

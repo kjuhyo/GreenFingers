@@ -21,8 +21,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {findRoomDetail} from '../../api/room';
 
 export function RoomScreen({route, navigation}) {
-  const {plantnum} = useSelector(state => ({
-    plantnum: state.roomReducer.plantnum,
+  const {plantact} = useSelector(state => ({
+    plantact: state.roomReducer.plantact,
   }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
@@ -48,54 +48,86 @@ export function RoomScreen({route, navigation}) {
   // plantList 안에든거 image, lastDate, name, nickname, pid
   const {rid} = route.params;
   const {rname} = route.params;
-  const {plantList} = route.params;
+
   // 식물 정보 조회
   const getPlantData = () => {
     findRoomDetail(rid)
       .then(res => {
         setRoomDetail(res.data.response);
         setRoomPlantDetail(res.data.response.plantList);
-        console.log('axios', res.data.response);
       })
       .then(() => {
         setLoading(false);
       })
       .catch(err => {
-        console.log('axios', err);
+        navigation.navigate('Home');
         setLoading(false);
       });
   };
   useEffect(() => {
     getPlantData(rid);
+    console.log('just');
     if (ChooseData === 'Delete') {
       navigation.navigate('Home');
     }
-  }, [plantnum]);
+    console.log(plantact);
+  }, [plantact]);
   const renderItem = ({item}) => {
     return (
-      <TouchableOpacity
-        style={styles.plantcard}
-        onPress={() => {
-          navigation.navigate('PlantDetail', {
-            pid: item.pid,
-            pname: item.nickname,
-          });
-        }}>
-        <Image source={{uri: item.image}} style={styles.plantimg} />
-        <View style={styles.plantinfo}>
-          <Text style={styles.plantname}>{item.nickname}</Text>
-          <Text style={styles.plantname}>{item.dead}</Text>
-          <View style={styles.rightinfo}>
-            <View style={styles.water}>
-              <Text style={styles.watertext}>물 준 날짜</Text>
-              <Text style={styles.waterdate}>{item.lastDate}</Text>
+      <TouchableOpacity>
+        {item.dead ? (
+          <TouchableOpacity
+            style={styles.plantcard}
+            onPress={() => {
+              navigation.navigate('PlantDetail', {
+                pid: item.pid,
+                pname: item.nickname,
+                rid: rid,
+                rname: rname,
+              });
+            }}>
+            <Image source={{uri: item.image}} style={styles.plantimg} />
+            <View style={styles.plantinfo}>
+              <Text style={styles.plantname}>{item.nickname}</Text>
+              <View style={styles.rightinfo}>
+                <View style={styles.water}>
+                  <Text style={styles.watertext}>물 준 날짜</Text>
+                  <Text style={styles.waterdate}>{item.lastDate}</Text>
+                </View>
+                <Image
+                  source={require('../../assets/images/plant1.png')}
+                  style={styles.planticon}
+                />
+              </View>
             </View>
-            <Image
-              source={require('../../assets/images/plant1.png')}
-              style={styles.planticon}
-            />
-          </View>
-        </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.plantcard2}
+            onPress={() => {
+              navigation.navigate('PlantDetail', {
+                pid: item.pid,
+                pname: item.nickname,
+                rid: rid,
+                rname: rname,
+              });
+            }}>
+            <Image source={{uri: item.image}} style={styles.plantimg} />
+            <View style={styles.plantinfo}>
+              <Text style={styles.plantname}>{item.nickname}</Text>
+              <View style={styles.rightinfo}>
+                <View style={styles.water}>
+                  <Text style={styles.watertext}>물 준 날짜</Text>
+                  <Text style={styles.waterdate}>{item.lastDate}</Text>
+                </View>
+                <Image
+                  source={require('../../assets/images/plant1.png')}
+                  style={styles.planticon}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
       </TouchableOpacity>
     );
   };
@@ -246,6 +278,15 @@ const styles = StyleSheet.create({
     margin: 3,
     height: win.height * 0.2,
     backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    // alignItems: "center",
+  },
+  plantcard2: {
+    margin: 3,
+    height: win.height * 0.2,
+    backgroundColor: 'rgba(0,0,0,0.3)',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
