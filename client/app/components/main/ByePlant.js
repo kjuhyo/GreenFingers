@@ -14,6 +14,9 @@ import {
   ModalButton1,
   ModalButton,
 } from '../../assets/theme/roomstyle';
+import {myPlantDead} from '../../api/plant';
+import {useDispatch} from 'react-redux';
+import {changePlant} from '../../reducers/roomReducer';
 
 // 글 작성 textInput 박스
 const TextInputBox = styled.View`
@@ -46,6 +49,17 @@ const ByePlant = props => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+  const pid = props.pid;
+  const pname = props.pname;
+  // redux
+  const dispatch = useDispatch();
+  const plantchange = () => dispatch(changePlant());
+  // 식물 떠나감
+  const plantDead = async () => {
+    await myPlantDead(pid);
+    await plantchange();
+    closeModal(false, 'Dead');
+  };
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -62,30 +76,37 @@ const ByePlant = props => {
         <View style={styles.question}>
           <Text
             style={{
-              color: 'rgba(0,0,0,0.5)',
+              color: 'rgba(0,0,0,0.3)',
               fontWeight: 'bold',
-              marginLeft: 10,
+              // marginLeft: 10,
+              fontSize: 12,
+              fontWeight: '500',
             }}>
-            떠나간 식물은 복구할 수 없습니다.
+            *떠나간 식물은 복구할 수 없습니다.
           </Text>
           <Text
             style={{
               color: 'rgba(0,0,0,0.5)',
               fontWeight: 'bold',
-              marginLeft: 10,
+              // marginLeft: 10,
+              fontSize: 15,
+              fontWeight: '700',
             }}>
-            그래도 {}의 상태를 떠나감으로 변경하시겠습니까?
+            {pname}의 상태를 떠나감으로 변경하시겠습니까?
           </Text>
         </View>
         <View style={styles.buttons}>
-          <ModalButtonBox>
-            <ModalButton onPress={() => closeModal(false, 'Cancel')}>
-              <Text style={{fontsize: 15, fontWeight: 'bold'}}>떠나감</Text>
+          <View style={styles.buttonbox}>
+            <ModalButton
+              onPress={() => {
+                plantDead();
+              }}>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>떠나감</Text>
             </ModalButton>
             <ModalButton1 onPress={() => closeModal(false, 'Cancel')}>
-              <Text style={{fontsize: 15, fontWeight: 'bold'}}>취소</Text>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>취소</Text>
             </ModalButton1>
-          </ModalButtonBox>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -113,20 +134,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    // backgroundColor: "rgba(52,176,80,0.1)",
+    paddingVertical: 3,
+    paddingHorizontal: 18,
     width: WIDTH - 120,
   },
   question: {
-    flex: 1,
-    marginHorizontal: 20,
+    flex: 1.4,
+    // backgroundColor: 'red',
+    marginHorizontal: 27,
+    paddingHorizontal: 10,
   },
   buttons: {
-    flex: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flex: 1.5,
+    // backgroundColor: 'yellow',
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonbox: {
+    flex: 1,
+    // backgroundColor: 'green',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export {ByePlant};

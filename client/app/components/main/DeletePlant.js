@@ -53,10 +53,11 @@ const DeletePlant = props => {
   };
   const dispatch = useDispatch();
   const plantchange = () => dispatch(changePlant());
+  // 식물 삭제
   const plantDelete = async () => {
     await myPlantDelete(pid);
     await plantchange();
-    closeModal(false, 'delete');
+    closeModal(false, 'Delete');
   };
   return (
     <TouchableOpacity disabled={true} style={styles.container}>

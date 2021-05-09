@@ -134,6 +134,9 @@ function Home({navigation}) {
   const {roomnum} = useSelector(state => ({
     roomnum: state.roomReducer.roomnum,
   }));
+  const {plantnum} = useSelector(state => ({
+    plantnum: state.roomReducer.plantnum,
+  }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
@@ -175,7 +178,7 @@ function Home({navigation}) {
   useEffect(async () => {
     await getRoomData();
     console.log(roomData[0].plantList);
-  }, [roomnum]);
+  }, [roomnum, plantnum]);
   // const onEndReached = () => {
   //   if (loading) {
   //     return;

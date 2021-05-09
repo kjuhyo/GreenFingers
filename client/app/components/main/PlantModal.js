@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -36,6 +36,13 @@ const PlantModal = props => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+  // 식물 삭제 시 ChooseData는 Delete
+  //삭제 후에는 모달창이 닫혀야되니까 closeModal을 실행하고 props값을 Room.js로 넘겨준다.
+  useEffect(() => {
+    if (props.data === 'Delete') {
+      closeModal(false, 'Delete');
+    }
+  }, []);
   const pid = props.pid;
   const pname = props.pname;
   return (
@@ -98,6 +105,8 @@ const PlantModal = props => {
             <ByePlant
               changeModalVisible={changeModalVisible}
               setData={setData}
+              pid={pid}
+              pname={pname}
             />
           </Modal>
           <TouchableOpacity
