@@ -80,7 +80,8 @@ export function DiaryScreen({navigation}) {
   const [diaryDate, setDiaryDate] = useState(); // 현재 선택한 식물의 다이어리 날짜 리스트
   const [selectedDate, setSelectedDate] = useState(); // 선택한 날짜
   const [selectedDiary, setSelectedDiary] = useState(); // 현재 식물의 선택한 날짜의 다이어리 목록
-  const [waterDate, setWaterDate] = useState();
+  const [waterDate, setWaterDate] = useState(); // [물준날짜1, 물준날짜2, ...]
+  const [waterDateId, setWaterDateId] = useState(); // {물준날짜1: wid, 물준날짜:2, ...}
 
   // 유저의 식물 정보 리덕스에서 가져오기
   const {userPlants} = useSelector(state => ({
@@ -122,12 +123,17 @@ export function DiaryScreen({navigation}) {
     // console.log(waterInfo.data);
     // api 응답에서 날짜만 추출
     if (waterInfo.data.length != 0) {
+      const cutWaterDateId = {};
+      // const cutDate = await Promise.all(
       const cutDate = await Promise.all(
         waterInfo.data.map(water => {
+          // console.log(water.waterDate.substring(0, 10), water.wid);
+          cutWaterDateId[water.waterDate.substring(0, 10)] = water.wid;
           return water.waterDate.substring(0, 10);
         }),
       );
       setWaterDate(cutDate);
+      setWaterDateId(cutWaterDateId);
     } else {
       setWaterDate([]);
     }
@@ -243,7 +249,8 @@ export function DiaryScreen({navigation}) {
               navigation={navigation}
               setShowDiary={setShowDiary}
               diaryDate={diaryDate} // 다이어리 쓴 날짜 리스트
-              waterDate={waterDate}
+              waterDate={waterDate} // 물 준 날짜 리스트
+              waterDateId={waterDateId} // 물 준 날짜와 wid 객체
               setSelectedDate={setSelectedDate} // 선택한 날짜 set
               selectedDate={selectedDate} // 선택한 날짜
               activePlant={activePlant} // 선택한 식물 id

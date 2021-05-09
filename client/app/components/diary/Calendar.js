@@ -207,6 +207,8 @@ export function CalendarView(props) {
           navigation={props.navigation}
           activePlant={props.activePlant}
           selectedDate={props.selectedDate}
+          waterDate={props.waterDate}
+          waterDateId={props.waterDateId}
         />
       </Modal>
 

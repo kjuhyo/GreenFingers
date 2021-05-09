@@ -41,9 +41,9 @@ export function myPlantWaterInfo(pid) {
   return instance.get(`plant/care/water/${pid}`);
 }
 
-// 물 준 날짜 수정
-export function myPlantWaterEdit(wid) {
-  return instance.put(`plant/care/water/${wid}`);
+// 물 준 날짜 취소
+export function myPlantWaterCancel(wid) {
+  return instance.delete(`plant/care/water/${wid}`);
 }
 
 // 모든 식물 이름 조회(autocomplete를 위한 API)
