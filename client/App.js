@@ -44,8 +44,7 @@ export default function App() {
       );
       setDetailMessage(messageResponse);
       setModalVisible(!modalVisible);
-      console.log(remoteMessage.notification);
-      Alert.alert(title, body);
+      console.log(remoteMessage);
     });
     return unsubscribe;
   }, []);

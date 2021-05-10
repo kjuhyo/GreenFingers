@@ -19,28 +19,32 @@ import {
 } from '../../assets/theme/surveystyles';
 import ProgressBar from '../../components/recommendation/progressbar';
 import Plantdetailmodal from '../../components/recommendation/plantdetailmodal';
-//mock data
-import {mockRecom} from '../../components/auth/mockdata';
+
+// redux
+import {useSelector, useDispatch} from 'react-redux';
+// api
+import {mbtiResult} from '../../api/recommendation';
 
 export function SurveyresultScreen(props) {
   const [plantId, setPlantId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const recom = {
-    pid: 1,
-    plantname: '싱고니움',
-    imageURI:
-      'https://www.ikea.com/kr/en/images/products/fejka-artificial-potted-plant-with-pot-in-outdoor-succulent__0614211_pe686835_s5.jpg?f=s',
-  };
+  const [mbtiResultResponse, setMbtiResultResponse] = useState({});
+  const [plantA, setPlantA] = useState({});
+  const [plantB, setPlantB] = useState({});
+
+  const {answer} = useSelector(state => ({
+    answer: state.surveyReducer.answer,
+  }));
 
   const openModal = id => {
     setModalVisible(true);
     setPlantId(id);
   };
-  const id = 1;
   useEffect(async () => {
-    // 백엔드에서 mbti 문제가져오기
-    // console.log(mockMBTI);
-    // setMBTIs(mockMBTI);
+    const mbtiResponse = await mbtiResult(answer.join(''));
+    setMbtiResultResponse(mbtiResponse.data);
+    setPlantA(mbtiResponse.data.p[0]);
+    setPlantB(mbtiResponse.data.p[1]);
   }, []);
 
   const ProgressData = {completed: 100};
@@ -52,31 +56,35 @@ export function SurveyresultScreen(props) {
       </View>
       <View style={styles.contentcontainer}>
         <SurveyQText style={styles.contentques} multiline={true}>
-          Dasol 님에게 {'\n'}딱 맞는 식물을 추천해 드릴게요.
+          {/* Dasol 님에게 {'\n'}딱 맞는 식물을 추천해 드릴게요. */}
+          {mbtiResultResponse.type}
+          {'\n'}
+          {mbtiResultResponse.summagry}
+          {'\n'}
         </SurveyQText>
         <View style={styles.contentoptions}>
           <View style={styles.recomwrap}>
             <TouchableOpacity
               style={styles.recom}
-              onPress={() => openModal(id)}>
+              onPress={() => openModal(plantA.id)}>
               <Image
                 style={styles.recomimg}
                 source={{
-                  uri: recom.imageURI,
+                  uri: plantA.image,
                 }}
               />
-              <Text style={styles.recomtext}>{recom.plantname}</Text>
+              <Text style={styles.recomtext}>{plantA.name}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.recom}
-              onPress={() => openModal(id)}>
+              onPress={() => openModal(plantB.id)}>
               <Image
                 style={styles.recomimg}
                 source={{
-                  uri: recom.imageURI,
+                  uri: plantB.image,
                 }}
               />
-              <Text style={styles.recomtext}>{recom.plantname}</Text>
+              <Text style={styles.recomtext}>{plantB.name}</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -88,6 +96,9 @@ export function SurveyresultScreen(props) {
             <Text>각 식물을 눌러 상세 설명을 확인해 보세요.</Text>
           </View>
         </View>
+      </View>
+      <View style={styles.etccontainer}>
+        <Text>{mbtiResultResponse.etc}</Text>
       </View>
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
@@ -123,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentcontainer: {
-    flex: 5,
+    flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40,
@@ -141,9 +152,10 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'left',
     paddingVertical: 5,
+    paddingHorizontal: 30,
   },
   contentoptions: {
-    flex: 5,
+    flex: 4,
     paddingVertical: 5,
 
     justifyContent: 'center',
@@ -157,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#F2F5E1',
     marginHorizontal: 5,
-    height: 190,
+    height: 170,
     justifyContent: 'center',
   },
   recomimg: {
@@ -169,4 +181,8 @@ const styles = StyleSheet.create({
     transform: [{scale: 0.7}],
   },
   recomtext: {textAlign: 'center', flex: 2, fontWeight: '800'},
+  etccontainer: {
+    flex: 1,
+    paddingHorizontal: 60,
+  },
 });

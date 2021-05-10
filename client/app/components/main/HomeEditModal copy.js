@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,12 +12,6 @@ import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
 import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
-import {changeNickTheme} from '../../api/room';
-import home from '../../reducers/homeReducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {setMain} from '../../reducers/homeReducer';
-
-import {themes} from '../../assets/theme/roomTheme';
 
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
@@ -73,18 +67,6 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const HomeEditModal = props => {
-  const {saveHomename, savedTheme} = useSelector(state => ({
-    saveHomename: state.homeReducer.homename,
-    savedTheme: state.homeReducer.theme,
-  }));
-
-  const [isSelected, setIsSelected] = useState(savedTheme);
-  const [homename, setHomename] = useState(saveHomename);
-
-  const dispatch = useDispatch();
-  const setMainInfo = (mainnickname, maintheme, mainaddress) =>
-    dispatch(setMain(mainnickname, maintheme, mainaddress));
-
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -99,37 +81,7 @@ const HomeEditModal = props => {
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
-    const params = {
-      homeNickname: homename,
-      thema: isSelected,
-    };
-    changeNickTheme(params);
-    themes.forEach(savedTheme => {
-      if (savedTheme.name === isSelected) {
-        setMainInfo(homename, isSelected, savedTheme.address);
-      }
-    });
   };
-
-  const themeImages = () => {
-    return themes.map((theme, i) => {
-      return (
-        <TouchableOpacity
-          key={i}
-          onPress={() => setIsSelected(theme.name)}
-          style={styles.imagewrap}>
-          <Image
-            source={theme.address}
-            // source={require('../../assets/images/mainroom.jpg')}
-            style={
-              isSelected === theme.name ? styles.selected : styles.themeimg
-            }
-          />
-        </TouchableOpacity>
-      );
-    });
-  };
-
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -152,26 +104,32 @@ const HomeEditModal = props => {
               <Text style={styles.chiptext}>홈 이름 변경</Text>
             </Littlechip>
             <TextInputBox style={{marginBottom: 30}}>
-              <TextInput
-                placeholder="홈 이름"
-                onChangeText={userhn => setHomename(userhn)}
-              />
+              <TextInput placeholder="홈 이름" />
             </TextInputBox>
           </View>
           {/* 사진등록 */}
           <View style={styles.photo}>
             <Littlechip>
-              <Text style={styles.chiptext}>홈 테마 변경</Text>
+              <Text style={styles.chiptext}>사진 등록</Text>
             </Littlechip>
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'flex-start',
-                paddingHorizontal: 15,
-              }}>
-              {themeImages()}
-            </View>
+            <ImageArea>
+              <ImageBox onPress={openImagePickerAsync}>
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="image-multiple"
+                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                />
+                <Text style={{fontSize: 13, marginTop: 8}}>사진 선택</Text>
+              </ImageBox>
+              <ImageBox>
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="camera"
+                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                />
+                <Text style={{fontSize: 13, marginTop: 8}}>사진 촬영</Text>
+              </ImageBox>
+            </ImageArea>
           </View>
         </View>
         {/* 버튼 */}
@@ -250,27 +208,6 @@ const styles = StyleSheet.create({
   },
   photo: {
     flex: 3,
-  },
-  imagewrap: {
-    width: 50,
-    height: 50,
-    margin: 5,
-  },
-  themeimg: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 10,
-    borderColor: 'transparent',
-    resizeMode: 'cover',
-    borderWidth: 2,
-  },
-  selected: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 10,
-    resizeMode: 'cover',
-    borderColor: '#8AD169',
-    borderWidth: 2,
   },
 });
 export {HomeEditModal};

@@ -23,9 +23,12 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import firebase from '../../components/auth/firebase';
-import {userInfo} from '../../api/auth';
+import {userInfo, registerDevice} from '../../api/auth';
 import {useSelector, useDispatch} from 'react-redux';
 import {setProfile, setUserID} from '../../reducers/profileReducer';
+
+// MESSAGING
+import messaging from '@react-native-firebase/messaging';
 
 export function SignupScreen({navigation}) {
   // input focus variables
@@ -54,6 +57,9 @@ export function SignupScreen({navigation}) {
           .createUserWithEmailAndPassword(email, password);
         const profile = await userInfo();
         await saveProfile(profile, 'password', email);
+        //DEVICE TOKEN
+        const deviceToken = await messaging().getToken();
+        const device_response = await registerDevice();
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           alert('이미 가입된 이메일입니다.');

@@ -37,9 +37,6 @@ import {userInfo} from '../../app/api/auth';
 // messaging
 import messaging from '@react-native-firebase/messaging';
 
-// mock data
-import {tempResponse, tempPlants} from '../components/auth/mockdata';
-
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
@@ -112,14 +109,17 @@ export default function Root() {
   printToken = async () => {
     const token = await auth().currentUser.getIdToken(true);
     console.log(token);
+    // const deviceToken = await messaging().getToken();
+    // console.log('device token', deviceToken);
+    // const response = await registerDevice();
+    // console.log('device token test', response);
   };
 
   saveUserInfo = async user => {
     if (user) {
       await printToken();
       // console.log(uid);
-      // const deviceToken = await messaging().getToken();
-      // console.log('device token', deviceToken);
+
       const allAboutUser = await userInfo();
 
       const myPlants = allAboutUser.data.plants;
@@ -136,6 +136,7 @@ export default function Root() {
   };
 
   useEffect(async () => {
+    // await printToken();
     await firebase.auth().onAuthStateChanged(saveUserInfo);
   }, [uid]);
 

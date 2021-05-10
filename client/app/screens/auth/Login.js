@@ -30,7 +30,10 @@ import {useDispatch} from 'react-redux';
 import {setProfile} from '../../reducers/profileReducer';
 
 //api
-import {userInfo} from '../../api/auth';
+import {userInfo, registerDevice} from '../../api/auth';
+
+// MESSAGING
+import messaging from '@react-native-firebase/messaging';
 
 export function LoginScreen({navigation}) {
   // redux
@@ -57,6 +60,9 @@ export function LoginScreen({navigation}) {
       const googleMail = googleUserInfo.user.email;
       const profile = await userInfo();
       await saveProfile(profile, 'google.com', googleMail);
+      //DEVICE TOKEN
+      const deviceToken = await messaging().getToken();
+      const device_response = await registerDevice();
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');

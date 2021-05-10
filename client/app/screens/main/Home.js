@@ -41,6 +41,11 @@ import MessageModal from '../../components/auth/Messagemodal';
 
 // api
 import {getMessage} from '../../api/auth';
+import {main} from '../../api/room';
+
+// home theme
+import {themes, themesA, themesB} from '../../assets/theme/roomTheme';
+import {setMain} from '../../reducers/homeReducer';
 
 // import Modal from "react-native-modal";
 
@@ -56,40 +61,6 @@ function CustomDrawerContent(props) {
     const messageResponse = await getMessage();
     setMyMessages(messageResponse.data.response);
   }, []);
-
-  // const MessageDetail = item => {
-  //   console.log(item);
-  //   Alert.alert(item.title, item.content, [{text: '확인'}]);
-  // };
-
-  // const renderItem = ({item}) => {
-  //   return (
-  //     <DrawerItem label={item.title} onPress={() => messageDetailModal(item)} />
-  //   );
-  // };
-
-  // const flatMessage = data => {
-  //   return (
-  //     <View>
-  //       <FlatList
-  //         data={data}
-  //         renderItem={renderItem}
-  //         keyExtractor={item => String(item.id)}
-  //       />
-  //       <Modal
-  //         animationType="fade"
-  //         transparent={true}
-  //         visible={modalVisible}
-  //         onRequestClose={() => {
-  //           setModalVisible(!modalVisible);
-  //         }}>
-  //         <MessageModal
-  //           setModalVisible={setModalVisible}
-  //           message={detailMessage}></MessageModal>
-  //       </Modal>
-  //     </View>
-  //   );
-  // };
 
   const messageDetailModal = item => {
     setDetailMessage(item);
@@ -142,6 +113,16 @@ function Home({navigation}) {
   const [ChooseData, setChooseData] = useState();
   const [roomData, setRoomData] = useState([]);
 
+  const {homename, theme, address} = useSelector(state => ({
+    homename: state.homeReducer.homename,
+    theme: state.homeReducer.theme,
+    address: state.homeReducer.address,
+  }));
+
+  const dispatch = useDispatch();
+  const setMainInfo = (mainnickname, maintheme, mainaddress) =>
+    dispatch(setMain(mainnickname, maintheme, mainaddress));
+
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
@@ -167,6 +148,19 @@ function Home({navigation}) {
         setLoading(false);
       });
   };
+  // // 메인 화면 정보 조회
+  const getMainInfo = async () => {
+    const mainResponse = await main();
+    const mainInfo = mainResponse.data;
+    console.log('maininfo', mainInfo);
+    themes.forEach(savedTheme => {
+      if (savedTheme.name === mainInfo.theme) {
+        setMainInfo(mainInfo.homeNickname, mainInfo.theme, savedTheme.address);
+      }
+    });
+  };
+
+  console.log('home reducer', homename, theme, address);
   const [info, setInfo] = useState({
     name: 'loading !!',
     temp: 'loading',
@@ -176,6 +170,8 @@ function Home({navigation}) {
   });
 
   useEffect(async () => {
+
+    await getMainInfo();
     await getRoomData();
   }, [roomact, plantact]);
 
@@ -186,6 +182,7 @@ function Home({navigation}) {
   //     getRoomData();
   //   }
   // };
+>>>>>>> client/app/screens/main/Home.js
   // asking for location permission
 
   const renderItem = ({item}) => {
@@ -356,7 +353,8 @@ function Home({navigation}) {
             top: 0,
             left: 0,
           }}
-          source={require('../../assets/images/mainroom.jpg')}
+          // source={require('../../assets/images/mainroom.jpg')}
+          source={address}
         />
       </View>
       {/* 오른쪽 상단 아이콘 */}
@@ -387,14 +385,14 @@ function Home({navigation}) {
       </View>
       {/* 홈이름 */}
       <View style={styles.mainname}>
-        <Text style={styles.nametext}>Dasol House</Text>
-        <Icon
+        <Text style={styles.nametext}>{homename}</Text>
+        {/* <Icon
           type="Ionicons"
           name="pencil-outline"
           style={styles.pencil}
           onPress={() => {
             console.log('click pencil');
-          }}></Icon>
+          }}></Icon> */}
       </View>
       {/* 날씨 */}
       <Weather />
