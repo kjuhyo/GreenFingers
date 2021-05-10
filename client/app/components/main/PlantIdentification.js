@@ -52,14 +52,12 @@ const PlantIdentification = props => {
       .then(res => setInfo(res.data))
       .catch(err => console.log(err));
   };
-  console.log('if', info);
   useEffect(async () => {
     await getPlantInfo();
   }, []);
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
-    console.log(data);
   };
 
   return (
@@ -87,7 +85,9 @@ const PlantIdentification = props => {
                 style={styles.eximage}
               />
               <View style={{alignItems: 'flex-end'}}>
-                <Text style={{fontWeight: 'bold', fontSize: 18}}>싱고니움</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 18}}>
+                  {result.name}
+                </Text>
                 <Text
                   style={{
                     fontWeight: 'bold',
@@ -101,20 +101,25 @@ const PlantIdentification = props => {
           </View>
           <View style={styles.plantinput}>
             <Text style={{marginBottom: 20}}>
-              '싱고니움'이 아니라면 직접 입력해주세요
+              {result.name}이 아니라면 직접 입력해주세요
             </Text>
-            <Text style={{fontWeight: 'bold'}}>{result.name}</Text>
-            <InputAutoSuggest
-              style={{flex: 1}}
-              staticData={info}
-              itemFormat={{
-                id: 'id',
-                name: 'name',
-              }}
-              onDataSelectedChange={data =>
-                data !== null ? setResult(data) : console.log(data)
-              }
-            />
+
+            <View
+              style={{
+                height: 120,
+                justifyContent: 'center',
+              }}>
+              <InputAutoSuggest
+                staticData={info}
+                itemFormat={{
+                  id: 'id',
+                  name: 'name',
+                }}
+                onDataSelectedChange={data =>
+                  data !== null ? setResult(data) : console.log(data)
+                }
+              />
+            </View>
           </View>
         </View>
         <View style={styles.last}>
@@ -200,6 +205,7 @@ const styles = StyleSheet.create({
   },
   lastbtn: {
     width: 100,
+    position: 'absolute',
     backgroundColor: '#29582C',
     justifyContent: 'center',
     borderRadius: 10,

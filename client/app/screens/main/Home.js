@@ -139,6 +139,7 @@ function Home({navigation}) {
     findRoom()
       .then(res => {
         setRoomData(res.data.response);
+        console.log(res.data.response);
       })
       .then(() => {
         setLoading(false);
@@ -148,7 +149,7 @@ function Home({navigation}) {
         setLoading(false);
       });
   };
-  // // 메인 화면 정보 조회
+  // 메인 화면 정보 조회
   const getMainInfo = async () => {
     const mainResponse = await main();
     const mainInfo = mainResponse.data;
@@ -174,13 +175,13 @@ function Home({navigation}) {
     await getRoomData();
   }, [roomact, plantact]);
 
-  // const onEndReached = () => {
-  //   if (loading) {
-  //     return;
-  //   } else {
-  //     getRoomData();
-  //   }
-  // };
+  const onEndReached = () => {
+    if (loading) {
+      return;
+    } else {
+      getRoomData();
+    }
+  };
   // asking for location permission
 
   const renderItem = ({item}) => {
@@ -415,12 +416,13 @@ function Home({navigation}) {
         </Modal>
       </View>
       {/* 방리스트 */}
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         <FlatList
           data={roomData}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
-          nestedScrollEnabled
+          onEndReachedThreshold={0.9}
+          onEndReached={onEndReached}
         />
       </SafeAreaView>
     </View>
@@ -611,5 +613,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: 'white',
+  },
+  rooms: {
+    marginBottom: 20,
   },
 });

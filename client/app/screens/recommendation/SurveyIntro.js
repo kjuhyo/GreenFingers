@@ -77,31 +77,39 @@ export function SurveyintroScreen({navigation}) {
   return (
     <Container style={styles.container}>
       <View style={styles.titlecontainer}>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.titletext}>당신의</Text>
+          <Text style={styles.titletext2}> GREEN-MBTI </Text>
+          <Text style={styles.titletext}>는 무엇인가요?</Text>
+        </View>
         <Text style={styles.titletext}>
-          간단한 설문을 통해 맞춤 식물을 추천해 드립니다.
+          여러분의 성향에 맞는 식물을 추천해드립니다.
         </Text>
       </View>
       <View style={styles.contentcontainer}>
         <Image
-          source={{
-            uri:
-              'https://www.ikea.com/kr/en/images/products/smycka-artificial-flower-rose-red__0903311_pe596728_s5.jpg',
-          }}
+          source={require('../../assets/images/11-removebg-preview.png')}
           style={styles.contentimg}
         />
         <Text style={styles.contentdesc}>
           본 테스트는 사용자의 설문조사 입력 데이터를 바탕으로 사용자의 성향에
-          맞는 식물을 추천하기 위한 설문입니다.본인의 생활패턴과 성향을 있는
-          그대로 답변해주세요.
+          맞는 식물을 추천하기 위한 설문입니다.
+        </Text>
+        <Text style={styles.contentdesc2}>
+          본인의 생활패턴과 성향을 있는 그대로 답변해주세요.
         </Text>
         <View style={styles.contentinfo}>
           <View style={styles.infoleft}>
-            <Icon type="FontAwesome" name="pencil" />
-            <Text> 전체 16문항</Text>
+            <Icon style={{color: '#29582C'}} type="FontAwesome" name="pencil" />
+            <Text style={{color: '#29582C', marginTop: 7}}> 전체 16문항</Text>
           </View>
           <View style={styles.inforight}>
-            <Icon type="Ionicons" name="alarm-outline" />
-            <Text> 약 몇분 소요</Text>
+            <Icon
+              style={{color: '#29582C'}}
+              type="Ionicons"
+              name="alarm-outline"
+            />
+            <Text style={{color: '#29582C', marginTop: 7}}> 약 몇분 소요</Text>
           </View>
         </View>
       </View>
@@ -109,7 +117,9 @@ export function SurveyintroScreen({navigation}) {
         <ThemeProvider theme={theme}>
           <SurveyButton
             onPress={() => navigation.navigate('Surveyquestion', {id: 1})}>
-            <SurveyButtonText>시작</SurveyButtonText>
+            <SurveyButtonText style={{fontWeight: 'bold', fontSize: 15}}>
+              시작
+            </SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>
       </View>
@@ -122,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
   },
   titlecontainer: {
-    flex: 2,
+    flex: 1.5,
     justifyContent: 'flex-end',
     paddingBottom: 25,
     alignItems: 'center',
@@ -143,20 +153,37 @@ const styles = StyleSheet.create({
   },
   titletext: {
     fontWeight: '600',
-    fontSize: 17,
-    paddingVertical: 10,
+    fontSize: 15,
+    // paddingVertical: 10,
+  },
+  titletext2: {
+    fontWeight: '700',
+    fontSize: 16,
+    // paddingVertical: 10,
+    color: '#29582C',
   },
   contentimg: {
-    flex: 4,
-    alignSelf: 'stretch',
+    // flex: 4,
+    height: 200,
+    width: 150,
+    // alignSelf: 'stretch',
     paddingVertical: 5,
   },
   contentdesc: {
-    flex: 1,
+    marginTop: 30,
     textAlign: 'center',
     alignSelf: 'center',
-    paddingVertical: 5,
-    lineHeight: 16,
+    lineHeight: 20,
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.5)',
+  },
+  contentdesc2: {
+    textAlign: 'left',
+    alignSelf: 'center',
+    lineHeight: 20,
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.5)',
+    marginBottom: 20,
   },
   contentinfo: {
     flex: 1,

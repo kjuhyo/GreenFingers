@@ -43,20 +43,29 @@ export default function plantdetailmodal(props) {
             // backgroundColor: 'red',
             width: '100%',
             height: '100%',
+            alignItems: 'center',
           }}>
           <Image
             style={styles.plantimage}
             source={{
-              uri:
-                'https://i.pinimg.com/564x/14/cf/f1/14cff1d62ef6a6e0d123e18f7e4565db.jpg',
+              uri: plant.image,
             }}
           />
           <View style={styles.plantdescription}>
-            <Text style={styles.plantinfo}>학명 : {plant.common}</Text>
-            <Text style={styles.plantinfo}>이름 : {plant.name}</Text>
-            <Text style={styles.plantinfo}>키우기 난이도 : {plant.level}</Text>
-            <Text style={styles.plantinfo}>적정습도 : {plant.humid}</Text>
-            <Text style={styles.plantinfo}>물 주기 : {plant.water}</Text>
+            <Text style={styles.plantname}>{plant.name}</Text>
+            <Text style={styles.plantcommon}>{plant.common}</Text>
+            <View style={styles.desc}>
+              <Text style={styles.plantleft}>난이도</Text>
+              <Text style={styles.plantright}>{plant.level}</Text>
+            </View>
+            <View style={styles.desc}>
+              <Text style={styles.plantleft}>습도</Text>
+              <Text style={styles.plantright}>{plant.humid}</Text>
+            </View>
+            <View style={styles.desc}>
+              <Text style={styles.plantleft}>기능성 정보</Text>
+              <Text style={styles.plantright}>{plant.water}</Text>
+            </View>
           </View>
         </View>
       </ModalBox>
@@ -66,30 +75,37 @@ export default function plantdetailmodal(props) {
 
 const styles = StyleSheet.create({
   plantimage: {
-    alignSelf: 'stretch',
     flex: 1,
     padding: 0,
-    justifyContent: 'center',
     resizeMode: 'contain',
-    borderRadius: 5,
+    borderRadius: 10,
+    width: 250,
+    height: 250,
     transform: [{scale: 1.1}],
   },
   plantdescription: {
-    flex: 1,
+    flex: 0.8,
     marginTop: 30,
-    paddingHorizontal: 15,
+    width: 280,
   },
-  plantinfo: {
-    color: 'black',
-    // width: '80%',
-    fontSize: 20,
-    borderRadius: 15,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    marginVertical: 7,
-    marginHorizontal: 15,
-    backgroundColor: '#EEF9E8',
-    alignSelf: 'flex-start',
-    justifyContent: 'flex-end',
+  plantname: {
+    color: '#29582C',
+    fontWeight: 'bold',
+    fontSize: 25,
+  },
+  plantcommon: {
+    marginBottom: 40,
+  },
+  desc: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  plantleft: {
+    fontSize: 12,
+  },
+  plantright: {
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });

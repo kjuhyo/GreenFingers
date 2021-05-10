@@ -90,7 +90,9 @@ export function SurveyquestionScreen(props) {
             onPress={() => {
               onSubmit();
             }}>
-            <SurveyButtonText>계속</SurveyButtonText>
+            <SurveyButtonText style={{fontWeight: 'bold', fontSize: 15}}>
+              계속
+            </SurveyButtonText>
           </SurveyButton>
         </ThemeProvider>
       </View>

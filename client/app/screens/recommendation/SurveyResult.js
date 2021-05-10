@@ -62,6 +62,25 @@ export function SurveyresultScreen(props) {
           {mbtiResultResponse.summagry}
           {'\n'}
         </SurveyQText>
+        <View
+          style={{
+            alignSelf: 'flex-start',
+            flex: 0.6,
+            color: '#808285',
+            marginLeft: 12,
+            marginTop: 5,
+            marginBottom: 5,
+          }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#29582C',
+              marginTop: 2,
+              fontWeight: 'bold',
+            }}>
+            추천하는 식물
+          </Text>
+        </View>
         <View style={styles.contentoptions}>
           <View style={styles.recomwrap}>
             <TouchableOpacity
@@ -93,7 +112,10 @@ export function SurveyresultScreen(props) {
               marginTop: 7,
               color: '#808285',
             }}>
-            <Text>각 식물을 눌러 상세 설명을 확인해 보세요.</Text>
+            <Text
+              style={{fontSize: 12, color: 'rgba(0,0,0,0.5)', marginTop: 2}}>
+              각 식물을 눌러 상세 설명을 확인해 보세요.
+            </Text>
           </View>
         </View>
       </View>
@@ -103,7 +125,9 @@ export function SurveyresultScreen(props) {
       <View style={styles.buttoncontainer}>
         <ThemeProvider theme={theme}>
           <SurveyButton>
-            <SurveyButtonText onPress={() => props.navigation.navigate('Home')}>
+            <SurveyButtonText
+              onPress={() => props.navigation.navigate('Home')}
+              style={{fontSize: 15, fontWeight: 'bold'}}>
               완료
             </SurveyButtonText>
           </SurveyButton>
@@ -148,16 +172,16 @@ const styles = StyleSheet.create({
   },
   contentques: {
     display: 'flex',
-    flex: 1,
+    flex: 1.5,
     textAlignVertical: 'center',
     textAlign: 'left',
     paddingVertical: 5,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
+    fontWeight: 'bold',
   },
   contentoptions: {
     flex: 4,
     paddingVertical: 5,
-
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -171,18 +195,29 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     height: 170,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   recomimg: {
     alignSelf: 'stretch',
+    width: 150,
+    height: 150,
     flex: 8,
     padding: 0,
     justifyContent: 'center',
-    resizeMode: 'contain',
+    // resizeMode: 'contain',
     transform: [{scale: 0.7}],
+    borderRadius: 10,
   },
-  recomtext: {textAlign: 'center', flex: 2, fontWeight: '800'},
+  recomtext: {
+    textAlign: 'center',
+    flex: 2,
+    fontWeight: '700',
+    color: '#29582C',
+    fontSize: 13,
+  },
   etccontainer: {
     flex: 1,
     paddingHorizontal: 60,
+    marginTop: 20,
   },
 });

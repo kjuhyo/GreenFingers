@@ -40,10 +40,9 @@ export function PlantDetail({route, navigation}) {
   const makeclean = () => dispatch(changePlant(''));
   useEffect(async () => {
     if (plantact === 'back') {
-      await makeclean();
+      makeclean();
       navigation.navigate('Room', {rid: rid, rname: rname});
     }
-    console.log('test');
     const plantDetail = await myPlantInfo(pid);
     setMyInfo(plantDetail.data);
   }, [plantact]);
@@ -60,7 +59,7 @@ export function PlantDetail({route, navigation}) {
           source={require('../../assets/images/mainroom.jpg')}
         />
       </View>
-      <Cardback style={{flex: 8}}>
+      <Cardback style={{flex: 10}}>
         <View
           style={{
             flexDirection: 'row',
@@ -80,8 +79,11 @@ export function PlantDetail({route, navigation}) {
             <PlantModal
               changeModalVisible={changeModalVisible}
               setData={setData}
+              rid={rid}
               pid={pid}
               pname={pname}
+              startedDate={myInfo.startedDate}
+              image={myInfo.image}
             />
           </Modal>
 
@@ -110,9 +112,7 @@ export function PlantDetail({route, navigation}) {
                 }}>
                 |
               </Text>
-              <Text style={{color: '#29582C', fontWeight: 'bold'}}>
-                {myInfo.common}
-              </Text>
+              <Text style={styles.common}>{myInfo.common}</Text>
             </Plantchip>
             <View style={styles.leftdown}>
               <Text style={styles.plantname}>{myInfo.nickname}</Text>
@@ -244,5 +244,12 @@ const styles = StyleSheet.create({
     width: win.width * 0.25,
     borderRadius: 10,
     marginTop: 16,
+  },
+  common: {
+    color: '#29582C',
+    width: 170,
+    fontSize: 11,
+    fontWeight: 'bold',
+    // backgroundColor: 'yellow',
   },
 });

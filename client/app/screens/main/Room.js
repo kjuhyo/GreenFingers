@@ -59,7 +59,7 @@ export function RoomScreen({route, navigation}) {
       await findRoomDetail(rid)
         .then(res => {
           setRoomDetail(res.data.response);
-          console.log(res.data.response);
+          console.log('pl', res.data.response);
         })
         .then(() => {
           setLoading(false);
@@ -75,13 +75,19 @@ export function RoomScreen({route, navigation}) {
   const makeclean = () => dispatch(changeRoom(''));
   useEffect(async () => {
     const check = roomact;
+    console.log('check', check);
     if (check === 'trash') {
-      makeclean();
+      // makeclean();
       await navigation.navigate('Home');
     } else {
       await getPlantData(rid);
     }
   }, [plantact, roomact]);
+  useEffect(() => {
+    return () => {
+      makeclean();
+    };
+  }, []);
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity>
@@ -231,34 +237,32 @@ export function RoomScreen({route, navigation}) {
           </View>
           {/* 식물 목록 */}
           <View style={styles.plantlist}>
-            <SafeAreaView>
+            <SafeAreaView style={{flex: 1}}>
               <FlatList
                 data={roomDetail.plantList}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-                nestedScrollEnabled
               />
             </SafeAreaView>
-
-            <TouchableOpacity style={styles.pluscard}>
-              <TouchableOpacity onPress={() => changeModalVisible(true)}>
-                <Icon
-                  type="Ionicons"
-                  name="add-circle-outline"
-                  style={styles.addicon}></Icon>
-              </TouchableOpacity>
-              <Modal
-                transparent={true}
-                animationType="fade"
-                visible={isModalVisible}
-                nRequestClose={() => changeModalVisible(false)}>
-                <PlusModal
-                  changeModalVisible={changeModalVisible}
-                  setData={setData}
-                  rid={rid}></PlusModal>
-              </Modal>
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity style={styles.pluscard}>
+            <TouchableOpacity onPress={() => changeModalVisible(true)}>
+              <Icon
+                type="Ionicons"
+                name="add-circle-outline"
+                style={styles.addicon}></Icon>
+            </TouchableOpacity>
+            <Modal
+              transparent={true}
+              animationType="fade"
+              visible={isModalVisible}
+              nRequestClose={() => changeModalVisible(false)}>
+              <PlusModal
+                changeModalVisible={changeModalVisible}
+                setData={setData}
+                rid={rid}></PlusModal>
+            </Modal>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -294,7 +298,7 @@ const styles = StyleSheet.create({
   },
   plantcard: {
     margin: 3,
-    height: win.height * 0.2,
+    height: win.height * 0.3,
     backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: 10,
     paddingHorizontal: 10,
@@ -303,7 +307,7 @@ const styles = StyleSheet.create({
   },
   plantcard2: {
     margin: 3,
-    height: win.height * 0.2,
+    height: win.height * 0.3,
     backgroundColor: 'rgba(0,0,0,0.3)',
     borderRadius: 10,
     paddingHorizontal: 10,
@@ -311,10 +315,9 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   pluscard: {
-    margin: 3,
-    height: win.height * 0.2,
+    height: win.height * 0.09,
     backgroundColor: 'rgba(255,255,255,0.5)',
-    borderRadius: 10,
+    // borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
     alignItems: 'center',
@@ -325,7 +328,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   plantimg: {
-    height: 100,
+    height: 150,
     width: null,
     // marginTop: 10,
     borderRadius: 10,
@@ -364,7 +367,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   addicon: {
-    fontSize: 50,
+    fontSize: 40,
     color: 'rgba(255,255,255,0.7)',
   },
 });
