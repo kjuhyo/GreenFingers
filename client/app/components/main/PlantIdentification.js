@@ -52,14 +52,12 @@ const PlantIdentification = props => {
       .then(res => setInfo(res.data))
       .catch(err => console.log(err));
   };
-  console.log('if', info);
   useEffect(async () => {
     await getPlantInfo();
   }, []);
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
-    console.log(data);
   };
 
   return (
@@ -200,6 +198,8 @@ const styles = StyleSheet.create({
   },
   lastbtn: {
     width: 100,
+    position: 'absolute',
+    bottom: 40,
     backgroundColor: '#29582C',
     justifyContent: 'center',
     borderRadius: 10,

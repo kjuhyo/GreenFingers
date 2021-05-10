@@ -59,7 +59,7 @@ export function RoomScreen({route, navigation}) {
       await findRoomDetail(rid)
         .then(res => {
           setRoomDetail(res.data.response);
-          console.log(res.data.response);
+          console.log('pl', res.data.response);
         })
         .then(() => {
           setLoading(false);

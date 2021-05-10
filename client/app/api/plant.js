@@ -17,8 +17,8 @@ export function myPlantInfo(pid) {
 }
 
 // 나의 식물 수정
-export function myPlantEdit(pid) {
-  return instanceFile.put(`plant/care/${pid}`);
+export function myPlantEdit(pid, formData) {
+  return instanceFile.put(`plant/care/${pid}`, formData);
 }
 
 // 나의 식물 떠나감

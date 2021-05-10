@@ -43,7 +43,6 @@ export function PlantDetail({route, navigation}) {
       await makeclean();
       navigation.navigate('Room', {rid: rid, rname: rname});
     }
-    console.log('test');
     const plantDetail = await myPlantInfo(pid);
     setMyInfo(plantDetail.data);
   }, [plantact]);
@@ -80,8 +79,11 @@ export function PlantDetail({route, navigation}) {
             <PlantModal
               changeModalVisible={changeModalVisible}
               setData={setData}
+              rid={rid}
               pid={pid}
               pname={pname}
+              startedDate={myInfo.startedDate}
+              image={myInfo.image}
             />
           </Modal>
 

@@ -139,6 +139,7 @@ function Home({navigation}) {
     findRoom()
       .then(res => {
         setRoomData(res.data.response);
+        console.log(res.data.response);
       })
       .then(() => {
         setLoading(false);

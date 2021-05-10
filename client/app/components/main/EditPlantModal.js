@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,9 +10,14 @@ import {
 } from 'react-native';
 import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
-import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
-
+import {findRoom} from '../../api/room';
+import {findRoomDetail} from '../../api/room';
+import {myPlantEdit} from '../../api/plant';
+import ImagePicker from 'react-native-image-crop-picker';
+import {Littlechip, LittleMenu} from '../../assets/theme/roomstyle';
+import {useDispatch} from 'react-redux';
+import {changePlant} from '../../reducers/roomReducer';
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
 
@@ -67,21 +72,96 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const EditPlantModal = props => {
-  let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  const [roomId, setRoomId] = useState([]);
+  const [plantName, setPlantName] = useState('');
+  const rid = props.rid;
+  const startedDate = props.startedDate;
+  const pid = props.pid;
+  const plantimage = props.image;
+  const [isSelected, setIsSelected] = useState(rid);
+  const [image, setImage] = useState(plantimage);
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        setImage(image.path);
+        // changeModalVisible(true);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
+  };
 
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!');
-      return;
-    }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    })
+      .then(image => {
+        setImage(image.path);
+        // changeModalVisible(true);
+      })
+      .catch(err => {
+        console.log('openCamera catch' + err.toString());
+      });
   };
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+
+  //redux
+  const dispatch = useDispatch();
+  const plantchange = () => dispatch(changePlant('edit'));
+  useEffect(async () => {
+    await findRoom()
+      .then(res => {
+        setRoomId(res.data.response);
+      })
+      .catch(err => err);
+  }, []);
+
+  // 식물 수정 API
+  const editPlant = async () => {
+    const formData = new FormData();
+    formData.append('pid', pid);
+    formData.append('rid', isSelected);
+    formData.append('nickname', plantName);
+    formData.append('image', {
+      uri: image,
+      name: 'plant.jpg',
+      type: 'image/jpeg',
+    });
+    formData.append('startedDate', startedDate);
+    await myPlantEdit(pid, formData)
+      .then(res => console.log('response', res))
+      .catch(err => console.log(err));
+    plantchange();
+    closeModal(false, 'Cancel');
+  };
+  const selectRoom = () => {
+    return roomId.map((theme, i) => {
+      return (
+        <TouchableOpacity
+          key={i}
+          onPress={() => setIsSelected(theme.rid)}
+          styles={styles.imagewrap}>
+          <Image
+            source={{uri: theme.theme}}
+            style={isSelected === theme.rid ? styles.selected : styles.themeimg}
+          />
+          <Text>{theme.roomName}</Text>
+        </TouchableOpacity>
+      );
+    });
+  };
+
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -103,35 +183,14 @@ const EditPlantModal = props => {
             <Littlechip>
               <Text style={styles.chiptext}>방 옮기기</Text>
             </Littlechip>
-            <View style={styles.buttons}>
-              <Image
-                source={{
-                  uri:
-                    'http://cereshome.co.kr/web/product/small/20200420/659ff6db3048df1a413a053655c22ebb.jpg',
-                }}
-                style={{flex: 1}}></Image>
-              <RadioButtonRN
-                data={data}
-                activeColor={'#B7CDBC'}
-                boxDeactiveBgColor={'transparent'}
-                boxActiveBgColor={'#EFEFEF'}
-                boxStyle={styles.optionlong}
-                textStyle={styles.optiontext}
-                circleSize={14}
-                icon={
-                  <Icon
-                    type="Ionicons"
-                    name="checkmark-circle-outline"
-                    style={{
-                      fontSize: 20,
-                      color: '#B7CDBC',
-                    }}></Icon>
-                }
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}></RadioButtonRN>
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-start',
+                paddingHorizontal: 15,
+              }}>
+              {selectRoom()}
             </View>
           </View>
           {/* 식물이름입력 */}
@@ -139,38 +198,68 @@ const EditPlantModal = props => {
             <Littlechip>
               <Text style={styles.chiptext}>식물 이름</Text>
             </Littlechip>
-            <TextInputBox style={{marginBottom: 30}}>
-              <TextInput placeholder="식물 이름" />
+            <TextInputBox>
+              <TextInput
+                placeholder="식물 이름"
+                onChangeText={setPlantName}
+                value={plantName}
+              />
             </TextInputBox>
           </View>
           {/* 사진등록 */}
           <View style={styles.photo}>
-            <Littlechip>
+            <Littlechip style={{marginTop: 10}}>
               <Text style={styles.chiptext}>사진 등록</Text>
             </Littlechip>
             <ImageArea>
-              <ImageBox onPress={openImagePickerAsync}>
+              <LittleMenu
+                onPress={choosePhotoFromLibrary}
+                style={{marginRight: 10}}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="image-multiple"
-                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                  style={{
+                    fontSize: 20,
+                    color: 'rgba(0,0,0,0.7)',
+                    marginRight: 10,
+                  }}
                 />
-                <Text style={{fontSize: 13, marginTop: 8}}>사진 선택</Text>
-              </ImageBox>
-              <ImageBox>
+                <Text style={{fontSize: 10, marginTop: 1}}>사진 선택</Text>
+              </LittleMenu>
+              <LittleMenu onPress={takePhotoFromCamera}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="camera"
-                  style={{fontSize: 30, color: 'rgba(0,0,0,0.7)'}}
+                  style={{
+                    fontSize: 20,
+                    color: 'rgba(0,0,0,0.7)',
+                    marginRight: 10,
+                  }}
                 />
-                <Text style={{fontSize: 13, marginTop: 8}}>사진 촬영</Text>
-              </ImageBox>
+                <Text style={{fontSize: 10, marginTop: 1}}>사진 촬영</Text>
+              </LittleMenu>
             </ImageArea>
           </View>
         </View>
+        {/* preview */}
+        <View style={styles.preview}>
+          <Image
+            source={{
+              uri: image,
+            }}
+            style={{
+              height: 100,
+              width: 280,
+              margin: 10,
+              borderRadius: 5,
+              backgroundColor: 'white',
+              padding: 20,
+            }}
+            imageStyle={{borderRadius: 15}}></Image>
+        </View>
         {/* 버튼 */}
         <View style={styles.button}>
-          <AddButton onPress={() => closeModal(false, 'Cancel')}>
+          <AddButton onPress={() => editPlant()}>
             <ButtonText>저장</ButtonText>
             <Icon
               type="Ionicons"
@@ -209,7 +298,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 9,
+    flex: 3,
   },
   chiptext: {
     fontWeight: 'bold',
@@ -237,13 +326,37 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   changeroom: {
-    flex: 2,
+    flex: 1,
   },
   input: {
-    flex: 2,
+    flex: 0.6,
+    // marginTop: 10,
   },
   photo: {
-    flex: 3,
+    flex: 1,
+  },
+  imagewrap: {
+    width: 50,
+    height: 50,
+    margin: 30,
+  },
+  themeimg: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    borderColor: 'transparent',
+    resizeMode: 'cover',
+    borderWidth: 2,
+    margin: 10,
+  },
+  selected: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    borderColor: '#8AD169',
+    resizeMode: 'cover',
+    borderWidth: 2,
+    margin: 10,
   },
 });
 export {EditPlantModal};

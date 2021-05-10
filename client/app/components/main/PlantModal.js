@@ -47,20 +47,20 @@ const PlantModal = props => {
   const dispatch = useDispatch();
   const plantback = () => dispatch(changePlant('back'));
   useEffect(async () => {
-    console.log('pa', plantact);
     if (plantact === 'bye') {
       plantback();
       closeModal(false, 'Bye');
-      console.log('actS', plantact);
     }
     if (plantact === 'trash') {
       plantback();
       closeModal(false, 'Trash');
-      console.log(plantact);
     }
   }, [plantact]);
   const pid = props.pid;
   const pname = props.pname;
+  const rid = props.rid;
+  const startedDate = props.startedDate;
+  const image = props.image;
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
@@ -101,6 +101,10 @@ const PlantModal = props => {
             <EditPlantModal
               changeModalVisible={changeModalVisible3}
               setData={setData}
+              rid={rid}
+              startedDate={startedDate}
+              pid={pid}
+              image={image}
             />
           </Modal>
           <TouchableOpacity
