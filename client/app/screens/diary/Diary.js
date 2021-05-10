@@ -138,10 +138,13 @@ export function DiaryScreen({navigation}) {
       setWaterDate([]);
     }
   };
-  // console.log(waterDate);
+
+  // 탭이 바뀔때마다 비워주고 다시 set
   useEffect(() => {
-    initialDiary();
-    getWaterDate();
+    setDiaryDate([]); // 비워주고
+    setWaterDate([]); // 비워주고
+    initialDiary(); // 다시 set
+    getWaterDate(); // 다시 set
   }, [activePlant]);
 
   // 현재 식물의 선택된 날짜에 해당하는 다이어리 목록을 set 해주는 함수
