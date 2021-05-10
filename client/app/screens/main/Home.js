@@ -170,7 +170,6 @@ function Home({navigation}) {
   });
 
   useEffect(async () => {
-
     await getMainInfo();
     await getRoomData();
   }, [roomact, plantact]);
@@ -182,7 +181,6 @@ function Home({navigation}) {
   //     getRoomData();
   //   }
   // };
->>>>>>> client/app/screens/main/Home.js
   // asking for location permission
 
   const renderItem = ({item}) => {
