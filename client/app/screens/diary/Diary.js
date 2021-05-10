@@ -87,7 +87,6 @@ export function DiaryScreen({navigation}) {
   const {userPlants} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
   }));
-  console.log('유저의 식물들 리덕스에서 가져오기', userPlants);
 
   // 보유 식물이 있을 경우에만 activePlant 값 설정
   const isPlant = () => {
@@ -170,9 +169,11 @@ export function DiaryScreen({navigation}) {
         const fileterdList = activePlantDiary.filter(diary => {
           return diary != undefined;
         });
-
+        // console.log('날짜별 다이어리 조회 api 응답', diaryByDateRes);
         // 해당되는 다이어리 목록을 set
         setSelectedDiary(fileterdList);
+      } else {
+        setSelectedDiary(undefined);
       }
     }
   };
@@ -196,7 +197,7 @@ export function DiaryScreen({navigation}) {
 
   // 다이어리 보기 눌렀을 경우 피드 목록 렌더링하는 함수
   const feedRendering = () => {
-    if (selectedDiary.length != 0) {
+    if (selectedDiary != undefined) {
       return selectedDiary.map((diary, idx) => (
         <Feed
           key={idx}
