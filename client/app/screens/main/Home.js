@@ -238,7 +238,7 @@ function Home({navigation}) {
                     <View style={styles.water}>
                       <Text style={styles.watertext}>물 준 날짜</Text>
                       <Text style={styles.waterdate}>
-                        {item.plantList[0].lastDate}
+                        {item.plantList[0].lastDate.substring(0, 10)}
                       </Text>
                     </View>
                     <Image
@@ -270,7 +270,7 @@ function Home({navigation}) {
                     <View style={styles.water}>
                       <Text style={styles.watertext}>물 준 날짜</Text>
                       <Text style={styles.waterdate}>
-                        {item.plantList[1].lastDate}
+                        {item.plantList[1].lastDate.substring(0, 10)}
                       </Text>
                     </View>
                     <Image
@@ -309,7 +309,7 @@ function Home({navigation}) {
                       <View style={styles.water}>
                         <Text style={styles.watertext}>물 준 날짜</Text>
                         <Text style={styles.waterdate}>
-                          {item.plantList[0].lastDate}
+                          {item.plantList[0].lastDate.substring(0, 10)}
                         </Text>
                       </View>
                       <Image

@@ -102,7 +102,9 @@ export function RoomScreen({route, navigation}) {
               <View style={styles.rightinfo}>
                 <View style={styles.water}>
                   <Text style={styles.watertext}>물 준 날짜</Text>
-                  <Text style={styles.waterdate}>{item.lastDate}</Text>
+                  <Text style={styles.waterdate}>
+                    {item.lastDate.substring(0, 10)}
+                  </Text>
                 </View>
                 <Image
                   source={require('../../assets/images/plant1.png')}
@@ -128,7 +130,9 @@ export function RoomScreen({route, navigation}) {
               <View style={styles.rightinfo}>
                 <View style={styles.water}>
                   <Text style={styles.watertext}>물 준 날짜</Text>
-                  <Text style={styles.waterdate}>{item.lastDate}</Text>
+                  <Text style={styles.waterdate}>
+                    {item.lastDate.substring(0, 10)}
+                  </Text>
                 </View>
                 <Image
                   source={require('../../assets/images/plant1.png')}
