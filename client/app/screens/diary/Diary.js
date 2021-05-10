@@ -87,6 +87,7 @@ export function DiaryScreen({navigation}) {
   const {userPlants} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
   }));
+  console.log('유저의 식물들 리덕스에서 가져오기', userPlants);
 
   // 보유 식물이 있을 경우에만 activePlant 값 설정
   const isPlant = () => {
@@ -141,10 +142,12 @@ export function DiaryScreen({navigation}) {
 
   // 탭이 바뀔때마다 비워주고 다시 set
   useEffect(() => {
-    setDiaryDate([]); // 비워주고
-    setWaterDate([]); // 비워주고
-    initialDiary(); // 다시 set
-    getWaterDate(); // 다시 set
+    if (userPlants.length != 0) {
+      setDiaryDate([]); // 비워주고
+      setWaterDate([]); // 비워주고
+      initialDiary(); // 다시 set
+      getWaterDate(); // 다시 set
+    }
   }, [activePlant]);
 
   // 현재 식물의 선택된 날짜에 해당하는 다이어리 목록을 set 해주는 함수
@@ -152,7 +155,7 @@ export function DiaryScreen({navigation}) {
     if (selectedDate) {
       const diaryByDate = await findDiaryByDate(selectedDate);
       const diaryByDateRes = diaryByDate.data.response;
-
+      // console.log('날짜별 다이어리 조회 api 응답', diaryByDate);
       // 현재 선택된 식물의 다이어리만 가져오기
       if (diaryByDateRes.length != 0) {
         const activePlantDiary = await Promise.all(
@@ -175,7 +178,9 @@ export function DiaryScreen({navigation}) {
   };
 
   useEffect(() => {
-    diaryList();
+    if (userPlants.length != 0) {
+      diaryList();
+    }
   }, [selectedDate, activePlant]);
   // console.log('undefined인가?', selectedDiary);
 
