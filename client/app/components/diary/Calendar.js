@@ -1,59 +1,136 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
-// native-base
-import {Icon} from 'native-base';
+// style
+import {Icon, Toast} from 'native-base';
+import styled from 'styled-components';
+
+// responsive-screen
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 // calendar
 import {Calendar} from 'react-native-calendars';
 import {Modal, View} from 'react-native';
+
+// modal
 import DiarySelectModal from './modal/DiarySelectModal';
 import CheckDateModal from './modal/CheckDateModal';
 import CompleteModal from './modal/CompleteModal';
+
+const CalendarContainer = styled.View`
+  height: ${hp('75%')}px;
+  justify-content: center;
+  padding: 30px;
+`;
 
 export function CalendarView(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [dateCheckModalVisible, setDateCheckModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
+  const [today, setToday] = useState();
   const [selectDay, setSelectDay] = useState('');
   const [selectMonth, setSelectMonth] = useState('');
   const [selectYear, setSelectYear] = useState('');
 
+  const [markedDateState, setMarkedDateState] = useState(); // 달력에 표시할 날짜
+
+  // props로 전달받은 날짜 목록으로 markedDate 세팅
+  const initailMarkedDate = async () => {
+    let markedDate = {};
+    await Promise.all(
+      props.diaryDate.map(diary => {
+        markedDate[diary] = {
+          marked: true,
+          dotColor: '#8AD169',
+        };
+      }),
+    );
+
+    await Promise.all(
+      props.waterDate.map(water => {
+        if (markedDate[water]) {
+          markedDate[water]['selected'] = true;
+          markedDate[water]['selectedColor'] = '#b7dfe9';
+        } else {
+          markedDate[water] = {
+            selected: true,
+            selectedColor: '#b7dfe9',
+          };
+        }
+      }),
+    );
+
+    setMarkedDateState(markedDate);
+  };
+
+  useEffect(() => {
+    if (props.diaryDate != undefined && props.waterDate != undefined) {
+      initailMarkedDate();
+    }
+  }, [props.diaryDate, props.waterDate]);
+
+  // 현재 날짜 및 시간
+  const now = new Date();
+  useEffect(() => {
+    const tmp =
+      now.getFullYear() +
+      '-' +
+      ('0' + (now.getMonth() + 1)).slice(-2) +
+      '-' +
+      ('0' + now.getDate()).slice(-2);
+
+    setToday(tmp); // 현재날짜 set
+  }, []);
+
   return (
-    <View>
+    <CalendarContainer>
       <Calendar
+        style={{borderRadius: 10}}
         theme={{
+          todayTextColor: '#8AD169',
+          monthTextColor: '#29582C',
+          textMonthFontSize: 20,
+          textMonthFontWeight: 'bold',
           'stylesheet.day.basic': {
             base: {
               width: 32,
-              height: 60,
+              height: 50,
               justifyContent: 'center',
               alignItems: 'center',
             },
           },
-          'stylesheet.dot': {
-            dot: {
-              width: 7,
-              height: 7,
-              borderRadius: 5,
-            },
-          },
+          // 'stylesheet.dot': {
+          //   dot: {
+          //     width: 4,
+          //     height: 4,
+          //     marginTop: 3,
+          //     borderRadius: 2,
+          //   },
+          // },
         }}
         // Initially visible month. Default = Date()
-        current={'2021-04-20'}
+        current={today}
         // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
         minDate={'2021-01-01'}
         // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
         maxDate={'2021-12-31'}
         // Handler which gets executed on day press. Default = undefined
         onDayPress={day => {
-          // console.log('selected day', day);
-          setModalVisible(!modalVisible);
-          // setSelectDate(day.dateString);
-          setSelectDay(day.day);
-          setSelectMonth(day.month);
-          setSelectYear(day.year);
-          // console.log(day);
+          // 현재 날짜 이후일 경우: '미래의 일은 아직 알 수 없어요!' Toast 띄우기
+          // 현재 날짜 이전일 경우: 다이어리 보기/작성/물주기 선택 모달 띄우기
+          if (day.dateString <= today) {
+            setModalVisible(!modalVisible);
+            setSelectDay(day.day);
+            setSelectMonth(day.month);
+            setSelectYear(day.year);
+            props.setSelectedDate(day.dateString);
+          } else {
+            Toast.show({
+              text: '미래의 일은 아직 알 수 없어요!',
+              buttonText: '확인',
+              duration: 4000,
+            });
+          }
         }}
         // Handler which gets executed on day long press. Default = undefined
         onDayLongPress={day => {
@@ -110,11 +187,8 @@ export function CalendarView(props) {
         //   );
         // }}
         // Enable the option to swipe between months. Default = false
-        enableSwipeMonths={false}
-        markedDates={{
-          '2021-04-18': {marked: true, dotColor: '#8AD169'},
-          '2021-04-19': {marked: true, dotColor: '#8AD169'},
-        }}
+        enableSwipeMonths={true}
+        markedDates={markedDateState} // dot 표시할 날짜 넣어줌
       />
 
       {/* 다이어리 보기/다이어리 작성/물주기 선택 모달 */}
@@ -128,8 +202,13 @@ export function CalendarView(props) {
         }}>
         <DiarySelectModal
           setModalVisible={setModalVisible}
+          setShowDiary={props.setShowDiary}
           setDateCheckModalVisible={setDateCheckModalVisible}
           navigation={props.navigation}
+          activePlant={props.activePlant}
+          selectedDate={props.selectedDate}
+          waterDate={props.waterDate}
+          waterDateId={props.waterDateId}
         />
       </Modal>
 
@@ -148,6 +227,7 @@ export function CalendarView(props) {
           selectDay={selectDay}
           selectMonth={selectMonth}
           selectYear={selectYear}
+          activePlant={props.activePlant}
         />
       </Modal>
 
@@ -165,6 +245,6 @@ export function CalendarView(props) {
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
-    </View>
+    </CalendarContainer>
   );
 }

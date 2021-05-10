@@ -1,6 +1,7 @@
 // react
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -32,10 +33,11 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 // image-picker
 import ImagePicker from 'react-native-image-crop-picker';
 
-export function DiaryWriteScreen({navigation}) {
+export function DiaryWriteScreen({route, navigation}) {
   const [titleState, setTitleState] = useState('');
   const [contentState, setContentState] = useState('');
   const [imgState, setImgState] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const maxImgCnt = 5; // 사진 선택 최대 개수
 
@@ -59,9 +61,10 @@ export function DiaryWriteScreen({navigation}) {
       toastShow('사진을 선택해주세요.');
     } else {
       const formData = new FormData();
-      formData.append('plantId', 1);
+      formData.append('plantId', route.params.activePlant);
       formData.append('title', titleState);
       formData.append('content', contentState);
+      formData.append('writeDateTime', route.params.selectedDate);
       imgState.forEach((img, i) => {
         formData.append('files', {
           uri: img,
@@ -70,6 +73,7 @@ export function DiaryWriteScreen({navigation}) {
         });
       });
       await writeDiary(formData);
+      setIsLoading(false);
       navigation.navigate('Diary');
     }
   };
@@ -148,6 +152,20 @@ export function DiaryWriteScreen({navigation}) {
     ));
   };
 
+  const renderLoading = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color="#8AD169"
+          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <Root>
       <ScrollView>
@@ -215,9 +233,16 @@ export function DiaryWriteScreen({navigation}) {
           </SelectedImgBox>
 
           {/* 완료 버튼 */}
-          <CompleteBtn onPress={() => diaryWrite()}>
+          <CompleteBtn
+            onPress={() => {
+              setIsLoading(true);
+              diaryWrite();
+            }}>
             <CompleteBtnText>완료</CompleteBtnText>
           </CompleteBtn>
+
+          {/* indicator 표시 */}
+          {renderLoading()}
         </KeyboardAwareScrollView>
       </ScrollView>
     </Root>
