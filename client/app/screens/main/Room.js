@@ -75,13 +75,19 @@ export function RoomScreen({route, navigation}) {
   const makeclean = () => dispatch(changeRoom(''));
   useEffect(async () => {
     const check = roomact;
+    console.log('check', check);
     if (check === 'trash') {
-      makeclean();
+      // makeclean();
       await navigation.navigate('Home');
     } else {
       await getPlantData(rid);
     }
   }, [plantact, roomact]);
+  useEffect(() => {
+    return () => {
+      makeclean();
+    };
+  }, []);
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity>

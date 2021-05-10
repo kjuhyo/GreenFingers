@@ -45,10 +45,10 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 export function DeleteRoomModal(props) {
+  // props 저장
   const rname = props.rname;
   const rid = props.rid;
   // const [checkDelete, setCheckDelete] = useState(false);
-  useEffect(() => console.log(props));
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
@@ -59,7 +59,7 @@ export function DeleteRoomModal(props) {
   const roomDelete = async () => {
     // setCheckDelete(true);
     await deleteRoom(rid);
-    await roomchange();
+    roomchange();
     closeModal(false, 'Delete');
   };
   return (

@@ -45,12 +45,15 @@ const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 const HEIGHT_MODAL = 300;
 const DeletePlant = props => {
+  // props 저장
   const pid = props.pid;
   const pname = props.pname;
+  // 모달 닫기
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
   };
+  // redux
   const dispatch = useDispatch();
   const plantchange = () => dispatch(changePlant('trash'));
   // 식물 삭제
