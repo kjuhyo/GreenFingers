@@ -51,10 +51,10 @@ const ButtonText = styled.Text`
 
 // 사진 선택 영역 컨테이너
 const ImageArea = styled.TouchableOpacity`
-  flex: 1;
+  flex: 0.5;
   flex-direction: row;
   margin-top: 10px;
-  margin-left: 15px;
+  margin-left: 25px;
   margin-right: 15px;
 `;
 
@@ -151,12 +151,12 @@ const EditPlantModal = props => {
         <TouchableOpacity
           key={i}
           onPress={() => setIsSelected(theme.rid)}
-          styles={styles.imagewrap}>
+          style={styles.imagewrap}>
           <Image
             source={{uri: theme.theme}}
             style={isSelected === theme.rid ? styles.selected : styles.themeimg}
           />
-          <Text>{theme.roomName}</Text>
+          <Text style={{fontSize: 12}}>{theme.roomName}</Text>
         </TouchableOpacity>
       );
     });
@@ -239,23 +239,23 @@ const EditPlantModal = props => {
                 <Text style={{fontSize: 10, marginTop: 1}}>사진 촬영</Text>
               </LittleMenu>
             </ImageArea>
+            {/* preview */}
+            <View style={styles.preview}>
+              <Image
+                source={{
+                  uri: image,
+                }}
+                style={{
+                  height: 100,
+                  width: 280,
+                  margin: 10,
+                  borderRadius: 5,
+                  backgroundColor: 'white',
+                  padding: 20,
+                }}
+                imageStyle={{borderRadius: 15}}></Image>
+            </View>
           </View>
-        </View>
-        {/* preview */}
-        <View style={styles.preview}>
-          <Image
-            source={{
-              uri: image,
-            }}
-            style={{
-              height: 100,
-              width: 280,
-              margin: 10,
-              borderRadius: 5,
-              backgroundColor: 'white',
-              padding: 20,
-            }}
-            imageStyle={{borderRadius: 15}}></Image>
         </View>
         {/* 버튼 */}
         <View style={styles.button}>
@@ -285,6 +285,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 60,
     backgroundColor: '#F9F9F9',
     borderRadius: 10,
+    flex: 0.85,
   },
   modaltop: {
     flexDirection: 'row',
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 3,
+    flex: 9,
   },
   chiptext: {
     fontWeight: 'bold',
@@ -329,16 +330,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    flex: 0.6,
+    flex: 1,
+    // backgroundColor: 'yellow',
     // marginTop: 10,
   },
   photo: {
-    flex: 1,
+    flex: 2,
+    // backgroundColor: 'green',
   },
   imagewrap: {
     width: 50,
     height: 50,
-    margin: 30,
+    margin: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   themeimg: {
     width: 50,
@@ -347,7 +352,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     resizeMode: 'cover',
     borderWidth: 2,
-    margin: 10,
+    margin: 5,
   },
   selected: {
     width: 50,
@@ -356,7 +361,14 @@ const styles = StyleSheet.create({
     borderColor: '#8AD169',
     resizeMode: 'cover',
     borderWidth: 2,
-    margin: 10,
+    margin: 5,
+  },
+  preview: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: 5,
   },
 });
 export {EditPlantModal};
