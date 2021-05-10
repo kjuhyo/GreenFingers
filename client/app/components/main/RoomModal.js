@@ -16,6 +16,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector, useDispatch} from 'react-redux';
 import {createRoom} from '../../api/room';
 import {changeRoom} from '../../reducers/roomReducer';
+import {themes} from '../../assets/theme/roomTheme';
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
   {uri: '../../assets/images/mainroom.jpg'},
@@ -78,6 +79,9 @@ const RoomModal = props => {
   }));
   const dispatch = useDispatch();
   const roomchange = () => dispatch(changeRoom('plus'));
+  // const [roomname, setRoomname] = useState();
+  const [isSelected, setIsSelected] = useState('');
+
   // 카메라이용하여 사진 저장
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -113,6 +117,7 @@ const RoomModal = props => {
         console.log('openCamera catch' + err.toString());
       });
   };
+
   // 모달 닫기
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
@@ -140,7 +145,34 @@ const RoomModal = props => {
     await roomchange();
   };
 
+  const addRoom = async () => {
+    const roomResponse = await createRoom(roomName, isSelected);
+    console.log(roomResponse);
+    closeModal(false, 'Plus');
+    await roomchange();
+  };
+
   bs = React.createRef();
+
+  const themeImages = () => {
+    return themes.map((theme, i) => {
+      return (
+        <TouchableOpacity
+          key={i}
+          onPress={() => setIsSelected(theme.address)}
+          style={styles.imagewrap}>
+          <Image
+            source={{
+              uri: theme.address,
+            }}
+            style={
+              isSelected === theme.address ? styles.selected : styles.themeimg
+            }
+          />
+        </TouchableOpacity>
+      );
+    });
+  };
 
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
@@ -176,8 +208,18 @@ const RoomModal = props => {
             <Littlechip>
               <Text style={styles.chiptext}>사진 등록</Text>
             </Littlechip>
-            <ImageArea>
-              {/* 갤러리에서 사진 고르기 */}
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-start',
+                paddingHorizontal: 15,
+              }}>
+              {themeImages()}
+            </View>
+
+            {/* <ImageArea>
+
               <ImageBox onPress={choosePhotoFromLibrary}>
                 <Icon
                   type="MaterialCommunityIcons"
@@ -186,7 +228,7 @@ const RoomModal = props => {
                 />
                 <Text style={{fontSize: 12, marginTop: 1}}>사진 선택</Text>
               </ImageBox>
-              {/* 카메라로 사진 찍기 */}
+
               <ImageBox onPress={takePhotoFromCamera}>
                 <Icon
                   type="MaterialCommunityIcons"
@@ -195,10 +237,10 @@ const RoomModal = props => {
                 />
                 <Text style={{fontSize: 11, marginTop: 1}}>사진 촬영</Text>
               </ImageBox>
-            </ImageArea>
+            </ImageArea> */}
           </View>
         </View>
-        <Littlechip style={{marginTop: 10}}>
+        {/* <Littlechip style={{marginTop: 10}}>
           <Text style={styles.chiptext}>Preview</Text>
         </Littlechip>
         <Image
@@ -206,10 +248,11 @@ const RoomModal = props => {
             uri: image,
           }}
           style={{height: 60, width: 60, marginLeft: 20, marginTop: 10}}
-          imageStyle={{borderRadius: 15}}></Image>
+          imageStyle={{borderRadius: 15}}></Image> */}
         {/* 저장 버튼 */}
         <View style={styles.button}>
-          <AddButton onPress={() => plusRoom()}>
+          {/* <AddButton onPress={() => plusRoom()}> */}
+          <AddButton onPress={() => addRoom()}>
             <ButtonText>저장</ButtonText>
             <Icon
               type="Ionicons"
@@ -283,6 +326,27 @@ const styles = StyleSheet.create({
   },
   photo: {
     flex: 3,
+  },
+  imagewrap: {
+    width: 50,
+    height: 50,
+    margin: 5,
+  },
+  themeimg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    borderColor: 'transparent',
+    resizeMode: 'cover',
+    borderWidth: 2,
+  },
+  selected: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    resizeMode: 'cover',
+    borderColor: '#8AD169',
+    borderWidth: 2,
   },
 });
 export {RoomModal};

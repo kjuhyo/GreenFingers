@@ -2,8 +2,10 @@ import {instance} from './index';
 import {instanceFile} from './index';
 
 // 방 생성
-export function createRoom(formData) {
-  return instanceFile.post('room/create/v2', formData);
+export function createRoom(roomName, theme) {
+  return instanceFile.post(
+    `room/create/v2?roomName=${roomName}&theme=${theme}`,
+  );
 }
 
 // 방 삭제
