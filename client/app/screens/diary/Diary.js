@@ -285,7 +285,9 @@ export function DiaryScreen({navigation}) {
             <Text style={{fontSize: 18}}>
               식물을 등록하고 다이어리를 관리해보세요🌻
             </Text>
-            <TouchableOpacity style={{marginTop: 15}}>
+            <TouchableOpacity
+              style={{marginTop: 15}}
+              onPress={() => navigation.navigate('Home')}>
               <Text
                 style={{color: '#29582C', fontWeight: 'bold', fontSize: 17}}>
                 식물 등록하러 가기
