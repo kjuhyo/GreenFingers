@@ -22,11 +22,12 @@ import {findRoomDetail} from '../../api/room';
 import {changeRoom} from '../../reducers/roomReducer';
 
 export function RoomScreen({route, navigation}) {
-  const {roomact} = useSelector(state => ({
+  // const {roomact} = useSelector(state => ({
+  // }));
+  const {roomact, plantact, rooms} = useSelector(state => ({
     roomact: state.roomReducer.roomact,
-  }));
-  const {plantact} = useSelector(state => ({
     plantact: state.roomReducer.plantact,
+    rooms: state.roomReducer.rooms,
   }));
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
@@ -36,6 +37,10 @@ export function RoomScreen({route, navigation}) {
   const [roomDetail, setRoomDetail] = useState([]);
   const [roomPlantDetail, setRoomPlantDetail] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [roomname, setRoomname] = useState();
+  const [roomtheme, setRoomtheme] = useState(
+    'https://www.sketchappsources.com/resources/source-image/profile-illustration-gunaldi-yunus.png',
+  );
   const changeModalVisible = bool => {
     setisModalVisible(bool);
   };
@@ -71,9 +76,19 @@ export function RoomScreen({route, navigation}) {
         });
     }
   };
+  // get room name, theme from redux
+  const getRoomNameTheme = async () => {
+    await rooms.forEach(room => {
+      if (room.rid === route.params.rid) {
+        setRoomname(room.roomName);
+        setRoomtheme(room.theme);
+      }
+    });
+  };
   const dispatch = useDispatch();
   const makeclean = () => dispatch(changeRoom(''));
   useEffect(async () => {
+    console.log('in use effect');
     const check = roomact;
     if (check === 'trash') {
       makeclean();
@@ -81,7 +96,8 @@ export function RoomScreen({route, navigation}) {
     } else {
       await getPlantData(rid);
     }
-  }, [plantact, roomact]);
+    await getRoomNameTheme();
+  }, [plantact, roomact, rooms]);
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity>
@@ -165,8 +181,10 @@ export function RoomScreen({route, navigation}) {
                 position: 'absolute',
                 top: 0,
                 left: 0,
+                width: '100%',
               }}
               source={require('../../assets/images/mainroom.jpg')}
+              source={{uri: roomtheme}}
             />
           </View>
           <View style={{flexDirection: 'row', marginTop: 40}}>
@@ -180,7 +198,8 @@ export function RoomScreen({route, navigation}) {
                 type="Ionicons"
                 name="chevron-back-outline"
                 style={{color: 'white', fontSize: 20, paddingRight: 8}}></Icon>
-              <Text style={styles.roomtext}>{roomDetail.roomName}</Text>
+              {/* <Text style={styles.roomtext}>{roomDetail.roomName}</Text> */}
+              <Text style={styles.roomtext}>{roomname}</Text>
             </TouchableOpacity>
             <View style={styles.setting}>
               <TouchableOpacity onPress={() => changeModalVisible3(true)}>
@@ -225,6 +244,7 @@ export function RoomScreen({route, navigation}) {
                 <RoomEditModal
                   changeModalVisible={changeModalVisible2}
                   setData={setData}
+                  roomid={rid}
                 />
               </Modal>
             </View>

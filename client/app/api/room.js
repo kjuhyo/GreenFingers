@@ -40,3 +40,8 @@ export function main() {
 export function findRoomDetail(id) {
   return instance.get(`room/find/${id}`);
 }
+
+// 방 정보 변경
+export function changeRoomNameTheme(id, roomName, theme) {
+  return instance.post(`room/update/${id}?roomName=${roomName}&theme=${theme}`);
+}
