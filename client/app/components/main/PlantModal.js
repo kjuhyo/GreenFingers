@@ -55,6 +55,10 @@ const PlantModal = props => {
       plantback();
       closeModal(false, 'Trash');
     }
+    if (plantact === 'edit') {
+      plantback();
+      closeModal(false, 'edit');
+    }
   }, [plantact]);
   const pid = props.pid;
   const pname = props.pname;
