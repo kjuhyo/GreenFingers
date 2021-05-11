@@ -141,10 +141,12 @@ export function DiaryScreen({navigation}) {
 
   // 탭이 바뀔때마다 비워주고 다시 set
   useEffect(() => {
-    setDiaryDate([]); // 비워주고
-    setWaterDate([]); // 비워주고
-    initialDiary(); // 다시 set
-    getWaterDate(); // 다시 set
+    if (userPlants.length != 0) {
+      setDiaryDate([]); // 비워주고
+      setWaterDate([]); // 비워주고
+      initialDiary(); // 다시 set
+      getWaterDate(); // 다시 set
+    }
   }, [activePlant]);
 
   // 현재 식물의 선택된 날짜에 해당하는 다이어리 목록을 set 해주는 함수
@@ -152,7 +154,7 @@ export function DiaryScreen({navigation}) {
     if (selectedDate) {
       const diaryByDate = await findDiaryByDate(selectedDate);
       const diaryByDateRes = diaryByDate.data.response;
-
+      // console.log('날짜별 다이어리 조회 api 응답', diaryByDate);
       // 현재 선택된 식물의 다이어리만 가져오기
       if (diaryByDateRes.length != 0) {
         const activePlantDiary = await Promise.all(
@@ -167,15 +169,19 @@ export function DiaryScreen({navigation}) {
         const fileterdList = activePlantDiary.filter(diary => {
           return diary != undefined;
         });
-
+        // console.log('날짜별 다이어리 조회 api 응답', diaryByDateRes);
         // 해당되는 다이어리 목록을 set
         setSelectedDiary(fileterdList);
+      } else {
+        setSelectedDiary(undefined);
       }
     }
   };
 
   useEffect(() => {
-    diaryList();
+    if (userPlants.length != 0) {
+      diaryList();
+    }
   }, [selectedDate, activePlant]);
   // console.log('undefined인가?', selectedDiary);
 
@@ -191,7 +197,7 @@ export function DiaryScreen({navigation}) {
 
   // 다이어리 보기 눌렀을 경우 피드 목록 렌더링하는 함수
   const feedRendering = () => {
-    if (selectedDiary.length != 0) {
+    if (selectedDiary != undefined) {
       return selectedDiary.map((diary, idx) => (
         <Feed
           key={idx}
@@ -279,7 +285,9 @@ export function DiaryScreen({navigation}) {
             <Text style={{fontSize: 18}}>
               식물을 등록하고 다이어리를 관리해보세요🌻
             </Text>
-            <TouchableOpacity style={{marginTop: 15}}>
+            <TouchableOpacity
+              style={{marginTop: 15}}
+              onPress={() => navigation.navigate('Home')}>
               <Text
                 style={{color: '#29582C', fontWeight: 'bold', fontSize: 17}}>
                 식물 등록하러 가기
