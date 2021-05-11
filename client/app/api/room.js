@@ -2,8 +2,10 @@ import {instance} from './index';
 import {instanceFile} from './index';
 
 // 방 생성
-export function createRoom(formData) {
-  return instanceFile.post('room/create/v2', formData);
+export function createRoom(roomName, theme) {
+  return instanceFile.post(
+    `room/create/v2?roomName=${roomName}&theme=${theme}`,
+  );
 }
 
 // 방 삭제
@@ -39,4 +41,9 @@ export function main() {
 // 해당 방 상세 조회
 export function findRoomDetail(id) {
   return instance.get(`room/find/${id}`);
+}
+
+// 방 정보 변경
+export function changeRoomNameTheme(id, roomName, theme) {
+  return instance.post(`room/update/${id}?roomName=${roomName}&theme=${theme}`);
 }

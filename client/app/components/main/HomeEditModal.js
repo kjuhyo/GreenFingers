@@ -82,8 +82,8 @@ const HomeEditModal = props => {
   const [homename, setHomename] = useState(saveHomename);
 
   const dispatch = useDispatch();
-  const setMainInfo = (mainnickname, maintheme, mainaddress) =>
-    dispatch(setMain(mainnickname, maintheme, mainaddress));
+  const setMainInfo = (mainnickname, maintheme) =>
+    dispatch(setMain(mainnickname, maintheme));
 
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -104,11 +104,11 @@ const HomeEditModal = props => {
       thema: isSelected,
     };
     changeNickTheme(params);
-    themes.forEach(savedTheme => {
-      if (savedTheme.name === isSelected) {
-        setMainInfo(homename, isSelected, savedTheme.address);
-      }
-    });
+    setMainInfo(homename, isSelected);
+    // themes.forEach(savedTheme => {
+    //   if (savedTheme.name === isSelected) {
+    //   }
+    // });
   };
 
   const themeImages = () => {
@@ -116,13 +116,14 @@ const HomeEditModal = props => {
       return (
         <TouchableOpacity
           key={i}
-          onPress={() => setIsSelected(theme.name)}
+          onPress={() => setIsSelected(theme.address)}
           style={styles.imagewrap}>
           <Image
-            source={theme.address}
-            // source={require('../../assets/images/mainroom.jpg')}
+            source={{
+              uri: theme.address,
+            }}
             style={
-              isSelected === theme.name ? styles.selected : styles.themeimg
+              isSelected === theme.address ? styles.selected : styles.themeimg
             }
           />
         </TouchableOpacity>

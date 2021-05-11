@@ -32,9 +32,10 @@ import {
   Geolocation,
 } from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
-import axios from 'axios';
 
-import room from '../../reducers/roomReducer';
+// reducer
+import {room, getRoomlist} from '../../reducers/roomReducer';
+import {setMain} from '../../reducers/homeReducer';
 
 //modal
 import MessageModal from '../../components/auth/Messagemodal';
@@ -45,7 +46,6 @@ import {main} from '../../api/room';
 
 // home theme
 import {themes, themesA, themesB} from '../../assets/theme/roomTheme';
-import {setMain} from '../../reducers/homeReducer';
 
 // import Modal from "react-native-modal";
 
@@ -111,17 +111,19 @@ function Home({navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
-  const [roomData, setRoomData] = useState([]);
 
-  const {homename, theme, address} = useSelector(state => ({
+  const {homename, theme, userRooms} = useSelector(state => ({
     homename: state.homeReducer.homename,
     theme: state.homeReducer.theme,
-    address: state.homeReducer.address,
+    userRooms: state.roomReducer.rooms,
   }));
+  // const [roomData, setRoomData] = useState(userRooms);
+  // console.log('room reducer', userRooms);
 
   const dispatch = useDispatch();
-  const setMainInfo = (mainnickname, maintheme, mainaddress) =>
-    dispatch(setMain(mainnickname, maintheme, mainaddress));
+  const setMainInfo = (mainnickname, maintheme) =>
+    dispatch(setMain(mainnickname, maintheme));
+  const getRooms = rooms => dispatch(getRoomlist(rooms));
 
   const changeModalVisible = bool => {
     setisModalVisible(bool);
@@ -140,6 +142,9 @@ function Home({navigation}) {
       .then(res => {
         setRoomData(res.data.response);
         console.log(res.data.response);
+        // setRoomData(res.data.response);
+        console.log('get room data', res.data.response);
+        getRooms(res.data.response);
       })
       .then(() => {
         setLoading(false);
@@ -153,15 +158,16 @@ function Home({navigation}) {
   const getMainInfo = async () => {
     const mainResponse = await main();
     const mainInfo = mainResponse.data;
-    console.log('maininfo', mainInfo);
-    themes.forEach(savedTheme => {
-      if (savedTheme.name === mainInfo.theme) {
-        setMainInfo(mainInfo.homeNickname, mainInfo.theme, savedTheme.address);
-      }
-    });
+    // console.log('maininfo', mainInfo);
+    setMainInfo(mainInfo.homeNickname, mainInfo.theme);
+    // themes.forEach(savedTheme => {
+    //   if (savedTheme.name === mainInfo.theme) {
+    //     setMainInfo(mainInfo.homeNickname, mainInfo.theme, savedTheme.address);
+    //   }
+    // });
   };
 
-  console.log('home reducer', homename, theme, address);
+  // console.log('home reducer', homename, theme);
   const [info, setInfo] = useState({
     name: 'loading !!',
     temp: 'loading',
@@ -183,7 +189,6 @@ function Home({navigation}) {
     }
   };
   // asking for location permission
-
   const renderItem = ({item}) => {
     return (
       <View style={styles.rooms}>
@@ -351,9 +356,14 @@ function Home({navigation}) {
             position: 'absolute',
             top: 0,
             left: 0,
+            resizeMode: 'stretch',
+            width: '100%',
           }}
-          // source={require('../../assets/images/mainroom.jpg')}
-          source={address}
+          source={{
+            uri:
+              // 'https://ssafybucket.s3.ap-northeast-2.amazonaws.com/DEFAULT_HOME_THEME.jpg',
+              theme,
+          }}
         />
       </View>
       {/* 오른쪽 상단 아이콘 */}
@@ -385,13 +395,6 @@ function Home({navigation}) {
       {/* 홈이름 */}
       <View style={styles.mainname}>
         <Text style={styles.nametext}>{homename}</Text>
-        {/* <Icon
-          type="Ionicons"
-          name="pencil-outline"
-          style={styles.pencil}
-          onPress={() => {
-            console.log('click pencil');
-          }}></Icon> */}
       </View>
       {/* 날씨 */}
       <Weather />
@@ -418,7 +421,7 @@ function Home({navigation}) {
       {/* 방리스트 */}
       <SafeAreaView style={{flex: 1}}>
         <FlatList
-          data={roomData}
+          data={userRooms}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           onEndReachedThreshold={0.9}
