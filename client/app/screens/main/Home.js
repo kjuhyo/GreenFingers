@@ -140,8 +140,6 @@ function Home({navigation}) {
   const getRoomData = () => {
     findRoom()
       .then(res => {
-        setRoomData(res.data.response);
-        console.log(res.data.response);
         // setRoomData(res.data.response);
         console.log('get room data', res.data.response);
         getRooms(res.data.response);
