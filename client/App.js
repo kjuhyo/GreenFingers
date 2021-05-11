@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 // import { StatusBar } from "expo-status-bar";
-import {Dimensions, StatusBar, Alert, Modal} from 'react-native';
+import {Dimensions, StatusBar, Alert, Modal, LogBox} from 'react-native';
 
 import {StyleSheet, Text, View, Button} from 'react-native';
 import 'react-native-gesture-handler';
@@ -48,6 +48,8 @@ export default function App() {
     });
     return unsubscribe;
   }, []);
+
+  LogBox.ignoreAllLogs();
 
   return (
     <StoreProvider store={store}>
