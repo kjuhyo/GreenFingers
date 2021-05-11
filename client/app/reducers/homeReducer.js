@@ -1,14 +1,14 @@
 const SETMAIN = 'SETMAIN';
 
 let homeState = {
-  theme: '',
+  theme:
+    'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
   homename: '',
 };
-export const setMain = (homename, theme, address) => ({
+export const setMain = (homename, theme) => ({
   type: SETMAIN,
   homename,
   theme,
-  address,
 });
 
 export default function home(state = homeState, action) {
@@ -17,7 +17,6 @@ export default function home(state = homeState, action) {
       return {
         homename: action.homename,
         theme: action.theme,
-        address: action.address,
       };
     default:
       return state;

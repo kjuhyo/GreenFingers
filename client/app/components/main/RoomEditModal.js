@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,8 +14,13 @@ import {Littlechip} from '../../assets/theme/roomstyle';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
+import {useDispatch, useSelector} from 'react-redux';
+import {roomNameTheme} from '../../reducers/roomReducer';
+
+import {themes} from '../../assets/theme/roomTheme';
 // import * as ImagePicker from "expo-image-picker";
 // 리액트 네이티브의 image picker 필요
+import {changeRoomNameTheme} from '../../api/room';
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -72,6 +77,47 @@ const RoomEditModal = props => {
   const [image, setImage] = useState(
     'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
   );
+
+  const dispatch = useDispatch();
+  const updateRoomNameTheme = (roomid, roomname, roomtheme) =>
+    dispatch(roomNameTheme(roomid, roomname, roomtheme));
+
+  const {rooms} = useSelector(state => ({
+    rooms: state.roomReducer.rooms,
+  }));
+
+  const [roomname, setRoomname] = useState();
+  const [isSelected, setIsSelected] = useState();
+
+  useEffect(async () => {
+    await rooms.forEach(room => {
+      if (room.rid === props.roomid) {
+        setRoomname(room.roomName);
+        setIsSelected(room.theme);
+      }
+    });
+  }, [rooms]);
+
+  const themeImages = () => {
+    return themes.map((theme, i) => {
+      return (
+        <TouchableOpacity
+          key={i}
+          onPress={() => setIsSelected(theme.address)}
+          style={styles.imagewrap}>
+          <Image
+            source={{
+              uri: theme.address,
+            }}
+            style={
+              isSelected === theme.address ? styles.selected : styles.themeimg
+            }
+          />
+        </TouchableOpacity>
+      );
+    });
+  };
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -105,7 +151,17 @@ const RoomEditModal = props => {
         console.log('openCamera catch' + err.toString());
       });
   };
-  const closeModal = (bool, data) => {
+  const closeModal = async (bool, data) => {
+    const params = {
+      roomName: roomname,
+      theme: isSelected,
+    };
+    const roomResponse = await changeRoomNameTheme(
+      props.roomid,
+      roomname,
+      isSelected,
+    );
+    updateRoomNameTheme(props.roomid, roomname, isSelected);
     props.changeModalVisible(bool);
     props.setData(data);
   };
@@ -135,43 +191,28 @@ const RoomEditModal = props => {
               <Text style={styles.chiptext}>방 이름 변경</Text>
             </Littlechip>
             <TextInputBox style={{marginBottom: 10}}>
-              <TextInput placeholder="방 이름" />
+              <TextInput
+                placeholder="방 이름"
+                onChangeText={userRn => setRoomname(userRn)}
+              />
             </TextInputBox>
           </View>
           {/* 사진등록 */}
           <View style={styles.photo}>
             <Littlechip>
-              <Text style={styles.chiptext}>사진 변경</Text>
+              <Text style={styles.chiptext}>방 테마 선택</Text>
             </Littlechip>
-            <ImageArea>
-              <ImageBox onPress={choosePhotoFromLibrary}>
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name="image-multiple"
-                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
-                />
-                <Text style={{fontSize: 12, marginTop: 1}}>사진 선택</Text>
-              </ImageBox>
-              <ImageBox onPress={takePhotoFromCamera}>
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name="camera"
-                  style={{fontSize: 20, color: 'rgba(0,0,0,0.7)'}}
-                />
-                <Text style={{fontSize: 11, marginTop: 1}}>사진 촬영</Text>
-              </ImageBox>
-            </ImageArea>
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-start',
+                paddingHorizontal: 15,
+              }}>
+              {themeImages()}
+            </View>
           </View>
         </View>
-        <Littlechip style={{marginTop: 10}}>
-          <Text style={styles.chiptext}>Preview</Text>
-        </Littlechip>
-        <Image
-          source={{
-            uri: image,
-          }}
-          style={{height: 60, width: 60, marginLeft: 20, marginTop: 10}}
-          imageStyle={{borderRadius: 15}}></Image>
         {/* 버튼 */}
         <View style={styles.button}>
           <AddButton onPress={() => closeModal(false, 'Cancel')}>
@@ -248,6 +289,27 @@ const styles = StyleSheet.create({
   },
   photo: {
     flex: 3,
+  },
+  imagewrap: {
+    width: 50,
+    height: 50,
+    margin: 5,
+  },
+  themeimg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    borderColor: 'transparent',
+    resizeMode: 'cover',
+    borderWidth: 2,
+  },
+  selected: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    resizeMode: 'cover',
+    borderColor: '#8AD169',
+    borderWidth: 2,
   },
 });
 export {RoomEditModal};

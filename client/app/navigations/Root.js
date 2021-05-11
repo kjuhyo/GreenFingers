@@ -109,8 +109,8 @@ export default function Root() {
   printToken = async () => {
     const token = await auth().currentUser.getIdToken(true);
     console.log(token);
-    // const deviceToken = await messaging().getToken();
-    // console.log('device token', deviceToken);
+    const deviceToken = await messaging().getToken();
+    console.log('device token', deviceToken);
     // const response = await registerDevice();
     // console.log('device token test', response);
   };
