@@ -15,7 +15,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector, useDispatch} from 'react-redux';
 import {createRoom} from '../../api/room';
-import {changeRoom} from '../../reducers/roomReducer';
+import {changeRoom, anotherRoom} from '../../reducers/roomReducer';
 import {themes} from '../../assets/theme/roomTheme';
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -79,6 +79,7 @@ const RoomModal = props => {
   }));
   const dispatch = useDispatch();
   const roomchange = () => dispatch(changeRoom('plus'));
+  const additionalRoom = room => dispatch(anotherRoom(room));
   // const [roomname, setRoomname] = useState();
   const [isSelected, setIsSelected] = useState('');
 
@@ -148,7 +149,8 @@ const RoomModal = props => {
   const addRoom = async () => {
     const roomResponse = await createRoom(roomName, isSelected);
     console.log(roomResponse);
-    closeModal(false, 'Plus');
+    // additionalRoom()
+    // closeModal(false, 'Plus');
     await roomchange();
   };
 
