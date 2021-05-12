@@ -2,6 +2,8 @@ const UPDATE_ACTIVE_PLANT = 'UPDATE_ACTIVE_PLANT';
 const DIARY_REGISTER = 'DIARY_REGISTER';
 const MODIFY_DIARY = 'MODIFY_DIARY';
 const DELETED_DIARY = 'DELETED_DIARY';
+const REGISTER_WATER = 'REGISTER_WATER';
+const DELETE_WATER = 'DELETE_WATER';
 
 export const updateActivePlant = (pid, tabidx) => ({
   type: UPDATE_ACTIVE_PLANT,
@@ -24,12 +26,24 @@ export const deletedDiary = deleteddiary => ({
   deleteddiary,
 });
 
+export const registerWater = registerwater => ({
+  type: REGISTER_WATER,
+  registerwater,
+});
+
+export const deleteWater = deletewater => ({
+  type: DELETE_WATER,
+  deletewater,
+});
+
 let diaryState = {
   pid: -1,
   tabidx: 0,
   registerdiary: false,
   modifydiary: false,
   deleteddiary: false,
+  registerwater: false,
+  deletewater: false,
 };
 
 export default function diary(state = diaryState, action) {
@@ -53,7 +67,17 @@ export default function diary(state = diaryState, action) {
     case 'DELETED_DIARY':
       return {
         ...state,
-        deletediary: action.deleteddiary,
+        deleteddiary: action.deleteddiary,
+      };
+    case 'REGISTER_WATER':
+      return {
+        ...state,
+        registerwater: action.registerwater,
+      };
+    case 'DELETE_WATER':
+      return {
+        ...state,
+        deletewater: action.deletewater,
       };
     default:
       return state;

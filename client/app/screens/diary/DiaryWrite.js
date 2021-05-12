@@ -87,7 +87,7 @@ export function DiaryWriteScreen({route, navigation}) {
         });
       });
       await writeDiary(formData);
-      isRegisterDiary(!registerDiaryFlag);  // 다이어리 작성했을 경우 리덕스 상태 변화
+      isRegisterDiary(!registerDiaryFlag); // 다이어리 작성했을 경우 리덕스 상태 변화
       setIsLoading(false);
       navigation.navigate('Diary');
     }

@@ -35,7 +35,10 @@ export default function DeleteModal(props) {
   // 다이어리 삭제 api 요청 함수
   const diaryDelete = async () => {
     await deleteDiary(props.diaryId);
+    // console.log('전', deletedDiaryFlag);
     isDeleteDiary(!deletedDiaryFlag);
+    // console.log('후', deletedDiaryFlag);
+
     setIsLoading(false); // indicator 없애기
     closeModal(false); // 삭제확인 모달 닫기
     openModal(true); // 삭제완료 모달 열기

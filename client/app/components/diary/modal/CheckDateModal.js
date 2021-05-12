@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text} from 'react-native';
+
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {registerWater} from '../../../reducers/diaryReducer';
+
+// api
 import {myPlantWaterRegister} from '../../../api/plant';
 
+// style
 import {
   ModalContainer,
   ModalBox,
@@ -12,6 +19,16 @@ import {
 
 export default function CheckDateModal(props) {
   const [isLoading, setIsLoading] = useState(false);
+
+  // 디스패치 정의
+  const dispatch = useDispatch();
+
+  const isRegisterWater = registerwater =>
+    dispatch(registerWater(registerwater));
+
+  const {registerWaterFlag} = useSelector(state => ({
+    registerWaterFlag: state.diaryReducer.registerwater,
+  }));
 
   const closeModal = visible => {
     props.setDateCheckModalVisible(visible);
@@ -27,6 +44,7 @@ export default function CheckDateModal(props) {
     const params = {pid: props.activePlant, waterDate: selectDate};
 
     await myPlantWaterRegister(params);
+    isRegisterWater(!registerWaterFlag);
     setIsLoading(false);
     closeModal(false);
     openCompleteModal(true);

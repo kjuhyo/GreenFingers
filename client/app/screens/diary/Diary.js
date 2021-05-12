@@ -113,6 +113,12 @@ export function DiaryScreen({navigation}) {
   const {deleteFlag} = useSelector(state => ({
     deleteFlag: state.diaryReducer.deleteddiary,
   }));
+  const {registerWaterFlag} = useSelector(state => ({
+    registerWaterFlag: state.diaryReducer.registerwater,
+  }));
+  const {deleteWaterFlag} = useSelector(state => ({
+    deleteWaterFlag: state.diaryReducer.deletewater,
+  }));
 
   // 보유 식물이 있을 경우에만 activePlant 값 설정
   const isPlant = () => {
@@ -174,7 +180,14 @@ export function DiaryScreen({navigation}) {
       initialDiary(); // 다시 set
       getWaterDate(); // 다시 set
     }
-  }, [activePlantId, writeFlag, modifyFlag, deleteFlag]);
+  }, [
+    activePlantId,
+    writeFlag,
+    modifyFlag,
+    deleteFlag,
+    registerWaterFlag,
+    deleteWaterFlag,
+  ]);
 
   // 현재 식물의 선택된 날짜에 해당하는 다이어리 목록을 set 해주는 함수
   const diaryList = async () => {
@@ -209,7 +222,14 @@ export function DiaryScreen({navigation}) {
     if (userPlants.length != 0 && activePlantId != -1) {
       diaryList();
     }
-  }, [selectedDate, activePlantId, modifyFlag, deleteFlag]);
+  }, [
+    selectedDate,
+    activePlantId,
+    modifyFlag,
+    deleteFlag,
+    registerWaterFlag,
+    deleteWaterFlag,
+  ]);
 
   useEffect(() => {
     if (showDiary) {
