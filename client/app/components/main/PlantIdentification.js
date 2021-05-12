@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  ScrollView,
 } from 'react-native';
 import {Button, Icon} from 'native-base';
 import styled from 'styled-components';
@@ -67,7 +68,7 @@ const PlantIdentification = props => {
 
   return (
     <ScrollView disabled={true}>
-      <KeyboardAwareScrollView style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <View style={styles.modal}>
           <View style={styles.modaltop}>
             <Text style={styles.titletext}>식물 판별</Text>
@@ -145,10 +146,10 @@ const PlantIdentification = props => {
 
 const styles = StyleSheet.create({
   container: {
-    height: {height: hp('100%')},
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: hp('100%'),
     backgroundColor: 'rgba(0,0,0,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modal: {
     width: WIDTH,
@@ -206,9 +207,9 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // alignItems: 'flex-end',
     // justifyContent: 'center',
-    // backgroundColor: 'yellow',
-    bottom: HEIGHT - 770,
+    // backgroundColor: 'yellow'
     left: WIDTH / 2 - 50,
+    marginTop: 20,
   },
   lastbtn: {
     width: 100,
