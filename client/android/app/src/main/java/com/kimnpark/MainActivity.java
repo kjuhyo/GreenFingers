@@ -1,4 +1,4 @@
-package com.green;
+package com.kimnpark.greenfingers;
 
 import com.facebook.react.ReactActivity;
 
