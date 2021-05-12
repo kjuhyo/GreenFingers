@@ -3,6 +3,10 @@ import React, {useEffect, useState} from 'react';
 import {Text, Pressable, ActivityIndicator} from 'react-native';
 import {myPlantWaterCancel} from '../../../api/plant';
 
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteWater} from '../../../reducers/diaryReducer';
+
 import {
   ModalContainer,
   ModalBox,
@@ -26,9 +30,19 @@ export default function DiarySelectModal(props) {
     props.setShowDiary(val);
   };
 
+  // 디스패치 정의
+  const dispatch = useDispatch();
+
+  const isDeleteWater = deletewater => dispatch(deleteWater(deletewater));
+
+  const {deleteWaterFlag} = useSelector(state => ({
+    deleteWaterFlag: state.diaryReducer.deletewater,
+  }));
+
   // 물주기 취소 api 요청 함수
   const cancelWater = async () => {
     await myPlantWaterCancel(props.waterDateId[props.selectedDate]);
+    isDeleteWater(!deleteWaterFlag);
     setIsLoading(false);
     closeModal(false);
   };
@@ -68,7 +82,7 @@ export default function DiarySelectModal(props) {
         </ModalHeader>
 
         {/* 다이어리 보기 버튼 */}
-        <ModalButtonBox borderRadius="10px" backgroundColor="#F9F9F9">
+        <ModalButtonBox borderRadius="10px">
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
@@ -125,7 +139,7 @@ export default function DiarySelectModal(props) {
             )}
           </ModalButton>
         </ModalButtonBox>
-        
+
         {/* indicator 표시 */}
         {renderLoading()}
       </ModalBox>

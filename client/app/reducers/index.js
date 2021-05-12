@@ -5,6 +5,8 @@ import profileReducer from './profileReducer.js';
 import surveyReducer from './surveyReducer.js';
 import roomReducer from './roomReducer.js';
 import homeReducer from './homeReducer.js';
+import diaryReducer from './diaryReducer.js';
+
 const allReducer = combineReducers({
   authReducer,
   plantReducer,
@@ -12,6 +14,7 @@ const allReducer = combineReducers({
   surveyReducer,
   roomReducer,
   homeReducer,
+  diaryReducer,
 });
 export default allReducer;
 
