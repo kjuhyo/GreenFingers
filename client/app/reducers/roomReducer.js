@@ -2,6 +2,7 @@ const CHANGE = 'CHANGE';
 const CHANGE_PLANT = 'CHANGE_PLANT';
 const GET_ROOMLIST = 'GET_ROOMLIST';
 const ROOM_NAME_THEME = 'ROOM_NAME_THEME';
+const ADD_ROOM = 'ADD_ROOM';
 
 let roomState = {
   roomact: '',
@@ -22,6 +23,10 @@ export const getRoomlist = rooms => ({
   type: GET_ROOMLIST,
   rooms,
 });
+export const anotherRoom = room => ({
+  type: ADD_ROOM,
+  room,
+});
 export const roomNameTheme = (roomid, roomname, roomtheme) => ({
   type: ROOM_NAME_THEME,
   roomid,
@@ -40,6 +45,11 @@ export default function room(state = roomState, action) {
       return {
         ...state,
         plantact: action.act,
+      };
+    case 'ADD_ROOM':
+      return {
+        ...state,
+        rooms: [...state.rooms, action.room],
       };
     case 'GET_ROOMLIST':
       return {

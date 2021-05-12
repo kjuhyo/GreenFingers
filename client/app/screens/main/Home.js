@@ -134,7 +134,7 @@ function Home({navigation}) {
   const setData = data => {
     setChooseData(data);
   };
-  console.log(ChooseData);
+  // console.log(ChooseData);
   const [loading, setLoading] = useState(false);
   // 방 정보 조회
   const getRoomData = () => {
@@ -158,11 +158,6 @@ function Home({navigation}) {
     const mainInfo = mainResponse.data;
     // console.log('maininfo', mainInfo);
     setMainInfo(mainInfo.homeNickname, mainInfo.theme);
-    // themes.forEach(savedTheme => {
-    //   if (savedTheme.name === mainInfo.theme) {
-    //     setMainInfo(mainInfo.homeNickname, mainInfo.theme, savedTheme.address);
-    //   }
-    // });
   };
 
   // console.log('home reducer', homename, theme);
