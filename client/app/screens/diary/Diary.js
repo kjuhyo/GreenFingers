@@ -99,25 +99,34 @@ export function DiaryScreen({navigation}) {
     activePlantTabIdx: state.diaryReducer.tabidx,
   }));
 
-  // 유저의 식물 정보 리덕스에서 가져오기
+  // 리덕스에서 상태 가져오기
+  // 유저의 식물 정보
   const {userPlants} = useSelector(state => ({
     userPlants: state.plantReducer.userPlants,
   }));
-
+  // 다이어리 작성 상태
   const {writeFlag} = useSelector(state => ({
     writeFlag: state.diaryReducer.registerdiary,
   }));
+  // 다이어리 수정 상태
   const {modifyFlag} = useSelector(state => ({
     modifyFlag: state.diaryReducer.modifydiary,
   }));
+  // 다이어리 삭제 상태
   const {deleteFlag} = useSelector(state => ({
     deleteFlag: state.diaryReducer.deleteddiary,
   }));
+  // 물주기 상태
   const {registerWaterFlag} = useSelector(state => ({
     registerWaterFlag: state.diaryReducer.registerwater,
   }));
+  // 물주기 취소 상태
   const {deleteWaterFlag} = useSelector(state => ({
     deleteWaterFlag: state.diaryReducer.deletewater,
+  }));
+  // 식물 등록/삭제 상태(미사용)
+  const {plantact} = useSelector(state => ({
+    plantact: state.roomReducer.plantact,
   }));
 
   // 보유 식물이 있을 경우에만 activePlant 값 설정
@@ -236,6 +245,7 @@ export function DiaryScreen({navigation}) {
       feedRendering();
     }
   }, [modifyFlag, deleteFlag]);
+
   // 다이어리 보기 눌렀을 경우 피드 목록 렌더링하는 함수
   const feedRendering = () => {
     if (selectedDiary != undefined && selectedDiary.length != 0) {
