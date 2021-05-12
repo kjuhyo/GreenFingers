@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {registerDiary} from '../../reducers/diaryReducer';
+
 // axios
 import {writeDiary} from '../../api/diary';
 
@@ -40,6 +44,16 @@ export function DiaryWriteScreen({route, navigation}) {
   const [isLoading, setIsLoading] = useState(false);
 
   const maxImgCnt = 5; // 사진 선택 최대 개수
+
+  // 디스패치 정의
+  const dispatch = useDispatch();
+
+  const isRegisterDiary = registerdiary =>
+    dispatch(registerDiary(registerdiary));
+
+  const {registerDiaryFlag} = useSelector(state => ({
+    registerDiaryFlag: state.diaryReducer.registerdiary,
+  }));
 
   // Toast 띄우는 함수
   const toastShow = content => {
@@ -73,6 +87,7 @@ export function DiaryWriteScreen({route, navigation}) {
         });
       });
       await writeDiary(formData);
+      isRegisterDiary(!registerDiaryFlag);  // 다이어리 작성했을 경우 리덕스 상태 변화
       setIsLoading(false);
       navigation.navigate('Diary');
     }

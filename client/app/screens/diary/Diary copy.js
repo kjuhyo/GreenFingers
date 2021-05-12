@@ -5,7 +5,7 @@ import {ScrollView, Text, TouchableOpacity} from 'react-native';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {updateActivePlant} from '../../reducers/diaryReducer';
+import {updateActivePlant, getAllDiaryList} from '../../reducers/diaryReducer';
 
 // style
 import {
@@ -75,7 +75,9 @@ const renderTabBar = props => {
 };
 
 export function DiaryScreen({navigation}) {
+  const [activeTab, setActiveTab] = useState(0); // 현재 탭 인덱스
   const [showDiary, setShowDiary] = useState(false); // true: 다이어리, false: 달력
+  // const [allDiaryState, setAllDiaryState] = useState([]); // 전체 다이어리 목록
   const [diaryDate, setDiaryDate] = useState(); // 현재 선택한 식물의 다이어리 날짜 리스트
   const [selectedDate, setSelectedDate] = useState(); // 선택한 날짜
   const [selectedDiary, setSelectedDiary] = useState(); // 현재 식물의 선택한 날짜의 다이어리 목록
@@ -84,10 +86,15 @@ export function DiaryScreen({navigation}) {
 
   // 디스패치 정의
   const dispatch = useDispatch();
-
+  
   // 활성화된 탭의 식물 아이디와 탭 인덱스 디스패치
   const setActivePlantTab = (pid, tabidx) =>
     dispatch(updateActivePlant(pid, tabidx));
+
+  // 선택된 탭의 선택한 날짜의 다이어리 목록 디스패치
+  const diaryDateList = diarydate => dispatch(getDiaryDate(diarydate));
+
+  // const setAllDiaryList = diarylist => dispatch(getAllDiaryList(diarylist));
 
   // 현재 선택된 탭의 식물 id
   const {activePlantId} = useSelector(state => ({
@@ -104,34 +111,29 @@ export function DiaryScreen({navigation}) {
     userPlants: state.plantReducer.userPlants,
   }));
 
-  const {writeFlag} = useSelector(state => ({
-    writeFlag: state.diaryReducer.registerdiary,
-  }));
-
   // 보유 식물이 있을 경우에만 activePlant 값 설정
   const isPlant = () => {
     if (userPlants.length == 0) {
-      setActivePlantTab(undefined, 0);
+      return undefined;
     } else {
-      setActivePlantTab(userPlants[0].pid, 0);
+      return userPlants[0].pid;
     }
   };
 
-  useEffect(() => {
-    if (activePlantId == -1) {
-      isPlant();
-    }
-  }, []);
+  // 현재 선택된 식물 id. 첫번째 식물 아이디를 초기값으로 설정
+  const [activePlant, setActivePlant] = useState(isPlant);
 
   // 처음에 다이어리 전체 목록 가져와서 현재 선택된 탭의 식물에 해당하는 다이어리 작성 날짜 리스트 set하는 함수
   const initialDiary = async () => {
     // 1. axios 요청을 통해 전체 다이어리 목록 가져옴
     const allDiary = await findAllDiary();
+    // setAllDiaryState(allDiary.data.response);
+    // setAllDiaryList(allDiary.data.response);  // 리덕스에 다이어리 전체 리스트 저장
 
     // 2. 전체 다이어리 목록에서 현재 선택된 탭의 식물 id에 해당하는 다이어리의 작성 날짜 리스트
     const activePlantDate = await Promise.all(
       allDiary.data.response.map(diary => {
-        if (diary.plantId === activePlantId) {
+        if (diary.plantId === activePlant) {
           return diary.writeDateTime.substring(0, 10);
         }
       }),
@@ -141,14 +143,15 @@ export function DiaryScreen({navigation}) {
 
   // 물 준 날짜 조회 api 호출 후 물 준 날짜 set하는 함수
   const getWaterDate = async () => {
-    const waterInfo = await myPlantWaterInfo(activePlantId);
-
+    const waterInfo = await myPlantWaterInfo(activePlant);
+    // console.log(waterInfo.data);
     // api 응답에서 날짜만 추출
     if (waterInfo.data.length != 0) {
       const cutWaterDateId = {};
-
+      // const cutDate = await Promise.all(
       const cutDate = await Promise.all(
         waterInfo.data.map(water => {
+          // console.log(water.waterDate.substring(0, 10), water.wid);
           cutWaterDateId[water.waterDate.substring(0, 10)] = water.wid;
           return water.waterDate.substring(0, 10);
         }),
@@ -162,25 +165,25 @@ export function DiaryScreen({navigation}) {
 
   // 탭이 바뀔때마다 비워주고 다시 set
   useEffect(() => {
-    if (userPlants.length != 0 && activePlantId != -1) {
+    if (userPlants.length != 0) {
       setDiaryDate([]); // 비워주고
       setWaterDate([]); // 비워주고
       initialDiary(); // 다시 set
       getWaterDate(); // 다시 set
     }
-  }, [activePlantId, writeFlag]);
+  }, [activePlant]);
 
   // 현재 식물의 선택된 날짜에 해당하는 다이어리 목록을 set 해주는 함수
   const diaryList = async () => {
     if (selectedDate) {
       const diaryByDate = await findDiaryByDate(selectedDate);
       const diaryByDateRes = diaryByDate.data.response;
-
+      // console.log('날짜별 다이어리 조회 api 응답', diaryByDate);
       // 현재 선택된 식물의 다이어리만 가져오기
       if (diaryByDateRes.length != 0) {
         const activePlantDiary = await Promise.all(
           diaryByDateRes.map(diary => {
-            if (diary.plantId === activePlantId) {
+            if (diary.plantId === activePlant) {
               return diary;
             }
           }),
@@ -190,7 +193,7 @@ export function DiaryScreen({navigation}) {
         const fileterdList = activePlantDiary.filter(diary => {
           return diary != undefined;
         });
-
+        // console.log('날짜별 다이어리 조회 api 응답', diaryByDateRes);
         // 해당되는 다이어리 목록을 set
         setSelectedDiary(fileterdList);
       } else {
@@ -200,10 +203,21 @@ export function DiaryScreen({navigation}) {
   };
 
   useEffect(() => {
-    if (userPlants.length != 0 && activePlantId != -1) {
+    if (userPlants.length != 0) {
       diaryList();
     }
-  }, [selectedDate, activePlantId, writeFlag]);
+  }, [selectedDate, activePlant]);
+  // console.log('undefined인가?', selectedDiary);
+
+  // useEffect(() => {
+  //   const reRender = navigation.addListener('focus', () => {
+  //     console.log('현재 선택된 탭의 식물 아이디는', activePlant);
+  //     initialDiary();
+  //     diaryList();
+  //     // feedRendering();
+  //   });
+  //   return reRender;
+  // }, [navigation]);
 
   // 다이어리 보기 눌렀을 경우 피드 목록 렌더링하는 함수
   const feedRendering = () => {
@@ -252,7 +266,7 @@ export function DiaryScreen({navigation}) {
                 uri: plant.image,
               }}
               style={
-                activePlantTabIdx == idx
+                activeTab == idx
                   ? {borderColor: '#29582C', borderWidth: 2}
                   : null
               }
@@ -263,6 +277,7 @@ export function DiaryScreen({navigation}) {
           {showDiary ? (
             feedRendering()
           ) : (
+            // <Feed selectedDate={selectedDate} navigation={navigation} />
             <CalendarView
               navigation={navigation}
               setShowDiary={setShowDiary}
@@ -271,7 +286,7 @@ export function DiaryScreen({navigation}) {
               waterDateId={waterDateId} // 물 준 날짜와 wid 객체
               setSelectedDate={setSelectedDate} // 선택한 날짜 set
               selectedDate={selectedDate} // 선택한 날짜
-              activePlant={activePlantId} // 선택한 식물 id
+              activePlant={activePlant} // 선택한 식물 id
             />
           )}
         </ScrollView>
@@ -308,7 +323,11 @@ export function DiaryScreen({navigation}) {
             locked={true}
             renderTabBar={renderTabBar}
             onChangeTab={e => {
+              // console.log(e);
+              setActiveTab(e.i);
+              setActivePlant(userPlants[e.i].pid);
               setActivePlantTab(userPlants[e.i].pid, e.i);
+              // console.log('찍어봅니다', typeof userPlants[e.i].pid, typeof e.i);
               setShowDiary(false);
             }}>
             {renderTab()}
