@@ -22,7 +22,10 @@ export default function LogoutModal(props) {
         <ModalHeader justifyContent="center" flexHeight="0.7">
           <Text>로그아웃 하시겠어요?</Text>
         </ModalHeader>
-        <ModalButtonBox flexDirection="row" flexHeight="0.4">
+        <ModalButtonBox
+          flexDirection="row"
+          flexHeight="0.4"
+          style={{backgroundColor: 'rgba(255,255,255, 0.9'}}>
           <ModalButton
             onPress={() => {
               closeModal(false);

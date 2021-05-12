@@ -55,7 +55,10 @@ export default function CheckDateModal(props) {
             물을 주었나요?
           </Text>
         </ModalHeader>
-        <ModalButtonBox flexDirection="row" flexHeight="0.4">
+        <ModalButtonBox
+          flexDirection="row"
+          flexHeight="0.4"
+          style={{backgroundColor: 'rgba(255,255,255, 0.9'}}>
           <ModalButton
             onPress={() => {
               closeModal(false);

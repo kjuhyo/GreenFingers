@@ -68,7 +68,7 @@ export default function DiarySelectModal(props) {
         </ModalHeader>
 
         {/* 다이어리 보기 버튼 */}
-        <ModalButtonBox borderRadius="10px" backgroundColor="#F9F9F9">
+        <ModalButtonBox borderRadius="10px">
           <ModalButton
             justifyContent="space-between"
             onPress={() => {
