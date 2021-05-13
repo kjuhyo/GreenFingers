@@ -60,6 +60,7 @@ function CustomDrawerContent(props) {
   useEffect(async () => {
     const messageResponse = await getMessage();
     setMyMessages(messageResponse.data.response);
+    console.log('mymessages', myMessages);
   }, []);
 
   const messageDetailModal = item => {

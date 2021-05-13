@@ -28,8 +28,8 @@ export function getMessage() {
 }
 
 // 메세지 읽음 표시
-export function readMessage() {
-  return instance.put('user/checkMsg');
+export function readMessage(params) {
+  return instance.put('user/checkMsg', params);
 }
 
 // 디바이스 토큰 등록

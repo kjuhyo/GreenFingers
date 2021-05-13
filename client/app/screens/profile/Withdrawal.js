@@ -84,9 +84,9 @@ export default function Withdrawal() {
   const withdraw = async () => {
     await deleteDevice();
     const user = await firebase.auth().currentUser;
-    console.log('user', user);
+    // console.log('user', user);
     await deleteUser();
-    console.log('provider', provider);
+    // console.log('provider', provider);
     await user.delete();
     if (provider === 'google.com') {
       await GoogleSignin.signOut();
