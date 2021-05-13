@@ -9,6 +9,9 @@ import firebase from '../../components/auth/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 // GoogleSignin.configure({});
 
+//api
+import {deleteDevice} from '../../api/auth';
+
 // style
 import styled from 'styled-components';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -100,6 +103,7 @@ export default function Profile({navigation}) {
 
   const signOut = async () => {
     try {
+      await deleteDevice();
       await firebase.auth().signOut();
       if (provider === 'google.com') {
         await GoogleSignin.signOut();
