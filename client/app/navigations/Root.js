@@ -137,7 +137,9 @@ export default function Root() {
 
   useEffect(async () => {
     // await printToken();
+    let isSubscribed = true;
     await firebase.auth().onAuthStateChanged(saveUserInfo);
+    return () => (isSubscribed = false);
   }, [uid]);
 
   return (
