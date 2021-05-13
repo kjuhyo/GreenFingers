@@ -39,5 +39,5 @@ export function registerDevice() {
 
 // 디바이스 토큰 삭제
 export function deleteDevice() {
-  return instance.delete('user/logout');
+  return instanceDevice.delete('user/logout');
 }

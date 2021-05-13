@@ -13,12 +13,13 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 // firebase, redux
 import {useDispatch, useSelector} from 'react-redux';
 import {addUid, addUser} from '../../reducers/authReducer';
+import {clearUser} from '../../reducers/profileReducer';
 import firebase from '../../components/auth/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-GoogleSignin.configure({});
+// GoogleSignin.configure({});
 
-// backend api
-import {deleteUser} from '../../api/auth';
+// api
+import {deleteUser, deleteDevice} from '../../api/auth';
 
 // 회원탈퇴 안내 페이지 전체 컨테이너
 const Withdrawalcontainer = styled.View`
@@ -59,8 +60,8 @@ export default function Withdrawal() {
   const clearUserInfo = () => dispatch(clearUser());
 
   const {email, provider} = useSelector(state => ({
-    email: state.authReducer.email,
-    provider: state.authReducer.provider,
+    email: state.profileReducer.useremail,
+    provider: state.profileReducer.provider,
   }));
   // 체크박스가 true일 경우 완료 모달, false일 경우 Toast 띄움
   const check = () => {
@@ -81,13 +82,15 @@ export default function Withdrawal() {
   };
 
   const withdraw = async () => {
-    if (provider === 'google.com') {
-      await GoogleSignin.revokeAccess();
-      // await GoogleSignin.signOut();
-    }
+    await deleteDevice();
     const user = await firebase.auth().currentUser;
+    console.log('user', user);
     await deleteUser();
+    console.log('provider', provider);
     await user.delete();
+    if (provider === 'google.com') {
+      await GoogleSignin.signOut();
+    }
   };
 
   return (
