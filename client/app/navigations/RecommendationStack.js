@@ -7,11 +7,19 @@ import {SurveyintroScreen} from '../screens/recommendation/SurveyIntro';
 import {SurveyquestionScreen} from '../screens/recommendation/SurveyQ';
 import {SurveyresultScreen} from '../screens/recommendation/SurveyResult';
 
+//testing ar
+import {ArIntroScreen} from '../screens/ar/ArIntro';
+
 const Stack = createStackNavigator();
 
 function RecommendationStacks() {
   return (
-    <Stack.Navigator initialRouteName="Surveyintro">
+    <Stack.Navigator initialRouteName="ArIntro">
+      <Stack.Screen
+        name="ArIntro"
+        component={ArIntroScreen}
+        options={{header: () => null}}
+      />
       <Stack.Screen
         name="Surveyintro"
         component={SurveyintroScreen}
