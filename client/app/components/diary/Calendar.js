@@ -241,6 +241,7 @@ export function CalendarView(props) {
         }}>
         <CompleteModal
           content="물주기 완료💧"
+          animation={true}
           setDateCheckModalVisible={setDateCheckModalVisible}
           setCompleteModalVisible={setCompleteModalVisible}
         />

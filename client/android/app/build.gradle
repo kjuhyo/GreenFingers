@@ -211,6 +211,8 @@ dependencies {
     implementation(project(":react-native-google-signin")) // <--- add this dependency
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0' 
     
+    //lottie
+    implementation project(':lottie-react-native')
 
     
     implementation fileTree(dir: "libs", include: ["*.jar"])

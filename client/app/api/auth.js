@@ -28,8 +28,8 @@ export function getMessage() {
 }
 
 // 메세지 읽음 표시
-export function readMessage() {
-  return instance.put('user/checkMsg');
+export function readMessage(params) {
+  return instance.put('user/checkMsg', params);
 }
 
 // 디바이스 토큰 등록
@@ -39,5 +39,5 @@ export function registerDevice() {
 
 // 디바이스 토큰 삭제
 export function deleteDevice() {
-  return instance.delete('user/logout');
+  return instanceDevice.delete('user/logout');
 }

@@ -39,9 +39,7 @@ export default function App() {
         JSON.stringify(remoteMessage.notification.title),
       );
       const body = JSON.stringify(remoteMessage.notification.body);
-      const messageResponse = JSON.parse(
-        JSON.stringify(remoteMessage.notification),
-      );
+      const messageResponse = JSON.parse(JSON.stringify(remoteMessage));
       setDetailMessage(messageResponse);
       setModalVisible(!modalVisible);
       console.log(remoteMessage);

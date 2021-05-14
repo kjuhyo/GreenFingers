@@ -84,6 +84,8 @@ export function LoginScreen({navigation}) {
         if (response && response.user) {
           const profile = await userInfo();
           await saveProfile(profile, 'password', email);
+          const deviceToken = await messaging().getToken();
+          const device_response = await registerDevice();
         }
       } catch (error) {
         if (error.code === 'auth/wrong-password') {
