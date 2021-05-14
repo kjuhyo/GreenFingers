@@ -30,13 +30,13 @@ function ArIntro({navigation}) {
         color="yellow"
         castsShadow={true}
       />
-      <ViroText
+      {/* <ViroText
         text="Hello World"
         scale={[0.5, 0.5, 0.5]}
         position={[0, 0, -1]}
         style={styles.helloWorldTextStyle}
-      />
-      {/* <Viro3DObject
+      /> */}
+      <Viro3DObject
         source={require('../../../app/cactus_gasteria.obj')}
         resources={[
           require('../../../app/ceramic_struktur_DIF_1k.jpg'),
@@ -45,7 +45,7 @@ function ArIntro({navigation}) {
         ]}
         position={[-0.0, -5.5, -1.15]}
         type="OBJ"
-      /> */}
+      />
       {/* <ViroBox
         position={[0, -0.5, -1]}
         scale={[0.3, 0.3, 0.1]}
