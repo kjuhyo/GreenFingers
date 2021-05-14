@@ -33,6 +33,10 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 // image-picker
 import ImagePicker from 'react-native-image-crop-picker';
 
+//redux
+import {useDispatch, useSelector} from 'react-redux';
+import {modifyDiary} from '../../reducers/diaryReducer';
+
 export function DiaryUpdateScreen({route, navigation: {goBack}}) {
   const [titleState, setTitleState] = useState(route.params.diary.title);
   const [contentState, setContentState] = useState(route.params.diary.content);
@@ -41,6 +45,13 @@ export function DiaryUpdateScreen({route, navigation: {goBack}}) {
 
   const maxImgCnt = 5; // 사진 선택 최대 개수
 
+  // 디스패치 정의
+  const dispatch = useDispatch();
+  const isModifyDiary = modifydiary => dispatch(modifyDiary(modifydiary));
+
+  const {modifyDiaryFlag} = useSelector(state => ({
+    modifyDiaryFlag: state.diaryReducer.modifydiary,
+  }));
   // Toast 띄우는 함수
   const toastShow = content => {
     Toast.show({
@@ -73,6 +84,7 @@ export function DiaryUpdateScreen({route, navigation: {goBack}}) {
         });
       });
       await updateDiary(route.params.diary.id, formData);
+      isModifyDiary(!modifyDiaryFlag)
       setIsLoading(false);
       goBack();
     }

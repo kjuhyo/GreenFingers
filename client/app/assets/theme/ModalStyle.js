@@ -44,7 +44,7 @@ export const ModalContent = styled.View`
 export const ModalButtonBox = styled.View`
   flex: ${props => props.flexHeight || 3};
   border-radius: ${props => props.borderRadius || 0};
-  background-color: ${props => props.backgroundColor || 'white'};
+  background-color: ${({theme}) => theme.colors.background};
   flex-direction: ${props => props.flexDirection || 'column'};
 `;
 
