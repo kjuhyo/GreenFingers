@@ -40,6 +40,8 @@ import {setMBTI, setAnswer} from '../../reducers/surveyReducer';
 
 import {mbtiQuestions} from '../../api/recommendation';
 
+import LottieView from 'lottie-react-native';
+
 export function SurveyintroScreen({navigation}) {
   const dispatch = useDispatch();
   const setMBTIs = mbti => dispatch(setMBTI(mbti));
@@ -87,9 +89,24 @@ export function SurveyintroScreen({navigation}) {
         </Text>
       </View>
       <View style={styles.contentcontainer}>
-        <Image
+        {/* <Image
           source={require('../../assets/images/11-removebg-preview.png')}
           style={styles.contentimg}
+        /> */}
+        <LottieView
+          source={require('../../assets/animation/dandelion.json')}
+          autoPlay
+          loop
+          style={
+            ({
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              top: 0,
+            },
+            styles.contentimg)
+          }
         />
         <Text style={styles.contentdesc}>
           본 테스트는 사용자의 설문조사 입력 데이터를 바탕으로 사용자의 성향에

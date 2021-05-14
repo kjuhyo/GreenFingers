@@ -125,7 +125,7 @@ export default function DiarySelectModal(props) {
             )}
           </ModalButton>
         </ModalButtonBox>
-        
+
         {/* indicator 표시 */}
         {renderLoading()}
       </ModalBox>
