@@ -37,12 +37,8 @@ function ArIntro({navigation}) {
         style={styles.helloWorldTextStyle}
       /> */}
       <Viro3DObject
-        source={require('../../../app/cactus_gasteria.obj')}
-        resources={[
-          require('../../../app/ceramic_struktur_DIF_1k.jpg'),
-          require('../../../app/cactus_gasteria_DIF_1k.jpg'),
-          require('../../../app/cactus_ceramic_blue_DIF_1k.jpg'),
-        ]}
+        source={require('../../../app/trop_flower_set_01.obj')}
+        resources={[require('../../../app/trop_flower_set_01.mtl')]}
         position={[-0.0, -5.5, -1.15]}
         type="OBJ"
       />
