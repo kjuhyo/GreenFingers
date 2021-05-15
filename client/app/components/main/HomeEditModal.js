@@ -86,7 +86,8 @@ const HomeEditModal = props => {
     dispatch(setMain(mainnickname, maintheme));
 
   let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
       alert('Permission to access camera roll is required!');
@@ -99,16 +100,15 @@ const HomeEditModal = props => {
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);
+  };
+
+  const updateChange = () => {
     const params = {
       homeNickname: homename,
       thema: isSelected,
     };
     changeNickTheme(params);
     setMainInfo(homename, isSelected);
-    // themes.forEach(savedTheme => {
-    //   if (savedTheme.name === isSelected) {
-    //   }
-    // });
   };
 
   const themeImages = () => {
@@ -177,7 +177,8 @@ const HomeEditModal = props => {
         </View>
         {/* 버튼 */}
         <View style={styles.button}>
-          <AddButton onPress={() => closeModal(false, 'Cancel')}>
+          <AddButton
+            onPress={() => (closeModal(false, 'Cancel'), updateChange())}>
             <ButtonText>저장</ButtonText>
             <Icon
               type="Ionicons"

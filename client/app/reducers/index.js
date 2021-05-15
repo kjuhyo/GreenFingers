@@ -6,6 +6,7 @@ import surveyReducer from './surveyReducer.js';
 import roomReducer from './roomReducer.js';
 import homeReducer from './homeReducer.js';
 import diaryReducer from './diaryReducer.js';
+import rootReducer from './rootReducer.js';
 
 const allReducer = combineReducers({
   authReducer,
@@ -15,6 +16,7 @@ const allReducer = combineReducers({
   roomReducer,
   homeReducer,
   diaryReducer,
+  rootReducer,
 });
 export default allReducer;
 

@@ -151,7 +151,12 @@ const RoomEditModal = props => {
         console.log('openCamera catch' + err.toString());
       });
   };
-  const closeModal = async (bool, data) => {
+  const closeModal = (bool, data) => {
+    props.changeModalVisible(bool);
+    props.setData(data);
+  };
+
+  const updateChange = async () => {
     const params = {
       roomName: roomname,
       theme: isSelected,
@@ -162,9 +167,8 @@ const RoomEditModal = props => {
       isSelected,
     );
     updateRoomNameTheme(props.roomid, roomname, isSelected);
-    props.changeModalVisible(bool);
-    props.setData(data);
   };
+
   const setData = data => {
     setChooseData(data);
   };
@@ -215,7 +219,8 @@ const RoomEditModal = props => {
         </View>
         {/* 버튼 */}
         <View style={styles.button}>
-          <AddButton onPress={() => closeModal(false, 'Cancel')}>
+          <AddButton
+            onPress={() => (closeModal(false, 'Cancel'), updateChange())}>
             <ButtonText>저장</ButtonText>
             <Icon
               type="Ionicons"

@@ -12,6 +12,7 @@ import {
   Alert,
   SafeAreaView,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {Container, Icon, Button, Content} from 'native-base';
 import {RoomModal} from '../../components/main/RoomModal';
@@ -32,6 +33,7 @@ import {
   Geolocation,
 } from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
+import LottieView from 'lottie-react-native';
 
 // reducer
 import {room, getRoomlist} from '../../reducers/roomReducer';
@@ -43,9 +45,6 @@ import MessageModal from '../../components/auth/Messagemodal';
 // api
 import {getMessage} from '../../api/auth';
 import {main} from '../../api/room';
-
-// home theme
-import {themes, themesA, themesB} from '../../assets/theme/roomTheme';
 
 // import Modal from "react-native-modal";
 
@@ -60,7 +59,6 @@ function CustomDrawerContent(props) {
   useEffect(async () => {
     const messageResponse = await getMessage();
     setMyMessages(messageResponse.data.response);
-    console.log('mymessages', myMessages);
   }, []);
 
   const messageDetailModal = item => {
@@ -112,14 +110,13 @@ function Home({navigation}) {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [isModalVisible2, setisModalVisible2] = useState(false);
   const [ChooseData, setChooseData] = useState();
+  const [loadingStatus, setLoadingStatus] = useState(false);
 
   const {homename, theme, userRooms} = useSelector(state => ({
     homename: state.homeReducer.homename,
     theme: state.homeReducer.theme,
     userRooms: state.roomReducer.rooms,
   }));
-  // const [roomData, setRoomData] = useState(userRooms);
-  // console.log('room reducer', userRooms);
 
   const dispatch = useDispatch();
   const setMainInfo = (mainnickname, maintheme) =>
@@ -135,15 +132,14 @@ function Home({navigation}) {
   const setData = data => {
     setChooseData(data);
   };
-  // console.log(ChooseData);
   const [loading, setLoading] = useState(false);
   // 방 정보 조회
   const getRoomData = () => {
     findRoom()
       .then(res => {
-        // setRoomData(res.data.response);
         console.log('get room data', res.data.response);
         getRooms(res.data.response);
+        setLoadingStatus(false);
       })
       .then(() => {
         setLoading(false);
@@ -157,11 +153,9 @@ function Home({navigation}) {
   const getMainInfo = async () => {
     const mainResponse = await main();
     const mainInfo = mainResponse.data;
-    // console.log('maininfo', mainInfo);
     setMainInfo(mainInfo.homeNickname, mainInfo.theme);
   };
 
-  // console.log('home reducer', homename, theme);
   const [info, setInfo] = useState({
     name: 'loading !!',
     temp: 'loading',
@@ -171,8 +165,9 @@ function Home({navigation}) {
   });
 
   useEffect(async () => {
+    setLoadingStatus(true);
     await getMainInfo();
-    await getRoomData();
+    getRoomData();
   }, [roomact, plantact]);
 
   const onEndReached = () => {
@@ -182,6 +177,31 @@ function Home({navigation}) {
       getRoomData();
     }
   };
+
+  const renderLoading = () => {
+    if (loadingStatus) {
+      return (
+        <LottieView
+          source={require('../../assets/animation/thumb.json')}
+          autoPlay
+          loop
+          style={
+            ({
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              top: 0,
+            },
+            styles.lottieimage)
+          }
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   // asking for location permission
   const renderItem = ({item}) => {
     return (
@@ -343,85 +363,91 @@ function Home({navigation}) {
   };
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
-      <View style={{flex: 0.1}}>
-        <Image
-          style={{
-            height: win.height,
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            resizeMode: 'stretch',
-            width: '100%',
-          }}
-          source={{
-            uri:
-              // 'https://ssafybucket.s3.ap-northeast-2.amazonaws.com/DEFAULT_HOME_THEME.jpg',
-              theme,
-          }}
-        />
-      </View>
-      {/* 오른쪽 상단 아이콘 */}
-      <View style={styles.mainicons}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Icon
-            type="Ionicons"
-            name="notifications-outline"
-            style={styles.bell}></Icon>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => changeModalVisible2(true)}>
-          <Icon
-            type="Ionicons"
-            name="options-outline"
-            style={styles.option}></Icon>
-        </TouchableOpacity>
-        <Modal
-          transparent={true}
-          animationType="fade"
-          visible={isModalVisible2}
-          nRequestClose={() => changeModalVisible2(false)}
-          style={styles.plantmodal}>
-          <HomeEditModal
-            changeModalVisible={changeModalVisible2}
-            setData={setData}
-          />
-        </Modal>
-      </View>
-      {/* 홈이름 */}
-      <View style={styles.mainname}>
-        <Text style={styles.nametext}>{homename}</Text>
-      </View>
-      {/* 날씨 */}
-      <Weather />
-      {/* 방추가아이콘 */}
-      <View style={styles.add}>
-        <TouchableOpacity onPress={() => changeModalVisible(true)}>
-          <Icon
-            type="Ionicons"
-            name="add-circle-outline"
-            style={styles.addicon}></Icon>
-        </TouchableOpacity>
-        <Modal
-          transparent={true}
-          animationType="fade"
-          visible={isModalVisible}
-          nRequestClose={() => changeModalVisible(false)}
-          style={styles.plantmodal}>
-          <RoomModal
-            changeModalVisible={changeModalVisible}
-            setData={setData}
-          />
-        </Modal>
-      </View>
-      {/* 방리스트 */}
-      <SafeAreaView style={{flex: 1}}>
-        <FlatList
-          data={userRooms}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-          onEndReachedThreshold={0.9}
-          onEndReached={onEndReached}
-        />
-      </SafeAreaView>
+      {loadingStatus ? (
+        renderLoading()
+      ) : (
+        <View style={{flex: 1, backgroundColor: 'transparent'}}>
+          <View style={{flex: 0.1}}>
+            <Image
+              style={{
+                height: win.height,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                resizeMode: 'stretch',
+                width: '100%',
+              }}
+              source={{
+                uri:
+                  // 'https://ssafybucket.s3.ap-northeast-2.amazonaws.com/DEFAULT_HOME_THEME.jpg',
+                  theme,
+              }}
+            />
+          </View>
+          {/* 오른쪽 상단 아이콘 */}
+          <View style={styles.mainicons}>
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Icon
+                type="Ionicons"
+                name="notifications-outline"
+                style={styles.bell}></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => changeModalVisible2(true)}>
+              <Icon
+                type="Ionicons"
+                name="options-outline"
+                style={styles.option}></Icon>
+            </TouchableOpacity>
+            <Modal
+              transparent={true}
+              animationType="fade"
+              visible={isModalVisible2}
+              nRequestClose={() => changeModalVisible2(false)}
+              style={styles.plantmodal}>
+              <HomeEditModal
+                changeModalVisible={changeModalVisible2}
+                setData={setData}
+              />
+            </Modal>
+          </View>
+          {/* 홈이름 */}
+          <View style={styles.mainname}>
+            <Text style={styles.nametext}>{homename}</Text>
+          </View>
+          {/* 날씨 */}
+          <Weather />
+          {/* 방추가아이콘 */}
+          <View style={styles.add}>
+            <TouchableOpacity onPress={() => changeModalVisible(true)}>
+              <Icon
+                type="Ionicons"
+                name="add-circle-outline"
+                style={styles.addicon}></Icon>
+            </TouchableOpacity>
+            <Modal
+              transparent={true}
+              animationType="fade"
+              visible={isModalVisible}
+              nRequestClose={() => changeModalVisible(false)}
+              style={styles.plantmodal}>
+              <RoomModal
+                changeModalVisible={changeModalVisible}
+                setData={setData}
+              />
+            </Modal>
+          </View>
+          {/* 방리스트 */}
+          <SafeAreaView style={{flex: 1}}>
+            <FlatList
+              data={userRooms}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              onEndReachedThreshold={0.9}
+              onEndReached={onEndReached}
+            />
+          </SafeAreaView>
+        </View>
+      )}
     </View>
   );
 }
@@ -613,5 +639,14 @@ const styles = StyleSheet.create({
   },
   rooms: {
     marginBottom: 20,
+  },
+  lottieimage: {
+    width: '100%',
+    height: '100%',
+    paddingVertical: 5,
+    zIndex: -1,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
 });

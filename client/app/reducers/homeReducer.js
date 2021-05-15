@@ -2,8 +2,8 @@ const SETMAIN = 'SETMAIN';
 
 let homeState = {
   theme:
-    'https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg',
-  homename: '',
+    'https://ssafybucket.s3.ap-northeast-2.amazonaws.com/DEFAULT_HOME_THEME.jpg',
+  homename: 'HOME',
 };
 export const setMain = (homename, theme) => ({
   type: SETMAIN,
