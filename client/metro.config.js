@@ -23,6 +23,7 @@ module.exports = (async () => {
         'bin',
         'arobject',
         'gif',
+        'tga',
       ],
     },
     transformer: {

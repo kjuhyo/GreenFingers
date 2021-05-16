@@ -10,6 +10,19 @@ import {
   ViroARSceneNavigator,
   Viro3DObject,
 } from '@viro-community/react-viro';
+import pizzaObj from '../../13917_Pepperoni_v2_l2.obj';
+import pizzaMtl from '../../13917_Pepperoni_v2_l2.mtl';
+import pizzaDiffuse from '../../13917_Pepperoni_diffuse.jpg';
+import pizzaPlate from '../../plate_diffuse.jpg';
+
+const physicsBody = {
+  type: 'Dynamic',
+  mass: 25,
+  enabled: true,
+  useGravity: true,
+  restitution: 0.35,
+  friction: 0.75,
+};
 
 export function ArIntroScreen({navigation}) {
   return <ViroARSceneNavigator initialScene={{scene: ArIntro}} />;
@@ -37,11 +50,20 @@ function ArIntro({navigation}) {
         style={styles.helloWorldTextStyle}
       /> */}
       <Viro3DObject
-        source={require('../../../app/trop_flower_set_01.obj')}
-        resources={[require('../../../app/trop_flower_set_01.mtl')]}
-        position={[-0.0, -5.5, -1.15]}
+        position={[0, 0, -1]}
+        scale={[0.008, 0.008, 0.008]}
+        rotation={[90, 90, 180]}
+        source={require('../../13917_Pepperoni_v2_l2.obj')}
+        resources={[
+          require('../../13917_Pepperoni_v2_l2.mtl'),
+          require('../../13917_Pepperoni_diffuse.jpg'),
+          require('../../plate_diffuse.jpg'),
+        ]}
         type="OBJ"
+        dragType="FixedDistance"
+        onDrag={() => {}}
       />
+
       {/* <ViroBox
         position={[0, -0.5, -1]}
         scale={[0.3, 0.3, 0.1]}
