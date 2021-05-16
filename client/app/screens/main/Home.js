@@ -33,8 +33,6 @@ import {
   Geolocation,
 } from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
-import LottieView from 'lottie-react-native';
-
 // reducer
 import {room, getRoomlist} from '../../reducers/roomReducer';
 import {setMain} from '../../reducers/homeReducer';
@@ -45,6 +43,8 @@ import MessageModal from '../../components/auth/Messagemodal';
 // api
 import {getMessage} from '../../api/auth';
 import {main} from '../../api/room';
+
+import {AnimationLoading} from '../../components/common/renderLoading';
 
 // import Modal from "react-native-modal";
 
@@ -175,30 +175,6 @@ function Home({navigation}) {
       return;
     } else {
       getRoomData();
-    }
-  };
-
-  const renderLoading = () => {
-    if (loadingStatus) {
-      return (
-        <LottieView
-          source={require('../../assets/animation/thumb.json')}
-          autoPlay
-          loop
-          style={
-            ({
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 0,
-              top: 0,
-            },
-            styles.lottieimage)
-          }
-        />
-      );
-    } else {
-      return null;
     }
   };
 
@@ -364,7 +340,7 @@ function Home({navigation}) {
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       {loadingStatus ? (
-        renderLoading()
+        <AnimationLoading isLoading={loadingStatus} />
       ) : (
         <View style={{flex: 1, backgroundColor: 'transparent'}}>
           <View style={{flex: 0.1}}>
