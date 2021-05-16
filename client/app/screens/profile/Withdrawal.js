@@ -14,7 +14,7 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {addUid, addUser} from '../../reducers/authReducer';
 import {clearUser} from '../../reducers/profileReducer';
-import firebase from '../../components/auth/firebase';
+import firebase from '../../config/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 // GoogleSignin.configure({});
 

@@ -1,10 +1,9 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Image,
-  PickerIOSComponent,
   Modal,
   TouchableOpacity,
 } from 'react-native';
@@ -25,12 +24,16 @@ import {useSelector, useDispatch} from 'react-redux';
 // api
 import {mbtiResult} from '../../api/recommendation';
 
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
+
 export function SurveyresultScreen(props) {
   const [plantId, setPlantId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [mbtiResultResponse, setMbtiResultResponse] = useState({});
   const [plantA, setPlantA] = useState({});
   const [plantB, setPlantB] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const {answer} = useSelector(state => ({
     answer: state.surveyReducer.answer,
@@ -41,10 +44,12 @@ export function SurveyresultScreen(props) {
     setPlantId(id);
   };
   useEffect(async () => {
+    setIsLoading(true);
     const mbtiResponse = await mbtiResult(answer.join(''));
     setMbtiResultResponse(mbtiResponse.data);
     setPlantA(mbtiResponse.data.p[0]);
     setPlantB(mbtiResponse.data.p[1]);
+    setIsLoading(false);
   }, []);
 
   const ProgressData = {completed: 100};
@@ -56,7 +61,6 @@ export function SurveyresultScreen(props) {
       </View>
       <View style={styles.contentcontainer}>
         <SurveyQText style={styles.contentques} multiline={true}>
-          {/* Dasol 님에게 {'\n'}딱 맞는 식물을 추천해 드릴게요. */}
           {mbtiResultResponse.type}
           {'\n'}
           {mbtiResultResponse.summagry}
@@ -144,6 +148,7 @@ export function SurveyresultScreen(props) {
           setModalVisible={setModalVisible}
           plantId={plantId}></Plantdetailmodal>
       </Modal>
+      <RenderLoading isLoading={isLoading}></RenderLoading>
     </Container>
   );
 }

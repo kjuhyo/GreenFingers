@@ -23,7 +23,7 @@ import {Icon} from 'native-base';
 
 // redux
 import {useSelector, useDispatch} from 'react-redux';
-import firebase from '../components/auth/firebase';
+import firebase from '../config/firebase';
 // import firebase from '@react-native-firebase/app';
 
 import auth from '@react-native-firebase/auth';
@@ -34,9 +34,6 @@ import {setPlants} from '../reducers/plantReducer';
 import {setProfile, setUserID} from '../reducers/profileReducer';
 import {setStatus} from '../reducers/rootReducer';
 import {userInfo} from '../../app/api/auth';
-
-// messaging
-import messaging from '@react-native-firebase/messaging';
 
 const Tab = createBottomTabNavigator();
 
@@ -116,8 +113,7 @@ export default function Root() {
   };
 
   saveUserInfo = async user => {
-    console.log('user print', user);
-    if (user && user.uid !== uid) {
+    if (user) {
       await printToken();
       const allAboutUser = await userInfo();
       const myPlants = allAboutUser.data.plants;

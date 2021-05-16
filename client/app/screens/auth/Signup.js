@@ -12,11 +12,10 @@ import {Container, Label} from 'native-base';
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
-import auth from '@react-native-firebase/auth';
-import firebase from '../../components/auth/firebase';
+import firebase from '../../config/firebase';
 import {userInfo, registerDevice} from '../../api/auth';
-import {useSelector, useDispatch} from 'react-redux';
-import {setProfile, setUserID} from '../../reducers/profileReducer';
+import {useDispatch} from 'react-redux';
+import {setProfile} from '../../reducers/profileReducer';
 
 // MESSAGING
 import messaging from '@react-native-firebase/messaging';

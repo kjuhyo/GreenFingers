@@ -5,7 +5,7 @@ import {Modal, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {addUid, addUser} from '../../reducers/authReducer';
 import {clearUser} from '../../reducers/profileReducer';
-import firebase from '../../components/auth/firebase';
+import firebase from '../../config/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 GoogleSignin.configure({});
 
@@ -20,6 +20,9 @@ import {Icon} from 'native-base';
 // modal
 import LogoutModal from '../../components/profile/LogoutModal';
 import CompleteModal from '../../components/diary/modal/CompleteModal';
+
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
 
 // 프로필 전체 페이지 컨테이너
 const ProfileContainer = styled.View`
@@ -120,20 +123,6 @@ export default function Profile({navigation}) {
     }
   };
 
-  const renderLoading = () => {
-    if (isLoading) {
-      return (
-        <ActivityIndicator
-          size="large"
-          color="#8AD169"
-          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
-        />
-      );
-    } else {
-      return null;
-    }
-  };
-
   return (
     <ProfileContainer>
       <ProfileBox>
@@ -213,7 +202,7 @@ export default function Profile({navigation}) {
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
-      {renderLoading()}
+      <RenderLoading isLoading={isLoading}></RenderLoading>
     </ProfileContainer>
   );
 }

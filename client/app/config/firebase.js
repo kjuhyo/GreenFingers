@@ -1,6 +1,5 @@
 import firebase from '@react-native-firebase/app';
 import {
-  WEB_CLIENT_ID,
   API_KEY,
   AUTH_DOMAIN,
   DATABASE_URL,

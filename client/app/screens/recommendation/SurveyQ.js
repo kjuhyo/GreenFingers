@@ -11,18 +11,20 @@ import {
   AnsButton,
   AnsText,
 } from '../../assets/theme/surveystyles';
-import RadioButtonRN from 'radio-buttons-react-native';
 import ProgressBar from '../../components/recommendation/progressbar';
 import CompleteModal from '../../components/diary/modal/CompleteModal';
 // redux
 import {useSelector, useDispatch} from 'react-redux';
 import {setAnswer} from '../../reducers/surveyReducer';
-import {initialWindowMetrics} from 'react-native-safe-area-context';
+
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
 
 // export function SurveyquestionScreen({navigation}) {
 export function SurveyquestionScreen(props) {
   const [message, setMessage] = useState('');
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const setUserAnswer = (id, answer) => dispatch(setAnswer(id, answer));
 
@@ -40,6 +42,7 @@ export function SurveyquestionScreen(props) {
   const [selected, setSelected] = useState(answer[mbtiIdx]);
 
   const onSubmit = async () => {
+    setIsLoading(true);
     if (selected === 'A') {
       setUserAnswer(pageId, valueA);
     } else if (selected === 'B') {
@@ -47,11 +50,14 @@ export function SurveyquestionScreen(props) {
     } else {
       setMessage('답변을 선택해주세요');
       setCompleteModalVisible(true);
+      setIsLoading(false);
       return;
     }
     if (pageId === mbti.length) {
+      setIsLoading(false);
       props.navigation.navigate('Surveyresult');
     } else {
+      setIsLoading(false);
       props.navigation.push('Surveyquestion', {
         id: pageId + 1,
       });
@@ -108,6 +114,7 @@ export function SurveyquestionScreen(props) {
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
+      <RenderLoading isLoading={isLoading}></RenderLoading>
     </Container>
   );
 }

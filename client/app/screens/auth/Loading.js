@@ -1,9 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {Container} from 'native-base';
-import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
-import {useState} from 'react';
-// import firebase from '../../components/auth/firebase';
 
 export function LoadingScreen() {
   return (

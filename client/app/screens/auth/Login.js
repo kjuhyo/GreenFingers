@@ -18,6 +18,10 @@ import {
   SocialButtonText,
 } from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
+
 // google login, firebase
 import {
   GoogleSignin,
@@ -52,20 +56,6 @@ export function LoginScreen({navigation}) {
 
   //loading
   const [isLoading, setIsLoading] = useState(false);
-
-  const renderLoading = () => {
-    if (isLoading) {
-      return (
-        <ActivityIndicator
-          size="large"
-          color="#8AD169"
-          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
-        />
-      );
-    } else {
-      return null;
-    }
-  };
 
   const google_signIn = async () => {
     try {
@@ -211,7 +201,7 @@ export function LoginScreen({navigation}) {
               </Text>
             </View>
           </View>
-          {renderLoading()}
+          <RenderLoading isLoading={isLoading}></RenderLoading>
         </Container>
       </KeyboardAwareScrollView>
     </ScrollView>

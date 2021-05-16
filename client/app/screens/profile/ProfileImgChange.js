@@ -22,6 +22,9 @@ import {updateImage} from '../../api/auth';
 import {updateProfileImage} from '../../reducers/profileReducer';
 import {useDispatch, useSelector} from 'react-redux';
 
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
+
 // 프로필 사진 변경 페이지 전체 컨테이너
 const ImgChangeContainer = styled.View`
   height: ${hp('63%')}px;
@@ -48,6 +51,9 @@ const ProfileImg = styled.Image`
 export default function ProfileImgChange({navigation}) {
   const dispatch = useDispatch();
   const updateProfileImg = image => dispatch(updateProfileImage(image));
+
+  //loading
+  const [isLoading, setIsLoading] = useState(false);
 
   const {image} = useSelector(state => ({
     image: state.profileReducer.profile,
@@ -95,6 +101,7 @@ export default function ProfileImgChange({navigation}) {
 
   // 사진 수정
   const changeProfileImage = async () => {
+    setIsLoading(true);
     // 사진 폼데이터 형식으로 변환
     const formData = new FormData();
     formData.append('nickname', '바꿀닉네임');
@@ -110,6 +117,7 @@ export default function ProfileImgChange({navigation}) {
     //리덕스 디스패치
     await updateProfileImg(newImage);
     setCompleteModalVisible(true);
+    setIsLoading(false);
   };
 
   return (
@@ -162,6 +170,7 @@ export default function ProfileImgChange({navigation}) {
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
+      <RenderLoading isLoading={isLoading}></RenderLoading>
     </ImgChangeContainer>
   );
 }
