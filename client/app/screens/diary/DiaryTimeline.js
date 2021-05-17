@@ -1,4 +1,4 @@
-import {Icon} from 'native-base';
+import {Container, Icon} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, Text, View} from 'react-native';
 
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 export default function DiaryTimeline({route}) {
   const [data, setData] = useState();
 
+  // console.log('받은 데이터', data);
   const setInitialData = async () => {
     let diaryList = route.params;
     let tmpDiary = [];
@@ -28,11 +29,12 @@ export default function DiaryTimeline({route}) {
       }),
     );
     setData(tmpDiary);
-    // console.log('잘 되었나??', tmpDiary);
   };
 
   useEffect(() => {
-    setInitialData();
+    if (route.params.length != 0) {
+      setInitialData();
+    }
   }, []);
 
   const renderImgs = imgs => {
@@ -73,22 +75,38 @@ export default function DiaryTimeline({route}) {
   };
 
   return (
-    <Timeline
-      data={data}
-      circleColor="#8AD169"
-      lineColor="#8AD169"
-      innerCircle={'dot'}
-      // timeContainerStyle={{minWidth: 52, marginTop: -5}}
-      timeStyle={{
-        textAlign: 'center',
-        backgroundColor: '#8AD169',
-        color: 'white',
-        padding: 5,
-        borderRadius: 13,
-      }}
-      // descriptionStyle={{color: 'yellow'}}
-      options={{style: {marginHorizontal: 20, marginTop: 20}}}
-      renderDetail={renderDetail}
-    />
+    <Container>
+      {data != undefined && data.length !== 0 ? (
+        <Timeline
+          data={data}
+          circleColor="#8AD169"
+          lineColor="#8AD169"
+          innerCircle={'dot'}
+          // timeContainerStyle={{minWidth: 52, marginTop: -5}}
+          timeStyle={{
+            textAlign: 'center',
+            backgroundColor: '#8AD169',
+            color: 'white',
+            padding: 5,
+            borderRadius: 13,
+          }}
+          options={{style: {marginHorizontal: 20, marginTop: 20}}}
+          renderDetail={renderDetail}
+        />
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#F9F9F9',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 18}}>아직 등록된 다이어리가 없어요.</Text>
+          <Text style={{fontSize: 18}}>
+            다이어리를 작성하고 타임라인을 확인해보세요.
+          </Text>
+        </View>
+      )}
+    </Container>
   );
 }
