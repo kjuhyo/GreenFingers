@@ -42,7 +42,7 @@ export default function App() {
       const messageResponse = JSON.parse(JSON.stringify(remoteMessage));
       setDetailMessage(messageResponse);
       setModalVisible(!modalVisible);
-      console.log(remoteMessage);
+      console.log('remote message status', remoteMessage);
     });
     return unsubscribe;
   }, []);

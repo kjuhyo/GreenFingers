@@ -7,20 +7,11 @@ import {
   Alert,
   TextInput,
 } from 'react-native';
-import {
-  Container,
-  Header,
-  Content,
-  Input,
-  Item,
-  Button,
-  StyleProvider,
-  Icon,
-} from 'native-base';
+import {Container} from 'native-base';
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
-import firebase from '../../components/auth/firebase';
+import firebase from '../../config/firebase';
 
 export function ResetPwScreen({navigation}) {
   const [isIDFocused, setIsIDFocused] = useState(false);

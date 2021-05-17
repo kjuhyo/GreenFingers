@@ -9,7 +9,7 @@ import CompleteModal from '../../components/diary/modal/CompleteModal';
 import {useState} from 'react';
 
 // firebase google redux
-import firebase from '../../components/auth/firebase';
+import firebase from '../../config/firebase';
 import {set} from 'react-native-reanimated';
 
 // 비밀번호 재설정 페이지 전체 컨테이너
@@ -67,7 +67,8 @@ export default function PasswordChange({navigation}) {
   validatePassword = () => {
     // console.log(userPW);
     // 대문자 최소 1개, 소문자 1개 이상, 숫자 1개이상, 특수문자 1개 이상, 8자리이상
-    let regPW = /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
+    let regPW =
+      /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
     if (regPW.test(newPw) === false) {
       setMessage('대/소문자, 숫자, 특수문자 포함 8자 이상 입력해주세요');
       return false;

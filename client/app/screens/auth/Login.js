@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {Container} from 'native-base';
 import 'react-native-gesture-handler';
@@ -17,6 +18,10 @@ import {
   SocialButtonText,
 } from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
+
 // google login, firebase
 import {
   GoogleSignin,
@@ -48,8 +53,13 @@ export function LoginScreen({navigation}) {
   // input variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  //loading
+  const [isLoading, setIsLoading] = useState(false);
+
   const google_signIn = async () => {
     try {
+      setIsLoading(true);
       await GoogleSignin.hasPlayServices();
       const googleUserInfo = await GoogleSignin.signIn();
       const credential = await auth.GoogleAuthProvider.credential(
@@ -59,10 +69,11 @@ export function LoginScreen({navigation}) {
       const response = await auth().signInWithCredential(credential);
       const googleMail = googleUserInfo.user.email;
       const profile = await userInfo();
-      await saveProfile(profile, 'google.com', googleMail);
       //DEVICE TOKEN
       const deviceToken = await messaging().getToken();
       const device_response = await registerDevice();
+      await saveProfile(profile, 'google.com', googleMail);
+      setIsLoading(false);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('Cancel');
@@ -75,17 +86,20 @@ export function LoginScreen({navigation}) {
         console.log(error.code, error.message);
       }
     }
+    setIsLoading(false);
   };
 
   const email_logIn = async () => {
     if (email && password) {
       try {
+        setIsLoading(true);
         let response = await auth().signInWithEmailAndPassword(email, password);
         if (response && response.user) {
           const profile = await userInfo();
-          await saveProfile(profile, 'password', email);
           const deviceToken = await messaging().getToken();
           const device_response = await registerDevice();
+          await saveProfile(profile, 'password', email);
+          setIsLoading(false);
         }
       } catch (error) {
         if (error.code === 'auth/wrong-password') {
@@ -102,10 +116,12 @@ export function LoginScreen({navigation}) {
         } else {
           Alert.alert('로그인 오류', '로그인에 실패했습니다.');
         }
+        setIsLoading(false);
       }
     } else {
       Alert.alert('로그인 오류', '이메일과 비밀번호를 입력해주세요');
       console.log('email, password no');
+      setIsLoading(false);
     }
     setEmail('');
     setPassword('');
@@ -185,6 +201,7 @@ export function LoginScreen({navigation}) {
               </Text>
             </View>
           </View>
+          <RenderLoading isLoading={isLoading}></RenderLoading>
         </Container>
       </KeyboardAwareScrollView>
     </ScrollView>

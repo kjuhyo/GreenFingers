@@ -126,7 +126,7 @@ export function SurveyintroScreen({navigation}) {
               type="Ionicons"
               name="alarm-outline"
             />
-            <Text style={{color: '#29582C', marginTop: 7}}> 약 몇분 소요</Text>
+            <Text style={{color: '#29582C', marginTop: 7}}> 약 5분 소요</Text>
           </View>
         </View>
       </View>

@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {Modal, Text, TouchableOpacity} from 'react-native';
+import {Modal, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 
 //redux, firebase, google
 import {useDispatch, useSelector} from 'react-redux';
 import {addUid, addUser} from '../../reducers/authReducer';
 import {clearUser} from '../../reducers/profileReducer';
-import firebase from '../../components/auth/firebase';
+import firebase from '../../config/firebase';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-// GoogleSignin.configure({});
+GoogleSignin.configure({});
 
 //api
 import {deleteDevice} from '../../api/auth';
@@ -20,6 +20,9 @@ import {Icon} from 'native-base';
 // modal
 import LogoutModal from '../../components/profile/LogoutModal';
 import CompleteModal from '../../components/diary/modal/CompleteModal';
+
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
 
 // 프로필 전체 페이지 컨테이너
 const ProfileContainer = styled.View`
@@ -91,9 +94,12 @@ const DeleteUser = styled.View`
 export default function Profile({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
   const clearUserInfo = () => dispatch(clearUser());
 
+  // state
   const {image, email, provider, plants} = useSelector(state => ({
     image: state.profileReducer.profile,
     email: state.profileReducer.useremail,
@@ -103,14 +109,17 @@ export default function Profile({navigation}) {
 
   const signOut = async () => {
     try {
+      setIsLoading(true);
       await deleteDevice();
       await firebase.auth().signOut();
       if (provider === 'google.com') {
         await GoogleSignin.signOut();
       }
+      setIsLoading(false);
       await clearUserInfo();
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -193,6 +202,7 @@ export default function Profile({navigation}) {
           setCompleteModalVisible={setCompleteModalVisible}
         />
       </Modal>
+      <RenderLoading isLoading={isLoading}></RenderLoading>
     </ProfileContainer>
   );
 }

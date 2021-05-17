@@ -20,6 +20,7 @@ const win = Dimensions.get('window');
 import {useDispatch, useSelector} from 'react-redux';
 import {findRoomDetail} from '../../api/room';
 import {changeRoom} from '../../reducers/roomReducer';
+import {RenderLoading} from '../../components/common/renderLoading';
 
 export function RoomScreen({route, navigation}) {
   // const {roomact} = useSelector(state => ({
@@ -166,17 +167,7 @@ export function RoomScreen({route, navigation}) {
   return (
     <View style={{flex: 1, backgroundColor: 'transparent'}}>
       {loading ? (
-        <View style={{flex: 0.1}}>
-          <Image
-            style={{
-              height: win.height,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-            }}
-            source={require('../../assets/images/mainroom.jpg')}
-          />
-        </View>
+        <RenderLoading isLoading={loading} />
       ) : (
         <View style={{flex: 1}}>
           {/* 배경사진 */}

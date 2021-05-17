@@ -23,19 +23,17 @@ import {Icon} from 'native-base';
 
 // redux
 import {useSelector, useDispatch} from 'react-redux';
-import firebase from '../components/auth/firebase';
+import firebase from '../config/firebase';
 // import firebase from '@react-native-firebase/app';
 
 import auth from '@react-native-firebase/auth';
 import {LoadingScreen} from '../screens/auth/Loading';
 import {set} from 'react-native-reanimated';
-import {addUid, addUser} from '../reducers/authReducer';
+// import {addUid, addUser} from '../reducers/authReducer';
 import {setPlants} from '../reducers/plantReducer';
 import {setProfile, setUserID} from '../reducers/profileReducer';
+import {setStatus} from '../reducers/rootReducer';
 import {userInfo} from '../../app/api/auth';
-
-// messaging
-import messaging from '@react-native-firebase/messaging';
 
 const Tab = createBottomTabNavigator();
 
@@ -93,17 +91,20 @@ function Tabs() {
 }
 
 export default function Root() {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  const {uid} = useSelector(state => ({
+  const {uid, isLoading} = useSelector(state => ({
     uid: state.profileReducer.userId,
+    isLoading: state.rootReducer.isLoading,
   }));
 
   const dispatch = useDispatch();
   const savePlants = plants => dispatch(setPlants(plants));
-  const saveUid = userId => dispatch(setUserID(userId));
+  // const saveUid = userId => dispatch(setUserID(userId));
   const saveProfile = (profile, provider, useremail) =>
     dispatch(setProfile(profile, provider, useremail));
+
+  const setIsLoading = status => dispatch(setStatus(status));
 
   //삭제예정
   printToken = async () => {
@@ -114,25 +115,22 @@ export default function Root() {
   saveUserInfo = async user => {
     if (user) {
       await printToken();
-
       const allAboutUser = await userInfo();
-
       const myPlants = allAboutUser.data.plants;
       const myInfo = allAboutUser.data.response;
       savePlants(myPlants);
       saveProfile(myInfo, user.providerData[0].providerId, user.email);
-
       setIsLoading(false);
-      console.log(isLoading);
+
+      console.log('room loading status', isLoading);
     } else {
-      saveUid('');
       setIsLoading(false);
     }
   };
 
-  useEffect(async () => {
-    // await printToken();
-    await firebase.auth().onAuthStateChanged(saveUserInfo);
+  useEffect(() => {
+    var unsubscribe = firebase.auth().onAuthStateChanged(saveUserInfo);
+    unsubscribe();
   }, [uid]);
 
   return (

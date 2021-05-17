@@ -6,26 +6,16 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
-import {
-  Container,
-  Header,
-  Content,
-  Input,
-  Item,
-  Button,
-  StyleProvider,
-  Icon,
-  Label,
-} from 'native-base';
+import {Container, Label} from 'native-base';
 import {AuthButton, AuthButtonText} from '../../assets/theme/authstyles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useState} from 'react';
-import auth from '@react-native-firebase/auth';
-import firebase from '../../components/auth/firebase';
+import firebase from '../../config/firebase';
 import {userInfo, registerDevice} from '../../api/auth';
-import {useSelector, useDispatch} from 'react-redux';
-import {setProfile, setUserID} from '../../reducers/profileReducer';
+import {useDispatch} from 'react-redux';
+import {setProfile} from '../../reducers/profileReducer';
 
 // MESSAGING
 import messaging from '@react-native-firebase/messaging';
@@ -45,21 +35,40 @@ export function SignupScreen({navigation}) {
   const [pwError, setPwError] = useState('');
   const [pwcError, setPwcError] = useState('');
 
+  // loading
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
   const saveProfile = (profile, provider, useremail) =>
     dispatch(setProfile(profile, provider, useremail));
 
+  const renderLoading = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color="#8AD169"
+          style={{position: 'absolute', left: 0, right: 0, bottom: 0, top: 0}}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   const email_signIn = async () => {
     if (email && !emailError && password && !pwError) {
       try {
+        setIsLoading(true);
         const credential = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
         const profile = await userInfo();
-        await saveProfile(profile, 'password', email);
         //DEVICE TOKEN
         const deviceToken = await messaging().getToken();
         const device_response = await registerDevice();
+        await saveProfile(profile, 'password', email);
+        setIsLoading(false);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           alert('이미 가입된 이메일입니다.');
@@ -67,9 +76,11 @@ export function SignupScreen({navigation}) {
           alert('가입에 실패했습니다.');
           console.log(error);
         }
+        setIsLoading(false);
       }
     } else {
       alert('가입양식에 맞춰 작성해주세요.');
+      setIsLoading(false);
     }
   };
 
@@ -91,7 +102,8 @@ export function SignupScreen({navigation}) {
   const validatePassword = userPW => {
     console.log(userPW);
     // 대문자 최소 1개, 소문자 1개 이상, 숫자 1개이상, 특수문자 1개 이상, 8자리이상
-    let regPW = /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
+    let regPW =
+      /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
     if (regPW.test(userPW) === false) {
       console.log('대/소문자, 숫자, 특수문자 포함 8자 이상 입력해주세요');
       setPassword(userPW);
@@ -202,6 +214,7 @@ export function SignupScreen({navigation}) {
               </AuthButtonText>
             </AuthButton>
           </View>
+          {renderLoading()}
         </Container>
       </KeyboardAwareScrollView>
     </ScrollView>

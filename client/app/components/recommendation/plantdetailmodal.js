@@ -7,14 +7,15 @@ import {
   ModalContainer,
   ModalBox,
   ModalHeader,
-  ModalButton,
-  ModalButtonBox,
-  Line,
 } from '../../assets/theme/ModalStyle';
 import plant from '../../reducers/plantReducer';
+//loading
+import {RenderLoading} from '../../components/common/renderLoading';
 
 export default function plantdetailmodal(props) {
   const [plant, setPlant] = useState('');
+  //loading
+  const [isLoading, setIsLoading] = useState(false);
   const closeModal = visible => {
     props.setModalVisible(visible);
   };
@@ -22,9 +23,11 @@ export default function plantdetailmodal(props) {
   const savePlant = async () => {
     const plant = await recomPlantDetail(props.plantId);
     setPlant(plant.data);
+    setIsLoading(false);
   };
 
   useEffect(async () => {
+    setIsLoading(true);
     await savePlant();
   }, [props]);
 
@@ -69,6 +72,7 @@ export default function plantdetailmodal(props) {
           </View>
         </View>
       </ModalBox>
+      <RenderLoading isLoading={isLoading}></RenderLoading>
     </ModalContainer>
   );
 }
