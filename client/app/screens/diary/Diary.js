@@ -17,6 +17,7 @@ import {
   TabHeading,
   View,
   Root,
+  Icon,
 } from 'native-base';
 import styled from 'styled-components';
 
@@ -31,18 +32,6 @@ import Feed from '../../components/diary/Feed';
 import {findAllDiary, findDiaryByDate} from '../../api/diary';
 import {myPlantWaterInfo} from '../../api/plant';
 
-// const PlusButton = styled.TouchableOpacity`
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 30px;
-//   background-color: ${({theme}) => theme.colors.darkGreen};
-//   justify-content: center;
-//   align-items: center;
-//   position: absolute;
-//   bottom: 20px;
-//   right: 20px;
-// `;
-
 // 작성된 다이어리 없다는 문구 컨테이너
 const TextContainer = styled.View`
   height: ${hp('75%')}px;
@@ -50,20 +39,28 @@ const TextContainer = styled.View`
   justify-content: center;
 `;
 
+// 타임라인 버튼
+const TimeLineBtn = styled.TouchableOpacity`
+  background-color: ${({theme}) => theme.colors.darkGreen};
+  /* padding: 25px; */
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-bottom: 25px;
+  height: 50px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`;
+
+// 타임라인 버튼 텍스트
+const TimeLineBtnText = styled.Text`
+  color: white;
+  font-size: 17px;
+`;
+
 const renderTabBar = props => {
   props.tabStyle = Object.create(props.tabStyle);
-  // props.style = Object.create(props.style);
-  // props.tabsContainerStyle = Object.create(
-  //   props.tabsContainerStyle,
-  //   // backgroundColor: '#F9F9F9',
-  // );
-
-  // props.style = Object.create(props.style);
-
-  // console.log(props);
-  // props.underlineStyle = Object.create({
-  //   height: 0,
-  // });
   return (
     <ScrollableTab
       {...props}
@@ -304,16 +301,26 @@ export function DiaryScreen({navigation}) {
           {showDiary ? (
             feedRendering()
           ) : (
-            <CalendarView
-              navigation={navigation}
-              setShowDiary={setShowDiary}
-              diaryDate={diaryDate} // 다이어리 쓴 날짜 리스트
-              waterDate={waterDate} // 물 준 날짜 리스트
-              waterDateId={waterDateId} // 물 준 날짜와 wid 객체
-              setSelectedDate={setSelectedDate} // 선택한 날짜 set
-              selectedDate={selectedDate} // 선택한 날짜
-              activePlant={activePlantId} // 선택한 식물 id
-            />
+            <View>
+              <CalendarView
+                navigation={navigation}
+                setShowDiary={setShowDiary}
+                diaryDate={diaryDate} // 다이어리 쓴 날짜 리스트
+                waterDate={waterDate} // 물 준 날짜 리스트
+                waterDateId={waterDateId} // 물 준 날짜와 wid 객체
+                setSelectedDate={setSelectedDate} // 선택한 날짜 set
+                selectedDate={selectedDate} // 선택한 날짜
+                activePlant={activePlantId} // 선택한 식물 id
+              />
+              <TimeLineBtn>
+                {/* <Icon
+                  type="MaterialCommunityIcons"
+                  name="timeline-text-outline"
+                  style={{color: 'white', marginRight: 10}}
+                /> */}
+                <TimeLineBtnText>타임라인</TimeLineBtnText>
+              </TimeLineBtn>
+            </View>
           )}
         </ScrollView>
       </Tab>

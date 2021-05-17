@@ -17,9 +17,9 @@ import CheckDateModal from './modal/CheckDateModal';
 import CompleteModal from './modal/CompleteModal';
 
 const CalendarContainer = styled.View`
-  height: ${hp('75%')}px;
+  height: ${hp('70%')}px;
   justify-content: center;
-  padding: 30px;
+  padding: 25px;
 `;
 
 export function CalendarView(props) {
