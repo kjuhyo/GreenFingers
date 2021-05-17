@@ -5,7 +5,7 @@ import {ScrollView, Text, TouchableOpacity} from 'react-native';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {updateActivePlant} from '../../reducers/diaryReducer';
+import {setMarkedDate, updateActivePlant} from '../../reducers/diaryReducer';
 
 // style
 import {
@@ -127,6 +127,9 @@ export function DiaryScreen({navigation}) {
     plantact: state.roomReducer.plantact,
   }));
 
+  const {markedDateReal} = useSelector(state => ({
+    markedDateReal: state.diaryReducer.markedDate,
+  }));
   // 보유 식물이 있을 경우에만 activePlant 값 설정
   const isPlant = () => {
     if (userPlants.length == 0) {

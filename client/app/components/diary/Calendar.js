@@ -9,12 +9,15 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 // calendar
 import {Calendar} from 'react-native-calendars';
-import {Modal, View} from 'react-native';
+import {ActivityIndicator, Modal, View} from 'react-native';
 
 // modal
 import DiarySelectModal from './modal/DiarySelectModal';
 import CheckDateModal from './modal/CheckDateModal';
 import CompleteModal from './modal/CompleteModal';
+
+// redux
+import {useSelector} from 'react-redux';
 
 const CalendarContainer = styled.View`
   height: ${hp('70%')}px;
@@ -33,6 +36,15 @@ export function CalendarView(props) {
   const [selectYear, setSelectYear] = useState('');
 
   const [markedDateState, setMarkedDateState] = useState(); // 달력에 표시할 날짜
+
+  const {activePlantId} = useSelector(state => ({
+    activePlantId: state.diaryReducer.pid,
+  }));
+
+  const {markedDateReal} = useSelector(state => ({
+    markedDateReal: state.diaryReducer.markedDate,
+  }));
+  console.log('캘린더에서 markedDate는?', markedDateReal);
 
   // props로 전달받은 날짜 목록으로 markedDate 세팅
   const initailMarkedDate = async () => {
@@ -59,7 +71,6 @@ export function CalendarView(props) {
         }
       }),
     );
-
     setMarkedDateState(markedDate);
   };
 
