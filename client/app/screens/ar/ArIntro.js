@@ -53,7 +53,7 @@ function ArIntro({navigation}) {
       /> */}
       <Viro3DObject
         position={[0, -1, -1]}
-        scale={[0.08, 0.08, 0.09]}
+        scale={[0.08, 0.08, 0.08]}
         rotation={[180, 90, 180]}
         source={require('../../objects/indoor/plant_02.obj')}
         resources={[
@@ -75,20 +75,6 @@ function ArIntro({navigation}) {
     </ViroARScene>
   );
 }
-ViroMaterials.createMaterials({
-  myPlant: {
-    shininess: 2.0,
-    diffuseTexture: [
-      require('../../objects/d5/Default_Base_Color.png'),
-      require('../../objects/d5/Default_Height.png'),
-      require('../../objects/d5/Default_Metallic.png'),
-      require('../../objects/d5/Default_Mixed_AO.png'),
-      require('../../objects/d5/Default_Normal_OpenGL.png'),
-      require('../../objects/d5/Default_Opacity.png'),
-      require('../../objects/d5/Default_Roughness.png'),
-    ],
-  },
-});
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
