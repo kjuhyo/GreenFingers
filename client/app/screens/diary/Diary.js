@@ -40,13 +40,13 @@ const TextContainer = styled.View`
 `;
 
 // 타임라인 버튼
-const TimeLineBtn = styled.TouchableOpacity`
+const TimelineBtn = styled.TouchableOpacity`
   background-color: ${({theme}) => theme.colors.darkGreen};
   /* padding: 25px; */
   margin-left: 25px;
   margin-right: 25px;
   margin-bottom: 25px;
-  height: 50px;
+  height: 45px;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
@@ -54,7 +54,7 @@ const TimeLineBtn = styled.TouchableOpacity`
 `;
 
 // 타임라인 버튼 텍스트
-const TimeLineBtnText = styled.Text`
+const TimelineBtnText = styled.Text`
   color: white;
   font-size: 17px;
 `;
@@ -78,6 +78,7 @@ export function DiaryScreen({navigation}) {
   const [selectedDiary, setSelectedDiary] = useState(); // 현재 식물의 선택한 날짜의 다이어리 목록
   const [waterDate, setWaterDate] = useState(); // [물준날짜1, 물준날짜2, ...]
   const [waterDateId, setWaterDateId] = useState(); // {물준날짜1: wid, 물준날짜:2, ...}
+  const [timelineDiary, setTimelineDiary] = useState(); // 타임라인에 사용할 현재 식물탭의 다이어리 목록
 
   // 디스패치 정의
   const dispatch = useDispatch();
@@ -145,15 +146,19 @@ export function DiaryScreen({navigation}) {
   const initialDiary = async () => {
     // 1. axios 요청을 통해 전체 다이어리 목록 가져옴
     const allDiary = await findAllDiary();
+    const tmpTimelineList = [];
 
     // 2. 전체 다이어리 목록에서 현재 선택된 탭의 식물 id에 해당하는 다이어리의 작성 날짜 리스트
     const activePlantDate = await Promise.all(
       allDiary.data.response.map(diary => {
         if (diary.plantId === activePlantId) {
+          tmpTimelineList.push(diary);
           return diary.writeDateTime.substring(0, 10);
         }
       }),
     );
+    // console.log('타임라인에 보낼 다이어리 리스트',tmpTimelineList);
+    setTimelineDiary(tmpTimelineList);
     setDiaryDate(activePlantDate);
   };
 
@@ -312,14 +317,17 @@ export function DiaryScreen({navigation}) {
                 selectedDate={selectedDate} // 선택한 날짜
                 activePlant={activePlantId} // 선택한 식물 id
               />
-              <TimeLineBtn>
+              <TimelineBtn
+                onPress={() => {
+                  navigation.navigate('DiaryTimeline', timelineDiary);
+                }}>
                 {/* <Icon
                   type="MaterialCommunityIcons"
                   name="timeline-text-outline"
                   style={{color: 'white', marginRight: 10}}
                 /> */}
-                <TimeLineBtnText>타임라인</TimeLineBtnText>
-              </TimeLineBtn>
+                <TimelineBtnText>타임라인</TimelineBtnText>
+              </TimelineBtn>
             </View>
           )}
         </ScrollView>
