@@ -9,11 +9,12 @@ import {
   ViroSpotLight,
   ViroARSceneNavigator,
   Viro3DObject,
+  ViroMaterials,
 } from '@viro-community/react-viro';
-import pizzaObj from '../../13917_Pepperoni_v2_l2.obj';
-import pizzaMtl from '../../13917_Pepperoni_v2_l2.mtl';
-import pizzaDiffuse from '../../13917_Pepperoni_diffuse.jpg';
-import pizzaPlate from '../../plate_diffuse.jpg';
+// import pizzaObj from '../../13917_Pepperoni_v2_l2.obj';
+// import pizzaMtl from '../../13917_Pepperoni_v2_l2.mtl';
+// import pizzaDiffuse from '../../13917_Pepperoni_diffuse.jpg';
+// import pizzaPlate from '../../plate_diffuse.jpg';
 
 const physicsBody = {
   type: 'Dynamic',
@@ -42,6 +43,7 @@ function ArIntro({navigation}) {
         position={[0, 3, 1]}
         color="yellow"
         castsShadow={true}
+        intensity={2500}
       />
       {/* <ViroText
         text="Hello World"
@@ -50,14 +52,15 @@ function ArIntro({navigation}) {
         style={styles.helloWorldTextStyle}
       /> */}
       <Viro3DObject
-        position={[0, 0, -1]}
-        scale={[0.008, 0.008, 0.008]}
-        rotation={[90, 90, 180]}
-        source={require('../../13917_Pepperoni_v2_l2.obj')}
+        position={[0, -1, -1]}
+        scale={[0.08, 0.08, 0.09]}
+        rotation={[180, 90, 180]}
+        source={require('../../objects/indoor/plant_02.obj')}
         resources={[
-          require('../../13917_Pepperoni_v2_l2.mtl'),
-          require('../../13917_Pepperoni_diffuse.jpg'),
-          require('../../plate_diffuse.jpg'),
+          require('../../objects/indoor/plant_02.mtl'),
+          require('../../objects/indoor/plant_2_COL.jpg'),
+          require('../../objects/indoor/plant_2_NOR.jpg'),
+          require('../../objects/indoor/plant_2_vl.jpg'),
         ]}
         type="OBJ"
         dragType="FixedDistance"
@@ -72,6 +75,20 @@ function ArIntro({navigation}) {
     </ViroARScene>
   );
 }
+ViroMaterials.createMaterials({
+  myPlant: {
+    shininess: 2.0,
+    diffuseTexture: [
+      require('../../objects/d5/Default_Base_Color.png'),
+      require('../../objects/d5/Default_Height.png'),
+      require('../../objects/d5/Default_Metallic.png'),
+      require('../../objects/d5/Default_Mixed_AO.png'),
+      require('../../objects/d5/Default_Normal_OpenGL.png'),
+      require('../../objects/d5/Default_Opacity.png'),
+      require('../../objects/d5/Default_Roughness.png'),
+    ],
+  },
+});
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
