@@ -69,10 +69,13 @@ export function LoginScreen({navigation}) {
       const response = await auth().signInWithCredential(credential);
       const googleMail = googleUserInfo.user.email;
       const profile = await userInfo();
+      console.log('profile1', profile.data.response);
+      console.log('profile2', profile);
       //DEVICE TOKEN
       const deviceToken = await messaging().getToken();
       const device_response = await registerDevice();
-      await saveProfile(profile, 'google.com', googleMail);
+
+      await saveProfile(profile.data.response, 'google.com', googleMail);
       setIsLoading(false);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -98,7 +101,7 @@ export function LoginScreen({navigation}) {
           const profile = await userInfo();
           const deviceToken = await messaging().getToken();
           const device_response = await registerDevice();
-          await saveProfile(profile, 'password', email);
+          await saveProfile(profile.data.response, 'password', email);
           setIsLoading(false);
         }
       } catch (error) {
