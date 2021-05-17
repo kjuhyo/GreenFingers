@@ -41,7 +41,6 @@ function ArIntro({navigation}) {
         outerAngle={90}
         direction={[0, -1, -0.2]}
         position={[0, 3, 1]}
-        color="yellow"
         castsShadow={true}
         intensity={2500}
       />
@@ -51,6 +50,25 @@ function ArIntro({navigation}) {
         position={[0, 0, -1]}
         style={styles.helloWorldTextStyle}
       /> */}
+      {/* 식물 1 */}
+      <Viro3DObject
+        position={[0, -1, -1]}
+        scale={[0.5, 0.5, 0.5]}
+        rotation={[180, 90, 180]}
+        source={require('../../objects/indoorplant/Indoor+plant_3_BI_blend.obj')}
+        resources={[
+          require('../../objects/indoorplant/Indoor+plant_3_BI_blend.mtl'),
+          require('../../objects/indoorplant/bpng.jpg'),
+          require('../../objects/indoorplant/bpng_NRM_Kopie.jpg'),
+          require('../../objects/indoorplant/bpng_Schwaz_weistensel.jpg'),
+          require('../../objects/indoorplant/textures_col.jpg'),
+          require('../../objects/indoorplant/textures_nor.png'),
+        ]}
+        type="OBJ"
+        dragType="FixedDistance"
+        onDrag={() => {}}
+      />
+      {/* 식물 2 */}
       <Viro3DObject
         position={[0, -1, -1]}
         scale={[0.08, 0.08, 0.08]}

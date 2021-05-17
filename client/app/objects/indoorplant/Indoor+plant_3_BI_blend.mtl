@@ -1,0 +1,40 @@
+# Blender MTL File: 'Indoor plant_3_BI_blend.blend'
+# Material Count: 3
+
+newmtl Blatt
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.253072 0.253072 0.253072
+Ks 0.200000 0.200000 0.200000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd bpng.jpg
+map_Bump bpng.jpg
+map_Ks bpng.jpg
+map_d bpng.jpg
+
+newmtl Blatt_NONE
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.253072 0.253072 0.253072
+Ks 0.200000 0.200000 0.200000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump bpng.jpg
+map_Kd bpng.jpg
+map_Ks bpng.jpg
+map_d bpng.jpg
+
+newmtl Material
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd textures_col.jpg
+map_Bump textures_nor.png
+map_Ks textures_col.jpg
