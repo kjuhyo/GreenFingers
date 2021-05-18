@@ -9,12 +9,18 @@ import {SurveyresultScreen} from '../screens/recommendation/SurveyResult';
 
 //testing ar
 import {ArIntroScreen} from '../screens/ar/ArIntro';
+import {ArChoice} from '../screens/ar/ArChoice';
 
 const Stack = createStackNavigator();
 
 function RecommendationStacks() {
   return (
-    <Stack.Navigator initialRouteName="ArIntro">
+    <Stack.Navigator initialRouteName="ArChoice">
+      <Stack.Screen
+        name="ArChoice"
+        component={ArChoice}
+        options={{header: () => null}}
+      />
       <Stack.Screen
         name="ArIntro"
         component={ArIntroScreen}

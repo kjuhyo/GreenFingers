@@ -51,7 +51,7 @@ function ArIntro({navigation}) {
         style={styles.helloWorldTextStyle}
       /> */}
       {/* 식물 1 */}
-      <Viro3DObject
+      {/* <Viro3DObject
         position={[0, -1, -1]}
         scale={[0.5, 0.5, 0.5]}
         rotation={[180, 90, 180]}
@@ -67,7 +67,7 @@ function ArIntro({navigation}) {
         type="OBJ"
         dragType="FixedDistance"
         onDrag={() => {}}
-      />
+      /> */}
       {/* 식물 2 */}
       <Viro3DObject
         position={[0, -1, -1]}
