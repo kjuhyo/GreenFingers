@@ -260,11 +260,17 @@ export function DiaryScreen({navigation}) {
     deleteWaterFlag,
   ]);
 
+  // 다이어리 수정,삭제했을 경우 리렌더링
   useEffect(() => {
     if (showDiary) {
       feedRendering();
     }
   }, [modifyFlag, deleteFlag]);
+
+  // 다이어리 작성했을 경우 리렌더링
+  useEffect(() => {
+    diaryList();
+  }, [writeFlag]);
 
   // 다이어리 보기 눌렀을 경우 피드 목록 렌더링하는 함수
   const feedRendering = () => {
