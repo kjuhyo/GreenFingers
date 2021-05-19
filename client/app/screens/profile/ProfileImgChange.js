@@ -44,8 +44,9 @@ const ProfileImg = styled.Image`
   height: 140px;
   border-radius: 180px;
   /* background-color: black; */
-  border-width: 3px;
+  border-width: 1px;
   border-color: grey;
+  margin-bottom: 30px;
 `;
 
 export default function ProfileImgChange({navigation}) {
@@ -134,9 +135,9 @@ export default function ProfileImgChange({navigation}) {
           <Icon
             type="MaterialCommunityIcons"
             name="image-multiple"
-            style={{fontSize: 50}}
+            style={{fontSize: 30, marginBottom: 5}}
           />
-          <Text>사진 선택</Text>
+          <Text style={{fontSize: 12}}>사진 선택</Text>
         </ImgSelectBtn>
         <ImgSelectBtn
           style={{marginLeft: 10}}
@@ -146,9 +147,9 @@ export default function ProfileImgChange({navigation}) {
           <Icon
             type="MaterialCommunityIcons"
             name="camera"
-            style={{fontSize: 50}}
+            style={{fontSize: 30, marginBottom: 5}}
           />
-          <Text>사진 촬영</Text>
+          <Text style={{fontSize: 12}}>사진 촬영</Text>
         </ImgSelectBtn>
       </ImgSelectBox>
       <CompleteBtn flexHeight="1" onPress={() => changeProfileImage()}>
