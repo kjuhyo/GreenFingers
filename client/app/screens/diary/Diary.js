@@ -31,6 +31,8 @@ import Feed from '../../components/diary/Feed';
 //api
 import {findAllDiary, findDiaryByDate} from '../../api/diary';
 import {myPlantWaterInfo} from '../../api/plant';
+import {setPlants} from '../../reducers/plantReducer';
+import {userInfo} from '../../api/auth';
 
 // 작성된 다이어리 없다는 문구 컨테이너
 const TextContainer = styled.View`
@@ -83,6 +85,8 @@ export function DiaryScreen({navigation}) {
   // 디스패치 정의
   const dispatch = useDispatch();
 
+  const savePlants = plants => dispatch(setPlants(plants));
+
   // 활성화된 탭의 식물 아이디와 탭 인덱스 디스패치
   const setActivePlantTab = (pid, tabidx) =>
     dispatch(updateActivePlant(pid, tabidx));
@@ -122,7 +126,7 @@ export function DiaryScreen({navigation}) {
   const {deleteWaterFlag} = useSelector(state => ({
     deleteWaterFlag: state.diaryReducer.deletewater,
   }));
-  // 식물 등록/삭제 상태(미사용)
+  // 식물 등록/삭제 상태
   const {plantact} = useSelector(state => ({
     plantact: state.roomReducer.plantact,
   }));
@@ -139,11 +143,20 @@ export function DiaryScreen({navigation}) {
     }
   };
 
+  const reRender = async () => {
+    const allAboutUser = await userInfo();
+    savePlants(allAboutUser.data.plants);
+  };
+
   useEffect(() => {
     if (activePlantId == -1) {
       isPlant();
     }
   }, []);
+
+  useEffect(() => {
+    reRender();
+  }, [plantact]);
 
   // 처음에 다이어리 전체 목록 가져와서 현재 선택된 탭의 식물에 해당하는 다이어리 작성 날짜 리스트 set하는 함수
   const initialDiary = async () => {

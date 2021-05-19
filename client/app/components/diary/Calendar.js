@@ -44,7 +44,6 @@ export function CalendarView(props) {
   const {markedDateReal} = useSelector(state => ({
     markedDateReal: state.diaryReducer.markedDate,
   }));
-  console.log('캘린더에서 markedDate는?', markedDateReal);
 
   // props로 전달받은 날짜 목록으로 markedDate 세팅
   const initailMarkedDate = async () => {

@@ -165,6 +165,7 @@ const PlusModal = props => {
         .catch(err => console.log(err));
     }
     closeModal(false, 'Cancel');
+    
     await roomchange();
   };
 
