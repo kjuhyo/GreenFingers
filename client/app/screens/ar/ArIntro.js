@@ -1,5 +1,5 @@
 'use strict';
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Container, Header, Content} from 'native-base';
 import {
@@ -25,15 +25,27 @@ const physicsBody = {
   friction: 0.75,
 };
 
-export function ArIntroScreen({navigation}) {
-  return <ViroARSceneNavigator initialScene={{scene: ArIntro}} />;
+export function ArIntroScreen({route, navigation}) {
+  const {arname} = route.params;
+  console.log(arname);
+  return (
+    <ViroARSceneNavigator
+      initialScene={{
+        scene: ArIntro,
+        passProps: {
+          arname: arname,
+        },
+      }}
+    />
+  );
 }
-function ArIntro({navigation}) {
+const ArIntro = props => {
+  const ar = props.arname;
+  console.log(ar);
   return (
     // <View>
     //   <Text>AR</Text>
     // </View>
-
     <ViroARScene>
       <ViroAmbientLight color={'#aaaaaa'} />
       <ViroSpotLight
@@ -45,45 +57,47 @@ function ArIntro({navigation}) {
         intensity={2500}
       />
       {/* <ViroText
-        text="Hello World"
+        text="Go Back"
         scale={[0.5, 0.5, 0.5]}
         position={[0, 0, -1]}
         style={styles.helloWorldTextStyle}
+        onClick={() => navigation.navigate('ArChoice')}
       /> */}
-      {/* 식물 1 */}
-      {/* <Viro3DObject
-        position={[0, -1, -1]}
-        scale={[0.5, 0.5, 0.5]}
-        rotation={[180, 90, 180]}
-        source={require('../../objects/indoorplant/Indoor+plant_3_BI_blend.obj')}
-        resources={[
-          require('../../objects/indoorplant/Indoor+plant_3_BI_blend.mtl'),
-          require('../../objects/indoorplant/bpng.jpg'),
-          require('../../objects/indoorplant/bpng_NRM_Kopie.jpg'),
-          require('../../objects/indoorplant/bpng_Schwaz_weistensel.jpg'),
-          require('../../objects/indoorplant/textures_col.jpg'),
-          require('../../objects/indoorplant/textures_nor.png'),
-        ]}
-        type="OBJ"
-        dragType="FixedDistance"
-        onDrag={() => {}}
-      /> */}
-      {/* 식물 2 */}
-      <Viro3DObject
-        position={[0, -1, -1]}
-        scale={[0.08, 0.08, 0.08]}
-        rotation={[180, 90, 180]}
-        source={require('../../objects/indoor/plant_02.obj')}
-        resources={[
-          require('../../objects/indoor/plant_02.mtl'),
-          require('../../objects/indoor/plant_2_COL.jpg'),
-          require('../../objects/indoor/plant_2_NOR.jpg'),
-          require('../../objects/indoor/plant_2_vl.jpg'),
-        ]}
-        type="OBJ"
-        dragType="FixedDistance"
-        onDrag={() => {}}
-      />
+      {ar === 'arplant1' ? (
+        <Viro3DObject
+          position={[0, -1, -1]}
+          scale={[0.5, 0.5, 0.5]}
+          rotation={[180, 90, 180]}
+          source={require('../../objects/indoorplant/Indoor+plant_3_BI_blend.obj')}
+          resources={[
+            require('../../objects/indoorplant/Indoor+plant_3_BI_blend.mtl'),
+            require('../../objects/indoorplant/bpng.jpg'),
+            require('../../objects/indoorplant/bpng_NRM_Kopie.jpg'),
+            require('../../objects/indoorplant/bpng_Schwaz_weistensel.jpg'),
+            require('../../objects/indoorplant/textures_col.jpg'),
+            require('../../objects/indoorplant/textures_nor.png'),
+          ]}
+          type="OBJ"
+          dragType="FixedDistance"
+          onDrag={() => {}}
+        />
+      ) : (
+        <Viro3DObject
+          position={[0, -1, -1]}
+          scale={[0.08, 0.08, 0.08]}
+          rotation={[180, 90, 180]}
+          source={require('../../objects/indoor/plant_02.obj')}
+          resources={[
+            require('../../objects/indoor/plant_02.mtl'),
+            require('../../objects/indoor/plant_2_COL.jpg'),
+            require('../../objects/indoor/plant_2_NOR.jpg'),
+            require('../../objects/indoor/plant_2_vl.jpg'),
+          ]}
+          type="OBJ"
+          dragType="FixedDistance"
+          onDrag={() => {}}
+        />
+      )}
 
       {/* <ViroBox
         position={[0, -0.5, -1]}
@@ -92,7 +106,7 @@ function ArIntro({navigation}) {
       /> */}
     </ViroARScene>
   );
-}
+};
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {

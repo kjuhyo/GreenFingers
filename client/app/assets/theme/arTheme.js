@@ -1,4 +1,10 @@
 export const themesAR = [
-  {name: 'arplant1', address: require('../../assets/images/arplant1.jpg')},
-  {name: 'arplant2', address: require('../../assets/images/arplant2.jpg')},
+  {
+    name: 'arplant1',
+    address: 'https://ssafybucket.s3.ap-northeast-2.amazonaws.com/arplant1.jpg',
+  },
+  {
+    name: 'arplant2',
+    address: 'https://ssafybucket.s3.ap-northeast-2.amazonaws.com/arplant2.jpg',
+  },
 ];
