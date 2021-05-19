@@ -144,7 +144,7 @@ export default function Profile({navigation}) {
       </ProfileBox>
       <MenuWrap>
         <MenuBox>
-          <MenuItem onPress={() => navigation.navigate('추천')}>
+          <MenuItem onPress={() => navigation.navigate('Surveyintro')}>
             <Icon type="MaterialCommunityIcons" name="thumb-up-outline" />
             <Text style={{marginLeft: 20}}>식물 추천 받기</Text>
           </MenuItem>

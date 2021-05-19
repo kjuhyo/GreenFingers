@@ -7,6 +7,10 @@ import ProfileImgChange from '../screens/profile/ProfileImgChange';
 import PasswordChange from '../screens/profile/PasswordChange';
 import Withdrawal from '../screens/profile/Withdrawal';
 
+import {SurveyintroScreen} from '../screens/recommendation/SurveyIntro';
+import {SurveyquestionScreen} from '../screens/recommendation/SurveyQ';
+import {SurveyresultScreen} from '../screens/recommendation/SurveyResult';
+
 const Stack = createStackNavigator();
 
 function ProfileStacks() {
@@ -58,6 +62,21 @@ function ProfileStacks() {
           headerTintColor: '#29582C',
           headerTitleStyle: {fontWeight: 'bold'},
         }}
+      />
+      <Stack.Screen
+        name="Surveyintro"
+        component={SurveyintroScreen}
+        options={{header: () => null}}
+      />
+      <Stack.Screen
+        name="Surveyquestion"
+        component={SurveyquestionScreen}
+        options={{title: '맞춤 식물 찾기'}}
+      />
+      <Stack.Screen
+        name="Surveyresult"
+        component={SurveyresultScreen}
+        options={{title: '맞춤 식물 찾기'}}
       />
     </Stack.Navigator>
   );

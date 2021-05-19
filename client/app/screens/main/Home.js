@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 20,
+    // marginLeft: 20,
     marginTop: 35,
     marginBottom: 30,
     fontFamily: 'Cochin',
