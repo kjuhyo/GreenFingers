@@ -15,6 +15,7 @@ import DiaryStacks from './DiaryStack';
 import HomeStacks from './HomeStack';
 import RecommendationStacks from './RecommendationStack';
 import ProfileStacks from './ProfileStack';
+import ArStacks from './ArStack';
 
 // style
 import theme from '../assets/theme/index';
@@ -47,7 +48,7 @@ function Tabs() {
               <Icon
                 type="Ionicons"
                 name={focused ? 'home-sharp' : 'home-outline'}
-                style={{color: focused ? '#8AD169' : '#808285', fontSize: 25}}
+                style={{color: focused ? '#8AD169' : '#808285', fontSize: 20}}
               />
             );
           } else if (route.name === '다이어리') {
@@ -55,15 +56,15 @@ function Tabs() {
               <Icon
                 type="Ionicons"
                 name="calendar-sharp"
-                style={{color: focused ? '#8AD169' : '#808285', fontSize: 25}}
+                style={{color: focused ? '#8AD169' : '#808285', fontSize: 20}}
               />
             );
-          } else if (route.name === '추천') {
+          } else if (route.name === 'AR') {
             return (
               <Icon
                 type="MaterialCommunityIcons"
-                name={focused ? 'thumb-up' : 'thumb-up-outline'}
-                style={{color: focused ? '#8AD169' : '#808285', fontSize: 25}}
+                name="cube-scan"
+                style={{color: focused ? '#8AD169' : '#808285', fontSize: 22}}
               />
             );
           } else if (route.name === '프로필') {
@@ -71,7 +72,11 @@ function Tabs() {
               <Icon
                 type="MaterialCommunityIcons"
                 name={focused ? 'account' : 'account-outline'}
-                style={{color: focused ? '#8AD169' : '#808285', fontSize: 30}}
+                style={{
+                  color: focused ? '#8AD169' : '#808285',
+                  fontSize: 25,
+                  marginTop: 3,
+                }}
               />
             );
           }
@@ -80,11 +85,11 @@ function Tabs() {
       tabBarOptions={{
         activeTintColor: '#8AD169', // 탭 클릭했을 경우 색깔
         inactiveTintColor: '#808285', // 탭 클릭하지 않았을 경우 색깔
-        style: {height: 55}, // bottom tab 높이
+        style: {height: 55, paddingBottom: 5}, // bottom tab 높이
       }}>
       <Tab.Screen name="홈" component={HomeStacks} />
       <Tab.Screen name="다이어리" component={DiaryStacks} />
-      <Tab.Screen name="추천" component={RecommendationStacks} />
+      <Tab.Screen name="AR" component={ArStacks} />
       <Tab.Screen name="프로필" component={ProfileStacks} />
     </Tab.Navigator>
   );
