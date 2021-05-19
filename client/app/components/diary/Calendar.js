@@ -199,6 +199,7 @@ export function CalendarView(props) {
         // Enable the option to swipe between months. Default = false
         enableSwipeMonths={true}
         markedDates={markedDateState} // dot 표시할 날짜 넣어줌
+        // markedDates={{'2021-05-01': {marked: true}}}
       />
 
       {/* 다이어리 보기/다이어리 작성/물주기 선택 모달 */}
