@@ -2,5 +2,9 @@ rootProject.name = 'green'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':react-native-google-signin', ':app'
 project(':react-native-google-signin').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-google-signin/google-signin/android')
-include ':lottie-react-native'
+include ':lottie-react-native',':react_viro', ':arcore_client', ':gvr_common', ':viro_renderer'
 project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')
+project(':arcore_client').projectDir = new File('../node_modules/@viro-community/react-viro/android/arcore_client')
+project(':gvr_common').projectDir = new File('../node_modules/@viro-community/react-viro/android/gvr_common')
+project(':viro_renderer').projectDir = new File('../node_modules/@viro-community/react-viro/android/viro_renderer')
+project(':react_viro').projectDir = new File('../node_modules/@viro-community/react-viro/android/react_viro')
