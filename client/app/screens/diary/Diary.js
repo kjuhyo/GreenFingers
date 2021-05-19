@@ -6,6 +6,7 @@ import {ScrollView, Text, TouchableOpacity} from 'react-native';
 // redux
 import {useDispatch, useSelector} from 'react-redux';
 import {setMarkedDate, updateActivePlant} from '../../reducers/diaryReducer';
+import {setPlants} from '../../reducers/plantReducer';
 
 // style
 import {
@@ -31,7 +32,6 @@ import Feed from '../../components/diary/Feed';
 //api
 import {findAllDiary, findDiaryByDate} from '../../api/diary';
 import {myPlantWaterInfo} from '../../api/plant';
-import {setPlants} from '../../reducers/plantReducer';
 import {userInfo} from '../../api/auth';
 
 // 작성된 다이어리 없다는 문구 컨테이너
@@ -134,6 +134,7 @@ export function DiaryScreen({navigation}) {
   const {markedDateReal} = useSelector(state => ({
     markedDateReal: state.diaryReducer.markedDate,
   }));
+
   // 보유 식물이 있을 경우에만 activePlant 값 설정
   const isPlant = () => {
     if (userPlants.length == 0) {
@@ -143,17 +144,19 @@ export function DiaryScreen({navigation}) {
     }
   };
 
-  const reRender = async () => {
-    const allAboutUser = await userInfo();
-    savePlants(allAboutUser.data.plants);
-  };
-
   useEffect(() => {
     if (activePlantId == -1) {
       isPlant();
     }
   }, []);
 
+  // 홈탭에서 식물 등록/삭제 할 경우 리덕스의 userPlant 업데이트 -> 리렌더링
+  const reRender = async () => {
+    const allAboutUser = await userInfo();
+    savePlants(allAboutUser.data.plants);
+  };
+
+  // 홈탭에서 식물 등록/삭제 할 경우 다이어리탭 리렌더링
   useEffect(() => {
     reRender();
   }, [plantact]);
@@ -173,7 +176,6 @@ export function DiaryScreen({navigation}) {
         }
       }),
     );
-    // console.log('타임라인에 보낼 다이어리 리스트',tmpTimelineList);
     setTimelineDiary(tmpTimelineList);
     setDiaryDate(activePlantDate);
   };
