@@ -555,7 +555,7 @@ const styles = StyleSheet.create({
   plantcard: {
     flex: 5,
     margin: 3,
-    height: win.height * 0.2,
+    height: win.height * 0.22,
     backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: 10,
     paddingHorizontal: 10,
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
   plantcard2: {
     flex: 5,
     margin: 3,
-    height: win.height * 0.2,
+    height: win.height * 0.22,
     backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: 10,
     paddingHorizontal: 10,

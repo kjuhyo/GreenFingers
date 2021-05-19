@@ -1,6 +1,6 @@
 # Blender v2.77 (sub 0) OBJ File: 'indoor plant_02.blend'
 # www.blender.org
-mtllib plant_02.mtl
+mtllib plant02.mtl
 o indoor_plant_02
 v 0.421644 5.303134 -1.634998
 v 0.425062 5.301006 -1.583781

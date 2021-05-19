@@ -1,6 +1,6 @@
 # Blender v2.74 (sub 0) OBJ File: 'Indoor plant_3_BI_blend.blend'
 # www.blender.org
-mtllib Indoor+plant_3_BI_blend.mtl
+mtllib Indoor3.mtl
 o Low-Poly_Plant_.001_Cube.000
 v -0.008337 0.314418 0.031863
 v -0.008131 0.313761 -0.033714

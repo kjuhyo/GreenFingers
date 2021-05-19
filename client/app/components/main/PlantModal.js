@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 120,
     backgroundColor: 'white',
     borderRadius: 10,
-    flex: 0.31,
+    flex: 0.35,
   },
   modaltop: {
     flexDirection: 'row',
