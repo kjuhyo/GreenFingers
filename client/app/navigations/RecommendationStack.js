@@ -19,7 +19,14 @@ function RecommendationStacks() {
       <Stack.Screen
         name="ArChoice"
         component={ArChoice}
-        options={{header: () => null}}
+        options={{
+          title: 'PLANT AR',
+          headerStyle: {
+            backgroundColor: '#F9F9F9',
+          },
+          headerTintColor: '#29582C',
+          headerTitleStyle: {fontWeight: 'bold'},
+        }}
       />
       <Stack.Screen
         name="ArIntro"

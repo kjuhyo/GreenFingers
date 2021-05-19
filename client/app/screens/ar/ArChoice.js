@@ -14,6 +14,20 @@ import {Littlechip} from '../../assets/theme/roomstyle';
 import {themesAR} from '../../assets/theme/arTheme';
 import {changeRoomNameTheme} from '../../api/room';
 
+const AddButton = styled.TouchableOpacity`
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
+const ButtonText = styled.Text`
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 10px;
+`;
+
 export function ArChoice({navigation}) {
   const [isSelected, setIsSelected] = useState(
     'https://ssafybucket.s3.ap-northeast-2.amazonaws.com/arplant1.jpg',
@@ -43,47 +57,52 @@ export function ArChoice({navigation}) {
   };
   return (
     <View style={styles.photo}>
-      <Littlechip>
-        <Text style={styles.chiptext}>AR 선택</Text>
-      </Littlechip>
+      <Text style={styles.chiptext}>보고싶은 식물 AR을 선택하세요</Text>
       <View
         style={{
           flexDirection: 'row',
           flexWrap: 'wrap',
           justifyContent: 'flex-start',
           paddingHorizontal: 15,
+          marginVertical: 30,
         }}>
         {Choices()}
       </View>
-      <Button
-        onPress={() => {
-          console.log('click');
-          navigation.navigate('ArIntro', {
-            arname: isSelectedAr,
-          });
-        }}
-        style={styles.gobtn}>
-        <Text>Go!</Text>
-      </Button>
+      <View style={styles.button}>
+        <AddButton
+          onPress={() => {
+            console.log('click');
+            navigation.navigate('ArIntro', {
+              arname: isSelectedAr,
+            });
+          }}>
+          <ButtonText>AR 보러가기</ButtonText>
+          <Icon
+            type="Ionicons"
+            name="checkmark-circle-outline"
+            style={{fontSize: 20}}></Icon>
+        </AddButton>
+      </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  gobtn: {
-    marginLeft: 20,
-    width: 100,
-    backgroundColor: 'red',
+  photo: {
+    alignItems: 'center',
+  },
+  buttons: {
+    margin: 20,
+    justifyContent: 'center',
+    marginBottom: 80,
   },
   chiptext: {
-    fontWeight: 'bold',
-    fontSize: 13,
-  },
-  photo: {
-    flex: 3,
+    fontWeight: '200',
+    fontSize: 14,
+    marginTop: 100,
   },
   imagewrap: {
-    width: 50,
-    height: 50,
+    width: 150,
+    height: 150,
     margin: 5,
   },
   themeimg: {
