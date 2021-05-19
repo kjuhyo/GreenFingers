@@ -126,12 +126,13 @@ export default function Root() {
     } else {
       setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
     var unsubscribe = firebase.auth().onAuthStateChanged(saveUserInfo);
     unsubscribe();
-  }, []);
+  }, [uid]);
 
   return (
     <ThemeProvider theme={theme}>

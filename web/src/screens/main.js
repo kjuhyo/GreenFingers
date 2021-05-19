@@ -1,9 +1,19 @@
 import styled from "styled-components";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 //images
 import main from "../assets/images/main.jpg";
 import googleStoreButton from "../assets/images/google-play-badge.png";
-import leaf from "../assets/images/leaf.png";
+import leaf from "../assets/images/leaf.jpg";
 import phone from "../assets/images/phone.png";
+import leaf2 from "../assets/images/leaf2.png";
+
+//memberPhotos
+import Buhee from "../assets/images/Buhee.png";
+import Juhyo from "../assets/images/Juhyo.jpg";
+import Dasol from "../assets/images/Dasol.jpg";
+import Gyuyeon from "../assets/images/Gyuyeon.jpg";
+import Sojeong from "../assets/images/Sojeong.jpg";
 
 //main
 import {
@@ -18,6 +28,18 @@ import {
   RightBgImage,
   VideoDescription,
 } from "../assets/style/videoSection";
+
+//member section
+import {
+  MadeBy,
+  BottomLefgBgImage,
+  TopRightBgImage,
+  MemberPhoto,
+  MemberTitle,
+  MemberRole,
+  MemberGithub,
+  MemberRow,
+} from "../assets/style/memberSection";
 
 import { Num, DescTitle, DescDetail } from "../assets/style/descriptionSection";
 
@@ -39,9 +61,9 @@ function Main() {
             반려식물 키우기,
             <br /> 그린핑거스와 함께하세요.
           </div>
-          <button>
+          <a href="">
             <img src={googleStoreButton} alt="google download"></img>
-          </button>
+          </a>
         </ServiceSummary>
       </Section>
       <Section
@@ -158,6 +180,66 @@ function Main() {
           </DescDetail>
         </div>
       </Section>
+      <Section>
+        <BottomLefgBgImage src={leaf2}></BottomLefgBgImage>
+        <TopRightBgImage src={leaf2}></TopRightBgImage>
+        <MadeBy>만든 사람들</MadeBy>
+        <MemberRow
+          container
+          justify="center"
+          align="center"
+          style={{ paddingTop: 200 }}
+        >
+          <Grid item xs={3} style={memberWrap}>
+            <MemberPhoto src={Dasol}></MemberPhoto>
+            <MemberTitle>박다솔</MemberTitle>
+            <MemberRole>Frontend & Team Leader</MemberRole>
+            <MemberGithub href="https://github.com/Park-Dasol">
+              https://github.com/Park-Dasol
+            </MemberGithub>
+          </Grid>
+          <Grid item xs={3} style={memberWrap}>
+            <MemberPhoto src={Gyuyeon}></MemberPhoto>
+            <MemberTitle>김규연</MemberTitle>
+            <MemberRole>Frontend & AR</MemberRole>
+            <MemberGithub href="https://github.com/qqyurr">
+              https://github.com/qqyurr
+            </MemberGithub>
+          </Grid>
+          <Grid item xs={3} style={memberWrap}>
+            <MemberPhoto src={Buhee}></MemberPhoto>
+            <MemberTitle>김부희</MemberTitle>
+            <MemberRole>Backend & AI</MemberRole>
+            <MemberGithub href="https://github.com/buri-1029">
+              https://github.com/buri-1029
+            </MemberGithub>
+          </Grid>
+        </MemberRow>
+        <MemberRow container justify="center" align="center">
+          <Grid item xs={3} style={memberWrap}>
+            <MemberPhoto src={Sojeong}></MemberPhoto>
+            <MemberTitle>김소정</MemberTitle>
+            <MemberRole>Frontend & AR</MemberRole>
+            <MemberGithub href="https://github.com/itoggi03">
+              https://github.com/itoggi03
+            </MemberGithub>
+          </Grid>
+          <Grid item xs={3} style={memberWrap}>
+            <MemberPhoto src={Juhyo}></MemberPhoto>
+            <MemberTitle>김주효</MemberTitle>
+            <MemberRole>Backend & AI</MemberRole>
+            <MemberGithub href="https://github.com/kjuhyo">
+              https://github.com/kjuhyo
+            </MemberGithub>
+          </Grid>
+          <Grid item xs={3} style={memberWrap}>
+            <MemberPhoto src={leaf}></MemberPhoto>
+            <MemberTitle>박기성</MemberTitle>
+            <MemberRole>Backend & CI/CD</MemberRole>
+            <MemberGithub href="">github</MemberGithub>
+          </Grid>
+        </MemberRow>
+      </Section>
     </div>
   );
 }
@@ -190,4 +272,10 @@ const evenImageWrap = {
   alignSelf: "center",
   paddingLeft: "11%",
   justifyContent: "center",
+};
+
+const memberWrap = {
+  jusitifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
 };

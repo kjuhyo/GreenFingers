@@ -32,11 +32,12 @@ export const ServiceSummary = styled.div`
     font-weight: 600;
     font-size: 55px;
   }
-  button {
+  a {
     margin-left: 35%;
     margin-top: 5%;
     border: none;
     background-color: transparent;
+    display: inline-block;
     color: none;
     height: 30%;
     width: 30%;

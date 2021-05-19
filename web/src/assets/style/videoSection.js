@@ -10,7 +10,8 @@ export const LeftBgImage = styled.img`
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
-  z-index: -1;
+  z-index: -2;
+  /* transform: scale(0.9); */
 `;
 
 export const RightBgImage = styled.img`
@@ -18,7 +19,7 @@ export const RightBgImage = styled.img`
   bottom: 0;
   right: 0;
   width: 50vw;
-  z-index: -1;
+  z-index: -2;
 `;
 
 export const VideoDescription = styled.h1`

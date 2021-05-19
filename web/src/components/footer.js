@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const MyFooter = styled.footer`
-  margin-top: 1rem;
+  margin-top: 4rem;
   padding: 1.5rem;
   /* background-color: rgb(235, 195, 64); */
   position: -webkit-sticky;
@@ -22,7 +22,7 @@ const FooterContent = styled.p`
 const Footer = () => (
   <MyFooter className="footer">
     <FooterContent>
-      만든 사람들 : 김규연, 김부희, 김소정, 김주효, 박다솔, 박기성{" "}
+      만든 사람들 : 김규연, 김부희, 김소정, 김주효, 박기성, 박다솔
     </FooterContent>
     <FooterContent>Email : chorokfingers@gmail.com</FooterContent>
     <FooterContent>
