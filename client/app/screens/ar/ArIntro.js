@@ -68,9 +68,9 @@ const ArIntro = props => {
           position={[0, -1, -1]}
           scale={[0.5, 0.5, 0.5]}
           rotation={[180, 90, 180]}
-          source={require('../../objects/indoorplant/Indoor+plant_3_BI_blend.obj')}
+          source={require('../../objects/indoorplant/Indoorplant3.obj')}
           resources={[
-            require('../../objects/indoorplant/Indoor+plant_3_BI_blend.mtl'),
+            require('../../objects/indoorplant/Indoor3.mtl'),
             require('../../objects/indoorplant/bpng.jpg'),
             require('../../objects/indoorplant/bpng_NRM_Kopie.jpg'),
             require('../../objects/indoorplant/bpng_Schwaz_weistensel.jpg'),
@@ -88,7 +88,7 @@ const ArIntro = props => {
           rotation={[180, 90, 180]}
           source={require('../../objects/indoor/plant_02.obj')}
           resources={[
-            require('../../objects/indoor/plant_02.mtl'),
+            require('../../objects/indoor/plant02.mtl'),
             require('../../objects/indoor/plant_2_COL.jpg'),
             require('../../objects/indoor/plant_2_NOR.jpg'),
             require('../../objects/indoor/plant_2_vl.jpg'),
