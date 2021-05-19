@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {DiaryScreen} from '../screens/diary/Diary';
 import {DiaryWriteScreen} from '../screens/diary/DiaryWrite';
 import {DiaryUpdateScreen} from '../screens/diary/DiaryUpdate';
+import DiaryTimeline from '../screens/diary/DiaryTimeline';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,18 @@ function DiaryStacks() {
         component={DiaryUpdateScreen}
         options={{
           title: '다이어리 수정',
+          headerStyle: {
+            backgroundColor: '#F9F9F9',
+          },
+          headerTintColor: '#29582C',
+          headerTitleStyle: {fontWeight: 'bold'},
+        }}
+      />
+      <Stack.Screen
+        name="DiaryTimeline"
+        component={DiaryTimeline}
+        options={{
+          title: '타임라인',
           headerStyle: {
             backgroundColor: '#F9F9F9',
           },

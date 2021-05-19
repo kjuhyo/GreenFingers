@@ -21,6 +21,7 @@ import {PlantIdentification} from './PlantIdentification';
 import {myPlantRegister} from '../../api/plant';
 import {useDispatch} from 'react-redux';
 import {changeRoom} from '../../reducers/roomReducer';
+import {changePlant} from '../../reducers/roomReducer';
 
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
@@ -76,6 +77,7 @@ const PlusModal = props => {
   // roomchange
   const dispatch = useDispatch();
   const roomchange = () => dispatch(changeRoom());
+  const plantchange = () => dispatch(changePlant('register'));
   // rid
   const rid = props.rid;
   // take photo, choose photo
@@ -163,8 +165,10 @@ const PlusModal = props => {
       await myPlantRegister(formData)
         .then(res => console.log(res.data))
         .catch(err => console.log(err));
+      plantchange();
     }
     closeModal(false, 'Cancel');
+
     await roomchange();
   };
 

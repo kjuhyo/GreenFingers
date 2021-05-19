@@ -5,7 +5,8 @@ import {ScrollView, Text, TouchableOpacity} from 'react-native';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {updateActivePlant} from '../../reducers/diaryReducer';
+import {setMarkedDate, updateActivePlant} from '../../reducers/diaryReducer';
+import {setPlants} from '../../reducers/plantReducer';
 
 // style
 import {
@@ -17,6 +18,7 @@ import {
   TabHeading,
   View,
   Root,
+  Icon,
 } from 'native-base';
 import styled from 'styled-components';
 
@@ -30,18 +32,7 @@ import Feed from '../../components/diary/Feed';
 //api
 import {findAllDiary, findDiaryByDate} from '../../api/diary';
 import {myPlantWaterInfo} from '../../api/plant';
-
-// const PlusButton = styled.TouchableOpacity`
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 30px;
-//   background-color: ${({theme}) => theme.colors.darkGreen};
-//   justify-content: center;
-//   align-items: center;
-//   position: absolute;
-//   bottom: 20px;
-//   right: 20px;
-// `;
+import {userInfo} from '../../api/auth';
 
 // 작성된 다이어리 없다는 문구 컨테이너
 const TextContainer = styled.View`
@@ -50,20 +41,28 @@ const TextContainer = styled.View`
   justify-content: center;
 `;
 
+// 타임라인 버튼
+const TimelineBtn = styled.TouchableOpacity`
+  background-color: ${({theme}) => theme.colors.darkGreen};
+  /* padding: 25px; */
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-bottom: 25px;
+  height: 45px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`;
+
+// 타임라인 버튼 텍스트
+const TimelineBtnText = styled.Text`
+  color: white;
+  font-size: 17px;
+`;
+
 const renderTabBar = props => {
   props.tabStyle = Object.create(props.tabStyle);
-  // props.style = Object.create(props.style);
-  // props.tabsContainerStyle = Object.create(
-  //   props.tabsContainerStyle,
-  //   // backgroundColor: '#F9F9F9',
-  // );
-
-  // props.style = Object.create(props.style);
-
-  // console.log(props);
-  // props.underlineStyle = Object.create({
-  //   height: 0,
-  // });
   return (
     <ScrollableTab
       {...props}
@@ -81,9 +80,12 @@ export function DiaryScreen({navigation}) {
   const [selectedDiary, setSelectedDiary] = useState(); // 현재 식물의 선택한 날짜의 다이어리 목록
   const [waterDate, setWaterDate] = useState(); // [물준날짜1, 물준날짜2, ...]
   const [waterDateId, setWaterDateId] = useState(); // {물준날짜1: wid, 물준날짜:2, ...}
+  const [timelineDiary, setTimelineDiary] = useState(); // 타임라인에 사용할 현재 식물탭의 다이어리 목록
 
   // 디스패치 정의
   const dispatch = useDispatch();
+
+  const savePlants = plants => dispatch(setPlants(plants));
 
   // 활성화된 탭의 식물 아이디와 탭 인덱스 디스패치
   const setActivePlantTab = (pid, tabidx) =>
@@ -124,9 +126,13 @@ export function DiaryScreen({navigation}) {
   const {deleteWaterFlag} = useSelector(state => ({
     deleteWaterFlag: state.diaryReducer.deletewater,
   }));
-  // 식물 등록/삭제 상태(미사용)
+  // 식물 등록/삭제 상태
   const {plantact} = useSelector(state => ({
     plantact: state.roomReducer.plantact,
+  }));
+
+  const {markedDateReal} = useSelector(state => ({
+    markedDateReal: state.diaryReducer.markedDate,
   }));
 
   // 보유 식물이 있을 경우에만 activePlant 값 설정
@@ -144,19 +150,33 @@ export function DiaryScreen({navigation}) {
     }
   }, []);
 
+  // 홈탭에서 식물 등록/삭제 할 경우 리덕스의 userPlant 업데이트 -> 리렌더링
+  const reRender = async () => {
+    const allAboutUser = await userInfo();
+    savePlants(allAboutUser.data.plants);
+  };
+
+  // 홈탭에서 식물 등록/삭제 할 경우 다이어리탭 리렌더링
+  useEffect(() => {
+    reRender();
+  }, [plantact]);
+
   // 처음에 다이어리 전체 목록 가져와서 현재 선택된 탭의 식물에 해당하는 다이어리 작성 날짜 리스트 set하는 함수
   const initialDiary = async () => {
     // 1. axios 요청을 통해 전체 다이어리 목록 가져옴
     const allDiary = await findAllDiary();
+    const tmpTimelineList = [];
 
     // 2. 전체 다이어리 목록에서 현재 선택된 탭의 식물 id에 해당하는 다이어리의 작성 날짜 리스트
     const activePlantDate = await Promise.all(
       allDiary.data.response.map(diary => {
         if (diary.plantId === activePlantId) {
+          tmpTimelineList.push(diary);
           return diary.writeDateTime.substring(0, 10);
         }
       }),
     );
+    setTimelineDiary(tmpTimelineList);
     setDiaryDate(activePlantDate);
   };
 
@@ -304,16 +324,29 @@ export function DiaryScreen({navigation}) {
           {showDiary ? (
             feedRendering()
           ) : (
-            <CalendarView
-              navigation={navigation}
-              setShowDiary={setShowDiary}
-              diaryDate={diaryDate} // 다이어리 쓴 날짜 리스트
-              waterDate={waterDate} // 물 준 날짜 리스트
-              waterDateId={waterDateId} // 물 준 날짜와 wid 객체
-              setSelectedDate={setSelectedDate} // 선택한 날짜 set
-              selectedDate={selectedDate} // 선택한 날짜
-              activePlant={activePlantId} // 선택한 식물 id
-            />
+            <View>
+              <CalendarView
+                navigation={navigation}
+                setShowDiary={setShowDiary}
+                diaryDate={diaryDate} // 다이어리 쓴 날짜 리스트
+                waterDate={waterDate} // 물 준 날짜 리스트
+                waterDateId={waterDateId} // 물 준 날짜와 wid 객체
+                setSelectedDate={setSelectedDate} // 선택한 날짜 set
+                selectedDate={selectedDate} // 선택한 날짜
+                activePlant={activePlantId} // 선택한 식물 id
+              />
+              <TimelineBtn
+                onPress={() => {
+                  navigation.navigate('DiaryTimeline', timelineDiary);
+                }}>
+                {/* <Icon
+                  type="MaterialCommunityIcons"
+                  name="timeline-text-outline"
+                  style={{color: 'white', marginRight: 10}}
+                /> */}
+                <TimelineBtnText>타임라인</TimelineBtnText>
+              </TimelineBtn>
+            </View>
           )}
         </ScrollView>
       </Tab>
