@@ -184,7 +184,7 @@ export function RoomScreen({route, navigation}) {
               source={{uri: roomtheme}}
             />
           </View>
-          <View style={{flexDirection: 'row', marginTop: 40}}>
+          <View style={{flexDirection: 'row', marginTop: 10}}>
             {/* 방 이름 */}
             <TouchableOpacity
               style={styles.roomname}

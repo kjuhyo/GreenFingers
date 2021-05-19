@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 30,
     // backgroundColor: "yellow",
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 0,
   },
   mainname: {
