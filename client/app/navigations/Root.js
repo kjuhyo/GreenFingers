@@ -91,11 +91,11 @@ function Tabs() {
 }
 
 export default function Root() {
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const {uid, isLoading} = useSelector(state => ({
+  const {uid} = useSelector(state => ({
     uid: state.profileReducer.userId,
-    isLoading: state.rootReducer.isLoading,
+    // isLoading: state.rootReducer.isLoading,
   }));
 
   const dispatch = useDispatch();
@@ -104,7 +104,7 @@ export default function Root() {
   const saveProfile = (profile, provider, useremail) =>
     dispatch(setProfile(profile, provider, useremail));
 
-  const setIsLoading = status => dispatch(setStatus(status));
+  // const setIsLoading = status => dispatch(setStatus(status));
 
   //삭제예정
   printToken = async () => {
@@ -126,6 +126,7 @@ export default function Root() {
     } else {
       setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {

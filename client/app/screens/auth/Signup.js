@@ -67,7 +67,7 @@ export function SignupScreen({navigation}) {
         //DEVICE TOKEN
         const deviceToken = await messaging().getToken();
         const device_response = await registerDevice();
-        await saveProfile(profile, 'password', email);
+        await saveProfile(profile.data.response, 'password', email);
         setIsLoading(false);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
