@@ -89,10 +89,10 @@ const PlusModal = props => {
   );
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 300,
+      compressImageMaxWidth: 900,
+      compressImageMaxHeight: 900,
       cropping: true,
-      compressImageQuality: 0.7,
+      // compressImageQuality: 0.7,
     })
       .then(image => {
         console.log(image);
@@ -106,10 +106,10 @@ const PlusModal = props => {
 
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
-      width: 300,
-      height: 300,
+      width: 900,
+      height: 900,
       cropping: true,
-      compressImageQuality: 0.7,
+      // compressImageQuality: 0.7,
     })
       .then(image => {
         console.log(image);
