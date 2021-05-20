@@ -71,6 +71,7 @@ export function DiaryUpdateScreen({route, navigation: {goBack}}) {
     } else if (imgState.length == 0) {
       toastShow('사진을 선택해주세요.');
     } else {
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('plantId', route.params.diary.plantId);
       formData.append('title', titleState);
@@ -84,7 +85,7 @@ export function DiaryUpdateScreen({route, navigation: {goBack}}) {
         });
       });
       await updateDiary(route.params.diary.id, formData);
-      isModifyDiary(!modifyDiaryFlag)
+      isModifyDiary(!modifyDiaryFlag);
       setIsLoading(false);
       goBack();
     }
@@ -247,7 +248,6 @@ export function DiaryUpdateScreen({route, navigation: {goBack}}) {
           {/* 완료 버튼 */}
           <CompleteBtn
             onPress={() => {
-              setIsLoading(true);
               diaryUpdate();
             }}>
             <CompleteBtnText>완료</CompleteBtnText>
