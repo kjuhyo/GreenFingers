@@ -21,3 +21,5 @@ export const DEVICE_TOKEN = async () => {
 };
 
 export const API_BASE_URL = 'http://k4c103.p.ssafy.io/green';
+
+export const RECOGNITION_BASE_URL = 'http://k4c103.p.ssafy.io:5000';

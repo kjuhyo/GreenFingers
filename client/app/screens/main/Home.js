@@ -55,11 +55,13 @@ function CustomDrawerContent(props) {
   const [myMessages, setMyMessages] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [detailMessage, setDetailMessage] = useState('');
+  const [msgLength, setMsgLength] = useState(0);
 
   useEffect(async () => {
     const messageResponse = await getMessage();
     setMyMessages(messageResponse.data.response);
-  }, []);
+    setMsgLength(myMessages.length);
+  }, [msgLength]);
 
   const messageDetailModal = item => {
     setDetailMessage(item);
@@ -93,7 +95,9 @@ function CustomDrawerContent(props) {
         }}>
         <MessageModal
           setModalVisible={setModalVisible}
-          message={detailMessage}></MessageModal>
+          message={detailMessage}
+          setMsgLength={setMsgLength}
+          msgLengtt={msgLength}></MessageModal>
       </Modal>
     </DrawerContentScrollView>
   );

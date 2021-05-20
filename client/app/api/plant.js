@@ -1,5 +1,6 @@
 import {instance} from './index';
 import {instanceFile} from './index';
+import {instanceRecognition} from './index';
 
 // 나의 식물 조회 기반 등록
 export function myPlantRegister(formData) {
@@ -59,4 +60,9 @@ export function plantSearch(search) {
 // 식물 상세 정보 조회
 export function plantInfoDetail(id) {
   return instance.get(`plant/info/detail/${id}`);
+}
+
+//식물 판별
+export function plantRecognition(formData) {
+  return instanceRecognition.post('predict', formData);
 }

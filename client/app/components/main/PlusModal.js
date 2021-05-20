@@ -23,6 +23,8 @@ import {useDispatch} from 'react-redux';
 import {changeRoom} from '../../reducers/roomReducer';
 import {changePlant} from '../../reducers/roomReducer';
 
+import {plantRecognition} from '../../api/plant';
+
 const data = [{label: '거실'}, {label: '욕실'}];
 const img_data = [
   {uri: '../../assets/images/mainroom.jpg'},
@@ -82,7 +84,8 @@ const PlusModal = props => {
   const rid = props.rid;
   // take photo, choose photo
   const [image, setImage] = useState(
-    'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
+    // 'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-Clipart.png',
+    'https://i.pinimg.com/564x/08/56/13/0856131b7c2615b7c55e63a33ea32444.jpg',
   );
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -151,6 +154,7 @@ const PlusModal = props => {
       var ndate = yyyy + '-' + mm + '-' + dd;
 
       const formData = new FormData();
+      // formData.append('pid', ChooseData.id);
       formData.append('pid', ChooseData.id);
       // rid append. 식물을 등록할 방 고유 번호
       formData.append('rid', rid);
@@ -296,6 +300,7 @@ const PlusModal = props => {
           <PlantIdentification
             changeModalVisible={changeModalVisible}
             setData={setData}
+            image={image}
           />
         </Modal>
       </View>

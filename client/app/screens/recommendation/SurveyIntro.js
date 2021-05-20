@@ -118,7 +118,7 @@ export function SurveyintroScreen({navigation}) {
         <View style={styles.contentinfo}>
           <View style={styles.infoleft}>
             <Icon style={{color: '#29582C'}} type="FontAwesome" name="pencil" />
-            <Text style={{color: '#29582C', marginTop: 7}}> 전체 16문항</Text>
+            <Text style={{color: '#29582C', marginTop: 7}}> 전체 12문항</Text>
           </View>
           <View style={styles.inforight}>
             <Icon

@@ -25,7 +25,8 @@ export const ServiceTitle = styled.h1`
 export const ServiceSummary = styled.div`
   position: absolute;
   top: 40%;
-  right: 10%;
+  right: 5%;
+  width: 50vw;
   div {
     color: #323232;
     text-align: center;
@@ -33,17 +34,25 @@ export const ServiceSummary = styled.div`
     font-size: 55px;
   }
   a {
-    margin-left: 35%;
-    margin-top: 5%;
+    margin-top: 15%;
+    margin-left: 3%;
+    margin-right: 3%;
     border: none;
     background-color: transparent;
     display: inline-block;
     color: none;
-    height: 30%;
-    width: 30%;
+    width: 100%;
+    height: 50%;
     img {
       height: 100%;
       width: 100%;
+    }
+    div {
+      height: 100%;
+      width: 100%;
+      border: 1px solid black;
+      font-size: 20px;
+      border-radius: 5px;
     }
     :hover {
       cursor: pointer;
