@@ -14,7 +14,7 @@ import {set} from 'react-native-reanimated';
 
 // 비밀번호 재설정 페이지 전체 컨테이너
 const ImgChangeContainer = styled.View`
-  height: ${hp('50%')}px;
+  height: ${hp('40%')}px;
   padding: 30px;
 `;
 
@@ -143,7 +143,7 @@ export default function PasswordChange({navigation}) {
         />
       </InputBox>
       <CompleteBtn
-        flexHeight="0.8"
+        flexHeight="0.7"
         marginTop="50px;"
         // onPress={() => setCompleteModalVisible(true)}
         onPress={() => onSubmit()}>
