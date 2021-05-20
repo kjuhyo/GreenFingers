@@ -74,6 +74,7 @@ export function DiaryWriteScreen({route, navigation}) {
     } else if (imgState.length == 0) {
       toastShow('사진을 선택해주세요.');
     } else {
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('plantId', route.params.activePlant);
       formData.append('title', titleState);
@@ -250,7 +251,6 @@ export function DiaryWriteScreen({route, navigation}) {
           {/* 완료 버튼 */}
           <CompleteBtn
             onPress={() => {
-              setIsLoading(true);
               diaryWrite();
             }}>
             <CompleteBtnText>완료</CompleteBtnText>
