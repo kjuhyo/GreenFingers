@@ -27,6 +27,8 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
+import {plantRecognition} from '../../api/plant';
+
 // 글 작성 textInput 박스
 const SearchBar = styled.TextInput`
   background-color: white;
@@ -59,8 +61,20 @@ const PlantIdentification = props => {
       .catch(err => console.log(err));
   };
   useEffect(async () => {
+    console.log(props);
+    if (props.image !== undefined) {
+      const formData = new FormData();
+      formData.append('file', {
+        uri: props.image,
+        name: 'plant.jpg',
+        type: 'image/jpeg',
+      });
+      // console.log('formdata', formData);
+      const recogResponse = await plantRecognition(formData);
+      console.log('recogRes', recogResponse.data);
+    }
     await getPlantInfo();
-  }, []);
+  }, [props.image]);
   const closeModal = (bool, data) => {
     props.changeModalVisible(bool);
     props.setData(data);

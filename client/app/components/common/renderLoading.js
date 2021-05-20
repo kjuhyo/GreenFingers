@@ -1,4 +1,5 @@
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, View, Text} from 'react-native';
+
 import React from 'react';
 import LottieView from 'lottie-react-native';
 import {StyleSheet} from 'react-native';
@@ -20,21 +21,36 @@ export const RenderLoading = props => {
 export const AnimationLoading = props => {
   if (props.isLoading) {
     return (
-      <LottieView
-        source={require('../../assets/animation/thumb.json')}
-        autoPlay
-        loop
-        style={
-          ({
+      <>
+        <LottieView
+          source={require('../../assets/animation/multiple.json')}
+          autoPlay
+          loop
+          style={
+            ({
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              top: 0,
+            },
+            styles.lottieimage)
+          }
+        />
+        <Text
+          style={{
             position: 'absolute',
+            bottom: 150,
             left: 0,
             right: 0,
-            bottom: 0,
-            top: 0,
-          },
-          styles.lottieimage)
-        }
-      />
+            textAlign: 'center',
+            fontSize: 30,
+            color: '#29582C',
+            fontWeight: '700',
+          }}>
+          loading ...
+        </Text>
+      </>
     );
   } else {
     return null;

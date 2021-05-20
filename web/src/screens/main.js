@@ -14,6 +14,7 @@ import Juhyo from "../assets/images/Juhyo.jpg";
 import Dasol from "../assets/images/Dasol.jpg";
 import Gyuyeon from "../assets/images/Gyuyeon.jpg";
 import Sojeong from "../assets/images/Sojeong.jpg";
+import Gisung from "../assets/images/Gisung.jpg";
 
 //main
 import {
@@ -61,9 +62,24 @@ function Main() {
             반려식물 키우기,
             <br /> 그린핑거스와 함께하세요.
           </div>
-          <a href="">
-            <img src={googleStoreButton} alt="google download"></img>
-          </a>
+          <Grid
+            container
+            justify="center"
+            align="center"
+            width="100%"
+            spacing={5}
+          >
+            <Grid item xs={4} justify="center" align="center">
+              <a href="">
+                <img src={googleStoreButton} alt="google download"></img>
+              </a>
+            </Grid>
+            <Grid item xs={4} justify="center" align="center">
+              <a href="">
+                <div>App 다운로드</div>
+              </a>
+            </Grid>
+          </Grid>
         </ServiceSummary>
       </Section>
       <Section
@@ -233,10 +249,12 @@ function Main() {
             </MemberGithub>
           </Grid>
           <Grid item xs={3} style={memberWrap}>
-            <MemberPhoto src={leaf}></MemberPhoto>
+            <MemberPhoto src={Gisung}></MemberPhoto>
             <MemberTitle>박기성</MemberTitle>
             <MemberRole>Backend & CI/CD</MemberRole>
-            <MemberGithub href="">github</MemberGithub>
+            <MemberGithub href="https://github.com/gisungPark">
+              https://github.com/gisungPark
+            </MemberGithub>
           </Grid>
         </MemberRow>
       </Section>
